@@ -1,0 +1,23 @@
+{
+  "overview": "Overview",
+  "competitions": "Competitions",
+  "members": "Members",
+  "analytics": "Analytics",
+  "settings": "Settings",
+  "users": "Users",
+  "organizations": "Organizations",
+  "backToSite": "Back to Site",
+  "signOut": "Sign Out",
+  "adminPanel": "Admin Panel",
+  "organizationPanel": "Organization Panel",
+  "home": "Home",
+  "results": "Results",
+  "login": "Login",
+  "profile": "Profile",
+  "organizationDashboard": "Organization Dashboard",
+  "adminDashboard": "Admin Dashboard",
+  "toggleTheme": "Toggle theme",
+  "light": "Light",
+  "dark": "Dark",
+  "system": "System"
+}

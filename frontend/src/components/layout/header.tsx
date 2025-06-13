@@ -3,27 +3,22 @@ import { AuthButton } from '@/features/auth';
 import { getThemeValue, ThemeToggle, useTheme } from '@/features/theme';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { LanguageSelector } from './language-selector';
 import { MobileMenu } from './mobile-menu';
 import { Navigation } from './navigation';
 
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/competitions', label: 'Competitions' },
-  { href: '/results', label: 'Results' },
-];
-
-const languages = [
-  { label: 'EN', code: 'en' },
-  { label: 'FR', code: 'fr' },
-  { label: 'NL', code: 'nl' },
-];
-
 export function Header() {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const [selectedLanguage, setSelectedLanguage] = useState('en');
+  const { t } = useTranslation('common');
+
+  const navItems = [
+    { href: '/', label: t('home') },
+    { href: '/competitions', label: t('competitions') },
+    { href: '/results', label: t('results') },
+  ];
 
   const handleMobileMenuClose = () => setIsOpen(false);
 
@@ -49,11 +44,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <Navigation navItems={navItems} /> {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-3">
-            <LanguageSelector
-              selectedLanguage={selectedLanguage}
-              onLanguageChange={setSelectedLanguage}
-              languages={languages}
-            />
+            <LanguageSelector />
             <ThemeToggle />
             <AuthButton />
           </div>
@@ -79,9 +70,6 @@ export function Header() {
         <MobileMenu
           isOpen={isOpen}
           navItems={navItems}
-          languages={languages}
-          selectedLanguage={selectedLanguage}
-          onLanguageChange={setSelectedLanguage}
           onClose={handleMobileMenuClose}
         />
       </div>

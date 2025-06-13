@@ -20,24 +20,26 @@ import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const signInSchema = z.object({
-  email: z.string().email({
-    message: 'Please enter a valid email address.',
-  }),
-  password: z.string().min(8, {
-    message: 'Password must be at least 8 characters.',
-  }),
-});
-
-type SignInFormValues = z.infer<typeof signInSchema>;
-
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  // Create schema with translated messages
+  const signInSchema = z.object({
+    email: z.string().email({
+      message: t('emailInvalid', { ns: 'validation' }),
+    }),
+    password: z.string().min(8, {
+      message: t('passwordMinLength', { ns: 'validation' }),
+    }),
+  });
+
+  type SignInFormValues = z.infer<typeof signInSchema>;
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
@@ -61,7 +63,7 @@ export function SignInForm() {
             // Loading state is already handled above
           },
           onSuccess: () => {
-            toast.success('Successfully signed in!');
+            toast.success(t('signInSuccess', { ns: 'messages' }));
             navigate('/');
           },
           onError: (ctx) => {
@@ -69,7 +71,7 @@ export function SignInForm() {
             form.setError('root', {
               type: 'manual',
               message:
-                ctx.error.message || 'Failed to sign in. Please try again.',
+                ctx.error.message || t('signInError', { ns: 'messages' }),
             });
           },
         }
@@ -78,7 +80,7 @@ export function SignInForm() {
       console.error('Sign in error:', error);
       form.setError('root', {
         type: 'manual',
-        message: 'An unexpected error occurred. Please try again.',
+        message: t('unexpectedError', { ns: 'messages' }),
       });
     } finally {
       setIsLoading(false);
@@ -87,25 +89,27 @@ export function SignInForm() {
 
   return (
     <Card className="w-full max-w-md mx-auto">
+      {' '}
       <CardHeader>
-        <CardTitle>Sign In</CardTitle>
+        <CardTitle>{t('signInTitle', { ns: 'auth' })}</CardTitle>
         <CardDescription>
-          Enter your email and password to access your account.
+          {t('signInDescription', { ns: 'auth' })}
         </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {' '}
             <FormField
               control={form.control}
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('email', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={t('enterEmail', { ns: 'auth' })}
                       {...field}
                       disabled={isLoading}
                     />
@@ -119,15 +123,15 @@ export function SignInForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('password', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t('enterPassword', { ns: 'auth' })}
                       {...field}
                       disabled={isLoading}
                     />
-                  </FormControl>{' '}
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -136,22 +140,25 @@ export function SignInForm() {
               <div className="text-sm text-destructive">
                 {form.formState.errors.root.message}
               </div>
-            )}
+            )}{' '}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Signing in...' : 'Sign In'}
+              {isLoading
+                ? t('signingIn', { ns: 'auth' })
+                : t('signIn', { ns: 'auth' })}
             </Button>
           </form>
         </Form>
-      </CardContent>
+      </CardContent>{' '}
       <CardFooter className="flex justify-center">
+        {' '}
         <p className="text-sm text-muted-foreground">
-          Don't have an account?{' '}
+          {t('dontHaveAccount', { ns: 'auth' })}{' '}
           <Button
             variant="link"
             className="p-0 h-auto"
             onClick={() => navigate('/signup')}
           >
-            Sign up
+            {t('signUp', { ns: 'auth' })}
           </Button>
         </p>
       </CardFooter>

@@ -1,0 +1,23 @@
+{
+  "overview": "Aperçu",
+  "competitions": "Compétitions",
+  "members": "Membres",
+  "analytics": "Analyses",
+  "settings": "Paramètres",
+  "users": "Utilisateurs",
+  "organizations": "Organisations",
+  "backToSite": "Retour au site",
+  "signOut": "Se déconnecter",
+  "adminPanel": "Panneau d'administration",
+  "organizationPanel": "Panneau d'organisation",
+  "home": "Accueil",
+  "results": "Résultats",
+  "login": "Connexion",
+  "profile": "Profil",
+  "organizationDashboard": "Tableau de bord de l'organisation",
+  "adminDashboard": "Tableau de bord administrateur",
+  "toggleTheme": "Basculer le thème",
+  "light": "Clair",
+  "dark": "Sombre",
+  "system": "Système"
+}

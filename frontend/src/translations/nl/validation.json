@@ -1,0 +1,6 @@
+{
+  "nameMinLength": "Naam moet minstens 2 karakters bevatten.",
+  "emailInvalid": "Voer een geldig emailadres in.",
+  "passwordMinLength": "Wachtwoord moet minstens 8 karakters bevatten.",
+  "passwordsNoMatch": "Wachtwoorden komen niet overeen"
+}

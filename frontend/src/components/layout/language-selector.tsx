@@ -5,6 +5,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { useTranslation } from 'react-i18next';
 
 interface Language {
   label: string;
@@ -12,22 +13,26 @@ interface Language {
 }
 
 interface LanguageSelectorProps {
-  selectedLanguage: string;
-  onLanguageChange: (value: string) => void;
-  languages: Language[];
   isMobile?: boolean;
 }
 
-export function LanguageSelector({
-  selectedLanguage,
-  onLanguageChange,
-  languages,
-  isMobile = false,
-}: LanguageSelectorProps) {
+const languages: Language[] = [
+  { label: 'EN', code: 'en' },
+  { label: 'FR', code: 'fr' },
+  { label: 'NL', code: 'nl' },
+];
+
+export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
+  const { i18n } = useTranslation();
+
+  const handleLanguageChange = (value: string) => {
+    i18n.changeLanguage(value);
+  };
+
   if (isMobile) {
     return (
       <div className="px-3 py-2">
-        <Select value={selectedLanguage} onValueChange={onLanguageChange}>
+        <Select value={i18n.language} onValueChange={handleLanguageChange}>
           <SelectTrigger className="w-full">
             <div className="flex items-center gap-1">
               <SelectValue />
@@ -46,7 +51,7 @@ export function LanguageSelector({
   }
 
   return (
-    <Select value={selectedLanguage} onValueChange={onLanguageChange}>
+    <Select value={i18n.language} onValueChange={handleLanguageChange}>
       <SelectTrigger className="w-fit">
         <div className="flex items-center gap-1">
           <SelectValue />

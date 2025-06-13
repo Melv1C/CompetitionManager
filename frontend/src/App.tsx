@@ -1,18 +1,29 @@
-import { AdminLayout, MainLayout } from '@/components/layout';
+import {
+  AdminLayout,
+  MainLayout,
+  OrganizationLayout,
+} from '@/components/layout';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/features/theme';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import {
   AdminAnalytics,
-  AdminCompetitions,
   AdminDashboard,
-  AdminParticipants,
   AdminSettings,
   Home,
   NotFound,
   SignInPage,
   SignUpPage,
 } from './pages';
+import { AdminOrganizations } from './pages/admin/admin-organizations';
+import { AdminUsers } from './pages/admin/admin-users';
+import {
+  OrganizationAnalytics,
+  OrganizationCompetitions,
+  OrganizationDashboard,
+  OrganizationMembers,
+  OrganizationSettings,
+} from './pages/organization';
 
 // Main App Layout Component
 function MainApp() {
@@ -29,6 +40,15 @@ function AdminApp() {
     <AdminLayout>
       <Outlet />
     </AdminLayout>
+  );
+}
+
+// Organization App Layout Component
+function OrganizationApp() {
+  return (
+    <OrganizationLayout>
+      <Outlet />
+    </OrganizationLayout>
   );
 }
 
@@ -65,6 +85,33 @@ const router = createBrowserRouter([
     ],
   },
   {
+    path: '/organization',
+    element: <OrganizationApp />,
+    errorElement: <NotFound />,
+    children: [
+      {
+        index: true,
+        element: <OrganizationDashboard />,
+      },
+      {
+        path: 'competitions',
+        element: <OrganizationCompetitions />,
+      },
+      {
+        path: 'members',
+        element: <OrganizationMembers />,
+      },
+      {
+        path: 'analytics',
+        element: <OrganizationAnalytics />,
+      },
+      {
+        path: 'settings',
+        element: <OrganizationSettings />,
+      },
+    ],
+  },
+  {
     path: '/admin',
     element: <AdminApp />,
     errorElement: <NotFound />,
@@ -74,12 +121,12 @@ const router = createBrowserRouter([
         element: <AdminDashboard />,
       },
       {
-        path: 'competitions',
-        element: <AdminCompetitions />,
+        path: 'users',
+        element: <AdminUsers />,
       },
       {
-        path: 'participants',
-        element: <AdminParticipants />,
+        path: 'organizations',
+        element: <AdminOrganizations />,
       },
       {
         path: 'analytics',

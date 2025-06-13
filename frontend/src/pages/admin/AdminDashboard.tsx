@@ -11,32 +11,32 @@ import { BarChart3, TrendingUp, Trophy, Users } from 'lucide-react';
 export function AdminDashboard() {
   const stats = [
     {
-      title: 'Total Competitions',
-      value: '12',
-      description: '2 ongoing',
-      icon: Trophy,
-      trend: '+2 from last month',
-    },
-    {
-      title: 'Active Participants',
-      value: '1,247',
-      description: 'Across all competitions',
+      title: 'Total Users',
+      value: '1,234',
+      description: 'System users',
       icon: Users,
-      trend: '+15% from last month',
+      trend: '+89 this month',
     },
     {
-      title: 'Total Results',
-      value: '3,456',
-      description: 'Recorded this season',
+      title: 'Organizations',
+      value: '67',
+      description: 'Active organizations',
+      icon: Trophy,
+      trend: '+5 this month',
+    },
+    {
+      title: 'Pending Requests',
+      value: '3',
+      description: 'Organization approvals',
       icon: BarChart3,
-      trend: '+12% from last month',
+      trend: 'Requires attention',
     },
     {
-      title: 'Growth Rate',
-      value: '23%',
-      description: 'Year over year',
+      title: 'System Health',
+      value: 'Good',
+      description: 'All services running',
       icon: TrendingUp,
-      trend: '+5% from last month',
+      trend: 'Operational',
     },
   ];
 
@@ -45,7 +45,7 @@ export function AdminDashboard() {
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
         <p className="text-muted-foreground">
-          Overview of your competition management system
+          System administration and platform management
         </p>
       </div>
 

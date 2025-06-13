@@ -41,11 +41,11 @@ import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-interface AdminLayoutProps {
+interface OrganizationLayoutProps {
   children: ReactNode;
 }
 
-export function AdminLayout({ children }: AdminLayoutProps) {
+export function OrganizationLayout({ children }: OrganizationLayoutProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
@@ -54,27 +54,27 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const navItems = [
     {
       title: t('overview'),
-      url: '/admin',
+      url: '/organization',
       icon: Home,
     },
     {
-      title: t('users'),
-      url: '/admin/users',
-      icon: Users,
-    },
-    {
-      title: t('organizations'),
-      url: '/admin/organizations',
+      title: t('competitions'),
+      url: '/organization/competitions',
       icon: Trophy,
     },
     {
+      title: t('members'),
+      url: '/organization/members',
+      icon: Users,
+    },
+    {
       title: t('analytics'),
-      url: '/admin/analytics',
+      url: '/organization/analytics',
       icon: BarChart3,
     },
     {
       title: t('settings'),
-      url: '/admin/settings',
+      url: '/organization/settings',
       icon: Settings,
     },
   ];
@@ -93,10 +93,10 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       toast.error('Sign out failed');
     }
   };
+
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
-        {' '}
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -106,7 +106,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
         </SidebarHeader>{' '}
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>{t('adminPanel')}</SidebarGroupLabel>
+            <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {navItems.map((item) => (
@@ -212,10 +212,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
-          <div className="flex flex-1 items-center gap-2">
-            {/* Button removed and placed in sidebar */}
-          </div>
-        </header>{' '}
+        </header>
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>

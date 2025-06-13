@@ -1,0 +1,23 @@
+{
+  "overview": "Overzicht",
+  "competitions": "Competities",
+  "members": "Leden",
+  "analytics": "Analytics",
+  "settings": "Instellingen",
+  "users": "Gebruikers",
+  "organizations": "Organisaties",
+  "backToSite": "Terug naar site",
+  "signOut": "Uitloggen",
+  "adminPanel": "Beheerderspaneel",
+  "organizationPanel": "Organisatiepaneel",
+  "home": "Thuis",
+  "results": "Resultaten",
+  "login": "Inloggen",
+  "profile": "Profiel",
+  "organizationDashboard": "Organisatiedashboard",
+  "adminDashboard": "Beheerdersdasboard",
+  "toggleTheme": "Thema wisselen",
+  "light": "Licht",
+  "dark": "Donker",
+  "system": "Systeem"
+}

@@ -20,33 +20,34 @@ import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { z } from 'zod';
 
-const signUpSchema = z
-  .object({
-    name: z.string().min(2, {
-      message: 'Name must be at least 2 characters.',
-    }),
-    email: z.string().email({
-      message: 'Please enter a valid email address.',
-    }),
-    password: z.string().min(8, {
-      message: 'Password must be at least 8 characters.',
-    }),
-    confirmPassword: z.string(),
-  })
-  .refine((data) => data.password === data.confirmPassword, {
-    message: "Passwords don't match",
-    path: ['confirmPassword'],
-  });
-
-type SignUpFormValues = z.infer<typeof signUpSchema>;
-
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
+  const { t } = useTranslation();
+  const signUpSchema = z
+    .object({
+      name: z.string().min(2, {
+        message: t('nameMinLength', { ns: 'validation' }),
+      }),
+      email: z.string().email({
+        message: t('emailInvalid', { ns: 'validation' }),
+      }),
+      password: z.string().min(8, {
+        message: t('passwordMinLength', { ns: 'validation' }),
+      }),
+      confirmPassword: z.string(),
+    })
+    .refine((data) => data.password === data.confirmPassword, {
+      message: t('passwordsNoMatch', { ns: 'validation' }),
+      path: ['confirmPassword'],
+    });
+
+  type SignUpFormValues = z.infer<typeof signUpSchema>;
 
   const form = useForm<SignUpFormValues>({
     resolver: zodResolver(signUpSchema),
@@ -73,7 +74,7 @@ export function SignUpForm() {
             // Loading state is already handled above
           },
           onSuccess: () => {
-            toast.success('Account created successfully! Welcome!');
+            toast.success(t('accountCreatedSuccess', { ns: 'messages' }));
             navigate('/');
           },
           onError: (ctx) => {
@@ -81,8 +82,7 @@ export function SignUpForm() {
             form.setError('root', {
               type: 'manual',
               message:
-                ctx.error.message ||
-                'Failed to create account. Please try again.',
+                ctx.error.message || t('signUpError', { ns: 'messages' }),
             });
           },
         }
@@ -91,7 +91,7 @@ export function SignUpForm() {
       console.error('Sign up error:', error);
       form.setError('root', {
         type: 'manual',
-        message: 'An unexpected error occurred. Please try again.',
+        message: t('unexpectedError', { ns: 'messages' }),
       });
     } finally {
       setIsLoading(false);
@@ -100,23 +100,27 @@ export function SignUpForm() {
 
   return (
     <Card className="w-full max-w-md mx-auto">
+      {' '}
       <CardHeader>
-        <CardTitle>Sign Up</CardTitle>
-        <CardDescription>Create your account to get started.</CardDescription>
+        <CardTitle>{t('signUpTitle', { ns: 'auth' })}</CardTitle>
+        <CardDescription>
+          {t('signUpDescription', { ns: 'auth' })}
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            {' '}
             <FormField
               control={form.control}
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Name</FormLabel>
+                  <FormLabel>{t('name', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder="Enter your full name"
+                      placeholder={t('enterFullName', { ns: 'auth' })}
                       {...field}
                       disabled={isLoading}
                     />
@@ -130,11 +134,11 @@ export function SignUpForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Email</FormLabel>
+                  <FormLabel>{t('email', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder="Enter your email"
+                      placeholder={t('enterEmail', { ns: 'auth' })}
                       {...field}
                       disabled={isLoading}
                     />
@@ -148,11 +152,11 @@ export function SignUpForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Password</FormLabel>
+                  <FormLabel>{t('password', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Enter your password"
+                      placeholder={t('enterPassword', { ns: 'auth' })}
                       {...field}
                       disabled={isLoading}
                     />
@@ -166,15 +170,15 @@ export function SignUpForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Confirm Password</FormLabel>
+                  <FormLabel>{t('confirmPassword', { ns: 'auth' })}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder="Confirm your password"
+                      placeholder={t('confirmYourPassword', { ns: 'auth' })}
                       {...field}
                       disabled={isLoading}
                     />
-                  </FormControl>{' '}
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
@@ -183,22 +187,25 @@ export function SignUpForm() {
               <div className="text-sm text-destructive">
                 {form.formState.errors.root.message}
               </div>
-            )}
+            )}{' '}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? 'Creating account...' : 'Sign Up'}
+              {isLoading
+                ? t('creatingAccount', { ns: 'auth' })
+                : t('signUp', { ns: 'auth' })}
             </Button>
           </form>
         </Form>
-      </CardContent>
+      </CardContent>{' '}
       <CardFooter className="flex justify-center">
+        {' '}
         <p className="text-sm text-muted-foreground">
-          Already have an account?{' '}
+          {t('alreadyHaveAccount', { ns: 'auth' })}{' '}
           <Button
             variant="link"
             className="p-0 h-auto"
             onClick={() => navigate('/login')}
           >
-            Sign in
+            {t('signIn', { ns: 'auth' })}
           </Button>
         </p>
       </CardFooter>

@@ -10,8 +10,10 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useOrganizations } from '@/features/organization/hooks/use-organizations';
 import { authClient } from '@/lib/auth-client';
-import { LogOut, Settings, Shield, User } from 'lucide-react';
+import { Building2, LogOut, Settings, Shield, User } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -25,7 +27,9 @@ export function AuthButton({
   onMobileMenuClose,
 }: AuthButtonProps) {
   const { user, isLoading } = useAuth();
+  const { organizations } = useOrganizations();
   const navigate = useNavigate();
+  const { t } = useTranslation('common');
   const handleSignOut = async () => {
     try {
       await authClient.signOut({
@@ -58,7 +62,7 @@ export function AuthButton({
         <div className="px-3 py-2">
           <Button className="w-full" asChild>
             <Link to="/login" onClick={onMobileMenuClose}>
-              Login
+              {t('login')}
             </Link>
           </Button>
         </div>
@@ -66,7 +70,7 @@ export function AuthButton({
     }
     return (
       <Button asChild>
-        <Link to="/login">Login</Link>
+        <Link to="/login">{t('login')}</Link>
       </Button>
     );
   }
@@ -94,27 +98,35 @@ export function AuthButton({
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator />{' '}
         <DropdownMenuItem>
           <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+          <span>{t('profile')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
-          <span>Settings</span>
-        </DropdownMenuItem>
+          <span>{t('settings')}</span>
+        </DropdownMenuItem>{' '}
+        {organizations.length > 0 && (
+          <DropdownMenuItem asChild>
+            <Link to="/organization" onClick={onMobileMenuClose}>
+              <Building2 className="mr-2 h-4 w-4" />
+              <span>{t('organizationDashboard')}</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
         {user.role === 'admin' && (
           <DropdownMenuItem asChild>
             <Link to="/admin" onClick={onMobileMenuClose}>
               <Shield className="mr-2 h-4 w-4" />
-              <span>Admin Dashboard</span>
+              <span>{t('adminDashboard')}</span>
             </Link>
           </DropdownMenuItem>
         )}
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator />{' '}
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Sign Out</span>
+          <span>{t('signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
