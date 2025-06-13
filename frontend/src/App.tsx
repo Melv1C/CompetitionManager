@@ -1,9 +1,11 @@
+import { Button } from "@/components/ui/button"
 
-export default function App() {
+function App() {
   return (
-    <div className="App">
-      <h1>Welcome to the Frontend!</h1>
-      <p>This is a simple React application.</p>
+    <div className="flex min-h-svh flex-col items-center justify-center">
+      <Button>Click me</Button>
     </div>
-  );
+  )
 }
+
+export default App
