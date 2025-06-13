@@ -89,7 +89,6 @@ export function SignInForm() {
 
   return (
     <Card className="w-full max-w-md mx-auto">
-      {' '}
       <CardHeader>
         <CardTitle>{t('signInTitle', { ns: 'auth' })}</CardTitle>
         <CardDescription>
@@ -99,7 +98,6 @@ export function SignInForm() {
       <CardContent>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            {' '}
             <FormField
               control={form.control}
               name="email"
@@ -140,7 +138,7 @@ export function SignInForm() {
               <div className="text-sm text-destructive">
                 {form.formState.errors.root.message}
               </div>
-            )}{' '}
+            )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading
                 ? t('signingIn', { ns: 'auth' })
@@ -148,11 +146,10 @@ export function SignInForm() {
             </Button>
           </form>
         </Form>
-      </CardContent>{' '}
+      </CardContent>
       <CardFooter className="flex justify-center">
-        {' '}
         <p className="text-sm text-muted-foreground">
-          {t('dontHaveAccount', { ns: 'auth' })}{' '}
+          {t('dontHaveAccount', { ns: 'auth' })}
           <Button
             variant="link"
             className="p-0 h-auto"

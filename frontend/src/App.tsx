@@ -5,6 +5,7 @@ import {
 } from '@/components/layout';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/features/theme';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import {
   AdminAnalytics,
@@ -24,6 +25,16 @@ import {
   OrganizationMembers,
   OrganizationSettings,
 } from './pages/organization';
+
+// Create a QueryClient instance
+const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      retry: 1,
+      staleTime: 5 * 60 * 1000, // 5 minutes
+    },
+  },
+});
 
 // Main App Layout Component
 function MainApp() {
@@ -142,10 +153,12 @@ const router = createBrowserRouter([
 
 function App() {
   return (
-    <ThemeProvider>
-      <RouterProvider router={router} />
-      <Toaster />
-    </ThemeProvider>
+    <QueryClientProvider client={queryClient}>
+      <ThemeProvider>
+        <RouterProvider router={router} />
+        <Toaster />
+      </ThemeProvider>
+    </QueryClientProvider>
   );
 }
 

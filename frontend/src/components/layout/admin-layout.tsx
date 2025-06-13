@@ -14,7 +14,6 @@ import {
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
-  SidebarHeader,
   SidebarInset,
   SidebarMenu,
   SidebarMenuButton,
@@ -24,7 +23,6 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/features/auth/hooks/use-auth';
-import { OrganizationSelector } from '@/features/organization';
 import { authClient } from '@/lib/auth-client';
 import {
   ArrowLeft,
@@ -96,14 +94,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
-        {' '}
-        <SidebarHeader>
-          <SidebarMenu>
-            <SidebarMenuItem>
-              <OrganizationSelector />
-            </SidebarMenuItem>
-          </SidebarMenu>
-        </SidebarHeader>{' '}
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>{t('adminPanel')}</SidebarGroupLabel>
@@ -129,7 +119,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <SidebarGroup className="mt-4">
             <SidebarGroupContent>
               <SidebarMenu>
-                {' '}
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <Link to="/" className="flex items-center gap-2">
@@ -196,7 +185,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
                       </div>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />{' '}
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut />
                     {t('signOut')}
@@ -215,7 +204,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex flex-1 items-center gap-2">
             {/* Button removed and placed in sidebar */}
           </div>
-        </header>{' '}
+        </header>
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>
     </SidebarProvider>

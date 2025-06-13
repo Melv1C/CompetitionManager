@@ -15,6 +15,15 @@ async function getActiveOrganization(userId: string) {
   });
 }
 
+async function isAdmin(userId: string) {
+  // Adjust the query as needed for your schema
+  const user = await prisma.user.findUnique({
+    where: { id: userId },
+    select: { role: true },
+  });
+  return user?.role === 'admin';
+}
+
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
@@ -24,7 +33,14 @@ export const auth = betterAuth({
     enabled: true,
   },
 
-  plugins: [admin(), organization()],
+  plugins: [
+    admin(),
+    organization({
+      allowUserToCreateOrganization: async (user) => {
+        return isAdmin(user.id);
+      },
+    }),
+  ],
 
   databaseHooks: {
     session: {

@@ -65,7 +65,7 @@ export function Header() {
               )}
             </Button>
           </div>
-        </div>{' '}
+        </div>
         {/* Mobile Navigation */}
         <MobileMenu
           isOpen={isOpen}

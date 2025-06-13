@@ -103,7 +103,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
               <OrganizationSelector />
             </SidebarMenuItem>
           </SidebarMenu>
-        </SidebarHeader>{' '}
+        </SidebarHeader>
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
@@ -129,7 +129,6 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
           <SidebarGroup className="mt-4">
             <SidebarGroupContent>
               <SidebarMenu>
-                {' '}
                 <SidebarMenuItem>
                   <SidebarMenuButton asChild>
                     <Link to="/" className="flex items-center gap-2">
@@ -196,7 +195,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
                       </div>
                     </div>
                   </DropdownMenuLabel>
-                  <DropdownMenuSeparator />{' '}
+                  <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut />
                     {t('signOut')}

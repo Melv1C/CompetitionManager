@@ -8,6 +8,7 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
 import { Building2, ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 import { useOrganizations } from '../hooks/use-organizations';
 
 interface OrganizationSelectorProps {
@@ -15,6 +16,7 @@ interface OrganizationSelectorProps {
 }
 
 export function OrganizationSelector({ className }: OrganizationSelectorProps) {
+  const { t } = useTranslation('organization');
   const { organizations, activeOrganization, setActiveOrganization } =
     useOrganizations();
 
@@ -34,9 +36,9 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
           </div>
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">
-              {activeOrganization?.name || 'No Organization'}
+              {activeOrganization?.name || t('noOrganization')}
             </span>
-            <span className="truncate text-xs">Current Organization</span>
+            <span className="truncate text-xs">{t('currentOrganization')}</span>
           </div>
           <ChevronDown className="ml-auto" />
         </SidebarMenuButton>
@@ -48,7 +50,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
         sideOffset={4}
       >
         <DropdownMenuLabel className="text-xs text-muted-foreground">
-          Organizations
+          {t('organizations')}
         </DropdownMenuLabel>
         {organizations.map((org) => (
           <DropdownMenuItem
@@ -68,7 +70,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
             <Building2 className="size-4" />
           </div>
           <div className="font-medium text-muted-foreground">
-            Add organization
+            {t('addOrganization')}
           </div>
         </DropdownMenuItem>
       </DropdownMenuContent>

@@ -98,7 +98,7 @@ export function AuthButton({
             </p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />{' '}
+        <DropdownMenuSeparator />
         <DropdownMenuItem>
           <User className="mr-2 h-4 w-4" />
           <span>{t('profile')}</span>
@@ -106,7 +106,7 @@ export function AuthButton({
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
           <span>{t('settings')}</span>
-        </DropdownMenuItem>{' '}
+        </DropdownMenuItem>
         {organizations.length > 0 && (
           <DropdownMenuItem asChild>
             <Link to="/organization" onClick={onMobileMenuClose}>
@@ -123,7 +123,7 @@ export function AuthButton({
             </Link>
           </DropdownMenuItem>
         )}
-        <DropdownMenuSeparator />{' '}
+        <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
           <span>{t('signOut')}</span>
