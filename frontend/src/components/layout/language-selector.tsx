@@ -5,7 +5,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { Globe } from 'lucide-react';
 
 interface Language {
   label: string;
@@ -31,7 +30,6 @@ export function LanguageSelector({
         <Select value={selectedLanguage} onValueChange={onLanguageChange}>
           <SelectTrigger className="w-full">
             <div className="flex items-center gap-1">
-              <Globe className="h-4 w-4" />
               <SelectValue />
             </div>
           </SelectTrigger>
@@ -51,7 +49,6 @@ export function LanguageSelector({
     <Select value={selectedLanguage} onValueChange={onLanguageChange}>
       <SelectTrigger className="w-fit">
         <div className="flex items-center gap-1">
-          <Globe className="h-4 w-4" />
           <SelectValue />
         </div>
       </SelectTrigger>

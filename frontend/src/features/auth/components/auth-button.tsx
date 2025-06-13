@@ -8,9 +8,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { authClient, useSession } from '@/lib/auth-client';
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/features/auth/hooks/use-auth';
+import { signOut } from '@/lib/auth-client';
 import { LogOut, Settings, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 
 interface AuthButtonProps {
   isMobile?: boolean;
@@ -21,32 +24,35 @@ export function AuthButton({
   isMobile = false,
   onMobileMenuClose,
 }: AuthButtonProps) {
-  const { data: session, isPending } = useSession();
+  const { user, isLoading } = useAuth();
   const navigate = useNavigate();
-
   const handleSignOut = async () => {
     try {
-      await authClient.signOut({
+      await signOut({
         fetchOptions: {
           onSuccess: () => {
+            toast.success('Successfully signed out!');
             navigate('/');
           },
         },
       });
     } catch (error) {
       console.error('Sign out error:', error);
+      toast.error('Failed to sign out. Please try again.');
     }
   };
-
-  if (isPending) {
-    return (
-      <Button variant="ghost" disabled>
-        Loading...
-      </Button>
-    );
+  if (isLoading) {
+    if (isMobile) {
+      return (
+        <div className="px-3 py-2">
+          <Skeleton className="h-10 w-full" />
+        </div>
+      );
+    }
+    return <Skeleton className="h-10 w-20" />;
   }
 
-  if (!session?.user) {
+  if (!user) {
     if (isMobile) {
       return (
         <div className="px-3 py-2">
@@ -64,8 +70,6 @@ export function AuthButton({
       </Button>
     );
   }
-
-  const user = session.user;
 
   return (
     <DropdownMenu>

@@ -1,9 +1,9 @@
-import { ThemeToggle } from '@/components/theme/theme-toggle';
 import { Button } from '@/components/ui/button';
+import { AuthButton } from '@/features/auth';
+import { getThemeValue, ThemeToggle, useTheme } from '@/features/theme';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { AuthButton } from './auth-button';
 import { LanguageSelector } from './language-selector';
 import { MobileMenu } from './mobile-menu';
 import { Navigation } from './navigation';
@@ -21,6 +21,7 @@ const languages = [
 ];
 
 export function Header() {
+  const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
 
@@ -33,7 +34,11 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src="/LogoWhite.png"
+              src={
+                getThemeValue(theme) === 'dark'
+                  ? '/logo-white.png'
+                  : '/logo-black.png'
+              }
               alt="Competition Manager Logo"
               className="h-8 w-10"
             />

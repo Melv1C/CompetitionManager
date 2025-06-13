@@ -1,4 +1,4 @@
-import { AuthButton } from './auth-button';
+import { AuthButton } from '../../features/auth/components/auth-button';
 import { LanguageSelector } from './language-selector';
 import { Navigation } from './navigation';
 

@@ -1,6 +1,7 @@
+import { MainLayout } from '@/components/layout';
+import { Toaster } from '@/components/ui/sonner';
+import { ThemeProvider } from '@/features/theme';
 import { Outlet } from 'react-router-dom';
-import { MainLayout } from './components/layout';
-import { ThemeProvider } from './components/theme/theme-provider';
 
 function App() {
   return (
@@ -8,6 +9,7 @@ function App() {
       <MainLayout>
         <Outlet />
       </MainLayout>
+      <Toaster />
     </ThemeProvider>
   );
 }

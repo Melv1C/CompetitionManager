@@ -21,6 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const signUpSchema = z
@@ -61,18 +62,18 @@ export function SignUpForm() {
     setIsLoading(true);
 
     try {
-      const { error } = await authClient.signUp.email(
+      await authClient.signUp.email(
         {
           name: values.name,
           email: values.email,
           password: values.password,
-          callbackURL: '/',
         },
         {
           onRequest: () => {
             // Loading state is already handled above
           },
           onSuccess: () => {
+            toast.success('Account created successfully! Welcome!');
             navigate('/');
           },
           onError: (ctx) => {
@@ -86,14 +87,6 @@ export function SignUpForm() {
           },
         }
       );
-
-      if (error) {
-        form.setError('root', {
-          type: 'manual',
-          message:
-            error.message || 'Failed to create account. Please try again.',
-        });
-      }
     } catch (error) {
       console.error('Sign up error:', error);
       form.setError('root', {
@@ -181,7 +174,7 @@ export function SignUpForm() {
                       {...field}
                       disabled={isLoading}
                     />
-                  </FormControl>
+                  </FormControl>{' '}
                   <FormMessage />
                 </FormItem>
               )}

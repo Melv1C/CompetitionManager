@@ -21,6 +21,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'sonner';
 import { z } from 'zod';
 
 const signInSchema = z.object({
@@ -50,17 +51,17 @@ export function SignInForm() {
     setIsLoading(true);
 
     try {
-      const { error } = await authClient.signIn.email(
+      await authClient.signIn.email(
         {
           email: values.email,
           password: values.password,
-          callbackURL: '/',
         },
         {
           onRequest: () => {
             // Loading state is already handled above
           },
           onSuccess: () => {
+            toast.success('Successfully signed in!');
             navigate('/');
           },
           onError: (ctx) => {
@@ -73,13 +74,6 @@ export function SignInForm() {
           },
         }
       );
-
-      if (error) {
-        form.setError('root', {
-          type: 'manual',
-          message: error.message || 'Failed to sign in. Please try again.',
-        });
-      }
     } catch (error) {
       console.error('Sign in error:', error);
       form.setError('root', {
@@ -133,7 +127,7 @@ export function SignInForm() {
                       {...field}
                       disabled={isLoading}
                     />
-                  </FormControl>
+                  </FormControl>{' '}
                   <FormMessage />
                 </FormItem>
               )}
