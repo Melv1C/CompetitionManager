@@ -24,15 +24,6 @@ export function Header() {
   const [isOpen, setIsOpen] = useState(false);
   const [selectedLanguage, setSelectedLanguage] = useState('en');
 
-  // Mock user data - replace with actual user context/auth
-  const user = {
-    name: 'John Doe',
-    email: 'john@example.com',
-    avatar: '/placeholder-avatar.jpg',
-    isAdmin: true,
-    isLoggedIn: true,
-  };
-
   const handleMobileMenuClose = () => setIsOpen(false);
 
   return (
@@ -50,11 +41,8 @@ export function Header() {
               Competition Manager
             </span>
           </Link>
-
           {/* Desktop Navigation */}
-          <Navigation navItems={navItems} />
-
-          {/* Desktop Actions */}
+          <Navigation navItems={navItems} /> {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-3">
             <LanguageSelector
               selectedLanguage={selectedLanguage}
@@ -62,13 +50,12 @@ export function Header() {
               languages={languages}
             />
             <ThemeToggle />
-            <AuthButton user={user} />
+            <AuthButton />
           </div>
-
           {/* Mobile Menu Button */}
           <div className="md:hidden flex items-center space-x-2">
             <ThemeToggle />
-            {user.isLoggedIn && <AuthButton user={user} />}
+            <AuthButton />
             <Button
               variant="ghost"
               size="icon"
@@ -82,8 +69,7 @@ export function Header() {
               )}
             </Button>
           </div>
-        </div>
-
+        </div>{' '}
         {/* Mobile Navigation */}
         <MobileMenu
           isOpen={isOpen}
@@ -91,7 +77,6 @@ export function Header() {
           languages={languages}
           selectedLanguage={selectedLanguage}
           onLanguageChange={setSelectedLanguage}
-          user={user}
           onClose={handleMobileMenuClose}
         />
       </div>
