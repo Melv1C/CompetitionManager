@@ -24,11 +24,11 @@ import {
   SidebarTrigger,
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/features/auth/hooks/use-auth';
+import { OrganizationSelector } from '@/features/organization';
 import { authClient } from '@/lib/auth-client';
 import {
   ArrowLeft,
   BarChart3,
-  Building2,
   ChevronDown,
   Home,
   LogOut,
@@ -43,13 +43,6 @@ import { toast } from 'sonner';
 interface AdminLayoutProps {
   children: ReactNode;
 }
-
-// Mock organizations data - replace with real data when implementing organization switching
-const organizations = [
-  { id: '1', name: 'Competition Org 1', logo: null },
-  { id: '2', name: 'Competition Org 2', logo: null },
-  { id: '3', name: 'Sports Association', logo: null },
-];
 
 const navItems = [
   {
@@ -102,61 +95,14 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
+        {' '}
         <SidebarHeader>
           <SidebarMenu>
             <SidebarMenuItem>
-              <DropdownMenu>
-                <DropdownMenuTrigger asChild>
-                  <SidebarMenuButton
-                    size="lg"
-                    className="data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground"
-                  >
-                    <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-                      <Building2 className="size-4" />
-                    </div>
-                    <div className="grid flex-1 text-left text-sm leading-tight">
-                      <span className="truncate font-semibold">
-                        Competition Org 1
-                      </span>
-                      <span className="truncate text-xs">
-                        Current Organization
-                      </span>
-                    </div>
-                    <ChevronDown className="ml-auto" />
-                  </SidebarMenuButton>
-                </DropdownMenuTrigger>
-                <DropdownMenuContent
-                  className="w-[--radix-dropdown-menu-trigger-width] min-w-56 rounded-lg"
-                  align="start"
-                  side="bottom"
-                  sideOffset={4}
-                >
-                  <DropdownMenuLabel className="text-xs text-muted-foreground">
-                    Organizations
-                  </DropdownMenuLabel>
-                  {organizations.map((org) => (
-                    <DropdownMenuItem key={org.id} className="gap-2 p-2">
-                      <div className="flex size-6 items-center justify-center rounded-sm border">
-                        <Building2 className="size-4 shrink-0" />
-                      </div>
-                      {org.name}
-                    </DropdownMenuItem>
-                  ))}
-                  <DropdownMenuSeparator />
-                  <DropdownMenuItem className="gap-2 p-2">
-                    <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-                      <Building2 className="size-4" />
-                    </div>
-                    <div className="font-medium text-muted-foreground">
-                      Add organization
-                    </div>
-                  </DropdownMenuItem>
-                </DropdownMenuContent>
-              </DropdownMenu>
+              <OrganizationSelector />
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-
         <SidebarContent>
           <SidebarGroup>
             <SidebarGroupLabel>Admin Panel</SidebarGroupLabel>
@@ -194,7 +140,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             </SidebarGroupContent>
           </SidebarGroup>
         </SidebarContent>
-
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>

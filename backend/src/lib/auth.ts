@@ -1,7 +1,19 @@
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin } from 'better-auth/plugins';
+import { admin, organization } from 'better-auth/plugins';
 import { prisma } from './prisma';
+
+// Add this helper function to fetch the active organization for a user
+async function getActiveOrganization(userId: string) {
+  // Adjust the query as needed for your schema
+  return await prisma.organization.findFirst({
+    where: {
+      members: {
+        some: { id: userId },
+      },
+    },
+  });
+}
 
 export const auth = betterAuth({
   database: prismaAdapter(prisma, {
@@ -12,5 +24,21 @@ export const auth = betterAuth({
     enabled: true,
   },
 
-  plugins: [admin()],
+  plugins: [admin(), organization()],
+
+  databaseHooks: {
+    session: {
+      create: {
+        before: async (session) => {
+          const organization = await getActiveOrganization(session.userId);
+          return {
+            data: {
+              ...session,
+              activeOrganizationId: organization?.id || null,
+            },
+          };
+        },
+      },
+    },
+  },
 });
