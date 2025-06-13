@@ -10,8 +10,8 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useAuth } from '@/features/auth/hooks/use-auth';
-import { signOut } from '@/lib/auth-client';
-import { LogOut, Settings, User } from 'lucide-react';
+import { authClient } from '@/lib/auth-client';
+import { LogOut, Settings, Shield, User } from 'lucide-react';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
@@ -28,7 +28,7 @@ export function AuthButton({
   const navigate = useNavigate();
   const handleSignOut = async () => {
     try {
-      await signOut({
+      await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
             toast.success('Successfully signed out!');
@@ -103,6 +103,14 @@ export function AuthButton({
           <Settings className="mr-2 h-4 w-4" />
           <span>Settings</span>
         </DropdownMenuItem>
+        {user.role === 'admin' && (
+          <DropdownMenuItem asChild>
+            <Link to="/admin" onClick={onMobileMenuClose}>
+              <Shield className="mr-2 h-4 w-4" />
+              <span>Admin Dashboard</span>
+            </Link>
+          </DropdownMenuItem>
+        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
