@@ -63,7 +63,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
       >
         <DropdownMenuLabel className="text-xs text-muted-foreground">
           {t('organizations')}
-        </DropdownMenuLabel>{' '}
+        </DropdownMenuLabel>
         {organizations.map((org) => (
           <DropdownMenuItem
             key={org.id}

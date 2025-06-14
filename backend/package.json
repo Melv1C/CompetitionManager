@@ -9,10 +9,12 @@
   "dependencies": {
     "@competition-manager/core": "file:../core",
     "@hono/node-server": "^1.14.4",
+    "@hono/zod-validator": "^0.7.0",
     "@prisma/client": "6.9.0",
     "better-auth": "^1.2.9",
     "hono": "^4.7.11",
     "socket.io": "^4.8.1",
+    "winston": "^3.17.0",
     "zod": "^3.25.64"
   },
   "devDependencies": {

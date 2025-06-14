@@ -125,3 +125,14 @@ model Invitation {
 
   @@map("invitation")
 }
+
+model Log {
+  id        String   @id @default(uuid())
+  level     String
+  message   String
+  meta      String?
+  timestamp DateTime
+
+  @@index([level, timestamp])
+  @@map("log")
+}

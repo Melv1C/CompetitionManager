@@ -92,7 +92,6 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
   return (
     <div className="rounded-md border">
       <Table>
-        {' '}
         <TableHeader>
           <TableRow>
             <TableHead className="w-12"></TableHead>
@@ -116,7 +115,7 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
               <TableCell className="font-medium">{org.name}</TableCell>
               <TableCell className="text-muted-foreground font-mono text-sm">
                 {org.slug}
-              </TableCell>{' '}
+              </TableCell>
               <TableCell className="text-muted-foreground">
                 {formatDate(org.createdAt)}
               </TableCell>

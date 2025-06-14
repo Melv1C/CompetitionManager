@@ -28,6 +28,7 @@ import {
   ArrowLeft,
   BarChart3,
   ChevronDown,
+  FileText,
   Home,
   LogOut,
   Settings,
@@ -48,7 +49,6 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('common');
-
   const navItems = [
     {
       title: t('overview'),
@@ -64,6 +64,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       title: t('organizations'),
       url: '/admin/organizations',
       icon: Trophy,
+    },
+    {
+      title: 'Logs',
+      url: '/admin/logs',
+      icon: FileText,
     },
     {
       title: t('analytics'),

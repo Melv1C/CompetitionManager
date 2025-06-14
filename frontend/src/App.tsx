@@ -1,4 +1,3 @@
-import { SocketStatusViewer } from '@/components/dev/socket-status-viewer';
 import {
   AdminLayout,
   MainLayout,
@@ -11,6 +10,7 @@ import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
 import {
   AdminAnalytics,
   AdminDashboard,
+  AdminLogs,
   AdminSettings,
   Home,
   NotFound,
@@ -141,6 +141,10 @@ const router = createBrowserRouter([
         element: <AdminOrganizations />,
       },
       {
+        path: 'logs',
+        element: <AdminLogs />,
+      },
+      {
         path: 'analytics',
         element: <AdminAnalytics />,
       },
@@ -158,7 +162,7 @@ function App() {
       <ThemeProvider>
         <RouterProvider router={router} />
         <Toaster />
-        <SocketStatusViewer />
+        {/* <SocketStatusViewer /> */}
       </ThemeProvider>
     </QueryClientProvider>
   );

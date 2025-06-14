@@ -1,3 +1,4 @@
+export { AdminLogs } from './admin-logs';
 export { AdminOrganizations } from './admin-organizations';
 export { AdminUsers } from './admin-users';
 export { AdminAnalytics } from './AdminAnalytics';
