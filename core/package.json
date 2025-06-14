@@ -1,6 +1,8 @@
 {
   "name": "@competition-manager/core",
   "version": "1.0.0",
+  "description": "Core functionality for the Competition Manager application, including utilities, schemas, and types.",
+  "type": "module",
   "exports": {
     "./utils": {
       "types": "./dist/utils/index.d.ts",
@@ -9,6 +11,10 @@
     "./schemas": {
       "types": "./dist/schemas/index.d.ts",
       "import": "./dist/schemas/index.js"
+    },
+    "./types": {
+      "types": "./dist/types/socket.d.ts",
+      "import": "./dist/types/socket.js"
     }
   },
   "files": [

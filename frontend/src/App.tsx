@@ -1,3 +1,4 @@
+import { SocketStatusViewer } from '@/components/dev/socket-status-viewer';
 import {
   AdminLayout,
   MainLayout,
@@ -157,6 +158,7 @@ function App() {
       <ThemeProvider>
         <RouterProvider router={router} />
         <Toaster />
+        <SocketStatusViewer />
       </ThemeProvider>
     </QueryClientProvider>
   );
