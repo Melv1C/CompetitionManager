@@ -1,9 +1,9 @@
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
@@ -31,9 +31,21 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
           size="lg"
           className={`data-[state=open]:bg-sidebar-accent data-[state=open]:text-sidebar-accent-foreground ${className}`}
         >
-          <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
-            <Building2 className="size-4" />
-          </div>
+          {activeOrganization?.logo ? (
+            <Avatar className="size-8 rounded-lg">
+              <AvatarImage
+                src={activeOrganization.logo}
+                alt={activeOrganization.name}
+              />
+              <AvatarFallback className="size-8 rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+                <Building2 className="size-4" />
+              </AvatarFallback>
+            </Avatar>
+          ) : (
+            <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
+              <Building2 className="size-4" />
+            </div>
+          )}
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">
               {activeOrganization?.name || t('noOrganization')}
@@ -51,28 +63,28 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
       >
         <DropdownMenuLabel className="text-xs text-muted-foreground">
           {t('organizations')}
-        </DropdownMenuLabel>
+        </DropdownMenuLabel>{' '}
         {organizations.map((org) => (
           <DropdownMenuItem
             key={org.id}
             className="gap-2 p-2"
             onClick={() => handleOrganizationSelect(org.id)}
           >
-            <div className="flex size-6 items-center justify-center rounded-sm border">
-              <Building2 className="size-4 shrink-0" />
-            </div>
+            {org.logo ? (
+              <Avatar className="size-6">
+                <AvatarImage src={org.logo} alt={org.name} />
+                <AvatarFallback className="size-6 rounded-sm border">
+                  <Building2 className="size-4 shrink-0" />
+                </AvatarFallback>
+              </Avatar>
+            ) : (
+              <div className="flex size-6 items-center justify-center rounded-sm border">
+                <Building2 className="size-4 shrink-0" />
+              </div>
+            )}
             {org.name}
           </DropdownMenuItem>
         ))}
-        <DropdownMenuSeparator />
-        <DropdownMenuItem className="gap-2 p-2">
-          <div className="flex size-6 items-center justify-center rounded-md border bg-background">
-            <Building2 className="size-4" />
-          </div>
-          <div className="font-medium text-muted-foreground">
-            {t('addOrganization')}
-          </div>
-        </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
   );
