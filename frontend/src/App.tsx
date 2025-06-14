@@ -1,12 +1,21 @@
 import {
   AdminLayout,
+  AdminSkeleton,
   MainLayout,
   OrganizationLayout,
+  OrganizationSkeleton,
 } from '@/components/layout';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { createBrowserRouter, Outlet, RouterProvider } from 'react-router-dom';
+import {
+  createBrowserRouter,
+  Outlet,
+  RouterProvider,
+  useNavigate,
+} from 'react-router-dom';
+import { useAuth } from './features/auth/hooks/use-auth';
+import { useOrganizations } from './features/organization';
 import {
   AdminAnalytics,
   AdminDashboard,
@@ -48,6 +57,23 @@ function MainApp() {
 
 // Admin App Layout Component
 function AdminApp() {
+  const { user, isLoading } = useAuth();
+  const navigate = useNavigate();
+
+  if (isLoading) {
+    return <AdminSkeleton />;
+  }
+
+  if (!user) {
+    navigate('/login');
+    return null;
+  }
+
+  if (user.role !== 'admin') {
+    navigate('/');
+    return null;
+  }
+
   return (
     <AdminLayout>
       <Outlet />
@@ -57,6 +83,18 @@ function AdminApp() {
 
 // Organization App Layout Component
 function OrganizationApp() {
+  const { organizations, isLoadingOrganizations } = useOrganizations();
+  const navigate = useNavigate();
+
+  if (isLoadingOrganizations) {
+    return <OrganizationSkeleton />;
+  }
+
+  if (organizations.length === 0) {
+    navigate('/');
+    return null;
+  }
+
   return (
     <OrganizationLayout>
       <Outlet />

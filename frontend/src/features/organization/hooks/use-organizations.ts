@@ -1,8 +1,8 @@
 import { authClient } from '@/lib/auth-client';
 
 export const useOrganizations = () => {
-  const { data: organization, refetch: refetchOrganizations } = authClient.useListOrganizations();
-  const { data: activeOrganization, refetch: refetchActiveOrganization } = authClient.useActiveOrganization();
+  const { data: organization, refetch: refetchOrganizations, isPending: isLoadingOrganizations } = authClient.useListOrganizations();
+  const { data: activeOrganization, refetch: refetchActiveOrganization, isPending: isLoadingActiveOrganization } = authClient.useActiveOrganization();
 
   const setActiveOrganization = (organizationId: string) => {
     authClient.organization.setActive({
@@ -13,6 +13,8 @@ export const useOrganizations = () => {
   return {
     organizations: organization || [],
     activeOrganization: activeOrganization || null,
+    isLoadingOrganizations,
+    isLoadingActiveOrganization,
     refetchOrganizations,
     refetchActiveOrganization,
     setActiveOrganization,

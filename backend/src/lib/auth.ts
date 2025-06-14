@@ -1,6 +1,10 @@
 import {
   ac,
   admin,
+  organizationAc,
+  organizationAdmin,
+  owner,
+  resultManager,
   user,
 } from '@competition-manager/core/utils';
 import { betterAuth } from 'better-auth';
@@ -46,6 +50,12 @@ export const auth = betterAuth({
       },
     }),
     organization({
+      ac: organizationAc,
+      roles: {
+        owner,
+        organizationAdmin,
+        resultManager,
+      },
       allowUserToCreateOrganization: async (user) => {
         return isAdmin(user.id);
       },
