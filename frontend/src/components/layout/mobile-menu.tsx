@@ -1,4 +1,3 @@
-import { AuthButton } from '../../features/auth/components/auth-button';
 import { LanguageSelector } from './language-selector';
 import { Navigation } from './navigation';
 
@@ -21,7 +20,6 @@ export function MobileMenu({ isOpen, navItems, onClose }: MobileMenuProps) {
       <div className="px-2 pt-2 pb-3 space-y-1 border-t">
         <Navigation navItems={navItems} isMobile onMobileMenuClose={onClose} />
         <LanguageSelector isMobile />
-        <AuthButton isMobile onMobileMenuClose={onClose} />
       </div>
     </div>
   );
