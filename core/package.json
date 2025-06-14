@@ -1,0 +1,33 @@
+{
+  "name": "@competition-manager/core",
+  "version": "1.0.0",
+  "exports": {
+    "./utils": {
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js"
+    },
+    "./schemas": {
+      "types": "./dist/schemas/index.d.ts",
+      "import": "./dist/schemas/index.js"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "clean": "rimraf dist"
+  },
+  "dependencies": {
+    "zod": "^3.25.64"
+  },
+  "devDependencies": {
+    "@types/node": "^20.11.17",
+    "rimraf": "^6.0.1",
+    "typescript": "^5.8.3"
+  },
+  "peerDependencies": {
+    "zod": "^3.25.64"
+  }
+}
