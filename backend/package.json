@@ -12,6 +12,7 @@
     "@hono/zod-validator": "^0.7.0",
     "@prisma/client": "6.9.0",
     "better-auth": "^1.2.9",
+    "dotenv": "^16.5.0",
     "hono": "^4.7.11",
     "socket.io": "^4.8.1",
     "winston": "^3.17.0",

@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { z } from 'zod/v4';
 
 const envSchema = z.object({
@@ -10,7 +11,9 @@ const envSchema = z.object({
   // Log cleanup configuration
   LOG_CLEANUP_ENABLED: z.stringbool().default(true),
   LOG_CLEANUP_DAYS_TO_KEEP: z.coerce.number().default(30),
-  LOG_CLEANUP_SCHEDULE: z.enum(['@daily', '@hourly', '@weekly']).default('@daily'),
+  LOG_CLEANUP_SCHEDULE: z
+    .enum(['@daily', '@hourly', '@weekly'])
+    .default('@daily'),
   LOG_CLEANUP_MAX_PER_RUN: z.coerce.number().optional(),
 });
 

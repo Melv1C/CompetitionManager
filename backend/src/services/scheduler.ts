@@ -1,4 +1,7 @@
 import { logger } from '@/lib/logger';
+import { env } from 'process';
+import type { Logger } from 'winston';
+import type { LogCleanupConfig } from './log-cleanup';
 
 export type ScheduledTask = {
   name: string;
@@ -12,12 +15,20 @@ export class TaskScheduler {
   private timers: Map<string, NodeJS.Timeout> = new Map();
   private isRunning = false;
 
+  private prodLogger: Logger | null = null;
+
+  constructor() {
+    if (env.NODE_ENV === 'production') {
+      this.prodLogger = logger;
+    }
+  }
+
   /**
    * Register a scheduled task
    */
   register(task: ScheduledTask): void {
     this.tasks.set(task.name, task);
-    logger.info(`Scheduled task registered: ${task.name}`, {
+    this.prodLogger?.info(`Scheduled task registered: ${task.name}`, {
       cronExpression: task.cronExpression,
       enabled: task.enabled,
     });
@@ -28,12 +39,12 @@ export class TaskScheduler {
    */
   start(): void {
     if (this.isRunning) {
-      logger.warn('Task scheduler is already running');
+      this.prodLogger?.warn('Task scheduler is already running');
       return;
     }
 
     this.isRunning = true;
-    logger.info('Starting task scheduler');
+    this.prodLogger?.info('Starting task scheduler');
 
     for (const [name, task] of this.tasks) {
       if (task.enabled) {
@@ -48,11 +59,11 @@ export class TaskScheduler {
   stop(): void {
     if (!this.isRunning) return;
 
-    logger.info('Stopping task scheduler');
+    this.prodLogger?.info('Stopping task scheduler');
 
     for (const [name, timer] of this.timers) {
       clearTimeout(timer);
-      logger.debug(`Stopped scheduled task: ${name}`);
+      this.prodLogger?.debug(`Stopped scheduled task: ${name}`);
     }
 
     this.timers.clear();
@@ -75,7 +86,7 @@ export class TaskScheduler {
     }
 
     // Default to daily if pattern not recognized
-    logger.warn(`Unknown cron pattern: ${cronExpression}, defaulting to daily`);
+    this.prodLogger?.warn(`Unknown cron pattern: ${cronExpression}, defaulting to daily`);
     return patterns['@daily'];
   }
 
@@ -87,20 +98,20 @@ export class TaskScheduler {
 
     const timer = setTimeout(async () => {
       try {
-        logger.info(`Executing scheduled task: ${name}`);
+        this.prodLogger?.info(`Executing scheduled task: ${name}`);
         const startTime = Date.now();
 
         await task.handler();
 
         const duration = Date.now() - startTime;
-        logger.info(`Scheduled task completed: ${name}`, { duration });
+        this.prodLogger?.info(`Scheduled task completed: ${name}`, { duration });
 
         // Reschedule the task
         if (this.isRunning) {
           this.scheduleTask(name, task);
         }
       } catch (error) {
-        logger.error(`Scheduled task failed: ${name}`, {
+        this.prodLogger?.error(`Scheduled task failed: ${name}`, {
           error: error instanceof Error ? error.message : 'Unknown error',
           stack: error instanceof Error ? error.stack : undefined,
         });
@@ -115,7 +126,7 @@ export class TaskScheduler {
     this.timers.set(name, timer);
 
     const nextExecution = new Date(Date.now() + delay);
-    logger.debug(
+    this.prodLogger?.debug(
       `Scheduled task: ${name} will run at ${nextExecution.toISOString()}`
     );
   }

@@ -2,10 +2,12 @@ import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 import { LogCleanupService } from './log-cleanup';
 import { scheduler } from './scheduler';
+import type { Logger } from 'winston';
 
 export class ServiceManager {
   private logCleanupService: LogCleanupService;
   private isInitialized = false;
+  private prodLogger: Logger | null = null;
 
   constructor() {
     this.logCleanupService = new LogCleanupService({
@@ -14,6 +16,9 @@ export class ServiceManager {
       cronExpression: env.LOG_CLEANUP_SCHEDULE,
       maxLogsPerCleanup: env.LOG_CLEANUP_MAX_PER_RUN,
     });
+    if (env.NODE_ENV === 'production') {
+      this.prodLogger = logger;
+    }
   }
 
   /**
@@ -21,12 +26,12 @@ export class ServiceManager {
    */
   async initialize(): Promise<void> {
     if (this.isInitialized) {
-      logger.warn('Services already initialized');
+      this.prodLogger?.warn('Services already initialized');
       return;
     }
 
     try {
-      logger.info('Initializing services...');
+      this.prodLogger?.info('Initializing services...');
 
       // Initialize log cleanup service
       this.logCleanupService.initialize();
@@ -35,9 +40,9 @@ export class ServiceManager {
       scheduler.start();
 
       this.isInitialized = true;
-      logger.info('All services initialized successfully');
+      this.prodLogger?.info('All services initialized successfully');
     } catch (error) {
-      logger.error('Failed to initialize services', {
+      this.prodLogger?.error('Failed to initialize services', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
       throw error;
@@ -50,14 +55,14 @@ export class ServiceManager {
   async shutdown(): Promise<void> {
     if (!this.isInitialized) return;
 
-    logger.info('Shutting down services...');
+    this.prodLogger?.info('Shutting down services...');
 
     try {
       scheduler.stop();
       this.isInitialized = false;
-      logger.info('Services shut down successfully');
+      this.prodLogger?.info('Services shut down successfully');
     } catch (error) {
-      logger.error('Error during service shutdown', {
+      this.prodLogger?.error('Error during service shutdown', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
     }
