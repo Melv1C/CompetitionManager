@@ -1,3 +1,4 @@
+import { requireAuth } from '@/middleware/auth';
 import { Hono } from 'hono';
 import { authRoutes } from './auth';
 import { logsRoutes } from './logs';

@@ -1,6 +1,11 @@
+import {
+  ac,
+  admin,
+  user,
+} from '@competition-manager/core/utils';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin, organization } from 'better-auth/plugins';
+import { admin as adminPlugin, organization } from 'better-auth/plugins';
 import { prisma } from './prisma';
 
 // Add this helper function to fetch the active organization for a user
@@ -32,9 +37,14 @@ export const auth = betterAuth({
   emailAndPassword: {
     enabled: true,
   },
-
   plugins: [
-    admin(),
+    adminPlugin({
+      ac,
+      roles: {
+        admin,
+        user,
+      },
+    }),
     organization({
       allowUserToCreateOrganization: async (user) => {
         return isAdmin(user.id);
