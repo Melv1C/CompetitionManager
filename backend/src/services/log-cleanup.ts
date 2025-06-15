@@ -1,8 +1,8 @@
+import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 import { cleanOldLogs } from '@/utils/log-utils';
-import { scheduler, type ScheduledTask } from './scheduler';
 import type { Logger } from 'winston';
-import { env } from '@/lib/env';
+import { scheduler, type ScheduledTask } from './scheduler';
 
 export interface LogCleanupConfig {
   enabled: boolean;
@@ -34,7 +34,20 @@ export class LogCleanupService {
     const task: ScheduledTask = {
       name: 'log-cleanup',
       cronExpression: this.config.cronExpression,
-      handler: this.performCleanup.bind(this),
+      handler: async () => {
+        try {
+          const deletedCount = await this.performCleanup();
+          this.prodLogger?.info('Log cleanup task completed', {
+            deletedCount,
+            daysToKeep: this.config.daysToKeep,
+          });
+        } catch (error) {
+          this.prodLogger?.error('Log cleanup task failed', {
+            error: error instanceof Error ? error.message : 'Unknown error',
+          });
+          throw error; // Re-throw to let scheduler handle it
+        }
+      },
       enabled: true,
     };
 
@@ -49,7 +62,7 @@ export class LogCleanupService {
   /**
    * Perform the actual log cleanup
    */
-  private async performCleanup(): Promise<void> {
+  private async performCleanup() {
     try {
       const startTime = Date.now();
 
@@ -70,20 +83,22 @@ export class LogCleanupService {
       // Alert if cleanup took too long or deleted too many logs
       if (duration > 30000) {
         // 30 seconds
-        this.prodLogger?.warn('Log cleanup took longer than expected', { duration });
+        logger.warn('Log cleanup took longer than expected', { duration });
       }
 
       if (
         this.config.maxLogsPerCleanup &&
         deletedCount > this.config.maxLogsPerCleanup
       ) {
-        this.prodLogger?.warn('Log cleanup deleted more logs than expected', {
+        logger.warn('Log cleanup deleted more logs than expected', {
           deletedCount,
           maxExpected: this.config.maxLogsPerCleanup,
         });
       }
+
+      return deletedCount;
     } catch (error) {
-      this.prodLogger?.error('Log cleanup failed', {
+      logger.error('Log cleanup failed', {
         error: error instanceof Error ? error.message : 'Unknown error',
         stack: error instanceof Error ? error.stack : undefined,
       });
@@ -99,7 +114,7 @@ export class LogCleanupService {
     const deletedCount = await this.performCleanup();
     const duration = Date.now() - startTime;
 
-    return { deletedCount: 0, duration }; // Note: performCleanup doesn't return count directly
+    return { deletedCount, duration };
   }
 
   /**
@@ -114,6 +129,6 @@ export class LogCleanupService {
    */
   updateConfig(newConfig: Partial<LogCleanupConfig>): void {
     this.config = { ...this.config, ...newConfig };
-    logger.info('Log cleanup configuration updated', this.config);
+    this.prodLogger?.info('Log cleanup configuration updated', this.config);
   }
 }

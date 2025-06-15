@@ -1,0 +1,137 @@
+[
+    {
+        "name": "Non affilié",
+        "abbr": "NA",
+        "country": "Belgique"
+    },
+    {
+        "name": "France",
+        "abbr": "FRA",
+        "country": "France"
+    },
+    {
+        "name": "Pays-Bas",
+        "abbr": "NED",
+        "country": "Pays-Bas"
+    },
+    {
+        "name": "Allemagne",
+        "abbr": "GER",
+        "country": "Allemagne"
+    },
+    {
+        "name": "Luxembourg",
+        "abbr": "LUX",
+        "country": "Luxembourg"
+    },
+    {
+        "name": "Royaume-Uni",
+        "abbr": "GBR",
+        "country": "Royaume-Uni"
+    },
+    {
+        "name": "Italie",
+        "abbr": "ITA",
+        "country": "Italie"
+    },
+    {
+        "name": "Espagne",
+        "abbr": "ESP",
+        "country": "Espagne"
+    },
+    {
+        "name": "Portugal",
+        "abbr": "POR",
+        "country": "Portugal"
+    },
+    {
+        "name": "Suisse",
+        "abbr": "SUI",
+        "country": "Suisse"
+    },
+    {
+        "name": "Danemark",
+        "abbr": "DEN",
+        "country": "Danemark"
+    },
+    {
+        "name": "Suède",
+        "abbr": "SWE",
+        "country": "Suède"
+    },
+    {
+        "name": "Norvège",
+        "abbr": "NOR",
+        "country": "Norvège"
+    },
+    {
+        "name": "Finlande",
+        "abbr": "FIN",
+        "country": "Finlande"
+    },
+    {
+        "name": "Autriche",
+        "abbr": "AUT",
+        "country": "Autriche"
+    },
+    {
+        "name": "République Tchèque",
+        "abbr": "CZE",
+        "country": "République Tchèque"
+    },
+    {
+        "name": "Slovaquie",
+        "abbr": "SVK",
+        "country": "Slovaquie"
+    },
+    {
+        "name": "Hongrie",
+        "abbr": "HUN",
+        "country": "Hongrie"
+    },
+    {
+        "name": "Pologne",
+        "abbr": "POL",
+        "country": "Pologne"
+    },
+    {
+        "name": "Lituanie",
+        "abbr": "LTU",
+        "country": "Lituanie"
+    },
+    {
+        "name": "Lettonie",
+        "abbr": "LAT",
+        "country": "Lettonie"
+    },
+    {
+        "name": "Estonie",
+        "abbr": "EST",
+        "country": "Estonie"
+    },
+    {
+        "name": "Ukraine",
+        "abbr": "UKR",
+        "country": "Ukraine"
+    },
+    {
+        "name": "Moldavie",
+        "abbr": "MDA",
+        "country": "Moldavie"
+    },
+    {
+        "name": "Roumanie",
+        "abbr": "ROU",
+        "country": "Roumanie"
+    },
+    {
+        "name": "Bulgarie",
+        "abbr": "BUL",
+        "country": "Bulgarie"
+    },
+    {
+        "name": "Grèce",
+        "abbr": "GRE",
+        "country": "Grèce"
+    }
+]

@@ -1,0 +1,530 @@
+[
+    {
+        "name": "50 mètres",
+        "abbr": "50m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "60 mètres",
+        "abbr": "60m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "80 mètres",
+        "abbr": "80m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "100 mètres",
+        "abbr": "100m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "150 mètres",
+        "abbr": "150m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "200 mètres",
+        "abbr": "200m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "300 mètres",
+        "abbr": "300m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "400 mètres",
+        "abbr": "400m",
+        "type": "time",
+        "group": "sprint"
+    },
+    {
+        "name": "600 mètres",
+        "abbr": "600m",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "800 mètres",
+        "abbr": "800m",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "1000 mètres",
+        "abbr": "1000m",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "1500 mètres",
+        "abbr": "1500m",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "1500 mètres steeple 0,762m",
+        "abbr": "1500m St.",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "2000 mètres",
+        "abbr": "2000m",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "2000 mètres steeple 0,762m",
+        "abbr": "2000m St.",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "2000 mètres steeple 0,914m",
+        "abbr": "2000m St.",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "3000 mètres",
+        "abbr": "3000m",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "3000 mètres steeple 0,762m",
+        "abbr": "3000m St.",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "3000 mètres steeple 0,914m",
+        "abbr": "3000m St.",
+        "type": "time",
+        "group": "middle"
+    },
+    {
+        "name": "5000 mètres",
+        "abbr": "5000m",
+        "type": "time",
+        "group": "long"
+    },
+    {
+        "name": "10.000 mètres",
+        "abbr": "10000m",
+        "type": "time",
+        "group": "long"
+    },
+    {
+        "name": "Marathon",
+        "abbr": "Marathon",
+        "type": "time",
+        "group": "long"
+    },
+    {
+        "name": "50 mètres haies",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "50 mètres haies 0,686m",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "50 mètres haies 0,762m",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "50 mètres haies 0,838m",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "50 mètres haies 0,914m",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "50 mètres haies 0,991m",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "50 mètres haies 1,067m",
+        "abbr": "50mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies 0,686m",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies 0,762m",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies 0,838m",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies 0,914m",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies 0,991m",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "60 mètres haies 1,067m",
+        "abbr": "60mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "80 mètres haies 0,686m",
+        "abbr": "80mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "80 mètres haies 0,762m",
+        "abbr": "80mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "80 mètres haies 0,838m",
+        "abbr": "80mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "100 mètres haies 0,762m",
+        "abbr": "100mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "100 mètres haies 0,838m",
+        "abbr": "100mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "100 mètres haies 0,914m",
+        "abbr": "100mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "110 mètres haies 0,914m",
+        "abbr": "110mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "110 mètres haies 0,991m",
+        "abbr": "110mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "110 mètres haies 1,067m",
+        "abbr": "110mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "150 mètres haies 0,762m",
+        "abbr": "150mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "200 mètres haies 0,686m",
+        "abbr": "200mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "300 mètres haies 0,686m",
+        "abbr": "300mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "300 mètres haies 0,762m",
+        "abbr": "300mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "400 mètres haies 0,762m",
+        "abbr": "400mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "400 mètres haies 0,838m",
+        "abbr": "400mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "400 mètres haies 0,914m",
+        "abbr": "400mH",
+        "type": "time",
+        "group": "hurdles"
+    },
+    {
+        "name": "Saut à la perche",
+        "abbr": "Perche",
+        "type": "height",
+        "group": "jump"
+    },
+    {
+        "name": "Saut en hauteur",
+        "abbr": "Haut",
+        "type": "height",
+        "group": "jump"
+    },
+    {
+        "name": "Saut en longueur",
+        "abbr": "Long",
+        "type": "distance",
+        "group": "jump"
+    },
+    {
+        "name": "Triple saut",
+        "abbr": "Triple",
+        "type": "distance",
+        "group": "jump"
+    },
+    {
+        "name": "Balle de hockey",
+        "abbr": "Balle H.",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du disque 1,000kg",
+        "abbr": "Disque",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du disque 1,500kg",
+        "abbr": "Disque",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du disque 1,750kg",
+        "abbr": "Disque",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du disque 2,000kg",
+        "abbr": "Disque",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du disque 600g",
+        "abbr": "Disque",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du disque 750g",
+        "abbr": "Disque",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du javelot 400g",
+        "abbr": "Javelot",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du javelot 500g",
+        "abbr": "Javelot",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du javelot 600g",
+        "abbr": "Javelot",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du javelot 700g",
+        "abbr": "Javelot",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du javelot 800g",
+        "abbr": "Javelot",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du marteau 2,000kg",
+        "abbr": "Marteau",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du marteau 3,000kg",
+        "abbr": "Marteau",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du marteau 4,000kg",
+        "abbr": "Marteau",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du marteau 5,000kg",
+        "abbr": "Marteau",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du marteau 6,000kg",
+        "abbr": "Marteau",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du marteau 7,260kg",
+        "abbr": "Marteau",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 1,000kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 2,000kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 3,000kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 4,000kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 5,000kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 6,000kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Lancer du poids 7,260kg",
+        "abbr": "Poids",
+        "type": "distance",
+        "group": "throw"
+    },
+    {
+        "name": "Décathlon",
+        "abbr": "Déca",
+        "type": "points",
+        "group": "combined"
+    },
+    {
+        "name": "Heptathlon",
+        "abbr": "Hepta",
+        "type": "points",
+        "group": "combined"
+    },
+    {
+        "name": "Hexathlon",
+        "abbr": "Hexa",
+        "type": "points",
+        "group": "combined"
+    },
+    {
+        "name": "Octathlon",
+        "abbr": "Octa",
+        "type": "points",
+        "group": "combined"
+    },
+    {
+        "name": "Pentathlon",
+        "abbr": "Penta",
+        "type": "points",
+        "group": "combined"
+    },
+    {
+        "name": "Tétrathlon",
+        "abbr": "Tétra",
+        "type": "points",
+        "group": "combined"
+    },
+    {
+        "name": "Triathlon",
+        "abbr": "Triathlon",
+        "type": "points",
+        "group": "combined"
+    }
+]

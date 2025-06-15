@@ -39,7 +39,7 @@ export class TaskScheduler {
    */
   start(): void {
     if (this.isRunning) {
-      this.prodLogger?.warn('Task scheduler is already running');
+      logger.warn('Task scheduler is already running');
       return;
     }
 
@@ -63,7 +63,7 @@ export class TaskScheduler {
 
     for (const [name, timer] of this.timers) {
       clearTimeout(timer);
-      this.prodLogger?.debug(`Stopped scheduled task: ${name}`);
+      this.prodLogger?.info(`Stopped scheduled task: ${name}`);
     }
 
     this.timers.clear();
@@ -86,7 +86,7 @@ export class TaskScheduler {
     }
 
     // Default to daily if pattern not recognized
-    this.prodLogger?.warn(`Unknown cron pattern: ${cronExpression}, defaulting to daily`);
+    logger.warn(`Unknown cron pattern: ${cronExpression}, defaulting to daily`);
     return patterns['@daily'];
   }
 
@@ -111,7 +111,7 @@ export class TaskScheduler {
           this.scheduleTask(name, task);
         }
       } catch (error) {
-        this.prodLogger?.error(`Scheduled task failed: ${name}`, {
+        logger.error(`Scheduled task failed: ${name}`, {
           error: error instanceof Error ? error.message : 'Unknown error',
           stack: error instanceof Error ? error.stack : undefined,
         });
@@ -126,7 +126,7 @@ export class TaskScheduler {
     this.timers.set(name, timer);
 
     const nextExecution = new Date(Date.now() + delay);
-    this.prodLogger?.debug(
+    this.prodLogger?.info(
       `Scheduled task: ${name} will run at ${nextExecution.toISOString()}`
     );
   }
