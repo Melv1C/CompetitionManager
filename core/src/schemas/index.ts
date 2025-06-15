@@ -1,9 +1,21 @@
+export * from './athlete';
 export * from './auth';
 export * from './base';
+export * from './category';
+export * from './club';
+export * from './competition';
+export * from './competition-event';
+export * from './event';
 export * from './log';
 export * from './organization';
 
+export type * from './athlete';
 export type * from './auth';
 export type * from './base';
+export type * from './category';
+export type * from './club';
+export type * from './competition';
+export type * from './competition-event';
+export type * from './event';
 export type * from './log';
 export type * from './organization';

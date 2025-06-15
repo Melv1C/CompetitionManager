@@ -96,6 +96,8 @@ model Organization {
   members     Member[]
   invitations Invitation[]
 
+  competitions Competition[]
+
   @@unique([slug])
   @@map("organization")
 }
@@ -126,8 +128,12 @@ model Invitation {
   @@map("invitation")
 }
 
+////////////////////////////////////////////////////////////
+// Logging model
+// This model is used to store logs for the application.
+////////////////////////////////////////////////////////////
 model Log {
-  id        String   @id @default(uuid())
+  id        Int      @id @default(autoincrement())
   level     String
   message   String
   meta      String?
@@ -135,4 +141,183 @@ model Log {
 
   @@index([level, timestamp])
   @@map("log")
+}
+
+////////////////////////////////////////////////////////////
+// Athlete model
+// This model is used to store athlete information.
+////////////////////////////////////////////////////////////
+model Athlete {
+  id            Int          @id @default(autoincrement())
+  license       String
+  firstName     String
+  lastName      String
+  gender        String
+  birthdate     DateTime
+  metadata      String?
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  athleteInfo  AthleteInfo[]
+
+  competition   Competition? @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  competitionId Int?
+
+  // inscriptions  Inscription[]
+  // results       Result[]
+
+  @@unique([license, competitionId])
+  @@map("athlete")
+}
+
+////////////////////////////////////////////////////////////
+// Event
+// This model is used to store event information.
+////////////////////////////////////////////////////////////
+model Event {
+    id                Int                 @id @default(autoincrement())
+    name              String              @unique
+    abbr              String
+    group             String
+    type              String
+    competitionEvents CompetitionEvent[]
+    
+    @@map("events")
+}
+
+////////////////////////////////////////////////////////////
+// Category
+// This model is used to store category information.
+////////////////////////////////////////////////////////////
+model Category {
+  id                Int                @id @default(autoincrement())
+  name              String             @unique
+  abbr              String             @unique
+  baseCategory      String
+  abbrBaseCategory  String
+  gender            String
+  masterAgeGroup    Int?
+  order             Int
+  competitionEvents CompetitionEvent[]
+
+  @@map("categories")
+}
+
+////////////////////////////////////////////////////////////
+// Club
+// This model is used to store club information.
+////////////////////////////////////////////////////////////
+model Club {
+  id                Int          @id @default(autoincrement())
+  name              String       @unique
+  abbr              String       @unique
+  address           String?
+  province          String?
+  country           String?
+  fedNumber         Int?
+  fedAbbr           String?
+
+  athletesInfo      AthleteInfo[]
+  competitions      Competition[]
+  freeCompetitions  Competition[] @relation("FreeClubsToCompetitions")
+  allowedCompetitions   Competition[] @relation("AllowedClubsToCompetitions")
+  // inscriptions     Inscription[]
+  // results          Result[]
+
+  @@map("clubs")
+}
+
+// //////////////////////////////////////////////////////////
+// Athlete Info depending on the season
+// This model is used to store athlete information depending on the season.
+////////////////////////////////////////////////////////////
+model AthleteInfo {
+  id                Int          @id @default(autoincrement())
+  athleteId         Int
+  athlete           Athlete      @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  season            Int
+  clubId            Int
+  club              Club        @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  bib               Int
+
+  @@unique([athleteId, season])
+  @@map("athlete_info")
+}
+
+
+////////////////////////////////////////////////////////////
+// Competition Event
+// This model is used to store the events of a competition.
+////////////////////////////////////////////////////////////
+model CompetitionEvent {
+  id                Int          @id @default(autoincrement())
+  eid               String       @unique @default(cuid())
+  name              String
+  eventStartTime    DateTime
+  maxParticipants   Int?
+  price             Float
+
+  createdAt         DateTime     @default(now())
+  createdBy         String
+  updatedAt         DateTime     @updatedAt
+  updatedBy         String
+
+  competitionId    Int
+  competition      Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  eventId          Int
+  event            Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  parentId        Int?
+  parent          CompetitionEvent? @relation("ParentChildEvents", fields: [parentId], references: [id], onDelete: Cascade)
+  childEvents     CompetitionEvent[] @relation("ParentChildEvents")
+
+  categories        Category[]  
+
+  // inscriptions      Inscription[]
+  // results           Result[]
+}
+
+////////////////////////////////////////////////////////////
+// Competition
+// This model is used to store competition information.
+////////////////////////////////////////////////////////////
+
+model Competition {
+  id                Int           @id @default(autoincrement())
+  eid               String        @unique @default(cuid())
+  name              String
+  startDate         DateTime
+  endDate           DateTime
+  isPublished       Boolean       
+  description       String        @db.Text
+  location          String
+
+  contactEmail      String
+  contactPhone      String?
+
+  bibPermissions    String[]
+  bibStartNumber       Int?
+
+  isPaidOnline         Boolean
+  isSelection          Boolean
+  isInscriptionVisible Boolean
+
+  createdAt         DateTime     @default(now())
+  createdBy         String
+  updatedAt         DateTime     @updatedAt
+  updatedBy         String
+
+  freeClubs            Club[] @relation("FreeClubsToCompetitions")
+  allowedClubs         Club[] @relation("AllowedClubsToCompetitions")
+
+  events              CompetitionEvent[]
+  athletes            Athlete[]
+  clubs               Club[]
+  // inscriptions        Inscription[]
+  // results             Result[]
+
+  organizationId      String
+  organization        Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  @@map("competitions")
 }

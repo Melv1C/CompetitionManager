@@ -1,7 +1,7 @@
 import z from 'zod';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
-const themeEnum = z.enum(['light', 'dark', 'system'] as const)
+const themeEnum = z.enum(['light', 'dark', 'system']);
 export type Theme = z.infer<typeof themeEnum>;
 export type AppliedTheme = Exclude<Theme, 'system'>;
 

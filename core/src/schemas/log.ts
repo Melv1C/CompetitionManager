@@ -1,5 +1,5 @@
-import { z } from 'zod';
-import { Date$, Id$ } from './base';
+import { z } from 'zod/v4';
+import { Boolean$, Date$, Id$ } from './base';
 
 /**
  * Log level enum - matches Winston log levels
@@ -56,7 +56,7 @@ export type LogQuery = z.infer<typeof LogQuery$>;
 export const PaginatedLogsResponse$ = z.object({
   logs: Log$.array(),
   totalCount: z.number().int().nonnegative(),
-  hasMore: z.boolean(),
+  hasMore: Boolean$,
   page: z.number().int().positive(),
   totalPages: z.number().int().nonnegative(),
   pageSize: z.number().int().positive(),

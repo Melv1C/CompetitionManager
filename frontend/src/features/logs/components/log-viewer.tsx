@@ -15,7 +15,7 @@ import { LogTable } from './log-table';
 export function LogViewer() {
   const [filters, setFilters] = useState<LogQuery>(
     LogQuery$.parse({
-      levels: [LogLevel$.Values.error, LogLevel$.Values.warn], // Default to error and warn levels
+      levels: [LogLevel$.enum.error, LogLevel$.enum.warn], // Default to error and warn levels
       limit: 20, // Smaller page size for better UX
       offset: 0,
     })

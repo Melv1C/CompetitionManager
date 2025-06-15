@@ -1,6 +1,6 @@
 -- CreateTable
 CREATE TABLE "log" (
-    "id" TEXT NOT NULL,
+    "id" SERIAL NOT NULL,
     "level" TEXT NOT NULL,
     "message" TEXT NOT NULL,
     "meta" TEXT,

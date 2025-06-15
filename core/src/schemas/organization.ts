@@ -1,8 +1,8 @@
-import { z } from 'zod';
-import { Date$, Id$, Url$ } from './base';
+import { z } from 'zod/v4';
+import { BetterAuthId$, Date$, Url$ } from './base';
 
 export const Organization$ = z.object({
-  id: Id$,
+  id: BetterAuthId$,
   name: z.string(),
   slug: z.string().nullable(),
   logo: Url$.nullable(),
@@ -11,32 +11,28 @@ export const Organization$ = z.object({
 });
 export type Organization = z.infer<typeof Organization$>;
 
-export const MemberRole$ = z.enum(['owner', 'admin', 'member'] as const);
+export const MemberRole$ = z.enum(['owner', 'admin', 'member']);
 export type MemberRole = z.infer<typeof MemberRole$>;
 
 export const Member$ = z.object({
-  id: Id$,
-  organizationId: Id$,
-  userId: Id$,
+  id: BetterAuthId$,
+  organizationId: BetterAuthId$,
+  userId: BetterAuthId$,
   role: MemberRole$,
   createdAt: Date$,
 });
 export type Member = z.infer<typeof Member$>;
 
-export const InvitationStatus$ = z.enum([
-  'pending',
-  'accepted',
-  'declined',
-] as const);
+export const InvitationStatus$ = z.enum(['pending', 'accepted', 'declined']);
 export type InvitationStatus = z.infer<typeof InvitationStatus$>;
 
 export const Invitation$ = z.object({
-  id: Id$,
-  organizationId: Id$,
+  id: BetterAuthId$,
+  organizationId: BetterAuthId$,
   email: z.string().email(),
   role: MemberRole$.nullable(),
   status: InvitationStatus$,
   expiresAt: Date$,
-  inviterId: Id$,
+  inviterId: BetterAuthId$,
 });
 export type Invitation = z.infer<typeof Invitation$>;
