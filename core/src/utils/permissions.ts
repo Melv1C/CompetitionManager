@@ -11,9 +11,9 @@ import { adminAc, defaultStatements } from 'better-auth/plugins/admin/access';
 export const statement = {
   ...defaultStatements,
   logs: ['read', 'cleanup'],
-  competitions: ['read'],
-  inscriptions: ['read', 'create', 'update', 'delete'],
-  results: ['read'],
+  inscriptions: ['create', 'update', 'delete'],
+  events: ['create', 'update', 'delete'],
+  categories: ['create', 'update', 'delete'],
 } as const;
 
 // Create access control instance
@@ -41,13 +41,11 @@ export type PermissionCheck = {
 export const admin = ac.newRole({
   ...adminAc.statements,
   logs: ['read', 'cleanup'],
-  competitions: ['read'],
-  inscriptions: ['read', 'create', 'update', 'delete'],
-  results: ['read'],
+  inscriptions: ['create', 'update', 'delete'],
+  events: ['create', 'update', 'delete'],
+  categories: ['create', 'update', 'delete'],
 });
 
 export const user = ac.newRole({
-  competitions: ['read'],
-  inscriptions: ['read', 'create', 'update', 'delete'],
-  results: ['read'],
+  inscriptions: ['create', 'update', 'delete'],
 });

@@ -19,6 +19,7 @@ import { useOrganizations } from './features/organization';
 import {
   AdminAnalytics,
   AdminDashboard,
+  AdminDatabase,
   AdminLogs,
   AdminSettings,
   Home,
@@ -177,6 +178,10 @@ const router = createBrowserRouter([
       {
         path: 'organizations',
         element: <AdminOrganizations />,
+      },
+      {
+        path: 'database',
+        element: <AdminDatabase />,
       },
       {
         path: 'logs',

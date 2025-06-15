@@ -39,7 +39,15 @@ export const Category$ = z.object({
   baseCategory: BaseCategory$,
   abbrBaseCategory: AbbrBaseCategory$,
   gender: Gender$,
-  masterAgeGroup: z.coerce.number().nullable(),
-  order: z.coerce.number().positive(),
+  masterAgeGroup: z.number().nullable(),
+  order: z.number().positive(),
 });
 export type Category = z.infer<typeof Category$>;
+
+// Category create schema (omit id)
+export const CategoryCreate$ = Category$.omit({ id: true });
+export type CategoryCreate = z.infer<typeof CategoryCreate$>;
+
+// Category update schema (all fields optional except id)
+export const CategoryUpdate$ = CategoryCreate$.partial();
+export type CategoryUpdate = z.infer<typeof CategoryUpdate$>;

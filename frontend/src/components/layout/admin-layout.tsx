@@ -28,6 +28,7 @@ import {
   ArrowLeft,
   BarChart3,
   ChevronDown,
+  Database,
   FileText,
   Home,
   LogOut,
@@ -64,6 +65,11 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       title: t('organizations'),
       url: '/admin/organizations',
       icon: Trophy,
+    },
+    {
+      title: 'Database',
+      url: '/admin/database',
+      icon: Database,
     },
     {
       title: 'Logs',
