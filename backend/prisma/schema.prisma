@@ -93,6 +93,11 @@ model Organization {
   logo        String?
   createdAt   DateTime
   metadata    String?
+
+  contactEmail String?
+  contactPhone String?
+  website      String?
+
   members     Member[]
   invitations Invitation[]
 
@@ -287,13 +292,10 @@ model Competition {
   eid               String        @unique @default(cuid())
   name              String
   startDate         DateTime
-  endDate           DateTime
+  endDate           DateTime?
   isPublished       Boolean       
   description       String        @db.Text
   location          String
-
-  contactEmail      String
-  contactPhone      String?
 
   bibPermissions    String[]
   bibStartNumber       Int?

@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { BetterAuthId$, Date$, Url$ } from './base';
+import { BetterAuthId$, Date$, Email$, Url$ } from './base';
 
 export const Organization$ = z.object({
   id: BetterAuthId$,
@@ -8,6 +8,10 @@ export const Organization$ = z.object({
   logo: Url$.nullable(),
   createdAt: Date$,
   metadata: z.string().nullable(),
+
+  contactEmail: Email$.nullable(),
+  contactPhone: z.string().nullable(),
+  website: Url$.nullable(),
 });
 export type Organization = z.infer<typeof Organization$>;
 
@@ -29,7 +33,7 @@ export type InvitationStatus = z.infer<typeof InvitationStatus$>;
 export const Invitation$ = z.object({
   id: BetterAuthId$,
   organizationId: BetterAuthId$,
-  email: z.string().email(),
+  email: Email$,
   role: MemberRole$.nullable(),
   status: InvitationStatus$,
   expiresAt: Date$,

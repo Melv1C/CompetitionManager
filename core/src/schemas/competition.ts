@@ -1,7 +1,11 @@
 import { z } from 'zod/v4';
-import { BetterAuthId$, Boolean$, Cuid$, Date$, Email$, Id$ } from './base';
+import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
 import { Club$ } from './club';
-import { CompetitionEvent$, competitionEventInclude } from './competition-event';
+import {
+  CompetitionEvent$,
+  competitionEventInclude,
+} from './competition-event';
+import { Organization$ } from './organization';
 
 // Competition base schema
 export const Competition$ = z.object({
@@ -9,20 +13,17 @@ export const Competition$ = z.object({
   eid: Cuid$,
   name: z.string(),
   startDate: Date$,
-  endDate: Date$,
-  isPublished: Boolean$,
-  description: z.string(),
-  location: z.string(),
+  endDate: Date$.nullable(),
+  isPublished: Boolean$.default(false),
+  description: z.string().default(''),
+  location: z.string().default(''),
 
-  contactEmail: Email$,
-  contactPhone: z.string().nullable(),
-
-  bibPermissions: z.array(z.string()),
+  bibPermissions: z.array(z.string()).default([]),
   bibStartNumber: z.number().nullable(),
 
-  isPaidOnline: Boolean$,
-  isSelection: Boolean$,
-  isInscriptionVisible: Boolean$,
+  isPaidOnline: Boolean$.default(true),
+  isSelection: Boolean$.default(false),
+  isInscriptionVisible: Boolean$.default(true),
 
   createdAt: Date$,
   createdBy: BetterAuthId$,
@@ -34,7 +35,8 @@ export const Competition$ = z.object({
 
   events: z.array(CompetitionEvent$).default([]),
 
-  organizationId: Id$,
+  organizationId: BetterAuthId$,
+  organization: Organization$,
 });
 export type Competition = z.infer<typeof Competition$>;
 
@@ -42,6 +44,24 @@ export const competitionInclude = {
   freeClubs: true,
   allowedClubs: true,
   events: {
-    include: competitionEventInclude
+    include: competitionEventInclude,
   },
+  organization: true,
 };
+
+export const CompetitionPrismaCreate$ = Competition$.omit({
+  id: true,
+  eid: true,
+  createdAt: true,
+  updatedAt: true,
+  freeClubs: true,
+  allowedClubs: true,
+  events: true,
+});
+export type CompetitionPrismaCreate = z.infer<typeof CompetitionPrismaCreate$>;
+
+export const CompetitionCreate$ = CompetitionPrismaCreate$.pick({
+  name: true,
+  startDate: true,
+});
+export type CompetitionCreate = z.infer<typeof CompetitionCreate$>;

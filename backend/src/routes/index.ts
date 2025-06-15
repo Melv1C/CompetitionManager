@@ -1,6 +1,7 @@
 import { Hono } from 'hono';
 import { authRoutes } from './auth';
 import { categoriesRoutes } from './categories';
+import { competitionsRoutes } from './competitions';
 import { eventsRoutes } from './events';
 import { logsRoutes } from './logs';
 
@@ -9,12 +10,12 @@ import { logsRoutes } from './logs';
  * Following the pattern: /api/{resource}/{action?}
  */
 export function createApiRoutes() {
-  const api = new Hono();
-  // Mount route modules
+  const api = new Hono(); // Mount route modules
   api.route('/auth', authRoutes);
   api.route('/logs', logsRoutes);
   api.route('/events', eventsRoutes);
   api.route('/categories', categoriesRoutes);
+  api.route('/competitions', competitionsRoutes);
 
   return api;
 }
