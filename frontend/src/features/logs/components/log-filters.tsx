@@ -1,23 +1,15 @@
 import { Button } from '@/components/ui/button';
-import { Calendar } from '@/components/ui/calendar';
 import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { DateTimePicker } from '@/components/ui/date-time-picker';
 import {
   LogLevel$,
   type LogLevel,
   type LogQuery,
 } from '@competition-manager/core/schemas';
-import { format } from 'date-fns';
 import {
-  CalendarIcon,
-  ClockIcon,
   FilterIcon,
   SearchIcon,
   XIcon,
@@ -31,100 +23,6 @@ interface LogFiltersProps {
   isLoading?: boolean;
 }
 
-interface DateTimePickerProps {
-  value?: Date;
-  onChange: (date: Date | undefined) => void;
-  placeholder: string;
-  disabled?: boolean;
-}
-
-function DateTimePicker({
-  value,
-  onChange,
-  placeholder,
-  disabled,
-}: DateTimePickerProps) {
-  const [isOpen, setIsOpen] = useState(false);
-  const [timeValue, setTimeValue] = useState(
-    value ? format(value, 'HH:mm') : '00:00'
-  );
-
-  const handleDateSelect = (selectedDate: Date | undefined) => {
-    if (!selectedDate) {
-      onChange(undefined);
-      return;
-    }
-
-    // Combine selected date with current time
-    const [hours, minutes] = timeValue.split(':').map(Number);
-    const newDate = new Date(selectedDate);
-    newDate.setHours(hours, minutes, 0, 0);
-    onChange(newDate);
-  };
-
-  const handleTimeChange = (time: string) => {
-    setTimeValue(time);
-    if (value) {
-      const [hours, minutes] = time.split(':').map(Number);
-      const newDate = new Date(value);
-      newDate.setHours(hours, minutes, 0, 0);
-      onChange(newDate);
-    }
-  };
-
-  const handleClear = () => {
-    onChange(undefined);
-    setTimeValue('00:00');
-  };
-
-  return (
-    <Popover open={isOpen} onOpenChange={setIsOpen}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          className={`w-full justify-start text-left font-normal ${
-            !value && 'text-muted-foreground'
-          }`}
-          disabled={disabled}
-        >
-          <CalendarIcon className="mr-2 h-4 w-4" />
-          {value ? format(value, 'MMM d, yyyy HH:mm') : placeholder}
-        </Button>
-      </PopoverTrigger>
-      <PopoverContent className="w-auto p-0" align="start">
-        <div className="p-3">
-          <Calendar
-            mode="single"
-            selected={value}
-            onSelect={handleDateSelect}
-            initialFocus
-          />
-          <div className="border-t pt-3 mt-3">
-            <div className="flex items-center gap-2">
-              <ClockIcon className="h-4 w-4 text-muted-foreground" />
-              <Input
-                type="time"
-                value={timeValue}
-                onChange={(e) => handleTimeChange(e.target.value)}
-                className="w-auto flex-1"
-              />
-              {value && (
-                <Button
-                  variant="ghost"
-                  size="sm"
-                  onClick={handleClear}
-                  className="px-2"
-                >
-                  <XIcon className="h-3 w-3" />
-                </Button>
-              )}
-            </div>
-          </div>
-        </div>
-      </PopoverContent>
-    </Popover>
-  );
-}
 
 export function LogFilters({
   filters,
