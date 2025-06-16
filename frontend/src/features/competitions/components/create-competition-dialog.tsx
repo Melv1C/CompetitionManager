@@ -1,3 +1,4 @@
+import { DateTimePicker } from '@/components/date-time-picker';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,8 +15,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { DateTimePicker } from '@/components/ui/date-time-picker';
-import { CompetitionCreate$, type CompetitionCreate } from '@competition-manager/core/schemas';
+import {
+  CompetitionCreate$,
+  type CompetitionCreate,
+} from '@competition-manager/core/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { useCreateCompetition } from '../hooks/use-competitions';
@@ -85,6 +88,7 @@ export function CreateCompetitionDialog({
                       value={field.value}
                       onChange={(date) => date && field.onChange(date)}
                       placeholder="Select date and time"
+                      initialTime='10:00'
                       allowClear={false}
                     />
                   </FormControl>
