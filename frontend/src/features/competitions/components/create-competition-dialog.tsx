@@ -1,3 +1,4 @@
+import { DateTimePicker } from '@/components/date-time-picker';
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
@@ -14,9 +15,11 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { CompetitionCreate$, type CompetitionCreate } from '@competition-manager/core/schemas';
+import {
+  CompetitionCreate$,
+  type CompetitionCreate,
+} from '@competition-manager/core/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { format } from 'date-fns';
 import { useForm } from 'react-hook-form';
 import { useCreateCompetition } from '../hooks/use-competitions';
 
@@ -31,17 +34,23 @@ export function CreateCompetitionDialog({
 }: CreateCompetitionDialogProps) {
   const createMutation = useCreateCompetition();
 
+  const getDefaultStartDate = () => {
+    const date = new Date();
+    date.setHours(10, 0, 0, 0);
+    return date;
+  };
+
   const form = useForm<CompetitionCreate>({
     resolver: zodResolver(CompetitionCreate$),
     defaultValues: {
       name: '',
-      startDate: new Date(),
+      startDate: getDefaultStartDate(),
     },
   });
 
   const onSubmit = async (data: CompetitionCreate) => {
     await createMutation.mutateAsync(data);
-    form.reset({ name: '', startDate: new Date() });
+    form.reset({ name: '', startDate: getDefaultStartDate() });
     onOpenChange(false);
   };
 
@@ -75,12 +84,12 @@ export function CreateCompetitionDialog({
                 <FormItem>
                   <FormLabel>Start Date</FormLabel>
                   <FormControl>
-                    <Input
-                      type="date"
-                      value={format(field.value, 'yyyy-MM-dd')}
-                      onChange={(e) =>
-                        field.onChange(new Date(e.target.value))
-                      }
+                    <DateTimePicker
+                      value={field.value}
+                      onChange={(date) => date && field.onChange(date)}
+                      placeholder="Select date and time"
+                      initialTime='10:00'
+                      allowClear={false}
                     />
                   </FormControl>
                   <FormMessage />

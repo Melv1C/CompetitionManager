@@ -204,7 +204,7 @@ export function CategoryFormDialog({
                       <FormMessage />
                     </FormItem>
                   )}
-                />{' '}
+                />
                 <FormField
                   control={form.control}
                   name="order"
@@ -227,7 +227,7 @@ export function CategoryFormDialog({
                       <FormMessage />
                     </FormItem>
                   )}
-                />{' '}
+                />
                 <FormField
                   control={form.control}
                   name="masterAgeGroup"
