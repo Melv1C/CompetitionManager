@@ -23,7 +23,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test": "vitest --run",
+    "test:dev": "vitest"
   },
   "dependencies": {
     "better-auth": "^1.2.9",
@@ -31,8 +33,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "@vitest/coverage-v8": "^3.2.3",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
   },
   "peerDependencies": {
     "zod": "^3.25.64"
