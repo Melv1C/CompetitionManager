@@ -12,7 +12,7 @@ export const Competition$ = z.object({
   id: Id$,
   eid: Cuid$,
   name: z.string(),
-  startDate: Date$,
+  startDate: z.date(),
   endDate: Date$.nullish(),
   isPublished: Boolean$.default(false),
   description: z.string().default(''),

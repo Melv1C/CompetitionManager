@@ -42,8 +42,8 @@ export const LogQuery$ = z.object({
     }
     return val;
   }, LogLevel$.array().default(LogLevel$.options)),
-  startDate: Date$.optional(),
-  endDate: Date$.optional(),
+  startDate: z.coerce.date().optional(),
+  endDate: z.coerce.date().optional(),
   limit: z.coerce.number().int().positive().max(1000).default(20),
   offset: z.coerce.number().int().nonnegative().default(0),
   search: z.string().optional(), // Search in message

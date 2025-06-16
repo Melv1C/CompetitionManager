@@ -6,10 +6,10 @@ import { Club$ } from './club';
 export const AthleteInfo$ = z.object({
   id: Id$,
   athleteId: Id$,
-  season: z.coerce.number().positive().min(2025), // Assuming season starts from 2025
+  season: z.number().positive().min(2025), // Assuming season starts from 2025
   clubId: Id$,
   club: Club$,
-  bib: z.coerce.number(),
+  bib: z.number(),
 });
 export type AthleteInfo = z.infer<typeof AthleteInfo$>;
 

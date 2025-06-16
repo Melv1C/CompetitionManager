@@ -113,10 +113,10 @@ npm run clean    # Clean dist directory
 Fundamental validation schemas used throughout the application:
 
 ```typescript
-export const Id$ = z.coerce.number().int().positive();
+export const Id$ = z.number().int().positive();
 export const BetterAuthId$ = z.string().regex(/^[A-Za-z0-9]{32}$/);
 export const Cuid$ = z.cuid();
-export const Date$ = z.coerce.date();
+export const Date$ = z.date();
 export const Email$ = z.email();
 export const Boolean$ = z.union([z.boolean(), z.stringbool()]);
 export const Gender$ = z.enum(['M', 'F']);

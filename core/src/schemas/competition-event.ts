@@ -9,8 +9,8 @@ export const CompetitionEvent$ = z.object({
   eid: Cuid$,
   name: z.string(),
   eventStartTime: Date$,
-  maxParticipants: z.coerce.number().int().nullish(),
-  price: z.coerce.number(),
+  maxParticipants: z.number().int().nullish(),
+  price: z.number(),
 
   createdAt: Date$,
   createdBy: BetterAuthId$,

@@ -78,7 +78,7 @@ eventsRoutes.put(
   requirePermissions({
     events: ['update'],
   }),
-  zValidator('param', z.object({ id: z.coerce.number() })),
+  zValidator('param', z.object({ id: Event$.shape.id })),
   zValidator('json', EventUpdate$),
   async (c) => {
     try {

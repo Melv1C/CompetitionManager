@@ -1,6 +1,6 @@
 import { z } from 'zod/v4';
 
-export const Id$ = z.coerce.number().int().positive();
+export const Id$ = z.number().int().positive();
 export type Id = z.infer<typeof Id$>;
 
 export const BetterAuthId$ = z
@@ -11,7 +11,11 @@ export type BetterAuthId = z.infer<typeof BetterAuthId$>;
 export const Cuid$ = z.cuid();
 export type Cuid = z.infer<typeof Cuid$>;
 
-export const Date$ = z.coerce.date();
+// Not use coerce because it can lead to unexpected behavior in react hook forms
+export const Date$ = z.union([
+  z.date(),
+  z.iso.datetime().transform((date) => new Date(date)),
+]);
 export type Date = z.infer<typeof Date$>;
 
 export const Email$ = z.email();
