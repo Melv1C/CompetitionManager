@@ -1,4 +1,6 @@
 import { render, screen } from '@testing-library/react';
+// Add this import to enable toBeInTheDocument matcher
+import '@testing-library/jest-dom';
 import { I18nextProvider } from 'react-i18next';
 import { MemoryRouter } from 'react-router-dom';
 import { beforeAll, describe, expect, it, vi } from 'vitest';
@@ -47,9 +49,11 @@ describe('SignInForm', () => {
       </TestWrapper>
     );
 
-    expect(screen.getByLabelText(/email/i)).toBeTruthy();
-    expect(screen.getByLabelText(/password/i)).toBeTruthy();
-    expect(screen.getByRole('button', { name: /sign in/i })).toBeTruthy();
-    expect(screen.getByText(/don't have an account\?/i)).toBeTruthy();
+    expect(screen.getByLabelText(/email/i)).toBeInTheDocument();
+    expect(screen.getByLabelText(/password/i)).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: /sign in/i })
+    ).toBeInTheDocument();
+    expect(screen.getByText(/don't have an account\?/i)).toBeInTheDocument();
   });
 });
