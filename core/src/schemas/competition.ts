@@ -66,3 +66,11 @@ export const CompetitionCreate$ = CompetitionPrismaCreate$.pick({
   startDate: true,
 });
 export type CompetitionCreate = z.infer<typeof CompetitionCreate$>;
+
+// Query schema for listing competitions
+export const CompetitionQuery$ = z.object({
+  upcoming: Boolean$.default(true),
+  past: Boolean$.default(true),
+  organizationId: BetterAuthId$.optional(),
+});
+export type CompetitionQuery = z.infer<typeof CompetitionQuery$>;
