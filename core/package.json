@@ -5,16 +5,16 @@
   "type": "module",
   "exports": {
     "./utils": {
-      "types": "./dist/utils/index.d.ts",
-      "import": "./dist/utils/index.js"
+      "types": "./dist/src/utils/index.d.ts",
+      "import": "./dist/src/utils/index.js"
     },
     "./schemas": {
-      "types": "./dist/schemas/index.d.ts",
-      "import": "./dist/schemas/index.js"
+      "types": "./dist/src/schemas/index.d.ts",
+      "import": "./dist/src/schemas/index.js"
     },
     "./types": {
-      "types": "./dist/types/socket.d.ts",
-      "import": "./dist/types/socket.js"
+      "types": "./dist/src/types/socket.d.ts",
+      "import": "./dist/src/types/socket.js"
     }
   },
   "files": [
@@ -23,7 +23,9 @@
   "scripts": {
     "build": "tsc",
     "dev": "tsc --watch",
-    "clean": "rimraf dist"
+    "clean": "rimraf dist",
+    "test": "vitest --run",
+    "test:dev": "vitest"
   },
   "dependencies": {
     "better-auth": "^1.2.9",
@@ -31,8 +33,10 @@
   },
   "devDependencies": {
     "@types/node": "^20.11.17",
+    "@vitest/coverage-v8": "^3.2.3",
     "rimraf": "^6.0.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "vitest": "^3.2.3"
   },
   "peerDependencies": {
     "zod": "^3.25.64"
