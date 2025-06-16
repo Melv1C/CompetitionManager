@@ -43,6 +43,8 @@ jobs:
         run: |
           cd backend
           npx prisma validate
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
       - name: Build backend
         run: |

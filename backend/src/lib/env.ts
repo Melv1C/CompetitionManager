@@ -23,6 +23,7 @@ const envSchema = z.object({
   ATHLETE_SYNC_SCHEDULE: z
     .enum(['@daily', '@hourly', '@weekly'])
     .default('@daily'),
+    
   LBFA_URL: z.url(),
   LBFA_USERNAME: z.string(),
   LBFA_PASSWORD: z.string(),
