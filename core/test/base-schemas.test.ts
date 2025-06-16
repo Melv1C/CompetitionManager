@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { BetterAuthId$, Gender$ } from '../src/schemas';
+import { BetterAuthId$, Gender$ } from '@/schemas';
 
 describe('base schemas', () => {
   it('validates BetterAuthId format', () => {

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { owner, organizationAdmin, resultManager } from '../src/utils/organization-permissions';
+import { owner, organizationAdmin, resultManager } from '@/utils/organization-permissions';
 
 describe('organization permissions', () => {
   it('owner should allow deleting competitions', () => {

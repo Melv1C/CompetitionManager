@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { ac, admin, user } from '../src/utils/permissions';
+import { ac, admin, user } from '@/utils/permissions';
 
 describe('permissions', () => {
   it('admin role should allow cleanup logs', () => {
@@ -8,7 +8,8 @@ describe('permissions', () => {
   });
 
   it('user role should not allow cleanup logs', () => {
-    const result = user.authorize({ logs: ['cleanup'] });
+    // TypeScript workaround: cast to any to test denied permission for logs
+    const result = user.authorize({ logs: ['cleanup'] } as any);
     expect(result.success).toBe(false);
   });
 
