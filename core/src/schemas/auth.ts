@@ -9,13 +9,13 @@ export const User$ = z.object({
   name: z.string(),
   email: Email$,
   emailVerified: Boolean$,
-  image: Url$.nullable(),
+  image: Url$.nullish(),
   createdAt: Date$,
   updatedAt: Date$,
   role: UserRole$.default('user'),
-  banned: Boolean$.nullable(),
-  banReason: z.string().nullable(),
-  banExpires: Date$.nullable(),
+  banned: Boolean$.nullish(),
+  banReason: z.string().nullish(),
+  banExpires: Date$.nullish(),
 });
 export type User = z.infer<typeof User$>;
 
@@ -25,10 +25,10 @@ export const Session$ = z.object({
   token: z.string(),
   createdAt: Date$,
   updatedAt: Date$,
-  ipAddress: z.string().nullable(),
-  userAgent: z.string().nullable(),
+  ipAddress: z.string().nullish(),
+  userAgent: z.string().nullish(),
   userId: BetterAuthId$,
-  impersonatedBy: BetterAuthId$.nullable(),
-  activeOrganizationId: BetterAuthId$.nullable(),
+  impersonatedBy: BetterAuthId$.nullish(),
+  activeOrganizationId: BetterAuthId$.nullish(),
 });
 export type Session = z.infer<typeof Session$>;

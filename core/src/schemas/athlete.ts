@@ -17,7 +17,6 @@ export const athleteInfoInclude = {
   club: true,
 };
 
-
 // Athlete base schema
 export const Athlete$ = z.object({
   id: Id$,
@@ -26,7 +25,7 @@ export const Athlete$ = z.object({
   lastName: z.string(),
   gender: Gender$,
   birthdate: Date$,
-  metadata: z.string().nullable(),
+  metadata: z.string().nullish(),
   createdAt: Date$,
   updatedAt: Date$,
   competitionId: Id$,
@@ -37,6 +36,6 @@ export type Athlete = z.infer<typeof Athlete$>;
 
 export const athleteInclude = {
   athleteInfo: {
-    include: athleteInfoInclude
+    include: athleteInfoInclude,
   },
 };

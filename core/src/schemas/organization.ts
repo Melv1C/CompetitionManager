@@ -4,14 +4,14 @@ import { BetterAuthId$, Date$, Email$, Url$ } from './base';
 export const Organization$ = z.object({
   id: BetterAuthId$,
   name: z.string(),
-  slug: z.string().nullable(),
-  logo: Url$.nullable(),
+  slug: z.string().nullish(),
+  logo: Url$.nullish(),
   createdAt: Date$,
-  metadata: z.string().nullable(),
+  metadata: z.string().nullish(),
 
-  contactEmail: Email$.nullable(),
-  contactPhone: z.string().nullable(),
-  website: Url$.nullable(),
+  contactEmail: Email$.nullish(),
+  contactPhone: z.string().nullish(),
+  website: Url$.nullish(),
 });
 export type Organization = z.infer<typeof Organization$>;
 
@@ -34,7 +34,7 @@ export const Invitation$ = z.object({
   id: BetterAuthId$,
   organizationId: BetterAuthId$,
   email: Email$,
-  role: MemberRole$.nullable(),
+  role: MemberRole$.nullish(),
   status: InvitationStatus$,
   expiresAt: Date$,
   inviterId: BetterAuthId$,

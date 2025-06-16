@@ -39,7 +39,7 @@ export const Category$ = z.object({
   baseCategory: BaseCategory$,
   abbrBaseCategory: AbbrBaseCategory$,
   gender: Gender$,
-  masterAgeGroup: z.number().nullable(),
+  masterAgeGroup: z.number().nullish(),
   order: z.number().positive(),
 });
 export type Category = z.infer<typeof Category$>;
