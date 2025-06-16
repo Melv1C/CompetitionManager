@@ -23,7 +23,9 @@ competitionsRoutes.get(
   async (c) => {
     try {
       const { upcoming, past, organizationId } = c.req.valid('query');
-      const where: Prisma.CompetitionWhereInput = {};
+      const where: Prisma.CompetitionWhereInput = {
+        isPublished: true,
+      };
       const now = new Date();
 
       if (upcoming && !past) {
