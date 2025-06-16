@@ -13,7 +13,7 @@ RUN npm install && npm run build
 
 # Install dependencies and build backend
 WORKDIR /usr/src/app/backend
-RUN npm install && npm run build
+RUN npm install && npm run build && npx prisma generate
 
 # ---- Runtime ----
 FROM node:18-slim
@@ -26,4 +26,4 @@ COPY --from=builder /usr/src/app/backend/prisma ./prisma
 COPY backend/package.json ./package.json
 
 EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && npx prisma generate && node dist/index.js"]
+CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
