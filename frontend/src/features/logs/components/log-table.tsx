@@ -426,8 +426,8 @@ export function LogTable({
           <TableHeader>
             <TableRow>
               <TableHead className="w-[100px]">Level</TableHead>
-              <TableHead>Message</TableHead>
-              <TableHead className="w-[200px]">Details</TableHead>
+              <TableHead className="w-[300px]">Message</TableHead>
+              <TableHead>Details</TableHead>
               <TableHead className="w-[180px]">Timestamp</TableHead>
               <TableHead className="w-[80px]">Actions</TableHead>
             </TableRow>

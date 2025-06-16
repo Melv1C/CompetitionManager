@@ -1,3 +1,4 @@
+import { loggerMiddleware } from '@/middleware/logger';
 import { Hono } from 'hono';
 import { authRoutes } from './auth';
 import { categoriesRoutes } from './categories';
@@ -11,8 +12,12 @@ import { logsRoutes } from './logs';
  */
 export function createApiRoutes() {
   const api = new Hono(); // Mount route modules
-  api.route('/auth', authRoutes);
   api.route('/logs', logsRoutes);
+  
+  // Global logging middleware for all API routes
+  api.use('/*', loggerMiddleware);
+  
+  api.route('/auth', authRoutes);
   api.route('/events', eventsRoutes);
   api.route('/categories', categoriesRoutes);
   api.route('/competitions', competitionsRoutes);

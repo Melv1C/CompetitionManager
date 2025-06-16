@@ -20,9 +20,6 @@ export function getAPI() {
     })
   );
 
-  // Global logging middleware for all API routes
-  app.use('/api/*', loggerMiddleware);
-
   // Mount all API routes under /api prefix
   const apiRoutes = createApiRoutes();
   app.route('/api', apiRoutes);
