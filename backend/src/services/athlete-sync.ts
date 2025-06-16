@@ -43,6 +43,18 @@ export class AthleteSyncService {
       return null;
     }
 
+    // Launch the initial sync immediately
+    this.prodLogger?.info('Initializing athlete sync service...');
+    try {
+      const initialResult = await this.syncAthletes();
+      this.prodLogger?.info('Initial athlete sync completed', initialResult);
+    } catch (error) {
+      this.prodLogger?.error('Error during initial athlete sync', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+      throw error;
+    }
+
     // Register the sync task
     scheduler.register({
       name: 'athlete-sync',

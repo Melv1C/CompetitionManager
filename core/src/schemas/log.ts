@@ -22,7 +22,7 @@ export const Log$ = z.object({
   id: Id$,
   level: LogLevel$,
   message: z.string(),
-  meta: z.string().nullable(),
+  meta: z.string().nullish(),
   timestamp: Date$,
 });
 export type Log = z.infer<typeof Log$>;

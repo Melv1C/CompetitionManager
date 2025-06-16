@@ -13,13 +13,13 @@ export const Competition$ = z.object({
   eid: Cuid$,
   name: z.string(),
   startDate: Date$,
-  endDate: Date$.nullable(),
+  endDate: Date$.nullish(),
   isPublished: Boolean$.default(false),
   description: z.string().default(''),
   location: z.string().default(''),
 
   bibPermissions: z.array(z.string()).default([]),
-  bibStartNumber: z.number().nullable(),
+  bibStartNumber: z.number().nullish(),
 
   isPaidOnline: Boolean$.default(true),
   isSelection: Boolean$.default(false),
@@ -57,6 +57,7 @@ export const CompetitionPrismaCreate$ = Competition$.omit({
   freeClubs: true,
   allowedClubs: true,
   events: true,
+  organization: true,
 });
 export type CompetitionPrismaCreate = z.infer<typeof CompetitionPrismaCreate$>;
 

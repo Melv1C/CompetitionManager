@@ -1,7 +1,7 @@
 import z from 'zod/v4';
 import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
-import { Event$ } from './event';
 import { Category$ } from './category';
+import { Event$ } from './event';
 
 // CompetitionEvent base schema
 export const CompetitionEvent$ = z.object({
@@ -9,7 +9,7 @@ export const CompetitionEvent$ = z.object({
   eid: Cuid$,
   name: z.string(),
   eventStartTime: Date$,
-  maxParticipants: z.coerce.number().int().nullable(),
+  maxParticipants: z.coerce.number().int().nullish(),
   price: z.coerce.number(),
 
   createdAt: Date$,
@@ -21,7 +21,7 @@ export const CompetitionEvent$ = z.object({
   eventId: Id$,
   event: Event$,
 
-  parentId: Id$.nullable(),
+  parentId: Id$.nullish(),
 
   categories: z.array(Category$).default([]),
 });
