@@ -5,7 +5,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
     "start": "node dist/index.js",
-    "test": "vitest"
+    "test:dev": "vitest",
+    "test": "vitest --run"
   },
   "dependencies": {
     "@competition-manager/core": "file:../core",
