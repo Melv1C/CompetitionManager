@@ -1,0 +1,65 @@
+name: Code Quality
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+          cache-dependency-path: |
+            core/package-lock.json
+            backend/package-lock.json
+            frontend/package-lock.json
+
+      - name: Install dependencies (core)
+        run: |
+          cd core
+          npm ci
+
+      - name: Build core
+        run: |
+          cd core
+          npm run build
+
+      - name: Install dependencies (backend)
+        run: |
+          cd backend
+          npm ci
+
+      - name: Check Prisma schema
+        run: |
+          cd backend
+          npx prisma validate
+
+      - name: Build backend
+        run: |
+          cd backend
+          npm run build
+
+      - name: Install dependencies (frontend)
+        run: |
+          cd frontend
+          npm ci
+
+      - name: Lint frontend
+        run: |
+          cd frontend
+          npm run lint
+
+      - name: Build frontend
+        run: |
+          cd frontend
+          npm run build
