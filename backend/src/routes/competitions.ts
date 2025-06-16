@@ -1,4 +1,4 @@
-import { prisma } from '@/lib/prisma';
+import { prisma, type Prisma } from '@/lib/prisma';
 import { requireOrganizationPermissions } from '@/middleware/access-control';
 import { requireAuth } from '@/middleware/auth';
 import { getRequiredSession, getRequiredUser } from '@/utils/auth-utils';
@@ -6,9 +6,9 @@ import { logError } from '@/utils/log-utils';
 import {
   Competition$,
   CompetitionCreate$,
-  CompetitionQuery$,
   competitionInclude,
   CompetitionPrismaCreate$,
+  CompetitionQuery$,
 } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
 import { logger } from 'better-auth';
@@ -23,7 +23,7 @@ competitionsRoutes.get(
   async (c) => {
     try {
       const { upcoming, past, organizationId } = c.req.valid('query');
-      const where: any = {};
+      const where: Prisma.CompetitionWhereInput = {};
       const now = new Date();
 
       if (upcoming && !past) {
