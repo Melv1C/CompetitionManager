@@ -58,6 +58,7 @@ function Calendar({
   );
 
   const defaultComponents = {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     Chevron: (props: any) => {
       if (props.orientation === "left") {
         return <ChevronLeft size={16} strokeWidth={2} {...props} aria-hidden="true" />;

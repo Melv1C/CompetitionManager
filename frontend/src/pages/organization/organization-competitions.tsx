@@ -1,4 +1,10 @@
+import { Button } from '@/components/ui/button';
+import { CreateCompetitionDialog } from '@/features/competitions';
+import { useState } from 'react';
+
 export function OrganizationCompetitions() {
+  const [dialogOpen, setDialogOpen] = useState(false);
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -8,9 +14,7 @@ export function OrganizationCompetitions() {
             Manage your organization's competitions and events.
           </p>
         </div>
-        <button className="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
-          Create Competition
-        </button>
+        <Button onClick={() => setDialogOpen(true)}>Create Competition</Button>
       </div>
 
       <div className="rounded-lg border">
@@ -58,6 +62,10 @@ export function OrganizationCompetitions() {
           </div>
         </div>
       </div>
+      <CreateCompetitionDialog
+        open={dialogOpen}
+        onOpenChange={setDialogOpen}
+      />
     </div>
   );
 }
