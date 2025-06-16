@@ -6,6 +6,7 @@ import { logError } from '@/utils/log-utils';
 import {
   Competition$,
   CompetitionCreate$,
+  CompetitionQuery$,
   competitionInclude,
   CompetitionPrismaCreate$,
 } from '@competition-manager/core/schemas';
@@ -14,6 +15,40 @@ import { logger } from 'better-auth';
 import { Hono } from 'hono';
 
 const competitionsRoutes = new Hono();
+
+// GET /competitions - Get competitions with optional filters (public)
+competitionsRoutes.get(
+  '/',
+  zValidator('query', CompetitionQuery$),
+  async (c) => {
+    try {
+      const { upcoming, past, organizationId } = c.req.valid('query');
+      const where: any = {};
+      const now = new Date();
+
+      if (upcoming && !past) {
+        where.startDate = { gte: now };
+      } else if (past && !upcoming) {
+        where.startDate = { lt: now };
+      }
+
+      if (organizationId) {
+        where.organizationId = organizationId;
+      }
+
+      const competitions = await prisma.competition.findMany({
+        where,
+        orderBy: { startDate: 'asc' },
+        include: competitionInclude,
+      });
+
+      return c.json(Competition$.array().parse(competitions));
+    } catch (error) {
+      logError('Failed to fetch competitions', error, c);
+      return c.json({ error: 'Failed to fetch competitions' }, 500);
+    }
+  }
+);
 
 // POST /competitions - Create new competition
 competitionsRoutes.post(
