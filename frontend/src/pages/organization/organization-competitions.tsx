@@ -1,9 +1,14 @@
 import { Button } from '@/components/ui/button';
-import { CreateCompetitionDialog } from '@/features/competitions';
+import {
+  CreateCompetitionDialog,
+  CompetitionsTable,
+  useOrganizationCompetitions,
+} from '@/features/competitions';
 import { useState } from 'react';
 
 export function OrganizationCompetitions() {
   const [dialogOpen, setDialogOpen] = useState(false);
+  const { data: competitions = [], isLoading } = useOrganizationCompetitions();
 
   return (
     <div className="space-y-6">
@@ -26,42 +31,13 @@ export function OrganizationCompetitions() {
           </p>
         </div>
         <div className="border-t p-4">
-          <div className="space-y-3">
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <div>
-                <h4 className="font-medium">Spring Championship 2025</h4>
-                <p className="text-sm text-muted-foreground">
-                  March 15-20, 2025 • 45 participants
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  View
-                </button>
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Edit
-                </button>
-              </div>
-            </div>
-            <div className="flex items-center justify-between rounded-lg border p-3">
-              <div>
-                <h4 className="font-medium">Youth Tournament</h4>
-                <p className="text-sm text-muted-foreground">
-                  Planning • Expected 30 participants
-                </p>
-              </div>
-              <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  View
-                </button>
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Edit
-                </button>
-              </div>
-            </div>
-          </div>
+          <CompetitionsTable
+            competitions={competitions}
+            isLoading={isLoading}
+          />
         </div>
       </div>
+
       <CreateCompetitionDialog
         open={dialogOpen}
         onOpenChange={setDialogOpen}
