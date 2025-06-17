@@ -16,27 +16,31 @@ import {
 } from 'react-router-dom';
 import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
-import {
-  AdminAnalytics,
-  AdminDashboard,
-  AdminDatabase,
-  AdminLogs,
-  AdminSettings,
-  Home,
-  NotFound,
-  SignInPage,
-  SignUpPage,
-} from './pages';
-import { AdminOrganizations } from './pages/admin/admin-organizations';
-import { AdminUsers } from './pages/admin/admin-users';
-import {
-  OrganizationAnalytics,
-  OrganizationCompetitions,
-  OrganizationDashboard,
-  OrganizationMembers,
-  OrganizationSettings,
-} from './pages/organization';
+import { lazy, Suspense } from 'react';
 
+const loadPage = (path: string, namedExport?: string) =>
+  lazy(() =>
+    import(`${path}`).then((m) => ({ default: namedExport ? m[namedExport] : m.default }))
+  );
+
+const Home = loadPage('./pages/Home');
+const NotFound = loadPage('./pages/NotFound');
+const SignInPage = loadPage('./pages/SignIn', 'SignInPage');
+const SignUpPage = loadPage('./pages/SignUp', 'SignUpPage');
+
+const AdminDashboard = loadPage('./pages/admin/AdminDashboard', 'AdminDashboard');
+const AdminUsers = loadPage('./pages/admin/admin-users', 'AdminUsers');
+const AdminOrganizations = loadPage('./pages/admin/admin-organizations', 'AdminOrganizations');
+const AdminDatabase = loadPage('./pages/admin/AdminDatabase', 'AdminDatabase');
+const AdminLogs = loadPage('./pages/admin/admin-logs', 'AdminLogs');
+const AdminAnalytics = loadPage('./pages/admin/AdminAnalytics', 'AdminAnalytics');
+const AdminSettings = loadPage('./pages/admin/AdminSettings', 'AdminSettings');
+
+const OrganizationDashboard = loadPage('./pages/organization/organization-dashboard', 'OrganizationDashboard');
+const OrganizationCompetitions = loadPage('./pages/organization/organization-competitions', 'OrganizationCompetitions');
+const OrganizationMembers = loadPage('./pages/organization/organization-members', 'OrganizationMembers');
+const OrganizationAnalytics = loadPage('./pages/organization/organization-analytics', 'OrganizationAnalytics');
+const OrganizationSettings = loadPage('./pages/organization/organization-settings', 'OrganizationSettings');
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -203,7 +207,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <RouterProvider router={router} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RouterProvider router={router} />
+        </Suspense>
         <Toaster />
         {/* <SocketStatusViewer /> */}
       </ThemeProvider>
