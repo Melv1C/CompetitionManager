@@ -1,11 +1,8 @@
 import {
   ac,
   admin,
-  organizationAc,
-  organizationAdmin,
   owner,
   resultManager,
-  user,
 } from '@competition-manager/core/utils';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
@@ -42,18 +39,12 @@ export const auth = betterAuth({
     enabled: true,
   },
   plugins: [
-    adminPlugin({
+    adminPlugin(),
+    organization({
       ac,
       roles: {
-        admin,
-        user,
-      },
-    }),
-    organization({
-      ac: organizationAc,
-      roles: {
         owner,
-        organizationAdmin,
+        admin,
         resultManager,
       },
       allowUserToCreateOrganization: async (user) => {

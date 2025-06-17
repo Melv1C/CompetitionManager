@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { requirePermissions } from '@/middleware/access-control';
-import { requireAuth } from '@/middleware/auth';
+import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
 import {
   Event$,
@@ -52,10 +51,7 @@ eventsRoutes.get(
 // POST /events - Create new event (admin only)
 eventsRoutes.post(
   '/',
-  requireAuth,
-  requirePermissions({
-    events: ['create'],
-  }),
+  requireAdmin,
   zValidator('json', EventCreate$),
   async (c) => {
     try {
@@ -74,10 +70,7 @@ eventsRoutes.post(
 // PUT /events/:id - Update event (admin only)
 eventsRoutes.put(
   '/:id',
-  requireAuth,
-  requirePermissions({
-    events: ['update'],
-  }),
+  requireAdmin,
   zValidator('param', z.object({ id: Event$.shape.id })),
   zValidator('json', EventUpdate$),
   async (c) => {
@@ -110,10 +103,7 @@ eventsRoutes.put(
 // DELETE /events/:id - Delete event (admin only)
 eventsRoutes.delete(
   '/:id',
-  requireAuth,
-  requirePermissions({
-    events: ['delete'],
-  }),
+  requireAdmin,
   zValidator('param', z.object({ id: Event$.shape.id })),
   async (c) => {
     try {

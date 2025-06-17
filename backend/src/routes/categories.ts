@@ -1,6 +1,5 @@
 import { prisma } from '@/lib/prisma';
-import { requirePermissions } from '@/middleware/access-control';
-import { requireAuth } from '@/middleware/auth';
+import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
 import {
   Category$,
@@ -52,10 +51,7 @@ categoriesRoutes.get(
 // POST /categories - Create new category (admin only)
 categoriesRoutes.post(
   '/',
-  requireAuth,
-  requirePermissions({
-    categories: ['create'],
-  }),
+  requireAdmin,
   zValidator('json', CategoryCreate$),
   async (c) => {
     try {
@@ -74,10 +70,7 @@ categoriesRoutes.post(
 // PUT /categories/:id - Update category (admin only)
 categoriesRoutes.put(
   '/:id',
-  requireAuth,
-  requirePermissions({
-    categories: ['update'],
-  }),
+  requireAdmin,
   zValidator('param', z.object({ id: Category$.shape.id })),
   zValidator('json', CategoryUpdate$),
   async (c) => {
@@ -110,10 +103,7 @@ categoriesRoutes.put(
 // DELETE /categories/:id - Delete category (admin only)
 categoriesRoutes.delete(
   '/:id',
-  requireAuth,
-  requirePermissions({
-    categories: ['delete'],
-  }),
+  requireAdmin,
   zValidator('param', z.object({ id: Category$.shape.id })),
   async (c) => {
     try {

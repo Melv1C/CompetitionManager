@@ -1,5 +1,5 @@
-import { describe, it, expect } from 'vitest';
-import { owner, organizationAdmin, resultManager } from '@/utils/organization-permissions';
+import { admin, owner, resultManager } from '@/utils/permissions';
+import { describe, expect, it } from 'vitest';
 
 describe('organization permissions', () => {
   it('owner should allow deleting competitions', () => {
@@ -8,7 +8,7 @@ describe('organization permissions', () => {
   });
 
   it('organizationAdmin should not allow deleting competitions', () => {
-    const result = organizationAdmin.authorize({ competitions: ['delete'] });
+    const result = admin.authorize({ competitions: ['delete'] });
     expect(result.success).toBe(false);
   });
 

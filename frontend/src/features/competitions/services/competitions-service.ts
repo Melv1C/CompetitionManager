@@ -4,7 +4,7 @@ import { Competition$ } from '@competition-manager/core/schemas';
 
 export class CompetitionsService {
   static async createCompetition(data: CompetitionCreate): Promise<Competition> {
-    const response = await apiClient.post('/api/competitions', data);
+    const response = await apiClient.post('/api/organization/competitions', data);
     return Competition$.parse(response.data);
   }
 }

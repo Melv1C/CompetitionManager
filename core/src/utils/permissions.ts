@@ -2,7 +2,7 @@ import {
   createAccessControl,
   type AccessControl,
 } from 'better-auth/plugins/access';
-import { adminAc, defaultStatements } from 'better-auth/plugins/admin/access';
+import { adminAc, defaultStatements } from 'better-auth/plugins/organization/access';
 
 /**
  * Define custom permissions for the application
@@ -10,10 +10,9 @@ import { adminAc, defaultStatements } from 'better-auth/plugins/admin/access';
  */
 export const statement = {
   ...defaultStatements,
-  logs: ['read', 'cleanup'],
-  inscriptions: ['create', 'update', 'delete'],
-  events: ['create', 'update', 'delete'],
-  categories: ['create', 'update', 'delete'],
+  competitions: ['read', 'create', 'update', 'delete'],
+  inscriptions: ['read', 'create', 'update', 'delete'],
+  results: ['read', 'create', 'update', 'delete'],
 } as const;
 
 // Create access control instance
@@ -38,14 +37,22 @@ export type PermissionCheck = {
 /**
  * Define roles with specific permissions
  */
-export const admin = ac.newRole({
+export const owner = ac.newRole({
   ...adminAc.statements,
-  logs: ['read', 'cleanup'],
-  inscriptions: ['create', 'update', 'delete'],
-  events: ['create', 'update', 'delete'],
-  categories: ['create', 'update', 'delete'],
+  competitions: ['read', 'create', 'update', 'delete'],
+  inscriptions: ['read', 'create', 'update', 'delete'],
+  results: ['read', 'create', 'update', 'delete'],
 });
 
-export const user = ac.newRole({
-  inscriptions: ['create', 'update', 'delete'],
+export const admin = ac.newRole({
+  ...adminAc.statements,
+  competitions: ['read', 'create', 'update'],
+  inscriptions: ['read', 'create', 'update', 'delete'],
+  results: ['read', 'create', 'update', 'delete'],
+});
+
+export const resultManager = ac.newRole({
+  results: ['read', 'create', 'update', 'delete'],
+  competitions: ['read'],
+  inscriptions: ['read'],
 });
