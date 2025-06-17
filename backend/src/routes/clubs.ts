@@ -100,7 +100,6 @@ clubsRoutes.delete(
 
       const dependencies = await prisma.$transaction([
         prisma.athleteInfo.count({ where: { clubId: id } }),
-        prisma.competition.count({ where: { clubs: { some: { id } } } }),
         prisma.competition.count({ where: { freeClubs: { some: { id } } } }),
         prisma.competition.count({ where: { allowedClubs: { some: { id } } } }),
       ]);
