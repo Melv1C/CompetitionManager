@@ -16,26 +16,54 @@ import {
 } from 'react-router-dom';
 import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
-import {
-  AdminAnalytics,
-  AdminDashboard,
-  AdminDatabase,
-  AdminLogs,
-  AdminSettings,
-  Home,
-  NotFound,
-  SignInPage,
-  SignUpPage,
-} from './pages';
-import { AdminOrganizations } from './pages/admin/admin-organizations';
-import { AdminUsers } from './pages/admin/admin-users';
-import {
-  OrganizationAnalytics,
-  OrganizationCompetitions,
-  OrganizationDashboard,
-  OrganizationMembers,
-  OrganizationSettings,
-} from './pages/organization';
+import { lazy, Suspense } from 'react';
+
+const Home = lazy(() => import('./pages/Home'));
+const NotFound = lazy(() => import('./pages/NotFound'));
+const SignInPage = lazy(() =>
+  import('./pages/SignIn').then((m) => ({ default: m.SignInPage }))
+);
+const SignUpPage = lazy(() =>
+  import('./pages/SignUp').then((m) => ({ default: m.SignUpPage }))
+);
+
+const AdminDashboard = lazy(() =>
+  import('./pages/admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
+);
+const AdminUsers = lazy(() =>
+  import('./pages/admin/admin-users').then((m) => ({ default: m.AdminUsers }))
+);
+const AdminOrganizations = lazy(() =>
+  import('./pages/admin/admin-organizations').then((m) => ({ default: m.AdminOrganizations }))
+);
+const AdminDatabase = lazy(() =>
+  import('./pages/admin/AdminDatabase').then((m) => ({ default: m.AdminDatabase }))
+);
+const AdminLogs = lazy(() =>
+  import('./pages/admin/admin-logs').then((m) => ({ default: m.AdminLogs }))
+);
+const AdminAnalytics = lazy(() =>
+  import('./pages/admin/AdminAnalytics').then((m) => ({ default: m.AdminAnalytics }))
+);
+const AdminSettings = lazy(() =>
+  import('./pages/admin/AdminSettings').then((m) => ({ default: m.AdminSettings }))
+);
+
+const OrganizationDashboard = lazy(() =>
+  import('./pages/organization/organization-dashboard').then((m) => ({ default: m.OrganizationDashboard }))
+);
+const OrganizationCompetitions = lazy(() =>
+  import('./pages/organization/organization-competitions').then((m) => ({ default: m.OrganizationCompetitions }))
+);
+const OrganizationMembers = lazy(() =>
+  import('./pages/organization/organization-members').then((m) => ({ default: m.OrganizationMembers }))
+);
+const OrganizationAnalytics = lazy(() =>
+  import('./pages/organization/organization-analytics').then((m) => ({ default: m.OrganizationAnalytics }))
+);
+const OrganizationSettings = lazy(() =>
+  import('./pages/organization/organization-settings').then((m) => ({ default: m.OrganizationSettings }))
+);
 
 // Create a QueryClient instance
 const queryClient = new QueryClient({
@@ -203,7 +231,9 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <RouterProvider router={router} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <RouterProvider router={router} />
+        </Suspense>
         <Toaster />
         {/* <SocketStatusViewer /> */}
       </ThemeProvider>
