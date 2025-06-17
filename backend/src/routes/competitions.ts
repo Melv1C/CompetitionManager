@@ -2,6 +2,7 @@ import { prisma, type Prisma } from '@/lib/prisma';
 import { requireOrganizationPermissions } from '@/middleware/access-control';
 import { requireAuth } from '@/middleware/auth';
 import { getRequiredSession, getRequiredUser } from '@/utils/auth-utils';
+import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
 import {
   Competition$,
@@ -37,14 +38,12 @@ competitionsRoutes.get(
       if (organizationId) {
         where.organizationId = organizationId;
       }
-
-      const competitions = await prisma.competition.findMany({
+      const competitions = await getCompetitions({
         where,
         orderBy: { startDate: 'asc' },
-        include: competitionInclude,
       });
 
-      return c.json(Competition$.array().parse(competitions));
+      return c.json(competitions);
     } catch (error) {
       logError('Failed to fetch competitions', error, c);
       return c.json({ error: 'Failed to fetch competitions' }, 500);
@@ -63,12 +62,10 @@ competitionsRoutes.post(
   async (c) => {
     try {
       const { name, startDate } = c.req.valid('json');
-      const user = await getRequiredUser(c);
       const session = await getRequiredSession(c);
 
       if (!session.activeOrganizationId) {
         logger.error('No active organization found for user', {
-          user,
           session,
         });
         return c.json({ error: 'No active organization found' }, 400);
@@ -77,8 +74,8 @@ competitionsRoutes.post(
         name,
         startDate: new Date(startDate),
         organizationId: session.activeOrganizationId,
-        createdBy: user.id,
-        updatedBy: user.id,
+        createdBy: session.userId,
+        updatedBy: session.userId,
       });
 
       const competition = await prisma.competition.create({

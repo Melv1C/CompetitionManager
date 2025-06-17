@@ -5,6 +5,7 @@ import { categoriesRoutes } from './categories';
 import { competitionsRoutes } from './competitions';
 import { eventsRoutes } from './events';
 import { logsRoutes } from './logs';
+import { organizationRoutes } from './organization';
 
 /**
  * Creates and configures all API routes
@@ -13,14 +14,14 @@ import { logsRoutes } from './logs';
 export function createApiRoutes() {
   const api = new Hono(); // Mount route modules
   api.route('/logs', logsRoutes);
-  
+
   // Global logging middleware for all API routes
   api.use('/*', loggerMiddleware);
-  
   api.route('/auth', authRoutes);
   api.route('/events', eventsRoutes);
   api.route('/categories', categoriesRoutes);
   api.route('/competitions', competitionsRoutes);
+  api.route('/organization', organizationRoutes);
 
   return api;
 }
