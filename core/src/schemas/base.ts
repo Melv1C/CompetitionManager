@@ -3,6 +3,9 @@ import { z } from 'zod/v4';
 export const Id$ = z.number().int().positive();
 export type Id = z.infer<typeof Id$>;
 
+export const ParameterId$ = z.coerce.number().int().positive();
+export type ParameterId = z.infer<typeof ParameterId$>;
+
 export const BetterAuthId$ = z
   .string()
   .regex(/^[A-Za-z0-9]{32}$/, 'Invalid Better Auth ID format');

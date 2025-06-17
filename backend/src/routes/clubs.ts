@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
-import { Club$, ClubCreate$, ClubUpdate$ } from '@competition-manager/core/schemas';
+import { Club$, ClubCreate$, ClubUpdate$, ParameterId$ } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
@@ -24,7 +24,7 @@ clubsRoutes.get('/', async (c) => {
 // GET /clubs/:id - Get club by ID (public)
 clubsRoutes.get(
   '/:id',
-  zValidator('param', z.object({ id: Club$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   async (c) => {
     try {
       const { id } = c.req.valid('param');
@@ -63,7 +63,7 @@ clubsRoutes.post(
 clubsRoutes.put(
   '/:id',
   requireAdmin,
-  zValidator('param', z.object({ id: Club$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   zValidator('json', ClubUpdate$),
   async (c) => {
     try {
@@ -88,7 +88,7 @@ clubsRoutes.put(
 clubsRoutes.delete(
   '/:id',
   requireAdmin,
-  zValidator('param', z.object({ id: Club$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   async (c) => {
     try {
       const { id } = c.req.valid('param');

@@ -5,6 +5,7 @@ import {
   Category$,
   CategoryCreate$,
   CategoryUpdate$,
+  ParameterId$,
 } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -28,7 +29,7 @@ categoriesRoutes.get('/', async (c) => {
 // GET /categories/:id - Get category by ID (public)
 categoriesRoutes.get(
   '/:id',
-  zValidator('param', z.object({ id: Category$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   async (c) => {
     try {
       const { id } = c.req.valid('param');
@@ -71,7 +72,7 @@ categoriesRoutes.post(
 categoriesRoutes.put(
   '/:id',
   requireAdmin,
-  zValidator('param', z.object({ id: Category$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   zValidator('json', CategoryUpdate$),
   async (c) => {
     try {
@@ -104,7 +105,7 @@ categoriesRoutes.put(
 categoriesRoutes.delete(
   '/:id',
   requireAdmin,
-  zValidator('param', z.object({ id: Category$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   async (c) => {
     try {
       const { id } = c.req.valid('param');

@@ -5,6 +5,7 @@ import {
   Event$,
   EventCreate$,
   EventUpdate$,
+  ParameterId$,
 } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
@@ -28,7 +29,7 @@ eventsRoutes.get('/', async (c) => {
 // GET /events/:id - Get event by ID (public)
 eventsRoutes.get(
   '/:id',
-  zValidator('param', z.object({ id: Event$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   async (c) => {
     try {
       const { id } = c.req.valid('param');
@@ -71,7 +72,7 @@ eventsRoutes.post(
 eventsRoutes.put(
   '/:id',
   requireAdmin,
-  zValidator('param', z.object({ id: Event$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   zValidator('json', EventUpdate$),
   async (c) => {
     try {
@@ -104,7 +105,7 @@ eventsRoutes.put(
 eventsRoutes.delete(
   '/:id',
   requireAdmin,
-  zValidator('param', z.object({ id: Event$.shape.id })),
+  zValidator('param', z.object({ id: ParameterId$ })),
   async (c) => {
     try {
       const { id } = c.req.valid('param');
