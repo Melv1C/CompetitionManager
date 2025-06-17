@@ -13,3 +13,11 @@ export const Club$ = z.object({
   fedAbbr: z.string().nullish(),
 });
 export type Club = z.infer<typeof Club$>;
+
+// Club create schema (omit id)
+export const ClubCreate$ = Club$.omit({ id: true });
+export type ClubCreate = z.infer<typeof ClubCreate$>;
+
+// Club update schema (all fields optional except id)
+export const ClubUpdate$ = ClubCreate$.partial();
+export type ClubUpdate = z.infer<typeof ClubUpdate$>;
