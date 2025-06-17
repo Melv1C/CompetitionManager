@@ -223,7 +223,6 @@ model Club {
   fedAbbr           String?
 
   athletesInfo      AthleteInfo[]
-  competitions      Competition[]
   freeCompetitions  Competition[] @relation("FreeClubsToCompetitions")
   allowedCompetitions   Competition[] @relation("AllowedClubsToCompetitions")
   // inscriptions     Inscription[]
@@ -314,7 +313,6 @@ model Competition {
 
   events              CompetitionEvent[]
   athletes            Athlete[]
-  clubs               Club[]
   // inscriptions        Inscription[]
   // results             Result[]
 

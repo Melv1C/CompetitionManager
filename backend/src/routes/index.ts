@@ -4,6 +4,7 @@ import { authRoutes } from './auth';
 import { categoriesRoutes } from './categories';
 import { competitionsRoutes } from './competitions';
 import { eventsRoutes } from './events';
+import { clubsRoutes } from './clubs';
 import { logsRoutes } from './logs';
 import { organizationRoutes } from './organization';
 
@@ -20,6 +21,7 @@ export function createApiRoutes() {
   api.route('/auth', authRoutes);
   api.route('/events', eventsRoutes);
   api.route('/categories', categoriesRoutes);
+  api.route('/clubs', clubsRoutes);
   api.route('/competitions', competitionsRoutes);
   api.route('/organization', organizationRoutes);
 
