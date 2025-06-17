@@ -32,6 +32,7 @@ export class ServiceManager {
       lbfaUrl: env.LBFA_URL,
       lbfaUsername: env.LBFA_USERNAME,
       lbfaPassword: env.LBFA_PASSWORD,
+      useMock: env.ATHLETE_SYNC_USE_MOCK,
     });
 
     if (env.NODE_ENV === 'production') {

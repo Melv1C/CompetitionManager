@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma';
 import axios from 'axios';
 import type { Logger } from 'winston';
 import { scheduler } from './scheduler';
+import mockAthletesData from '@/data/mock-athletes.json';
 
 export interface AthleteSyncConfig {
   enabled: boolean;
@@ -10,6 +11,7 @@ export interface AthleteSyncConfig {
   lbfaUrl: string;
   lbfaUsername: string;
   lbfaPassword: string;
+  useMock: boolean;
 }
 
 export interface AthleteSyncResult {
@@ -103,9 +105,23 @@ export class AthleteSyncService {
     updated: number;
     skipped: number;
   }> {
-    const { data } = await axios.get(
-      this.config.lbfaUrl,
-      {
+    let athletes: Array<{
+      license: string;
+      bib: number;
+      firstName: string;
+      lastName: string;
+      gender: string;
+      birthdate: Date;
+      clubAbbr: string;
+    }> = [];
+
+    if (this.config.useMock) {
+      athletes = mockAthletesData.map((a) => ({
+        ...a,
+        birthdate: new Date(a.birthdate),
+      }));
+    } else {
+      const { data } = await axios.get(this.config.lbfaUrl, {
         headers: {
           'User-Agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -119,33 +135,37 @@ export class AthleteSyncService {
           username: this.config.lbfaUsername,
           password: this.config.lbfaPassword,
         },
-      }
-    );
+      });
 
-    const lines = data.split('\n');
+      const lines = data.split('\n');
+      for (let i = 1; i < lines.length; i++) {
+        const line = lines[i].split('\t');
+        if (parseInt(line[0]) <= 10000) {
+          continue;
+        }
+        athletes.push({
+          license: line[0],
+          bib: parseInt(line[1]),
+          firstName: line[3],
+          lastName: line[4],
+          gender: line[5],
+          birthdate: new Date(line[6]),
+          clubAbbr: line[9],
+        });
+      }
+    }
+
     const currentSeason = new Date().getFullYear();
 
     let created = 0;
     let updated = 0;
     let skipped = 0;
 
-    for (let i = 1; i < lines.length; i++) {
-      const line = lines[i].split('\t');
-      
-      if (parseInt(line[0]) <= 10000) {
+    for (const athleteData of athletes) {
+      if (parseInt(athleteData.license) <= 10000) {
         skipped++;
         continue;
       }
-
-      const athleteData = {
-        license: line[0],
-        bib: parseInt(line[1]),
-        firstName: line[3],
-        lastName: line[4],
-        gender: line[5],
-        birthdate: new Date(line[6]),
-        clubAbbr: line[9],
-      };
 
       // Validate athlete data
       if (!this.isValidAthlete(athleteData)) {

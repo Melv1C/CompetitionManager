@@ -1,0 +1,47 @@
+[
+  {
+    "license": "10001",
+    "bib": 1,
+    "firstName": "Alice",
+    "lastName": "Durand",
+    "gender": "F",
+    "birthdate": "2000-01-15",
+    "clubAbbr": "NA"
+  },
+  {
+    "license": "10002",
+    "bib": 2,
+    "firstName": "Bob",
+    "lastName": "Martin",
+    "gender": "M",
+    "birthdate": "1998-05-20",
+    "clubAbbr": "FRA"
+  },
+  {
+    "license": "10003",
+    "bib": 3,
+    "firstName": "Claire",
+    "lastName": "Verde",
+    "gender": "F",
+    "birthdate": "1995-09-10",
+    "clubAbbr": "NA"
+  },
+  {
+    "license": "10004",
+    "bib": 4,
+    "firstName": "David",
+    "lastName": "Blanc",
+    "gender": "M",
+    "birthdate": "2002-12-05",
+    "clubAbbr": "FRA"
+  },
+  {
+    "license": "10005",
+    "bib": 5,
+    "firstName": "Eva",
+    "lastName": "Noir",
+    "gender": "F",
+    "birthdate": "1997-07-30",
+    "clubAbbr": "NA"
+  }
+]
