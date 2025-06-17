@@ -1,0 +1,13 @@
+{
+  "github.copilot.chat.codeGeneration.instructions": [
+    {
+      "file": "README.md",
+    },
+    {
+      "file": "backend/prisma/schema.prisma",
+    },
+    {
+      "file": "docs/mcp.md",
+    }
+  ]
+}
