@@ -18,53 +18,29 @@ import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
 import { lazy, Suspense } from 'react';
 
-const Home = lazy(() => import('./pages/Home'));
-const NotFound = lazy(() => import('./pages/NotFound'));
-const SignInPage = lazy(() =>
-  import('./pages/SignIn').then((m) => ({ default: m.SignInPage }))
-);
-const SignUpPage = lazy(() =>
-  import('./pages/SignUp').then((m) => ({ default: m.SignUpPage }))
-);
+const loadPage = (path: string, namedExport?: string) =>
+  lazy(() =>
+    import(`${path}`).then((m) => ({ default: namedExport ? m[namedExport] : m.default }))
+  );
 
-const AdminDashboard = lazy(() =>
-  import('./pages/admin/AdminDashboard').then((m) => ({ default: m.AdminDashboard }))
-);
-const AdminUsers = lazy(() =>
-  import('./pages/admin/admin-users').then((m) => ({ default: m.AdminUsers }))
-);
-const AdminOrganizations = lazy(() =>
-  import('./pages/admin/admin-organizations').then((m) => ({ default: m.AdminOrganizations }))
-);
-const AdminDatabase = lazy(() =>
-  import('./pages/admin/AdminDatabase').then((m) => ({ default: m.AdminDatabase }))
-);
-const AdminLogs = lazy(() =>
-  import('./pages/admin/admin-logs').then((m) => ({ default: m.AdminLogs }))
-);
-const AdminAnalytics = lazy(() =>
-  import('./pages/admin/AdminAnalytics').then((m) => ({ default: m.AdminAnalytics }))
-);
-const AdminSettings = lazy(() =>
-  import('./pages/admin/AdminSettings').then((m) => ({ default: m.AdminSettings }))
-);
+const Home = loadPage('./pages/Home');
+const NotFound = loadPage('./pages/NotFound');
+const SignInPage = loadPage('./pages/SignIn', 'SignInPage');
+const SignUpPage = loadPage('./pages/SignUp', 'SignUpPage');
 
-const OrganizationDashboard = lazy(() =>
-  import('./pages/organization/organization-dashboard').then((m) => ({ default: m.OrganizationDashboard }))
-);
-const OrganizationCompetitions = lazy(() =>
-  import('./pages/organization/organization-competitions').then((m) => ({ default: m.OrganizationCompetitions }))
-);
-const OrganizationMembers = lazy(() =>
-  import('./pages/organization/organization-members').then((m) => ({ default: m.OrganizationMembers }))
-);
-const OrganizationAnalytics = lazy(() =>
-  import('./pages/organization/organization-analytics').then((m) => ({ default: m.OrganizationAnalytics }))
-);
-const OrganizationSettings = lazy(() =>
-  import('./pages/organization/organization-settings').then((m) => ({ default: m.OrganizationSettings }))
-);
+const AdminDashboard = loadPage('./pages/admin/AdminDashboard', 'AdminDashboard');
+const AdminUsers = loadPage('./pages/admin/admin-users', 'AdminUsers');
+const AdminOrganizations = loadPage('./pages/admin/admin-organizations', 'AdminOrganizations');
+const AdminDatabase = loadPage('./pages/admin/AdminDatabase', 'AdminDatabase');
+const AdminLogs = loadPage('./pages/admin/admin-logs', 'AdminLogs');
+const AdminAnalytics = loadPage('./pages/admin/AdminAnalytics', 'AdminAnalytics');
+const AdminSettings = loadPage('./pages/admin/AdminSettings', 'AdminSettings');
 
+const OrganizationDashboard = loadPage('./pages/organization/organization-dashboard', 'OrganizationDashboard');
+const OrganizationCompetitions = loadPage('./pages/organization/organization-competitions', 'OrganizationCompetitions');
+const OrganizationMembers = loadPage('./pages/organization/organization-members', 'OrganizationMembers');
+const OrganizationAnalytics = loadPage('./pages/organization/organization-analytics', 'OrganizationAnalytics');
+const OrganizationSettings = loadPage('./pages/organization/organization-settings', 'OrganizationSettings');
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
