@@ -21,6 +21,7 @@ import {
 } from '@competition-manager/core/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import z from 'zod/v4';
 import { useCreateCompetition } from '../hooks/use-competitions';
 
 interface CreateCompetitionDialogProps {
@@ -41,7 +42,11 @@ export function CreateCompetitionDialog({
   };
 
   const form = useForm<CompetitionCreate>({
-    resolver: zodResolver(CompetitionCreate$),
+    resolver: zodResolver(
+      CompetitionCreate$.extend({
+        startDate: z.date(), // Need to ensure startDate only accepts Date objects
+      }),
+    ),
     defaultValues: {
       name: '',
       startDate: getDefaultStartDate(),
@@ -88,7 +93,7 @@ export function CreateCompetitionDialog({
                       value={field.value}
                       onChange={(date) => date && field.onChange(date)}
                       placeholder="Select date and time"
-                      initialTime='10:00'
+                      initialTime="10:00"
                       allowClear={false}
                     />
                   </FormControl>

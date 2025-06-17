@@ -1,9 +1,19 @@
 import { apiClient } from '@/lib/api-client';
-import type { Competition, CompetitionCreate } from '@competition-manager/core/schemas';
+import type { CompetitionCreate } from '@competition-manager/core/schemas';
 import { Competition$ } from '@competition-manager/core/schemas';
 
 export class CompetitionsService {
-  static async createCompetition(data: CompetitionCreate): Promise<Competition> {
+  static async getCompetitions() {
+    const response = await apiClient.get('/api/competitions');
+    return Competition$.array().parse(response.data);
+  }
+
+  static async getOrganizationCompetitions() {
+    const response = await apiClient.get('/api/organization/competitions');
+    return Competition$.array().parse(response.data);
+  }
+
+  static async createCompetition(data: CompetitionCreate) {
     const response = await apiClient.post('/api/organization/competitions', data);
     return Competition$.parse(response.data);
   }
