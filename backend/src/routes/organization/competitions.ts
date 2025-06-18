@@ -6,12 +6,15 @@ import { logError } from '@/utils/log-utils';
 import {
   Competition$,
   CompetitionCreate$,
+  CompetitionUpdate$,
   CompetitionPrismaCreate$,
+  Cuid$,
   competitionInclude,
 } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
 import { logger } from 'better-auth';
 import { Hono } from 'hono';
+import { z } from 'zod/v4';
 
 const organizationCompetitionsRoutes = new Hono();
 
@@ -85,6 +88,64 @@ organizationCompetitionsRoutes.post(
     } catch (error) {
       logError('Failed to create competition', error, c);
       return c.json({ error: 'Failed to create competition' }, 500);
+    }
+  }
+);
+
+// POST /organization/competitions/:eid - Update existing competition
+organizationCompetitionsRoutes.post(
+  '/:eid',
+  requirePermissions({
+    competitions: ['update'],
+  }),
+  zValidator('param', z.object({ eid: Cuid$ })),
+  zValidator('json', CompetitionUpdate$),
+  async (c) => {
+    try {
+      const { eid } = c.req.valid('param');
+      const updateBody = c.req.valid('json');
+      const session = await getRequiredSession(c);
+
+      if (!session.activeOrganizationId) {
+        logger.error('No active organization found for user', {
+          session,
+        });
+        return c.json({ error: 'No active organization found' }, 400);
+      }
+
+      const competition = await prisma.competition.findFirst({
+        where: { eid, organizationId: session.activeOrganizationId },
+      });
+
+      if (!competition) {
+        return c.json({ error: 'Competition not found' }, 404);
+      }
+
+      const { freeClubIds, allowedClubIds, ...updateData } = updateBody;
+
+      const data: Record<string, unknown> = {
+        ...updateData,
+        updatedBy: session.userId,
+      };
+
+      if (freeClubIds) {
+        data.freeClubs = { set: freeClubIds.map((id) => ({ id })) };
+      }
+
+      if (allowedClubIds) {
+        data.allowedClubs = { set: allowedClubIds.map((id) => ({ id })) };
+      }
+
+      const updatedCompetition = await prisma.competition.update({
+        where: { eid },
+        data,
+        include: competitionInclude,
+      });
+
+      return c.json(Competition$.parse(updatedCompetition));
+    } catch (error) {
+      logError('Failed to update competition', error, c);
+      return c.json({ error: 'Failed to update competition' }, 500);
     }
   }
 );
