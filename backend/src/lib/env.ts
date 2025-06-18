@@ -17,6 +17,13 @@ const envSchema = z.object({
   // Database seeding configuration
   DB_SEED_ENABLED: z.stringbool().default(true),
   DB_SEED_FORCE_RESEED: z.stringbool().default(false),
+  DB_SEED_USERS_ENABLED: z.stringbool().default(false),
+  DB_SEED_ADMIN_EMAIL: z.string().optional(),
+  DB_SEED_ADMIN_PASSWORD: z.string().optional(),
+  DB_SEED_ADMIN_NAME: z.string().default('Admin'),
+  DB_SEED_USER_EMAIL: z.string().optional(),
+  DB_SEED_USER_PASSWORD: z.string().optional(),
+  DB_SEED_USER_NAME: z.string().default('User'),
 
   // Athlete sync configuration
   ATHLETE_SYNC_ENABLED: z.stringbool().default(true),

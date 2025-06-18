@@ -5,10 +5,12 @@ import { AthleteSyncService } from './athlete-sync';
 import { LogCleanupService } from './log-cleanup';
 import { scheduler } from './scheduler';
 import { SeedService } from './seed';
+import { UserSeedService } from './user-seed';
 
 export class ServiceManager {
   private logCleanupService: LogCleanupService;
   private seedService: SeedService;
+  private userSeedService: UserSeedService;
   private athleteSyncService: AthleteSyncService;
   private isInitialized = false;
   private prodLogger: Logger | null = null;
@@ -24,6 +26,10 @@ export class ServiceManager {
     this.seedService = new SeedService({
       enabled: env.DB_SEED_ENABLED,
       forceReseed: env.DB_SEED_FORCE_RESEED,
+    });
+
+    this.userSeedService = new UserSeedService({
+      enabled: env.DB_SEED_USERS_ENABLED,
     });
 
     this.athleteSyncService = new AthleteSyncService({
@@ -54,6 +60,7 @@ export class ServiceManager {
       // Initialize log cleanup service
       this.logCleanupService.initialize(); // Initialize database seeding
       await this.seedService.initialize();
+      await this.userSeedService.initialize();
 
       // Initialize athlete sync service
       await this.athleteSyncService.initialize();
@@ -102,6 +109,10 @@ export class ServiceManager {
   getSeedService(): SeedService {
     return this.seedService;
   }
+
+  getUserSeedService(): UserSeedService {
+    return this.userSeedService;
+  }
   /**
    * Get athlete sync service instance for manual operations
    */
@@ -119,6 +130,7 @@ export class ServiceManager {
         scheduler: this.isInitialized,
         logCleanup: this.logCleanupService.getConfig().enabled,
         seeding: this.seedService.getConfig().enabled,
+        userSeeding: this.userSeedService.getConfig().enabled,
         athleteSync: this.athleteSyncService.getConfig().enabled,
       },
     };

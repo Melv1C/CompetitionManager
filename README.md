@@ -91,6 +91,11 @@ LOG_CLEANUP_SCHEDULE=@daily
 # Database seeding
 DB_SEED_ENABLED=true
 DB_SEED_FORCE_RESEED=false
+DB_SEED_USERS_ENABLED=false
+DB_SEED_ADMIN_EMAIL=admin@example.com
+DB_SEED_ADMIN_PASSWORD=admin123
+DB_SEED_USER_EMAIL=user@example.com
+DB_SEED_USER_PASSWORD=user123
 
 # Athlete sync with LBFA (Belgian Athletics Federation)
 ATHLETE_SYNC_ENABLED=true
