@@ -5,9 +5,11 @@ import {
   OrganizationLayout,
   OrganizationSkeleton,
 } from '@/components/layout';
+import { Skeleton } from '@/components/ui/skeleton';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { lazy, Suspense } from 'react';
 import {
   createBrowserRouter,
   Outlet,
@@ -16,31 +18,94 @@ import {
 } from 'react-router-dom';
 import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
-import { lazy, Suspense } from 'react';
 
-const loadPage = (path: string, namedExport?: string) =>
-  lazy(() =>
-    import(`${path}`).then((m) => ({ default: namedExport ? m[namedExport] : m.default }))
-  );
+// Static import mapping for Vite's build-time analysis
+const pageImports = {
+  // Main pages
+  Home: () => import('./pages/Home'),
+  NotFound: () => import('./pages/NotFound'),
+  SignIn: () =>
+    import('./pages/SignIn').then((m) => ({ default: m.SignInPage })),
+  SignUp: () =>
+    import('./pages/SignUp').then((m) => ({ default: m.SignUpPage })),
 
-const Home = loadPage('./pages/Home');
-const NotFound = loadPage('./pages/NotFound');
-const SignInPage = loadPage('./pages/SignIn', 'SignInPage');
-const SignUpPage = loadPage('./pages/SignUp', 'SignUpPage');
+  // Admin pages
+  AdminDashboard: () =>
+    import('./pages/admin/AdminDashboard').then((m) => ({
+      default: m.AdminDashboard,
+    })),
+  AdminUsers: () =>
+    import('./pages/admin/admin-users').then((m) => ({
+      default: m.AdminUsers,
+    })),
+  AdminOrganizations: () =>
+    import('./pages/admin/admin-organizations').then((m) => ({
+      default: m.AdminOrganizations,
+    })),
+  AdminDatabase: () =>
+    import('./pages/admin/AdminDatabase').then((m) => ({
+      default: m.AdminDatabase,
+    })),
+  AdminLogs: () =>
+    import('./pages/admin/admin-logs').then((m) => ({ default: m.AdminLogs })),
+  AdminAnalytics: () =>
+    import('./pages/admin/AdminAnalytics').then((m) => ({
+      default: m.AdminAnalytics,
+    })),
+  AdminSettings: () =>
+    import('./pages/admin/AdminSettings').then((m) => ({
+      default: m.AdminSettings,
+    })),
 
-const AdminDashboard = loadPage('./pages/admin/AdminDashboard', 'AdminDashboard');
-const AdminUsers = loadPage('./pages/admin/admin-users', 'AdminUsers');
-const AdminOrganizations = loadPage('./pages/admin/admin-organizations', 'AdminOrganizations');
-const AdminDatabase = loadPage('./pages/admin/AdminDatabase', 'AdminDatabase');
-const AdminLogs = loadPage('./pages/admin/admin-logs', 'AdminLogs');
-const AdminAnalytics = loadPage('./pages/admin/AdminAnalytics', 'AdminAnalytics');
-const AdminSettings = loadPage('./pages/admin/AdminSettings', 'AdminSettings');
+  // Organization pages
+  OrganizationDashboard: () =>
+    import('./pages/organization/organization-dashboard').then((m) => ({
+      default: m.OrganizationDashboard,
+    })),
+  OrganizationCompetitions: () =>
+    import('./pages/organization/organization-competitions').then((m) => ({
+      default: m.OrganizationCompetitions,
+    })),
+  OrganizationMembers: () =>
+    import('./pages/organization/organization-members').then((m) => ({
+      default: m.OrganizationMembers,
+    })),
+  OrganizationAnalytics: () =>
+    import('./pages/organization/organization-analytics').then((m) => ({
+      default: m.OrganizationAnalytics,
+    })),
+  OrganizationSettings: () =>
+    import('./pages/organization/organization-settings').then((m) => ({
+      default: m.OrganizationSettings,
+    })),
+} as const;
 
-const OrganizationDashboard = loadPage('./pages/organization/organization-dashboard', 'OrganizationDashboard');
-const OrganizationCompetitions = loadPage('./pages/organization/organization-competitions', 'OrganizationCompetitions');
-const OrganizationMembers = loadPage('./pages/organization/organization-members', 'OrganizationMembers');
-const OrganizationAnalytics = loadPage('./pages/organization/organization-analytics', 'OrganizationAnalytics');
-const OrganizationSettings = loadPage('./pages/organization/organization-settings', 'OrganizationSettings');
+// Helper function to create lazy components from static imports
+function createLazyComponent(key: keyof typeof pageImports) {
+  return lazy(pageImports[key]);
+}
+
+// Create lazy components
+const Home = createLazyComponent('Home');
+const NotFound = createLazyComponent('NotFound');
+const SignInPage = createLazyComponent('SignIn');
+const SignUpPage = createLazyComponent('SignUp');
+
+const AdminDashboard = createLazyComponent('AdminDashboard');
+const AdminUsers = createLazyComponent('AdminUsers');
+const AdminOrganizations = createLazyComponent('AdminOrganizations');
+const AdminDatabase = createLazyComponent('AdminDatabase');
+const AdminLogs = createLazyComponent('AdminLogs');
+const AdminAnalytics = createLazyComponent('AdminAnalytics');
+const AdminSettings = createLazyComponent('AdminSettings');
+
+const OrganizationDashboard = createLazyComponent('OrganizationDashboard');
+const OrganizationCompetitions = createLazyComponent(
+  'OrganizationCompetitions'
+);
+const OrganizationMembers = createLazyComponent('OrganizationMembers');
+const OrganizationAnalytics = createLazyComponent('OrganizationAnalytics');
+const OrganizationSettings = createLazyComponent('OrganizationSettings');
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -203,11 +268,40 @@ const router = createBrowserRouter([
   },
 ]);
 
+// Loading skeleton component for page transitions
+function PageLoadingSkeleton() {
+  return (
+    <div className="flex flex-col min-h-screen">
+      {/* Header skeleton */}
+      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+        <div className="container flex h-14 items-center">
+          <Skeleton className="h-6 w-32" />
+          <div className="ml-auto flex items-center space-x-4">
+            <Skeleton className="h-8 w-8 rounded-full" />
+            <Skeleton className="h-8 w-20" />
+          </div>
+        </div>
+      </div>
+
+      {/* Main content skeleton */}
+      <div className="flex-1 container mx-auto px-4 py-6">
+        <div className="space-y-4">
+          <Skeleton className="h-8 w-1/3" />
+          <Skeleton className="h-48 w-full" />
+          <Skeleton className="h-48 w-full" />
+          <Skeleton className="h-48 w-full" />
+        </div>
+      </div>
+    </div>
+
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <Suspense fallback={<div>Loading...</div>}>
+        <Suspense fallback={<PageLoadingSkeleton />}>
           <RouterProvider router={router} />
         </Suspense>
         <Toaster />
