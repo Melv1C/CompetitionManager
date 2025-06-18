@@ -95,6 +95,7 @@ DB_SEED_FORCE_RESEED=false
 # Athlete sync with LBFA (Belgian Athletics Federation)
 ATHLETE_SYNC_ENABLED=true
 ATHLETE_SYNC_SCHEDULE=@daily
+ATHLETE_SYNC_USE_MOCK=false
 LBFA_URL=https://api.lbfa.be
 LBFA_USERNAME=your-lbfa-username
 LBFA_PASSWORD=your-lbfa-password

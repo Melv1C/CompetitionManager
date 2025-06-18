@@ -1,0 +1,632 @@
+[
+  {
+    "license": "10001",
+    "bib": 1001,
+    "firstName": "Alice",
+    "lastName": "Durand",
+    "gender": "F",
+    "birthdate": "2018-03-15",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10002",
+    "bib": 1002,
+    "firstName": "Bob",
+    "lastName": "Martin",
+    "gender": "M",
+    "birthdate": "2017-05-20",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10003",
+    "bib": 1003,
+    "firstName": "Claire",
+    "lastName": "Verde",
+    "gender": "F",
+    "birthdate": "2016-09-10",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10004",
+    "bib": 1004,
+    "firstName": "David",
+    "lastName": "Blanc",
+    "gender": "M",
+    "birthdate": "2015-12-05",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10005",
+    "bib": 1005,
+    "firstName": "Eva",
+    "lastName": "Noir",
+    "gender": "F",
+    "birthdate": "2014-07-30",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10006",
+    "bib": 1006,
+    "firstName": "Felix",
+    "lastName": "Rouge",
+    "gender": "M",
+    "birthdate": "2013-04-12",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10007",
+    "bib": 1007,
+    "firstName": "Grace",
+    "lastName": "Bleu",
+    "gender": "F",
+    "birthdate": "2012-11-08",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10008",
+    "bib": 1008,
+    "firstName": "Hugo",
+    "lastName": "Jaune",
+    "gender": "M",
+    "birthdate": "2011-06-25",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10009",
+    "bib": 1009,
+    "firstName": "Iris",
+    "lastName": "Violet",
+    "gender": "F",
+    "birthdate": "2010-02-14",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10010",
+    "bib": 1010,
+    "firstName": "Jack",
+    "lastName": "Orange",
+    "gender": "M",
+    "birthdate": "2009-08-30",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10011",
+    "bib": 1011,
+    "firstName": "Kara",
+    "lastName": "Rose",
+    "gender": "F",
+    "birthdate": "2008-12-18",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10012",
+    "bib": 1012,
+    "firstName": "Liam",
+    "lastName": "Argent",
+    "gender": "M",
+    "birthdate": "2007-10-03",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10013",
+    "bib": 1013,
+    "firstName": "Maya",
+    "lastName": "Doré",
+    "gender": "F",
+    "birthdate": "2006-01-27",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10014",
+    "bib": 1014,
+    "firstName": "Noah",
+    "lastName": "Cuivre",
+    "gender": "M",
+    "birthdate": "2005-07-19",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10015",
+    "bib": 1015,
+    "firstName": "Olivia",
+    "lastName": "Bronze",
+    "gender": "F",
+    "birthdate": "2004-04-22",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10016",
+    "bib": 1016,
+    "firstName": "Paul",
+    "lastName": "Platine",
+    "gender": "M",
+    "birthdate": "2003-09-11",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10017",
+    "bib": 1017,
+    "firstName": "Quinn",
+    "lastName": "Emeraude",
+    "gender": "F",
+    "birthdate": "2002-05-07",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10018",
+    "bib": 1018,
+    "firstName": "Ryan",
+    "lastName": "Saphir",
+    "gender": "M",
+    "birthdate": "2001-11-16",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10019",
+    "bib": 1019,
+    "firstName": "Sofia",
+    "lastName": "Rubis",
+    "gender": "F",
+    "birthdate": "2000-03-29",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10020",
+    "bib": 1020,
+    "firstName": "Thomas",
+    "lastName": "Diamant",
+    "gender": "M",
+    "birthdate": "1999-08-14",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10021",
+    "bib": 1021,
+    "firstName": "Uma",
+    "lastName": "Perle",
+    "gender": "F",
+    "birthdate": "1998-12-23",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10022",
+    "bib": 1022,
+    "firstName": "Victor",
+    "lastName": "Cristal",
+    "gender": "M",
+    "birthdate": "1997-06-01",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10023",
+    "bib": 1023,
+    "firstName": "Willow",
+    "lastName": "Jade",
+    "gender": "F",
+    "birthdate": "1996-10-15",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10024",
+    "bib": 1024,
+    "firstName": "Xavier",
+    "lastName": "Opale",
+    "gender": "M",
+    "birthdate": "1995-02-28",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10025",
+    "bib": 1025,
+    "firstName": "Yara",
+    "lastName": "Améthyste",
+    "gender": "F",
+    "birthdate": "1994-07-09",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10026",
+    "bib": 1026,
+    "firstName": "Zack",
+    "lastName": "Turquoise",
+    "gender": "M",
+    "birthdate": "1993-01-13",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10027",
+    "bib": 1027,
+    "firstName": "Aria",
+    "lastName": "Corail",
+    "gender": "F",
+    "birthdate": "1992-04-26",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10028",
+    "bib": 1028,
+    "firstName": "Blake",
+    "lastName": "Ivoire",
+    "gender": "M",
+    "birthdate": "1991-09-17",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10029",
+    "bib": 1029,
+    "firstName": "Celia",
+    "lastName": "Nacre",
+    "gender": "F",
+    "birthdate": "1990-11-04",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10030",
+    "bib": 1030,
+    "firstName": "Dylan",
+    "lastName": "Ambre",
+    "gender": "M",
+    "birthdate": "1989-03-21",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10031",
+    "bib": 1031,
+    "firstName": "Emma",
+    "lastName": "Onyx",
+    "gender": "F",
+    "birthdate": "1988-08-08",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10032",
+    "bib": 1032,
+    "firstName": "Finn",
+    "lastName": "Granite",
+    "gender": "M",
+    "birthdate": "1987-12-12",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10033",
+    "bib": 1033,
+    "firstName": "Gina",
+    "lastName": "Marbre",
+    "gender": "F",
+    "birthdate": "1986-05-18",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10034",
+    "bib": 1034,
+    "firstName": "Henri",
+    "lastName": "Quartz",
+    "gender": "M",
+    "birthdate": "1985-10-25",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10035",
+    "bib": 1035,
+    "firstName": "Ines",
+    "lastName": "Obsidienne",
+    "gender": "F",
+    "birthdate": "1984-02-14",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10036",
+    "bib": 1036,
+    "firstName": "Jasper",
+    "lastName": "Slate",
+    "gender": "M",
+    "birthdate": "1983-07-31",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10037",
+    "bib": 1037,
+    "firstName": "Kira",
+    "lastName": "Schiste",
+    "gender": "F",
+    "birthdate": "1982-01-09",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10038",
+    "bib": 1038,
+    "firstName": "Luke",
+    "lastName": "Basalte",
+    "gender": "M",
+    "birthdate": "1981-06-24",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10039",
+    "bib": 1039,
+    "firstName": "Mila",
+    "lastName": "Gneiss",
+    "gender": "F",
+    "birthdate": "1980-11-11",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10040",
+    "bib": 1040,
+    "firstName": "Nate",
+    "lastName": "Feldspath",
+    "gender": "M",
+    "birthdate": "1979-04-03",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10041",
+    "bib": 1041,
+    "firstName": "Océane",
+    "lastName": "Mica",
+    "gender": "F",
+    "birthdate": "1978-09-19",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10042",
+    "bib": 1042,
+    "firstName": "Pedro",
+    "lastName": "Silex",
+    "gender": "M",
+    "birthdate": "1977-12-07",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10043",
+    "bib": 1043,
+    "firstName": "Quincy",
+    "lastName": "Calcaire",
+    "gender": "F",
+    "birthdate": "1976-03-16",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10044",
+    "bib": 1044,
+    "firstName": "Rico",
+    "lastName": "Grès",
+    "gender": "M",
+    "birthdate": "1975-08-02",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10045",
+    "bib": 1045,
+    "firstName": "Sara",
+    "lastName": "Argile",
+    "gender": "F",
+    "birthdate": "1974-01-28",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10046",
+    "bib": 1046,
+    "firstName": "Theo",
+    "lastName": "Ardoise",
+    "gender": "M",
+    "birthdate": "1973-06-15",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10047",
+    "bib": 1047,
+    "firstName": "Una",
+    "lastName": "Craie",
+    "gender": "F",
+    "birthdate": "1972-11-21",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10048",
+    "bib": 1048,
+    "firstName": "Vince",
+    "lastName": "Gypse",
+    "gender": "M",
+    "birthdate": "1971-04-10",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10049",
+    "bib": 1049,
+    "firstName": "Wendy",
+    "lastName": "Talc",
+    "gender": "F",
+    "birthdate": "1970-09-29",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10050",
+    "bib": 1050,
+    "firstName": "Xander",
+    "lastName": "Kaolin",
+    "gender": "M",
+    "birthdate": "1969-12-18",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10051",
+    "bib": 1051,
+    "firstName": "Yvette",
+    "lastName": "Silice",
+    "gender": "F",
+    "birthdate": "1968-05-05",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10052",
+    "bib": 1052,
+    "firstName": "Zane",
+    "lastName": "Vermiculite",
+    "gender": "M",
+    "birthdate": "1967-10-22",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10053",
+    "bib": 1053,
+    "firstName": "Ana",
+    "lastName": "Perlite",
+    "gender": "F",
+    "birthdate": "1966-02-11",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10054",
+    "bib": 1054,
+    "firstName": "Ben",
+    "lastName": "Zeolite",
+    "gender": "M",
+    "birthdate": "1965-07-28",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10055",
+    "bib": 1055,
+    "firstName": "Cara",
+    "lastName": "Bentonite",
+    "gender": "F",
+    "birthdate": "1964-01-14",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10056",
+    "bib": 1056,
+    "firstName": "Dean",
+    "lastName": "Montmorillonite",
+    "gender": "M",
+    "birthdate": "1963-06-03",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10057",
+    "bib": 1057,
+    "firstName": "Elena",
+    "lastName": "Andalousite",
+    "gender": "F",
+    "birthdate": "1962-08-17",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10058",
+    "bib": 1058,
+    "firstName": "Fabien",
+    "lastName": "Staurolite",
+    "gender": "M",
+    "birthdate": "1961-03-30",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10059",
+    "bib": 1059,
+    "firstName": "Gabrielle",
+    "lastName": "Kyanite",
+    "gender": "F",
+    "birthdate": "1960-11-12",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10060",
+    "bib": 1060,
+    "firstName": "Hector",
+    "lastName": "Sillimanite",
+    "gender": "M",
+    "birthdate": "1959-04-25",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10061",
+    "bib": 101,
+    "firstName": "Isabella",
+    "lastName": "Cordierite",
+    "gender": "F",
+    "birthdate": "1958-09-08",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10062",
+    "bib": 102,
+    "firstName": "Jean",
+    "lastName": "Grenat",
+    "gender": "M",
+    "birthdate": "1957-12-21",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10063",
+    "bib": 103,
+    "firstName": "Katya",
+    "lastName": "Epidote",
+    "gender": "F",
+    "birthdate": "1956-07-04",
+    "clubAbbr": "KAAG"
+  },
+  {
+    "license": "10064",
+    "bib": 104,
+    "firstName": "Lorenzo",
+    "lastName": "Actinote",
+    "gender": "M",
+    "birthdate": "1955-01-16",
+    "clubAbbr": "USTA"
+  },
+  {
+    "license": "10065",
+    "bib": 105,
+    "firstName": "Monica",
+    "lastName": "Zoisite",
+    "gender": "F",
+    "birthdate": "1954-05-29",
+    "clubAbbr": "RESC"
+  },
+  {
+    "license": "10066",
+    "bib": 106,
+    "firstName": "Nicolas",
+    "lastName": "Clinozoisite",
+    "gender": "M",
+    "birthdate": "1953-10-11",
+    "clubAbbr": "HERV"
+  },
+  {
+    "license": "10067",
+    "bib": 107,
+    "firstName": "Olga",
+    "lastName": "Vesuvianite",
+    "gender": "F",
+    "birthdate": "1952-02-23",
+    "clubAbbr": "CSDY"
+  },
+  {
+    "license": "10068",
+    "bib": 108,
+    "firstName": "Philippe",
+    "lastName": "Diopside",
+    "gender": "M",
+    "birthdate": "1951-08-06",
+    "clubAbbr": "ATH"
+  },
+  {
+    "license": "10069",
+    "bib": 109,
+    "firstName": "Rachelle",
+    "lastName": "Hedenbergite",
+    "gender": "F",
+    "birthdate": "1950-12-19",
+    "clubAbbr": "VS"
+  },
+  {
+    "license": "10070",
+    "bib": 110,
+    "firstName": "Samuel",
+    "lastName": "Augite",
+    "gender": "M",
+    "birthdate": "1950-03-14",
+    "clubAbbr": "KAAG"
+  }
+]
