@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
+import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$, ParameterId$ } from './base';
 import { Club$ } from './club';
 import {
   CompetitionEvent$,
@@ -66,6 +66,14 @@ export const CompetitionCreate$ = CompetitionPrismaCreate$.pick({
   startDate: true,
 });
 export type CompetitionCreate = z.infer<typeof CompetitionCreate$>;
+
+// Competition update schema (all fields optional from CompetitionCreate)
+// Competition update schema (all updatable fields optional)
+export const CompetitionUpdate$ = CompetitionPrismaCreate$.partial().extend({
+  freeClubIds: z.array(ParameterId$).optional(),
+  allowedClubIds: z.array(ParameterId$).optional(),
+});
+export type CompetitionUpdate = z.infer<typeof CompetitionUpdate$>;
 
 // Query schema for listing competitions
 export const CompetitionQuery$ = z.object({
