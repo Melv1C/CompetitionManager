@@ -1,3 +1,4 @@
+import { Password$, User$ } from '@competition-manager/core/schemas';
 import 'dotenv/config';
 import { z } from 'zod/v4';
 
@@ -14,9 +15,19 @@ const envSchema = z.object({
     .enum(['@daily', '@hourly', '@weekly'])
     .default('@daily'),
   LOG_CLEANUP_MAX_PER_RUN: z.coerce.number().optional(),
+
   // Database seeding configuration
   DB_SEED_ENABLED: z.stringbool().default(true),
   DB_SEED_FORCE_RESEED: z.stringbool().default(false),
+
+  // User seeding configuration
+  DB_SEED_USERS_ENABLED: z.stringbool().default(false),
+  DB_SEED_ADMIN_EMAIL: User$.shape.email.optional(),
+  DB_SEED_ADMIN_PASSWORD: Password$.optional(),
+  DB_SEED_ADMIN_NAME: User$.shape.name.optional(),
+  DB_SEED_USER_EMAIL: User$.shape.email.optional(),
+  DB_SEED_USER_PASSWORD: Password$.optional(),
+  DB_SEED_USER_NAME: User$.shape.name.optional(),
 
   // Athlete sync configuration
   ATHLETE_SYNC_ENABLED: z.stringbool().default(true),
@@ -24,7 +35,7 @@ const envSchema = z.object({
     .enum(['@daily', '@hourly', '@weekly'])
     .default('@daily'),
   ATHLETE_SYNC_USE_MOCK: z.stringbool().default(false),
-    
+
   LBFA_URL: z.url(),
   LBFA_USERNAME: z.string(),
   LBFA_PASSWORD: z.string(),

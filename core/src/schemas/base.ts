@@ -32,3 +32,6 @@ export type Url = z.infer<typeof Url$>;
 
 export const Gender$ = z.enum(['M', 'F']);
 export type Gender = z.infer<typeof Gender$>;
+
+export const Password$ = z.string().min(8, 'Password must be at least 8 characters long');
+export type Password = z.infer<typeof Password$>;

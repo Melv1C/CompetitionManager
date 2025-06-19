@@ -20,10 +20,10 @@ export class ServiceManager {
       cronExpression: env.LOG_CLEANUP_SCHEDULE,
       maxLogsPerCleanup: env.LOG_CLEANUP_MAX_PER_RUN,
     });
-
     this.seedService = new SeedService({
       enabled: env.DB_SEED_ENABLED,
       forceReseed: env.DB_SEED_FORCE_RESEED,
+      usersEnabled: env.DB_SEED_USERS_ENABLED,
     });
 
     this.athleteSyncService = new AthleteSyncService({

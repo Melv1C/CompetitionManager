@@ -1,13 +1,17 @@
 import categoriesData from '@/data/categories.json';
 import clubsData from '@/data/clubs.json';
 import eventsData from '@/data/events.json';
+import { auth } from '@/lib/auth';
+import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
+import { UserRole$ } from '@competition-manager/core/schemas';
 import type { Logger } from 'winston';
 
 export interface SeedConfig {
   enabled: boolean;
   forceReseed?: boolean;
+  usersEnabled?: boolean;
 }
 
 export interface SeedResult {
@@ -20,6 +24,10 @@ export interface SeedResult {
     skipped: number;
   };
   clubs: {
+    created: number;
+    skipped: number;
+  };
+  users: {
     created: number;
     skipped: number;
   };
@@ -51,7 +59,6 @@ export class SeedService {
 
     return result;
   }
-
   /**
    * Main seeding function
    */
@@ -60,10 +67,16 @@ export class SeedService {
       events: { created: 0, skipped: 0 },
       categories: { created: 0, skipped: 0 },
       clubs: { created: 0, skipped: 0 },
+      users: { created: 0, skipped: 0 },
     };
 
     try {
-      // Seed clubs first
+      // Seed users first (if enabled)
+      if (this.config.usersEnabled && env.DB_SEED_USERS_ENABLED) {
+        result.users = await this.seedUsers();
+      }
+
+      // Seed clubs
       result.clubs = await this.seedClubs();
 
       // Seed events
@@ -275,6 +288,131 @@ export class SeedService {
       return { created, skipped };
     } catch (error) {
       logger.error('Error seeding clubs', {
+        error: error instanceof Error ? error.message : 'Unknown error',
+      });
+      throw error;
+    }
+  }
+  /**
+   * Seed users (admin and regular user) from environment variables
+   */
+  private async seedUsers(): Promise<{ created: number; skipped: number }> {
+    try {
+      let created = 0;
+      let skipped = 0;
+
+      // Seed admin user
+      if (
+        env.DB_SEED_ADMIN_EMAIL &&
+        env.DB_SEED_ADMIN_PASSWORD &&
+        env.DB_SEED_ADMIN_NAME
+      ) {
+
+        // Check if admin user already exists
+        const existingAdmin = await prisma.user.findUnique({
+          where: { email: env.DB_SEED_ADMIN_EMAIL },
+        });
+
+        if (existingAdmin) {
+          logger.info('Admin user already exists, skipping', {
+            email: env.DB_SEED_ADMIN_EMAIL,
+          });
+          skipped++;
+        } else {
+          try {
+            // Create new admin user using Better Auth
+            const result = await auth.api.signUpEmail({
+              body: {
+                name: env.DB_SEED_ADMIN_NAME,
+                email: env.DB_SEED_ADMIN_EMAIL,
+                password: env.DB_SEED_ADMIN_PASSWORD,
+              },
+            });
+
+            if (result.user) {
+              // Update role to admin
+              await prisma.user.update({
+                where: { id: result.user.id },
+                data: {
+                  role: UserRole$.enum.admin,
+                  emailVerified: true,
+                },
+              });
+
+              logger.info('Created admin user', {
+                email: env.DB_SEED_ADMIN_EMAIL,
+                name: env.DB_SEED_ADMIN_NAME,
+                id: result.user.id,
+              });
+              created++;
+            }
+          } catch (error) {
+            logger.error('Error creating admin user', {
+              email: env.DB_SEED_ADMIN_EMAIL,
+              error: error instanceof Error ? error.message : 'Unknown error',
+            });
+          }
+        }
+      }
+
+      // Seed regular user
+      if (
+        env.DB_SEED_USER_EMAIL &&
+        env.DB_SEED_USER_PASSWORD &&
+        env.DB_SEED_USER_NAME
+      ) {;
+
+        // Check if regular user already exists
+        const existingUser = await prisma.user.findUnique({
+          where: { email: env.DB_SEED_USER_EMAIL },
+        });
+
+        if (existingUser) {
+          logger.info('Regular user already exists, skipping', {
+            email: env.DB_SEED_USER_EMAIL,
+          });
+          skipped++;
+        } else {
+          try {
+            // Create new regular user using Better Auth
+            const result = await auth.api.signUpEmail({
+              body: {
+                name: env.DB_SEED_USER_NAME,
+                email: env.DB_SEED_USER_EMAIL,
+                password: env.DB_SEED_USER_PASSWORD,
+              },
+            });
+
+            if (result.user) {
+              // Ensure user role and verified email
+              await prisma.user.update({
+                where: { id: result.user.id },
+                data: {
+                  role: UserRole$.enum.user,
+                  emailVerified: true,
+                },
+              });
+
+              logger.info('Created regular user', {
+                email: env.DB_SEED_USER_EMAIL,
+                name: env.DB_SEED_USER_NAME,
+                id: result.user.id,
+              });
+              created++;
+            }
+          } catch (error) {
+            logger.error('Error creating regular user', {
+              email: env.DB_SEED_USER_EMAIL,
+              error: error instanceof Error ? error.message : 'Unknown error',
+            });
+          }
+        }
+      }
+
+      this.prodLogger?.info('Users seeding completed', { created, skipped });
+      return { created, skipped };
+    } catch (error) {
+      logger.error('Error seeding users', {
         error: error instanceof Error ? error.message : 'Unknown error',
       });
       throw error;
