@@ -92,8 +92,8 @@ organizationCompetitionsRoutes.post(
   }
 );
 
-// POST /organization/competitions/:eid - Update existing competition
-organizationCompetitionsRoutes.post(
+// PUT /organization/competitions/:eid - Update existing competition
+organizationCompetitionsRoutes.put(
   '/:eid',
   requirePermissions({
     competitions: ['update'],
