@@ -1,10 +1,6 @@
 import { apiClient } from '@/lib/api-client';
-import type {
-  Club,
-  ClubCreate,
-  ClubUpdate,
-} from '@competition-manager/core/schemas';
-import { Club$ } from '@competition-manager/core/schemas';
+import type { Club, ClubCreate, ClubUpdate } from '@repo/core/schemas';
+import { Club$ } from '@repo/core/schemas';
 
 export class ClubsService {
   static async getClubs(): Promise<Club[]> {

@@ -1,4 +1,4 @@
-import { Password$, User$ } from '@competition-manager/core/schemas';
+import { Password$, User$ } from '@repo/core/schemas';
 import 'dotenv/config';
 import { z } from 'zod/v4';
 

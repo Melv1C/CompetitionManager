@@ -3,7 +3,7 @@ import type {
   ErrorData,
   NotificationData,
   ServerToClientEvents,
-} from '@competition-manager/core/types';
+} from '@repo/core/types';
 import { io, Socket } from 'socket.io-client';
 
 export type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;

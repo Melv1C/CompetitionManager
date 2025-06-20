@@ -1,5 +1,5 @@
 {
-  "name": "@competition-manager/core",
+  "name": "@repo/core",
   "version": "1.0.0",
   "description": "Core functionality for the Competition Manager application, including utilities, schemas, and types.",
   "type": "module",

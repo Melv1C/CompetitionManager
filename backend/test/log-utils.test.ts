@@ -1,13 +1,8 @@
 import { logger } from '@/lib/logger';
 import { getUser } from '@/utils/auth-utils';
 import { cleanOldLogs, logError, queryLogs } from '@/utils/log-utils';
-import {
-  LogLevel$,
-  User$,
-  UserRole$,
-  type LogQuery,
-} from '@competition-manager/core/schemas';
 import type { User } from '@generated/prisma';
+import { LogLevel$, UserRole$, type LogQuery } from '@repo/core/schemas';
 import type { Context } from 'hono';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 

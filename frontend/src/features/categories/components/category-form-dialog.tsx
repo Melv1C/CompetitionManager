@@ -22,6 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
   AbbrBaseCategory$,
   BaseCategory$,
@@ -31,8 +32,7 @@ import {
   type Category,
   type CategoryCreate,
   type CategoryUpdate,
-} from '@competition-manager/core/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
 import { useCreateCategory, useUpdateCategory } from '../hooks/use-categories';
 

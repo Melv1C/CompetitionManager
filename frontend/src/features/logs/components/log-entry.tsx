@@ -2,7 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { type Log } from '@competition-manager/core/schemas';
+import { type Log } from '@repo/core/schemas';
 import { format } from 'date-fns';
 import { ChevronDown, ChevronRight, Clock, Code, Copy } from 'lucide-react';
 import { useState } from 'react';

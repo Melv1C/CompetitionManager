@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import type { Log } from '@competition-manager/core/schemas';
+import type { Log } from '@repo/core/schemas';
 import { Download } from 'lucide-react';
 import { toast } from 'sonner';
 

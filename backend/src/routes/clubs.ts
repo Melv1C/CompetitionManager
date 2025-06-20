@@ -1,8 +1,13 @@
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
-import { Club$, ClubCreate$, ClubUpdate$, ParameterId$ } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
+import {
+  Club$,
+  ClubCreate$,
+  ClubUpdate$,
+  ParameterId$,
+} from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
 

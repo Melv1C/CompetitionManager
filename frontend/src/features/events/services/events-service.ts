@@ -1,10 +1,6 @@
 import { apiClient } from '@/lib/api-client';
-import type {
-  Event,
-  EventCreate,
-  EventUpdate,
-} from '@competition-manager/core/schemas';
-import { Event$ } from '@competition-manager/core/schemas';
+import type { Event, EventCreate, EventUpdate } from '@repo/core/schemas';
+import { Event$ } from '@repo/core/schemas';
 
 export class EventsService {
   static async getEvents(): Promise<Event[]> {

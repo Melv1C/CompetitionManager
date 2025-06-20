@@ -15,11 +15,8 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  CompetitionCreate$,
-  type CompetitionCreate,
-} from '@competition-manager/core/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { CompetitionCreate$, type CompetitionCreate } from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
 import z from 'zod/v4';
 import { useCreateCompetition } from '../hooks/use-competitions';
@@ -45,7 +42,7 @@ export function CreateCompetitionDialog({
     resolver: zodResolver(
       CompetitionCreate$.extend({
         startDate: z.date(), // Need to ensure startDate only accepts Date objects
-      }),
+      })
     ),
     defaultValues: {
       name: '',

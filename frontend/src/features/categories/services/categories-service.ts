@@ -3,8 +3,8 @@ import type {
   Category,
   CategoryCreate,
   CategoryUpdate,
-} from '@competition-manager/core/schemas';
-import { Category$ } from '@competition-manager/core/schemas';
+} from '@repo/core/schemas';
+import { Category$ } from '@repo/core/schemas';
 
 export class CategoriesService {
   static async getCategories(): Promise<Category[]> {

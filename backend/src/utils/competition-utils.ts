@@ -1,8 +1,5 @@
 import { prisma, type Prisma } from '@/lib/prisma';
-import {
-  Competition$,
-  competitionInclude,
-} from '@competition-manager/core/schemas';
+import { Competition$, competitionInclude } from '@repo/core/schemas';
 
 export interface GetCompetitionsOptions {
   where?: Prisma.CompetitionWhereInput;

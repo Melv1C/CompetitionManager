@@ -7,14 +7,17 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Competition } from '@competition-manager/core/schemas';
+import type { Competition } from '@repo/core/schemas';
 
 interface CompetitionsTableProps {
   competitions: Competition[];
   isLoading?: boolean;
 }
 
-export function CompetitionsTable({ competitions, isLoading }: CompetitionsTableProps) {
+export function CompetitionsTable({
+  competitions,
+  isLoading,
+}: CompetitionsTableProps) {
   if (isLoading) {
     return <div className="py-4 text-center">Loading competitions...</div>;
   }

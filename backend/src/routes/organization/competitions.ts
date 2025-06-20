@@ -3,15 +3,15 @@ import { requirePermissions } from '@/middleware/access-control';
 import { getRequiredSession } from '@/utils/auth-utils';
 import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
+import { zValidator } from '@hono/zod-validator';
 import {
   Competition$,
   CompetitionCreate$,
-  CompetitionUpdate$,
   CompetitionPrismaCreate$,
+  CompetitionUpdate$,
   Cuid$,
   competitionInclude,
-} from '@competition-manager/core/schemas';
-import { zValidator } from '@hono/zod-validator';
+} from '@repo/core/schemas';
 import { logger } from 'better-auth';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';

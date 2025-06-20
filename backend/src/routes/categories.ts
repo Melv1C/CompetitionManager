@@ -1,13 +1,13 @@
 import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
+import { zValidator } from '@hono/zod-validator';
 import {
   Category$,
   CategoryCreate$,
   CategoryUpdate$,
   ParameterId$,
-} from '@competition-manager/core/schemas';
-import { zValidator } from '@hono/zod-validator';
+} from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
 

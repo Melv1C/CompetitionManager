@@ -10,11 +10,11 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { useOrganizations } from '@/features/organization/hooks/use-organizations';
 import { authClient } from '@/lib/auth-client';
+import type { User as UserType } from '@repo/core/schemas';
 import { Building2, LogOut, Settings, Shield, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import type { User as UserType } from '@competition-manager/core/schemas';
 
 interface UserButtonProps {
   user: UserType;

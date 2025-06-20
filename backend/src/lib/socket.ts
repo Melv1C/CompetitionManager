@@ -1,3 +1,4 @@
+import type { ServerType } from '@hono/node-server';
 import {
   getRoomName,
   type ClientToServerEvents,
@@ -6,8 +7,7 @@ import {
   type LeaveCompetitionData,
   type ServerToClientEvents,
   type SocketData,
-} from '@competition-manager/core/types';
-import type { ServerType } from '@hono/node-server';
+} from '@repo/core/types';
 import { Server } from 'socket.io';
 import { env } from './env';
 

@@ -48,25 +48,19 @@ The package provides three main export paths:
 ### `/utils` - Utility Functions
 
 ```typescript
-import {
-  hasPermission,
-  getOrganizationPermissions,
-} from '@competition-manager/core/utils';
+import { hasPermission, getOrganizationPermissions } from '@repo/core/utils';
 ```
 
 ### `/schemas` - Validation Schemas
 
 ```typescript
-import { User$, Competition$, Event$ } from '@competition-manager/core/schemas';
+import { User$, Competition$, Event$ } from '@repo/core/schemas';
 ```
 
 ### `/types` - TypeScript Types
 
 ```typescript
-import type {
-  SocketData,
-  ClientToServerEvents,
-} from '@competition-manager/core/types';
+import type { SocketData, ClientToServerEvents } from '@repo/core/types';
 ```
 
 ## 🚀 Quick Start
@@ -78,7 +72,7 @@ This package is installed as a local dependency in both backend and frontend:
 ```json
 {
   "dependencies": {
-    "@competition-manager/core": "file:../core"
+    "@repo/core": "file:../core"
   }
 }
 ```
@@ -236,7 +230,7 @@ export function getOrganizationPermissions(
 ### Schema Validation
 
 ```typescript
-import { User$, Competition$ } from '@competition-manager/core/schemas';
+import { User$, Competition$ } from '@repo/core/schemas';
 
 // Validate user data
 const userData = User$.parse(rawUserData);
@@ -251,7 +245,7 @@ const CreateCompetition$ = Competition$.omit({ id: true, createdAt: true });
 ### Permission Checking
 
 ```typescript
-import { hasPermission } from '@competition-manager/core/utils';
+import { hasPermission } from '@repo/core/utils';
 
 // Check if user can create events
 if (hasPermission(user.role, 'events', 'create')) {
@@ -271,7 +265,7 @@ if (orgPermissions.competitions.includes('create')) {
 import type {
   ClientToServerEvents,
   ServerToClientEvents,
-} from '@competition-manager/core/types';
+} from '@repo/core/types';
 
 // Backend Socket.IO server
 const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);

@@ -1,6 +1,6 @@
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
-import { Log$, type LogQuery } from '@competition-manager/core/schemas';
+import { Log$, type LogQuery } from '@repo/core/schemas';
 import type { Context } from 'hono';
 import { getUser } from './auth-utils';
 

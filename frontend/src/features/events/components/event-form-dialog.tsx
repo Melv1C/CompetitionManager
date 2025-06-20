@@ -21,18 +21,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import type {
-  Event,
-  EventCreate,
-  EventUpdate,
-} from '@competition-manager/core/schemas';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { Event, EventCreate, EventUpdate } from '@repo/core/schemas';
 import {
   EventCreate$,
   EventGroup$,
   EventType$,
   EventUpdate$,
-} from '@competition-manager/core/schemas';
-import { zodResolver } from '@hookform/resolvers/zod';
+} from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
 import { useCreateEvent, useUpdateEvent } from '../hooks/use-events';
 

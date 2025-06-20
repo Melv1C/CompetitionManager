@@ -1,8 +1,8 @@
 import { requireAdmin, requireAuth } from '@/middleware/auth';
 import { serviceManager } from '@/services';
 import { logError, queryLogs } from '@/utils/log-utils';
-import { LogQuery$ } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
+import { LogQuery$ } from '@repo/core/schemas';
 import { Hono } from 'hono';
 
 const logsRoutes = new Hono();

@@ -1,8 +1,5 @@
 import { apiClient } from '@/lib/api-client';
-import {
-  PaginatedLogsResponse$,
-  type LogQuery,
-} from '@competition-manager/core/schemas';
+import { PaginatedLogsResponse$, type LogQuery } from '@repo/core/schemas';
 import { type AxiosRequestConfig } from 'axios';
 
 export class LogService {

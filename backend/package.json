@@ -9,7 +9,7 @@
     "test": "vitest --run"
   },
   "dependencies": {
-    "@competition-manager/core": "file:../core",
+    "@repo/core": "file:../core",
     "@hono/node-server": "^1.14.4",
     "@hono/zod-validator": "^0.7.0",
     "@prisma/client": "6.9.0",

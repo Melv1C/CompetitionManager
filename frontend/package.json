@@ -12,7 +12,7 @@
     "test:dev": "vitest"
   },
   "dependencies": {
-    "@competition-manager/core": "file:../core",
+    "@repo/core": "file:../core",
     "@hookform/resolvers": "^5.1.1",
     "@radix-ui/react-alert-dialog": "^1.1.14",
     "@radix-ui/react-avatar": "^1.1.10",

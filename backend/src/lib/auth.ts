@@ -1,9 +1,4 @@
-import {
-  ac,
-  admin,
-  owner,
-  resultManager,
-} from '@competition-manager/core/utils';
+import { ac, admin, owner, resultManager } from '@repo/core/utils';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin as adminPlugin, organization } from 'better-auth/plugins';

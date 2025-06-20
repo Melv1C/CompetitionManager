@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Category } from '@competition-manager/core/schemas';
+import type { Category } from '@repo/core/schemas';
 import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteCategory } from '../hooks/use-categories';
