@@ -5,16 +5,16 @@
   "type": "module",
   "exports": {
     "./utils": {
-      "types": "./dist/src/utils/index.d.ts",
-      "import": "./dist/src/utils/index.js"
+      "types": "./dist/utils/index.d.ts",
+      "import": "./dist/utils/index.js"
     },
     "./schemas": {
-      "types": "./dist/src/schemas/index.d.ts",
-      "import": "./dist/src/schemas/index.js"
+      "types": "./dist/schemas/index.d.ts",
+      "import": "./dist/schemas/index.js"
     },
     "./types": {
-      "types": "./dist/src/types/socket.d.ts",
-      "import": "./dist/src/types/socket.js"
+      "types": "./dist/types/socket.d.ts",
+      "import": "./dist/types/socket.js"
     }
   },
   "files": [

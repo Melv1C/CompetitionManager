@@ -1,23 +1,39 @@
 {
   "compilerOptions": {
+    // Target and Module
     "target": "ES2022",
-    "declaration": false,
+    "module": "ESNext",
     "moduleResolution": "bundler",
-    "strict": true,
-    "verbatimModuleSyntax": true,
-    "skipLibCheck": true,
-    "types": [
-      "node"
-    ],
-    "jsx": "react-jsx",
-    "jsxImportSource": "hono/jsx",
-    "outDir": "./dist",
 
+    // Output
+    "outDir": "./dist",
+    "sourceMap": true,
+
+    // Type Checking
+    "strict": true,
+    "noImplicitAny": true,
+    "noUnusedLocals": true,
+    "noUnusedParameters": true,
+
+    // Advanced
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+
+    // Paths and Aliases
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/*"],
-      "@generated/*": ["./generated/*"],
+      "@generated/*": ["./generated/*"]
     },
+
+    // Libs for Node and ES features
+    "lib": ["ES2022", "DOM"],
+
+    // Additional options
+    "forceConsistentCasingInFileNames": true,
+    "skipLibCheck": true,
+    "types": ["node"]
   },
-  "exclude": ["node_modules"],
+  "exclude": ["node_modules", "dist"]
 }

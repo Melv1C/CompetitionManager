@@ -40,7 +40,7 @@
     // Paths and Aliases
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"],
+      "@/*": ["./src/*"]
     }
   },
   "exclude": ["node_modules", "dist"]

@@ -1,7 +1,6 @@
 import { logger } from '@/lib/logger';
 import { env } from 'process';
 import type { Logger } from 'winston';
-import type { LogCleanupConfig } from './log-cleanup';
 
 export type ScheduledTask = {
   name: string;
@@ -104,7 +103,9 @@ export class TaskScheduler {
         await task.handler();
 
         const duration = Date.now() - startTime;
-        this.prodLogger?.info(`Scheduled task completed: ${name}`, { duration });
+        this.prodLogger?.info(`Scheduled task completed: ${name}`, {
+          duration,
+        });
 
         // Reschedule the task
         if (this.isRunning) {

@@ -1,5 +1,4 @@
 import { env } from '@/lib/env';
-import { loggerMiddleware } from '@/middleware/logger';
 import { createApiRoutes } from '@/routes';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
