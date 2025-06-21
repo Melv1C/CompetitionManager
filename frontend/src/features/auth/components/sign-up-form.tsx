@@ -200,7 +200,7 @@ export function SignUpForm() {
           <Button
             variant="link"
             className="p-0 h-auto"
-            onClick={() => navigate('/login')}
+            onClick={() => navigate('/auth/sign-in')}
           >
             {t('signIn', { ns: 'auth' })}
           </Button>
