@@ -22,9 +22,6 @@ jobs:
       - name: Start services
         run: docker compose up -d
 
-      - name: Wait for services
-        run: sleep 30
-
       - name: Install E2E test dependencies
         run: |
           cd e2e
