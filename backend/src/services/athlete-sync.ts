@@ -8,9 +8,9 @@ import mockAthletesData from '@/data/mock-athletes.json';
 export interface AthleteSyncConfig {
   enabled: boolean;
   cronExpression: string;
-  lbfaUrl: string;
-  lbfaUsername: string;
-  lbfaPassword: string;
+  lbfaUrl?: string;
+  lbfaUsername?: string;
+  lbfaPassword?: string;
   useMock: boolean;
 }
 
@@ -42,6 +42,14 @@ export class AthleteSyncService {
   async initialize(): Promise<AthleteSyncResult | null> {
     if (!this.config.enabled) {
       this.prodLogger?.info('Athlete sync service disabled');
+      return null;
+    }
+
+    // Validate configuration
+    if (!this.config.useMock && (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword)) {
+      this.prodLogger?.error(
+        'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.'
+      );
       return null;
     }
 
@@ -121,7 +129,7 @@ export class AthleteSyncService {
         birthdate: new Date(a.birthdate),
       }));
     } else {
-      const { data } = await axios.get(this.config.lbfaUrl, {
+      const { data } = await axios.get(this.config.lbfaUrl!, {
         headers: {
           'User-Agent':
             'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
@@ -132,8 +140,8 @@ export class AthleteSyncService {
           Connection: 'keep-alive',
         },
         auth: {
-          username: this.config.lbfaUsername,
-          password: this.config.lbfaPassword,
+          username: this.config.lbfaUsername!,
+          password: this.config.lbfaPassword!,
         },
       });
 
