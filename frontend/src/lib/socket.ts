@@ -5,6 +5,7 @@ import type {
   ServerToClientEvents,
 } from '@repo/core/types';
 import { io, Socket } from 'socket.io-client';
+import { env } from './env';
 
 export type TypedSocket = Socket<ServerToClientEvents, ClientToServerEvents>;
 
@@ -68,10 +69,7 @@ class SocketService {
       return this.socket;
     }
 
-    const serverUrl =
-      import.meta.env.VITE_SOCKET_URL || 'http://localhost:3000';
-
-    this.socket = io(serverUrl, {
+    this.socket = io(env.VITE_SOCKET_URL, {
       autoConnect: true,
       reconnection: true,
       reconnectionAttempts: this.maxReconnectAttempts,
