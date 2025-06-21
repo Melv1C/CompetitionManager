@@ -1,6 +1,6 @@
 import { apiClient } from '@/lib/api-client';
-import type { CompetitionCreate } from '@competition-manager/core/schemas';
-import { Competition$ } from '@competition-manager/core/schemas';
+import type { CompetitionCreate } from '@repo/core/schemas';
+import { Competition$ } from '@repo/core/schemas';
 
 export class CompetitionsService {
   static async getCompetitions() {
@@ -14,7 +14,10 @@ export class CompetitionsService {
   }
 
   static async createCompetition(data: CompetitionCreate) {
-    const response = await apiClient.post('/api/organization/competitions', data);
+    const response = await apiClient.post(
+      '/api/organization/competitions',
+      data
+    );
     return Competition$.parse(response.data);
   }
 }

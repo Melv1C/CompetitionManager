@@ -1,8 +1,8 @@
 import { type Prisma } from '@/lib/prisma';
 import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
-import { CompetitionQuery$ } from '@competition-manager/core/schemas';
 import { zValidator } from '@hono/zod-validator';
+import { CompetitionQuery$ } from '@repo/core/schemas';
 import { Hono } from 'hono';
 
 const competitionsRoutes = new Hono();

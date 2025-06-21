@@ -1,4 +1,4 @@
-import { type LogLevel } from '@competition-manager/core/schemas';
+import { type LogLevel } from '@repo/core/schemas';
 import { AlertCircle, AlertTriangle, Bug, Info, Zap } from 'lucide-react';
 
 const LOG_LEVEL_CONFIG: Record<

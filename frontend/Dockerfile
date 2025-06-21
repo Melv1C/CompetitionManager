@@ -1,23 +1,26 @@
-# ---- Builder ----
-FROM node:18 AS builder
+# Development/Runtime build for React/Vite frontend
+FROM node:22-alpine
 
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# Copy frontend and core packages
-COPY frontend ./frontend
-COPY core ./core
+# Copy package files first for better caching
+COPY core/package*.json ./core/
+COPY frontend/package*.json ./frontend/
 
-# Install dependencies and build core
-WORKDIR /usr/src/app/core
-RUN npm install && npm run build
+# Copy core package source (needed for @repo/core dependency)
+COPY core/ /app/core/
 
-# Install dependencies and build frontend
-WORKDIR /usr/src/app/frontend
-RUN npm install && npm run build
+# Install dependencies and build core package
+WORKDIR /app/core
+RUN npm ci && npm run build
 
-# ---- Static image ----
-FROM alpine AS static
-WORKDIR /app/dist
-COPY --from=builder /usr/src/app/frontend/dist .
+# Copy frontend source
+COPY frontend/ /app/frontend/
 
-CMD ["sh", "-c", "echo 'Static build image. Mount /app/dist in nginx.'"]
+# Install frontend dependencies
+WORKDIR /app/frontend
+RUN npm ci
+
+# Build the frontend application
+CMD [ "npm", "run", "build" ]

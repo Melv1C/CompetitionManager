@@ -1,6 +1,6 @@
 import { logger } from '@/lib/logger';
 import { getUser } from '@/utils/auth-utils';
-import { UserRole$ } from '@competition-manager/core/schemas';
+import { UserRole$ } from '@repo/core/schemas';
 import type { Context, Next } from 'hono';
 
 /**

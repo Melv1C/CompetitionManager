@@ -1,4 +1,3 @@
-import { auth } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { getUser } from '@/utils/auth-utils';
 import type { Context, Next } from 'hono';

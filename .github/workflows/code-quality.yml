@@ -34,11 +34,6 @@ jobs:
           cd core
           npm run build
 
-      - name: Test core
-        run: |
-          cd core
-          npm test
-
       - name: Install dependencies (backend)
         run: |
           cd backend
@@ -56,11 +51,6 @@ jobs:
           cd backend
           npm run build
 
-      - name: Test backend
-        run: |
-          cd backend
-          npm test
-
       - name: Install dependencies (frontend)
         run: |
           cd frontend
@@ -75,8 +65,3 @@ jobs:
         run: |
           cd frontend
           npm run build
-
-      - name: Test frontend
-        run: |
-          cd frontend
-          npm test

@@ -2,7 +2,7 @@ import { auth } from '@/lib/auth';
 import { logger } from '@/lib/logger';
 import { getUser } from '@/utils/auth-utils';
 import { logError } from '@/utils/log-utils';
-import type { PermissionCheck } from '@competition-manager/core/utils';
+import type { PermissionCheck } from '@repo/core/utils';
 import type { Context, Next } from 'hono';
 import { every } from 'hono/combine';
 import { requireAuth } from './auth';

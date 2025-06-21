@@ -15,13 +15,9 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type {
-  Club,
-  ClubCreate,
-  ClubUpdate,
-} from '@competition-manager/core/schemas';
-import { ClubCreate$, ClubUpdate$ } from '@competition-manager/core/schemas';
 import { zodResolver } from '@hookform/resolvers/zod';
+import type { Club, ClubCreate, ClubUpdate } from '@repo/core/schemas';
+import { ClubCreate$, ClubUpdate$ } from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
 import { useCreateClub, useUpdateClub } from '../hooks/use-clubs';
 

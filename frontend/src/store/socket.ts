@@ -5,7 +5,7 @@ import type {
   JoinCompetitionData,
   LeaveCompetitionData,
   NotificationData,
-} from '@competition-manager/core/types';
+} from '@repo/core/types';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 

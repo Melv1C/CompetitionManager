@@ -1,9 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  LogLevel$,
-  LogQuery$,
-  type LogQuery,
-} from '@competition-manager/core/schemas';
+import { LogLevel$, LogQuery$, type LogQuery } from '@repo/core/schemas';
 import { FileText, RefreshCw, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';

@@ -1,7 +1,4 @@
-import type {
-  CategoryCreate,
-  CategoryUpdate,
-} from '@competition-manager/core/schemas';
+import type { CategoryCreate, CategoryUpdate } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CategoriesService } from '../services/categories-service';

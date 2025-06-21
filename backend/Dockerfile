@@ -1,29 +1,31 @@
-# ---- Builder ----
-FROM node:18 AS builder
+FROM node:22-alpine
 
-WORKDIR /usr/src/app
+# Set working directory
+WORKDIR /app
 
-# Copy backend and core packages
-COPY backend ./backend
-COPY core ./core
+# Copy package files first for better caching
+COPY core/package*.json ./core/
+COPY backend/package*.json ./backend/
 
-# Install dependencies and build core
-WORKDIR /usr/src/app/core
-RUN npm install && npm run build
+# Copy core package source (needed for @repo/core dependency)
+COPY core/ /app/core/
 
-# Install dependencies and build backend
-WORKDIR /usr/src/app/backend
-RUN npm install && npm run build && npx prisma generate
+# Install dependencies and build core package
+WORKDIR /app/core
+RUN npm ci && npm run build
 
-# ---- Runtime ----
-FROM node:18-slim
-ENV NODE_ENV=production
-WORKDIR /usr/src/app
+# Copy backend source
+COPY backend/ /app/backend/
 
-COPY --from=builder /usr/src/app/backend/dist ./dist
-COPY --from=builder /usr/src/app/backend/node_modules ./node_modules
-COPY --from=builder /usr/src/app/backend/prisma ./prisma
-COPY backend/package.json ./package.json
+# Install backend dependencies
+WORKDIR /app/backend
+RUN npm ci
 
-EXPOSE 3000
-CMD ["sh", "-c", "npx prisma migrate deploy && node dist/index.js"]
+# Generate Prisma client
+RUN npx prisma generate
+
+# Build the backend application
+RUN npm run build
+
+# Start the application with migrations
+CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]

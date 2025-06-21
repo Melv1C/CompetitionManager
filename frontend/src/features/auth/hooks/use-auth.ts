@@ -1,5 +1,5 @@
 import { authClient } from '@/lib/auth-client';
-import { User$ } from '@competition-manager/core/schemas';
+import { User$ } from '@repo/core/schemas';
 
 export const useAuth = () => {
   const { data: session, isPending, error } = authClient.useSession();

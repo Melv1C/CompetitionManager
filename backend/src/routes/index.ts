@@ -14,6 +14,10 @@ import { organizationRoutes } from './organization';
  */
 export function createApiRoutes() {
   const api = new Hono(); // Mount route modules
+  api.get('/health', (c) => {
+    return c.json({ status: 'ok' });
+  });
+
   api.route('/logs', logsRoutes);
 
   // Global logging middleware for all API routes

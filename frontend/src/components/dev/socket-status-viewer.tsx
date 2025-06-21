@@ -2,6 +2,7 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
+import { env } from '@/lib/env';
 import { useSocket, useSocketEvents } from '@/store/socket';
 import {
   Activity,
@@ -83,7 +84,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
     ]);
   }, [status, isConnected]);
 
-  if (import.meta.env.VITE_APP_ENV === 'development') {
+  if (env.MODE === 'development') {
     return null;
   }
 

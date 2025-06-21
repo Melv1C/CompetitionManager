@@ -17,7 +17,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { type Log } from '@competition-manager/core/schemas';
+import { type Log } from '@repo/core/schemas';
 import {
   AlertTriangle,
   ChevronLeft,

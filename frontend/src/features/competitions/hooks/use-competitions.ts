@@ -1,7 +1,4 @@
-import type {
-  Competition,
-  CompetitionCreate,
-} from '@competition-manager/core/schemas';
+import type { Competition, CompetitionCreate } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CompetitionsService } from '../services/competitions-service';

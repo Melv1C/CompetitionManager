@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Club } from '@competition-manager/core/schemas';
+import type { Club } from '@repo/core/schemas';
 import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteClub } from '../hooks/use-clubs';

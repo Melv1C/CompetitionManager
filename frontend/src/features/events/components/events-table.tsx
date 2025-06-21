@@ -14,7 +14,7 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Event } from '@competition-manager/core/schemas';
+import type { Event } from '@repo/core/schemas';
 import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteEvent } from '../hooks/use-events';

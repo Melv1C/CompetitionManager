@@ -4,11 +4,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import {
-  LogLevel$,
-  type LogLevel,
-  type LogQuery,
-} from '@competition-manager/core/schemas';
+import { LogLevel$, type LogLevel, type LogQuery } from '@repo/core/schemas';
 import { FilterIcon, SearchIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { LogLevelBadge } from './log-level-badge';

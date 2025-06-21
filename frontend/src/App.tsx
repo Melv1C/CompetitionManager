@@ -135,7 +135,7 @@ function AdminApp() {
   }
 
   if (!user) {
-    navigate('/login');
+    navigate('/auth/sign-in');
     return null;
   }
 
@@ -195,11 +195,11 @@ const router = createBrowserRouter([
         element: <div>Results</div>,
       },
       {
-        path: 'login',
+        path: 'auth/sign-in',
         element: <SignInPage />,
       },
       {
-        path: 'signup',
+        path: 'auth/sign-up',
         element: <SignUpPage />,
       },
     ],

@@ -1,0 +1,32 @@
+{
+  "name": "e2e-tests",
+  "version": "1.0.0",
+  "description": "End-to-end tests for Competition Manager",
+  "type": "module",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:debug": "playwright test --debug",
+    "test:ui": "playwright test --ui",
+    "test:report": "playwright show-report",
+    "test:codegen": "playwright codegen",
+    "install": "playwright install --with-deps",
+    "setup": "node setup.js",
+    "setup:run": "node setup.js --run",
+    "services:start": "start-services.bat",
+    "services:stop": "cleanup-services.bat"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.53.1",
+    "@types/node": "^20.19.1",
+    "dotenv": "^16.5.0"
+  },
+  "keywords": [
+    "playwright",
+    "e2e",
+    "testing",
+    "competition-manager"
+  ],
+  "author": "",
+  "license": "MIT"
+}

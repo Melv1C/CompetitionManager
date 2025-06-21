@@ -5,7 +5,7 @@ import { auth } from '@/lib/auth';
 import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
-import { UserRole$ } from '@competition-manager/core/schemas';
+import { UserRole$ } from '@repo/core/schemas';
 import type { Logger } from 'winston';
 
 export interface SeedConfig {
@@ -307,7 +307,6 @@ export class SeedService {
         env.DB_SEED_ADMIN_PASSWORD &&
         env.DB_SEED_ADMIN_NAME
       ) {
-
         // Check if admin user already exists
         const existingAdmin = await prisma.user.findUnique({
           where: { email: env.DB_SEED_ADMIN_EMAIL },
@@ -360,8 +359,7 @@ export class SeedService {
         env.DB_SEED_USER_EMAIL &&
         env.DB_SEED_USER_PASSWORD &&
         env.DB_SEED_USER_NAME
-      ) {;
-
+      ) {
         // Check if regular user already exists
         const existingUser = await prisma.user.findUnique({
           where: { email: env.DB_SEED_USER_EMAIL },
