@@ -1,73 +1,51 @@
-# Competition Manager - Backend
+# Backend
 
-A robust Node.js API server built with Hono framework, providing comprehensive competition management capabilities with real-time updates, authentication, and external integrations.
+The backend service for Competition Manager - a REST API built with Hono, PostgreSQL, and Prisma.
 
 ## 🏗️ Architecture
 
-The backend follows a **layered architecture** with clear separation of concerns:
+### Tech Stack
+
+- **Runtime**: Node.js 20
+- **Framework**: Hono 3 (lightweight web framework)
+- **Database**: PostgreSQL 16 with Prisma ORM
+- **Authentication**: Better Auth
+- **Validation**: Zod schemas from `@repo/core`
+- **Real-time**: Socket.IO
+- **Logging**: Winston
+
+### Project Structure
 
 ```
-backend/
-├── src/
-│   ├── api.ts              # API app configuration
-│   ├── index.ts            # Server entry point
-│   ├── data/               # Seed data (JSON files)
-│   │   ├── categories.json # Athletic categories
-│   │   ├── clubs.json      # Sports clubs
-│   │   └── events.json     # Athletic events
-│   ├── lib/                # Core libraries
-│   │   ├── auth.ts         # Better Auth configuration
-│   │   ├── env.ts          # Environment validation
-│   │   ├── logger.ts       # Winston logging setup
-│   │   ├── prisma.ts       # Prisma client
-│   │   └── socket.ts       # Socket.IO configuration
-│   ├── middleware/         # HTTP middleware
-│   │   ├── access-control.ts # Permission checks
-│   │   ├── auth.ts         # Authentication middleware
-│   │   └── logger.ts       # Request logging
-│   ├── routes/             # API route handlers
-│   │   ├── auth.ts         # Authentication routes
-│   │   ├── categories.ts   # Category management
-│   │   ├── competitions.ts # Competition management
-│   │   ├── events.ts       # Event management
-│   │   ├── logs.ts         # Log management
-│   │   └── index.ts        # Route aggregation
-│   ├── services/           # Background services
-│   │   ├── athlete-sync.ts # LBFA athlete synchronization
-│   │   ├── log-cleanup.ts  # Automated log cleanup
-│   │   ├── scheduler.ts    # Cron job scheduler
-│   │   ├── seed.ts         # Database seeding
-│   │   └── index.ts        # Service manager
-│   └── utils/              # Utility functions
-│       ├── auth-utils.ts   # Authentication helpers
-│       └── log-utils.ts    # Logging utilities
-├── prisma/
-│   ├── schema.prisma       # Database schema
-│   └── migrations/         # Database migrations
-├── generated/              # Generated Prisma client
-├── package.json
-└── tsconfig.json
+src/
+├── index.ts              # Application entry point
+├── api.ts               # API router configuration
+├── routes/              # API route handlers
+│   ├── auth.ts          # Authentication endpoints
+│   ├── competitions.ts   # Competition management
+│   ├── categories.ts    # Competition categories
+│   ├── clubs.ts         # Club management
+│   ├── events.ts        # Event management
+│   ├── logs.ts          # System logging
+│   └── organization/    # Organization management
+├── services/            # Background services
+│   ├── athlete-sync.ts  # Athlete data synchronization
+│   ├── log-cleanup.ts   # Log maintenance
+│   ├── scheduler.ts     # Task scheduling
+│   └── seed.ts          # Database seeding
+├── middleware/          # Custom middleware
+├── lib/                 # Utility libraries
+├── data/               # Static data and migrations
+└── utils/              # Helper utilities
 ```
 
-## 🛠️ Tech Stack
-
-- **Framework**: [Hono](https://hono.dev/) - Ultra-fast web framework for edge computing
-- **Runtime**: Node.js with TypeScript
-- **Database**: PostgreSQL with [Prisma ORM](https://prisma.io/)
-- **Authentication**: [Better Auth](https://better-auth.com/) - Modern auth solution
-- **Real-time**: Socket.IO for live updates
-- **Validation**: Zod schemas for request/response validation
-- **Logging**: Winston with structured logging
-- **Scheduling**: Node-cron for background tasks
-- **External APIs**: Axios for HTTP requests (LBFA integration)
-
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js >= 18
-- PostgreSQL database (via Docker Compose)
-- Core package built (`cd ../core && npm run build`)
+- Node.js 20+
+- PostgreSQL 16 (or Docker)
+- Environment variables configured
 
 ### Installation
 
@@ -75,280 +53,255 @@ backend/
 # Install dependencies
 npm install
 
-# Set up environment variables
-cp .env.example .env  # Create and configure your .env file
-
-# Run database migrations
-npx prisma migrate deploy
-
 # Generate Prisma client
 npx prisma generate
 
-# Start development server
-npm run dev
+# Run database migrations
+npx prisma migrate dev
 ```
+
+### Development
+
+```bash
+# Start development server with hot reload
+npm run dev
+
+# Build for production
+npm run build
+
+# Start production server
+npm run start
+```
+
+The API server will be available at `http://localhost:3000`
+
+## 🗄️ Database
+
+### Schema Overview
+
+The database schema includes the following main entities:
+
+- **User & Authentication**: User accounts, sessions, and organization membership
+- **Organizations**: Multi-tenant organization management
+- **Competitions**: Competition setup and configuration
+- **Events & Categories**: Athletic events and age/gender categories
+- **Athletes & Clubs**: Participant and club management
+- **Logs**: System logging and audit trails
+
+### Key Models
+
+#### Competition Management
+
+```typescript
+Competition {
+  id: Int
+  eid: String          # External ID
+  name: String
+  startDate: DateTime
+  endDate: DateTime?
+  isPublished: Boolean
+  description: String
+  location: String
+  // ... configuration fields
+}
+```
+
+#### Event Management
+
+```typescript
+CompetitionEvent {
+  id: Int
+  eid: String
+  name: String
+  eventStartTime: DateTime
+  maxParticipants: Int?
+  price: Float
+  // ... relations to Event and Category
+}
+```
+
+### Database Commands
+
+```bash
+# Create new migration
+npx prisma migrate dev --name <migration-name>
+
+# Apply migrations
+npx prisma migrate deploy
+
+# Reset database (development only)
+npx prisma migrate reset
+
+# Open Prisma Studio
+npx prisma studio
+
+# Generate client after schema changes
+npx prisma generate
+```
+
+## 🔌 API Endpoints
+
+### Authentication
+
+- `POST /api/auth/sign-in` - User sign in
+- `POST /api/auth/sign-up` - User registration
+- `POST /api/auth/sign-out` - User sign out
+- `GET /api/auth/session` - Get current session
+
+### Organizations
+
+- `GET /api/organizations` - List organizations
+- `POST /api/organizations` - Create organization
+- `GET /api/organizations/:id` - Get organization
+- `PUT /api/organizations/:id` - Update organization
+
+### Competitions
+
+- `GET /api/competitions` - List competitions
+- `POST /api/competitions` - Create competition
+- `GET /api/competitions/:id` - Get competition details
+- `PUT /api/competitions/:id` - Update competition
+- `DELETE /api/competitions/:id` - Delete competition
+
+### Events & Categories
+
+- `GET /api/events` - List available events
+- `GET /api/categories` - List competition categories
+- `POST /api/competitions/:id/events` - Add event to competition
+
+### Clubs & Athletes
+
+- `GET /api/clubs` - List clubs
+- `POST /api/clubs` - Create club
+- `GET /api/athletes` - List athletes
+- `POST /api/athletes` - Register athlete
+
+## 🔧 Services
+
+### Background Services
+
+#### Athlete Sync Service
+
+Synchronizes athlete data from external sources and maintains data consistency.
+
+#### Log Cleanup Service
+
+Automatically removes old log entries to manage database size.
+
+#### Scheduler Service
+
+Manages scheduled tasks and background job processing.
+
+#### Seed Service
+
+Populates the database with initial data for development and testing.
+
+## 🌐 Socket.IO
+
+Real-time functionality powered by Socket.IO:
+
+- **Competition Updates**: Live updates during competitions
+- **Registration Status**: Real-time registration confirmations
+- **Notifications**: Instant notifications for important events
+
+## 🔐 Authentication & Authorization
+
+### Better Auth Integration
+
+- Session-based authentication
+- Role-based access control (RBAC)
+- Organization-scoped permissions
+- Secure password handling
+
+### Permission Levels
+
+- **Admin**: Full system access
+- **Organization Admin**: Organization-wide management
+- **Member**: Basic organization access
+- **Public**: Read-only access to published content
+
+## 📝 Logging
+
+Winston-based logging with structured logs:
+
+- **Error Level**: System errors and exceptions
+- **Warn Level**: Warning conditions
+- **Info Level**: General information
+- **Debug Level**: Detailed debugging information
+
+Logs are stored in the database and can be queried via the API.
+
+## 🧪 Testing
+
+```bash
+# Run unit tests (if configured)
+npm test
+
+# Run integration tests with database
+npm run test:integration
+```
+
+## 🔧 Configuration
 
 ### Environment Variables
 
 Create a `.env` file with the following variables:
 
 ```env
-NODE_ENV=development
+# Database
+DATABASE_URL="postgresql://username:password@localhost:5432/competition_manager"
+
+# Server
 PORT=3000
-DATABASE_URL=postgresql://postgres:postgres@localhost:5555/postgres
-BETTER_AUTH_SECRET=your-secret-key-min-32-chars-long
-BETTER_AUTH_URL=http://localhost:5173
+NODE_ENV=development
 
-# Log Management
-LOG_CLEANUP_ENABLED=true
-LOG_CLEANUP_DAYS_TO_KEEP=30
-LOG_CLEANUP_SCHEDULE=@daily
-LOG_CLEANUP_MAX_PER_RUN=1000
+# Authentication
+BETTER_AUTH_SECRET="your-secret-key"
+BETTER_AUTH_URL="http://localhost:3000"
 
-# Database Seeding
-DB_SEED_ENABLED=true
-DB_SEED_FORCE_RESEED=false
-
-# External Integration (LBFA - Belgian Athletics Federation)
-ATHLETE_SYNC_ENABLED=true
-ATHLETE_SYNC_SCHEDULE=@daily
-ATHLETE_SYNC_USE_MOCK=false
-LBFA_URL=https://api.lbfa.be
-LBFA_USERNAME=your-lbfa-username
-LBFA_PASSWORD=your-lbfa-password
+# External APIs (if applicable)
+EXTERNAL_API_KEY="your-api-key"
 ```
 
-### Available Scripts
+## 🚀 Deployment
+
+### Docker Deployment
 
 ```bash
-npm run dev     # Start development server with hot reload
-npm run build   # Build TypeScript to JavaScript
-npm start       # Start production server
+# Build Docker image
+docker build -t competition-manager-backend .
+
+# Run with Docker Compose
+docker-compose up backend
 ```
 
-## 🔌 API Endpoints
+### Production Considerations
 
-### Authentication Routes (`/api/auth/**`)
+1. **Environment Variables**: Ensure all production environment variables are set
+2. **Database Migrations**: Run migrations before deployment
+3. **SSL/TLS**: Configure HTTPS in production
+4. **Monitoring**: Set up logging and monitoring
+5. **Backup**: Regular database backups
 
-- Handled by Better Auth
-- Supports signup, signin, signout
-- JWT-based authentication
-- Role-based access control
+## 🛠️ Development Tips
 
-### Categories (`/api/categories`)
+### Code Organization
 
-- `GET /` - List all categories (public)
-- `GET /:id` - Get category by ID (public)
-- `POST /` - Create category (admin only)
-- `PUT /:id` - Update category (admin only)
-- `DELETE /:id` - Delete category (admin only)
+- Keep route handlers under 75 lines of code
+- Move business logic to services
+- Use Zod for all input/output validation
+- Follow TypeScript strict mode
 
-### Events (`/api/events`)
+### Database Best Practices
 
-- `GET /` - List all events (public)
-- `GET /:id` - Get event by ID (public)
-- `POST /` - Create event (admin only)
-- `PUT /:id` - Update event (admin only)
-- `DELETE /:id` - Delete event (admin only)
+- Use Prisma migrations for schema changes
+- Index frequently queried fields
+- Use transactions for multi-step operations
+- Implement soft deletes where appropriate
 
-### Competitions (`/api/competitions`)
+### Performance
 
-- `POST /` - Create competition (organization members)
-
-### Logs (`/api/logs`)
-
-- `GET /` - Query logs with filters (admin only)
-- `POST /cleanup` - Trigger manual log cleanup (admin only)
-
-## 🔧 Core Features
-
-### Authentication & Authorization
-
-- **Better Auth Integration**: Modern authentication with JWT tokens
-- **Role-based Access**: Admin, organization member, and public access levels
-- **Permission System**: Granular permissions for different resources
-- **Session Management**: Secure session handling with expiration
-
-### Database Integration
-
-- **Prisma ORM**: Type-safe database operations
-- **Migrations**: Version-controlled database schema changes
-- **Connection Pooling**: Efficient database connection management
-- **Automatic Seeding**: Populate database with initial data
-
-### Real-time Communication
-
-- **Socket.IO**: WebSocket connections for live updates
-- **Room Management**: Competition-specific update channels
-- **Event Broadcasting**: Real-time notifications for competition changes
-
-### Background Services
-
-#### Log Cleanup Service
-
-- Automatic log rotation based on age
-- Configurable retention policies
-- Scheduled cleanup tasks
-- Manual cleanup triggers
-
-#### Database Seeding
-
-- Populates initial categories, events, and clubs
-- Skips existing records to prevent duplicates
-- Configurable force-reseed option
-
-#### Athlete Synchronization
-
-- Daily sync with LBFA (Belgian Athletics Federation)
-- Automatic athlete and club data updates
-- Configurable sync schedules
-- Error handling and retry logic
-
-### Logging & Monitoring
-
-- **Structured Logging**: JSON-formatted logs with Winston
-- **Request Logging**: HTTP request/response tracking
-- **Error Tracking**: Comprehensive error logging
-- **Performance Monitoring**: Response time tracking
-
-## 🗄️ Database Schema
-
-The database schema includes:
-
-### Core Entities
-
-- **Users**: Authentication and user management
-- **Organizations**: Multi-tenant organization support
-- **Members**: Organization membership with roles
-- **Sessions**: User session management
-
-### Competition Management
-
-- **Competitions**: Competition details and configuration
-- **CompetitionEvents**: Events within competitions
-- **Athletes**: Athlete registration and details
-- **AthleteInfo**: Season-specific athlete information
-- **Clubs**: Sports club information
-
-### Reference Data
-
-- **Events**: Athletic event types (sprint, jump, throw, etc.)
-- **Categories**: Age and gender-based categories
-- **Logs**: System logging and audit trail
-
-## 🔐 Security
-
-### Authentication
-
-- JWT-based authentication with Better Auth
-- Secure password hashing
-- Session management with expiration
-- Role-based access control
-
-### Data Protection
-
-- SQL injection prevention with Prisma
-- Input validation with Zod schemas
-- CORS configuration for cross-origin requests
-- Environment variable validation
-
-### Permissions
-
-- Admin-level permissions for system management
-- Organization-level permissions for competition management
-- Granular permissions for different resources
-
-## 🎯 Performance Optimizations
-
-- **Connection Pooling**: Efficient database connections
-- **Query Optimization**: Prisma query optimization
-- **Caching**: Strategic caching of frequently accessed data
-- **Async Operations**: Non-blocking I/O operations
-- **Error Handling**: Graceful error handling and recovery
-
-## 🔄 External Integrations
-
-### LBFA Integration
-
-- Automatic athlete synchronization
-- Club information updates
-- License validation
-- Configurable sync schedules
-
-## 🧪 Development
-
-### Database Management
-
-```bash
-# View database in browser
-npx prisma studio
-
-# Reset database (development only)
-npx prisma migrate reset
-
-# Create new migration
-npx prisma migrate dev --name description-of-changes
-
-# Generate client after schema changes
-npx prisma generate
-```
-
-### Service Management
-
-The service manager handles background services:
-
-- **Initialization**: Starts all enabled services
-- **Shutdown**: Graceful service shutdown
-- **Health Checks**: Service status monitoring
-
-### Debugging
-
-- Enable debug logging with `NODE_ENV=development`
-- Use Prisma Studio for database inspection
-- Monitor logs for troubleshooting
-- Socket.IO debug mode for real-time debugging
-
-## 🚢 Production Deployment
-
-### Build Process
-
-```bash
-# Build the application
-npm run build
-
-# Start production server
-npm start
-```
-
-### Environment Configuration
-
-Ensure production environment variables are set:
-
-- Secure `BETTER_AUTH_SECRET`
-- Production database URL
-- Proper CORS origins
-- External API credentials
-
-### Monitoring
-
-- Monitor application logs
-- Set up health checks
-- Monitor database performance
-- Track API response times
-
-## 🤝 Contributing
-
-1. Follow the established architecture patterns
-2. Add comprehensive error handling
-3. Include proper logging
-4. Write type-safe code with TypeScript
-5. Add input validation with Zod
-6. Test database operations thoroughly
-
-## 📚 Resources
-
-- [Hono Documentation](https://hono.dev/)
-- [Prisma Documentation](https://www.prisma.io/docs)
-- [Better Auth Documentation](https://better-auth.com/)
-- [Socket.IO Documentation](https://socket.io/docs/)
-- [Winston Logging](https://github.com/winstonjs/winston)
+- Use database connection pooling
+- Implement caching for frequently accessed data
+- Optimize N+1 query problems with Prisma includes
+- Monitor query performance

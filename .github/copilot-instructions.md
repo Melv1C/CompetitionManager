@@ -12,7 +12,8 @@
 
 backend/      – API routes, services, prisma schema
 frontend/     – SPA source (src/routes, src/components, src/pages)
-core/         – shared TS types, Zod schemas, helpers
+core/         – shared TS types, Zod schemas, and utility functions
+tests/        – end-to-end tests
 
 ```
 
@@ -20,33 +21,31 @@ core/         – shared TS types, Zod schemas, helpers
 ### 3.1 TypeScript  
 - **strict** compiler flags **ON**; no `any`, `unknown`, or implicit `any`.  
 - Prefer **type predicates** and **exhaustive switch** for narrowing.  
-- Utility types live in `core/ts/`.
+- Async/await for all async functions; no `.then()` chaining.
+- Use **Zod** for all data validation. 
 
 ### 3.2 React & Vite  
 - Functional components only.  
-- Files **≤ 300 lines**; split hooks/components when exceeded.  
-- Use `tailwind-merge` for class composition; no inline styles except quick prototypes.  
-- All UI must be **mobile-first** (min width 320 px) and fully keyboard navigable.
+- Files **≤ 300 lines**; split hooks/components when exceeded.
+- Use **Zod** for all data validation from API responses.
+- Use **TanStack Query** for data fetching and caching.
+- Use **Zustand** for global state management.
+- Use **shadcn/ui** for UI components (Radix UI + Tailwind CSS v4). The components are located in `frontend/src/components/ui/` and should not be modified directly.
+- Use **i18next** for internationalization (EN | FR | NL).
+- Use **Tailwind CSS v4** for styling; no inline styles.
 
 ### 3.3 Node & Hono  
 - Route handlers **≤ 75 LoC**; move logic to services.  
-- Async/await; no `.then` chains.  
-- Validate every inbound payload with shared Zod schema.
+- Validate every input and output with **Zod**.
+- Use **Prisma** for database access; no raw SQL queries.
+- Use **Socket.IO** for real-time features.
+- Use **Better Auth** for authentication and authorization.
 
-## 4. Quality Gates  
-- Run `pnpm lint && pnpm test` before proposing code.  
-- All new code **must** ship at least **1 Jest/RTL test** and **1 Playwright e2e** where applicable.  
-- Enforce **Prettier** + **ESLint** (extends `eslint-config-turbo`) autofix.
+### 3.4 Core
+- **Shared schemas** in `core/schemas/`.
+- **Shared types** in `core/types/`.
+- **Shared utils** in `core/utils/`.
 
-## 5. UX & Accessibility  
-- Follow **WCAG 2.2 AA**.  
-- Use Radix primitives for dialogs, menus, tooltips.  
-- Prefer progressive enhancement; features should work with JS disabled when feasible.
-
-## 6. Testing & CI  
-- Unit tests live alongside code (`*.test.ts[x]`).  
+## 4. Testing & CI  
 - e2e resides in `tests/`.  
-- GitHub Actions pipeline: `ci.yml` installs deps, runs lint, type-check, test matrices.
-
-## 7. MCP / External Tools  
-Copilot agent may call approved MCP servers described in **docs/mcp-integrations.md**
+- GitHub Actions pipeline: `code-quality.yml` and `e2e-tests.yml`. 

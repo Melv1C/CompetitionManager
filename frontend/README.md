@@ -1,381 +1,438 @@
-# Competition Manager - Frontend
+# Frontend
 
-A modern React application built with Vite and TypeScript, providing a comprehensive user interface for competition management with real-time updates, internationalization, and responsive design.
+The frontend application for Competition Manager - a modern React SPA built with Vite, TanStack Query, and shadcn/ui.
 
 ## 🏗️ Architecture
 
-The frontend follows a **feature-based architecture** with clear separation of concerns:
+### Tech Stack
+
+- **Framework**: React 19 with TypeScript
+- **Build Tool**: Vite 5
+- **State Management**: Zustand for global state
+- **Data Fetching**: TanStack Query (React Query)
+- **UI Components**: shadcn/ui (Radix UI + Tailwind CSS v4)
+- **Styling**: Tailwind CSS v4
+- **Internationalization**: i18next (EN/FR/NL)
+- **Authentication**: Better Auth
+- **Validation**: Zod schemas from `@repo/core`
+
+### Project Structure
 
 ```
-frontend/
-├── src/
-│   ├── App.tsx             # Main app component with routing
-│   ├── main.tsx            # App entry point
-│   ├── index.css           # Global styles
-│   ├── components/         # Reusable UI components
-│   │   ├── layout/         # Layout components
-│   │   │   ├── admin-layout.tsx
-│   │   │   ├── admin-skeleton.tsx
-│   │   │   ├── main-layout.tsx
-│   │   │   ├── organization-layout.tsx
-│   │   │   └── organization-skeleton.tsx
-│   │   └── ui/             # Base UI components (Radix UI + Tailwind)
-│   │       ├── button.tsx
-│   │       ├── card.tsx
-│   │       ├── table.tsx
-│   │       └── ... (shadcn/ui components)
-│   ├── features/           # Feature-specific modules
-│   │   ├── auth/           # Authentication
-│   │   ├── categories/     # Category management
-│   │   ├── events/         # Event management
-│   │   ├── logs/           # Log viewing
-│   │   ├── organization/   # Organization management
-│   │   └── theme/          # Theme management
-│   ├── hooks/              # Shared custom hooks
-│   ├── lib/                # Core libraries and utilities
-│   │   ├── api-client.ts   # Axios configuration
-│   │   ├── auth-client.ts  # Better Auth client
-│   │   ├── i18n.ts         # Internationalization setup
-│   │   └── utils.ts        # Utility functions
-│   ├── pages/              # Page components
-│   │   ├── admin/          # Admin pages
-│   │   ├── organization/   # Organization pages
-│   │   ├── Home.tsx        # Landing page
-│   │   ├── NotFound.tsx    # 404 page
-│   │   ├── SignIn.tsx      # Sign in page
-│   │   └── SignUp.tsx      # Sign up page
-│   ├── store/              # Global state management
-│   └── translations/       # i18n translation files
-├── public/                 # Static assets
-│   ├── logo-black.png
-│   └── logo-white.png
-├── components.json         # shadcn/ui configuration
-├── package.json
-├── tsconfig.json
-├── vite.config.ts
-└── tailwind.config.js
+src/
+├── main.tsx              # Application entry point
+├── App.tsx              # Main app component and routing
+├── index.css            # Global styles and Tailwind imports
+├── components/          # Reusable UI components
+│   ├── ui/              # shadcn/ui components (auto-generated)
+│   └── layout/          # Layout components
+├── features/            # Feature-based modules
+│   ├── auth/            # Authentication feature
+│   ├── organization/    # Organization management
+│   ├── competition/     # Competition features
+│   └── theme/           # Theme management
+├── pages/               # Page components
+├── hooks/               # Custom React hooks
+├── lib/                 # Utility libraries
+│   ├── api.ts           # API client configuration
+│   ├── i18n.ts          # Internationalization setup
+│   └── utils.ts         # Utility functions
+├── store/               # Zustand stores
+└── translations/        # i18n translation files
+    ├── en.json
+    ├── fr.json
+    └── nl.json
 ```
 
-## 🛠️ Tech Stack
-
-### Core Framework
-
-- **React 19**: Latest React with concurrent features
-- **TypeScript**: Type-safe development
-- **Vite**: Fast build tool and dev server
-
-### UI & Styling
-
-- **Tailwind CSS v4**: Utility-first CSS framework
-- **Radix UI**: Accessible, unstyled UI primitives
-- **shadcn/ui**: Beautiful, customizable components
-- **Lucide React**: Icon library
-- **React Scan**: Development performance monitoring
-
-### State Management
-
-- **TanStack Query**: Server state management
-- **Zustand**: Client state management
-- **React Hook Form**: Form state management
-
-### Routing & Navigation
-
-- **React Router v7**: Client-side routing
-- **React Router DOM**: DOM bindings
-
-### Authentication
-
-- **Better Auth**: Modern authentication client
-- **JWT Tokens**: Secure authentication
-
-### Internationalization
-
-- **i18next**: Internationalization framework
-- **react-i18next**: React bindings for i18next
-- **i18next-browser-languagedetector**: Automatic language detection
-
-### Real-time & API
-
-- **Socket.IO Client**: Real-time communication
-- **Axios**: HTTP client for API calls
-
-### Development Tools
-
-- **ESLint**: Code linting
-- **TypeScript ESLint**: TypeScript-specific linting
-- **Vite**: Development server and build tool
-
-## 🚀 Quick Start
+## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js >= 18
-- Backend server running (see backend README)
-- Core package built (`cd ../core && npm run build`)
+- Node.js 20+
+- Backend API running on `http://localhost:3000`
 
 ### Installation
 
 ```bash
 # Install dependencies
 npm install
+```
 
+### Development
+
+```bash
 # Start development server
 npm run dev
-```
 
-### Available Scripts
-
-```bash
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-npm run lint     # Run ESLint
-```
-
-### Development Server
-
-The development server will be available at:
-
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3000/api (must be running)
-
-## 🎨 Design System
-
-### UI Components
-
-The application uses **shadcn/ui** components built on top of **Radix UI** primitives:
-
-- **Buttons**: Various styles and sizes
-- **Cards**: Content containers
-- **Tables**: Data display with sorting/filtering
-- **Forms**: Form inputs with validation
-- **Dialogs**: Modal windows
-- **Dropdowns**: Selection menus
-- **Sidebars**: Navigation panels
-- **Skeletons**: Loading states
-
-### Theme System
-
-- **Dark/Light Mode**: Automatic theme switching
-- **System Preference**: Respects user's OS preference
-- **Persistent**: Theme choice saved in localStorage
-- **Smooth Transitions**: Animated theme changes
-
-### Responsive Design
-
-- **Mobile-first**: Designed for mobile devices
-- **Breakpoints**: Tailwind CSS responsive utilities
-- **Adaptive Layout**: Layouts adjust to screen size
-- **Touch-friendly**: Optimized for touch interactions
-
-## 🔐 Authentication Flow
-
-### Public Routes
-
-- `/` - Landing page
-- `/login` - Sign in page
-- `/signup` - Sign up page
-- `/competitions` - Public competition listings
-
-### Protected Routes
-
-#### Admin Routes (`/admin`)
-
-- Requires admin role
-- System-wide management capabilities
-- User and organization management
-- System logs and analytics
-
-#### Organization Routes (`/organization`)
-
-- Requires organization membership
-- Organization-specific management
-- Competition creation and management
-- Member management
-
-### Authentication States
-
-- **Loading**: Skeleton components during auth check
-- **Authenticated**: Access to protected routes
-- **Unauthenticated**: Redirect to login
-- **Insufficient Permissions**: Redirect to appropriate page
-
-## 🌟 Features
-
-### User Management
-
-- **Sign Up/Sign In**: Email-based authentication
-- **Profile Management**: User profile editing
-- **Role-based Access**: Different UI based on user role
-- **Session Management**: Automatic session handling
-
-### Admin Features
-
-- **Dashboard**: System overview and statistics
-- **User Management**: View and manage all users
-- **Organization Management**: Create and manage organizations
-- **Database Management**: Events, categories, and clubs
-- **System Logs**: View and filter system logs
-- **Analytics**: System-wide analytics and reporting
-
-### Organization Features
-
-- **Dashboard**: Organization-specific overview
-- **Competition Management**: Create and manage competitions
-- **Member Management**: Invite and manage members
-- **Analytics**: Organization-specific analytics
-- **Settings**: Organization configuration
-
-### Real-time Features
-
-- **Live Updates**: Real-time competition updates
-- **Notifications**: Toast notifications for events
-- **Status Indicators**: Connection status display
-
-## 🌍 Internationalization
-
-### Supported Languages
-
-- **English** (default)
-- **French** (Français)
-- **Dutch** (Nederlands)
-
-### Translation Features
-
-- **Automatic Detection**: Browser language detection
-- **Manual Selection**: Language switcher
-- **Persistent Choice**: Language preference saved
-- **Lazy Loading**: Translations loaded on demand
-
-### Adding Translations
-
-1. Add translation files in `src/translations/`
-2. Import in `src/lib/i18n.ts`
-3. Use `useTranslation()` hook in components
-4. Use `t('key')` function for translations
-
-## 🔧 State Management
-
-### Server State (TanStack Query)
-
-- **API Data**: Cached server responses
-- **Background Refetching**: Automatic data updates
-- **Optimistic Updates**: Immediate UI updates
-- **Error Handling**: Comprehensive error states
-
-### Client State (Zustand)
-
-- **Theme**: Dark/light mode preference
-- **User Preferences**: UI settings
-- **Temporary State**: Form data, UI state
-
-### Form State (React Hook Form)
-
-- **Form Validation**: Real-time validation
-- **Error Handling**: Field-level error display
-- **Performance**: Optimized re-renders
-
-## 🎯 Performance Optimizations
-
-### Code Splitting
-
-- **Route-based**: Each page loads separately
-- **Component-based**: Heavy components lazy-loaded
-- **Bundle Analysis**: Vite bundle analyzer
-
-### Caching
-
-- **Query Caching**: TanStack Query cache
-- **Asset Caching**: Vite static asset caching
-- **API Response Caching**: Configurable cache times
-
-### Loading States
-
-- **Skeleton Screens**: Smooth loading experience
-- **Progressive Loading**: Content loads incrementally
-- **Error Boundaries**: Graceful error handling
-
-## 🧪 Development
-
-### Feature Development
-
-Each feature follows a consistent structure:
-
-```
-features/feature-name/
-├── components/        # Feature-specific components
-├── hooks/            # Feature-specific hooks
-├── services/         # API service layer
-├── types/            # TypeScript types
-└── index.ts          # Feature exports
-```
-
-### Component Development
-
-Components follow these patterns:
-
-- **Composition**: Build complex UIs from simple components
-- **Props Interface**: Well-defined TypeScript interfaces
-- **Accessibility**: ARIA attributes and keyboard navigation
-- **Responsive**: Mobile-first responsive design
-
-### API Integration
-
-API services use a consistent pattern:
-
-```typescript
-export class FeatureService {
-  static async getItems(): Promise<Item[]> {
-    const response = await apiClient.get('/api/items');
-    return ItemSchema.array().parse(response.data);
-  }
-}
-```
-
-### Error Handling
-
-- **Error Boundaries**: React error boundary components
-- **API Errors**: Centralized error handling
-- **Toast Notifications**: User-friendly error messages
-- **Fallback UI**: Graceful degradation
-
-## 🚢 Production Build
-
-### Build Process
-
-```bash
 # Build for production
 npm run build
 
 # Preview production build
 npm run preview
+
+# Lint code
+npm run lint
 ```
 
-### Optimization Features
+The application will be available at `http://localhost:5173`
 
-- **Tree Shaking**: Removes unused code
-- **Code Splitting**: Separate bundles for routes
-- **Asset Optimization**: Minified CSS and JS
-- **Image Optimization**: Compressed images
+## 🎨 UI Components
 
-### Deployment Considerations
+### shadcn/ui Integration
 
-- **Environment Variables**: Configure for production
-- **API Endpoints**: Set production API URLs
-- **Error Reporting**: Configure error tracking
-- **Analytics**: Set up user analytics
+This project uses shadcn/ui for consistent, accessible UI components:
 
-## 📚 Resources
+```bash
+# Add new shadcn/ui components
+npx shadcn@latest add [component-name]
 
-- [React Documentation](https://react.dev/)
-- [Vite Documentation](https://vitejs.dev/)
-- [Tailwind CSS](https://tailwindcss.com/)
-- [Radix UI](https://www.radix-ui.com/)
-- [shadcn/ui](https://ui.shadcn.com/)
-- [TanStack Query](https://tanstack.com/query)
-- [React Router](https://reactrouter.com/)
-- [i18next](https://www.i18next.com/)
-
+# List available components
+npx shadcn@latest add
 ```
 
+**Available Components:**
+
+- `Avatar`, `Button`, `Card`, `Dialog`, `Form`
+- `Input`, `Label`, `Select`, `Switch`, `Tabs`
+- `Tooltip`, `Popover`, `Dropdown Menu`
+- And many more...
+
+### Component Guidelines
+
+- Use functional components only
+- Keep components under 300 lines
+- Extract custom hooks for complex logic
+- Use TypeScript strict mode
+- Implement proper error boundaries
+
+## 🔄 State Management
+
+### TanStack Query (React Query)
+
+Used for server state management:
+
+```typescript
+// Example query hook
+const { data, isLoading, error } = useQuery({
+  queryKey: ['competitions'],
+  queryFn: () => api.competitions.list(),
+});
+
+// Example mutation hook
+const createCompetition = useMutation({
+  mutationFn: api.competitions.create,
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ['competitions'] });
+  },
+});
 ```
+
+### Zustand
+
+Used for client-side global state:
+
+```typescript
+// Example store
+const useAppStore = create<AppState>((set) => ({
+  theme: 'light',
+  setTheme: (theme) => set({ theme }),
+}));
+```
+
+## 🌍 Internationalization
+
+### i18next Configuration
+
+The app supports three languages: English, French, and Dutch.
+
+```typescript
+// Usage in components
+import { useTranslation } from 'react-i18next';
+
+function MyComponent() {
+  const { t } = useTranslation();
+
+  return <h1>{t('common.welcome')}</h1>;
+}
+```
+
+### Translation Files
+
+```json
+// translations/en.json
+{
+  "common": {
+    "welcome": "Welcome",
+    "save": "Save",
+    "cancel": "Cancel"
+  },
+  "competition": {
+    "title": "Competition",
+    "create": "Create Competition"
+  }
+}
+```
+
+### Adding New Translations
+
+1. Add keys to all translation files (`en.json`, `fr.json`, `nl.json`)
+2. Use the `t()` function in components
+3. Follow the nested key structure for organization
+
+## 🔐 Authentication
+
+### Better Auth Integration
+
+```typescript
+// Authentication hook
+const { user, isAuthenticated, signIn, signOut } = useAuth();
+
+// Protected routes
+function ProtectedRoute({ children }: { children: React.ReactNode }) {
+  if (!isAuthenticated) {
+    return <Navigate to="/sign-in" />;
+  }
+  return <>{children}</>;
+}
+```
+
+### Route Protection
+
+The app implements route-based authentication:
+
+- **Public Routes**: Home, Sign In, Sign Up
+- **Authenticated Routes**: Dashboard, Profile, Settings
+- **Organization Routes**: Competition management (requires org membership)
+- **Admin Routes**: System administration (requires admin role)
+
+## 🎨 Styling
+
+### Tailwind CSS v4
+
+```css
+/* Global styles in index.css */
+@import 'tailwindcss';
+
+/* Custom utility classes */
+.scroll-area {
+  @apply overflow-auto scrollbar-thin scrollbar-track-transparent;
+}
+```
+
+### Component Styling
+
+```tsx
+// Example component with Tailwind classes
+function CompetitionCard({ competition }: { competition: Competition }) {
+  return (
+    <div className="rounded-lg border bg-card p-6 shadow-sm">
+      <h3 className="text-lg font-semibold">{competition.name}</h3>
+      <p className="text-sm text-muted-foreground">{competition.description}</p>
+    </div>
+  );
+}
+```
+
+### Theme Support
+
+The app supports light and dark themes:
+
+```typescript
+// Theme toggle
+const { theme, setTheme } = useTheme();
+
+function ThemeToggle() {
+  return (
+    <Button
+      variant="ghost"
+      onClick={() => setTheme(theme === 'light' ? 'dark' : 'light')}
+    >
+      {theme === 'light' ? <Moon /> : <Sun />}
+    </Button>
+  );
+}
+```
+
+## 📱 Features
+
+### Competition Management
+
+- Create and edit competitions
+- Configure events and categories
+- Manage participant registrations
+- View competition schedules
+
+### Organization Management
+
+- Organization dashboard
+- Member management
+- Role-based permissions
+- Invitation system
+
+### Real-time Updates
+
+- Live competition updates
+- Real-time notifications
+- Socket.IO integration
+
+### Responsive Design
+
+- Mobile-first approach
+- Tablet and desktop optimized
+- Touch-friendly interactions
+
+## 🔌 API Integration
+
+### API Client
+
+```typescript
+// lib/api.ts
+import axios from 'axios';
+
+const api = axios.create({
+  baseURL: process.env.VITE_API_URL || 'http://localhost:3000',
+  withCredentials: true,
+});
+
+// Request interceptor for auth
+api.interceptors.request.use((config) => {
+  // Add auth headers if needed
+  return config;
+});
+
+// Response interceptor for error handling
+api.interceptors.response.use(
+  (response) => response,
+  (error) => {
+    // Handle errors globally
+    return Promise.reject(error);
+  }
+);
+```
+
+### Data Validation
+
+All API responses are validated using Zod schemas:
+
+```typescript
+// Example API call with validation
+const fetchCompetitions = async (): Promise<Competition[]> => {
+  const response = await api.get('/api/competitions');
+  return competitionListSchema.parse(response.data);
+};
+```
+
+## 🧪 Testing
+
+### Component Testing
+
+```bash
+# Run component tests (if configured)
+npm run test
+
+# Run tests in watch mode
+npm run test:watch
+```
+
+### E2E Testing
+
+End-to-end tests are located in the `../e2e` directory and test the full application flow.
+
+## 📦 Build & Deployment
+
+### Production Build
+
+```bash
+# Create production build
+npm run build
+
+# The build output will be in the `dist/` directory
+```
+
+### Environment Variables
+
+Create a `.env` file for environment-specific configuration:
+
+```env
+# API Configuration
+VITE_API_URL=http://localhost:3000
+
+# Feature Flags
+VITE_ENABLE_ANALYTICS=false
+VITE_ENABLE_DEBUG=true
+```
+
+### Docker Deployment
+
+```bash
+# Build Docker image
+docker build -t competition-manager-frontend .
+
+# Run with Docker Compose
+docker-compose up frontend
+```
+
+## 🛠️ Development Tips
+
+### Code Organization
+
+- Group related components in feature folders
+- Use barrel exports (`index.ts`) for clean imports
+- Keep components focused on a single responsibility
+- Extract custom hooks for reusable logic
+
+### Performance Optimization
+
+- Use React.memo for expensive components
+- Implement proper loading states
+- Use TanStack Query for caching
+- Lazy load heavy components and pages
+
+### Best Practices
+
+- Always handle loading and error states
+- Use TypeScript strict mode
+- Implement proper error boundaries
+- Follow accessibility guidelines (WCAG)
+- Use semantic HTML elements
+
+### Common Patterns
+
+```typescript
+// Loading state pattern
+function CompetitionList() {
+  const { data: competitions, isLoading, error } = useCompetitions();
+
+  if (isLoading) return <CompetitionListSkeleton />;
+  if (error) return <ErrorMessage error={error} />;
+  if (!competitions?.length) return <EmptyState />;
+
+  return (
+    <div>
+      {competitions.map((competition) => (
+        <CompetitionCard key={competition.id} competition={competition} />
+      ))}
+    </div>
+  );
+}
+```
+
+## 🔧 Configuration
+
+### Vite Configuration
+
+The `vite.config.ts` file includes:
+
+- Path aliases for clean imports
+- Plugin configuration
+- Build optimization
+- Development server settings
+
+### TypeScript Configuration
+
+Strict TypeScript configuration with:
+
+- `strict: true`
+- Path mapping for `@/` alias
+- React JSX support
+- Modern ES target

@@ -6,8 +6,5 @@
     {
       "file": "backend/prisma/schema.prisma",
     },
-    {
-      "file": "docs/mcp.md",
-    }
   ]
 }

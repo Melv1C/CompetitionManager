@@ -1,139 +1,80 @@
-# Competition Manager - Core
+# Core
 
-A shared TypeScript package containing common utilities, schemas, types, and validation logic used across the Competition Manager application's backend and frontend.
+Shared utilities, types, schemas, and constants for the Competition Manager application. This package serves as the single source of truth for data structures and validation across the entire application.
 
 ## 🏗️ Architecture
 
-The core package serves as the **single source of truth** for shared functionality:
+### Purpose
+
+The `@repo/core` package provides:
+
+- **Zod Schemas**: Input/output validation for API endpoints
+- **TypeScript Types**: Shared type definitions
+- **Utility Functions**: Common helper functions
+- **Constants**: Application-wide constants and enums
+
+### Tech Stack
+
+- **Validation**: Zod v3 for runtime type checking
+- **TypeScript**: Strict type definitions
+- **Build**: TypeScript compiler with proper exports
+
+### Project Structure
 
 ```
-core/
-├── src/
-│   ├── index.ts          # Main package exports
-│   ├── schemas/          # Zod validation schemas
-│   │   ├── index.ts      # Schema exports
-│   │   ├── base.ts       # Base primitive schemas
-│   │   ├── auth.ts       # Authentication schemas
-│   │   ├── athlete.ts    # Athlete-related schemas
-│   │   ├── category.ts   # Category schemas
-│   │   ├── club.ts       # Club schemas
-│   │   ├── competition.ts # Competition schemas
-│   │   ├── competition-event.ts # Competition event schemas
-│   │   ├── event.ts      # Event schemas
-│   │   ├── log.ts        # Logging schemas
-│   │   └── organization.ts # Organization schemas
-│   ├── types/            # TypeScript type definitions
-│   │   ├── index.ts      # Type exports
-│   │   └── socket.ts     # Socket.IO event types
-│   └── utils/            # Shared utility functions
-│       ├── index.ts      # Utility exports
-│       ├── permissions.ts # Permission utilities
-│       └── organization-permissions.ts # Org permissions
-├── dist/                 # Compiled JavaScript (generated)
-├── package.json
-└── tsconfig.json
+src/
+├── index.ts              # Main exports
+├── schemas/              # Zod validation schemas
+│   ├── index.ts          # Schema exports
+│   ├── base.ts           # Base schemas and utilities
+│   ├── auth.ts           # Authentication schemas
+│   ├── organization.ts   # Organization schemas
+│   ├── competition.ts    # Competition schemas
+│   ├── competition-event.ts # Event schemas
+│   ├── athlete.ts        # Athlete schemas
+│   ├── club.ts           # Club schemas
+│   ├── category.ts       # Category schemas
+│   ├── event.ts          # Event type schemas
+│   └── log.ts            # Logging schemas
+├── types/                # TypeScript type definitions
+│   └── socket.ts         # Socket.IO event types
+└── utils/                # Utility functions
+    └── index.ts          # Common utilities
 ```
 
-## 🛠️ Tech Stack
+## 📋 Schemas
 
-- **TypeScript**: Type-safe development
-- **Zod**: Runtime type validation and schema generation
-- **Better Auth**: Authentication type definitions
-- **ESM**: Modern ES module format
+### Base Schemas
 
-## 📦 Package Exports
-
-The package provides three main export paths:
-
-### `/utils` - Utility Functions
+Common validation schemas used throughout the application:
 
 ```typescript
-import { hasPermission, getOrganizationPermissions } from '@repo/core/utils';
-```
-
-### `/schemas` - Validation Schemas
-
-```typescript
-import { User$, Competition$, Event$ } from '@repo/core/schemas';
-```
-
-### `/types` - TypeScript Types
-
-```typescript
-import type { SocketData, ClientToServerEvents } from '@repo/core/types';
-```
-
-## 🚀 Quick Start
-
-### Installation
-
-This package is installed as a local dependency in both backend and frontend:
-
-```json
-{
-  "dependencies": {
-    "@repo/core": "file:../core"
-  }
-}
-```
-
-### Build Process
-
-The core package must be built before using it in other packages:
-
-```bash
-# Install dependencies
-npm install
-
-# Build the package
-npm run build
-
-# Watch for changes during development
-npm run dev
-```
-
-### Available Scripts
-
-```bash
-npm run build    # Build TypeScript to JavaScript
-npm run dev      # Watch mode for development
-npm run clean    # Clean dist directory
-```
-
-## 🔧 Core Components
-
-### Base Schemas (`schemas/base.ts`)
-
-Fundamental validation schemas used throughout the application:
-
-```typescript
+// base.ts
 export const Id$ = z.number().int().positive();
-export const BetterAuthId$ = z.string().regex(/^[A-Za-z0-9]{32}$/);
-export const Cuid$ = z.cuid();
-export const Date$ = z.date();
-export const Email$ = z.email();
-export const Boolean$ = z.union([z.boolean(), z.stringbool()]);
-export const Gender$ = z.enum(['M', 'F']);
+export const Cuid$ = z.string().cuid();
+export const Date$ = z.coerce.date();
+export const Boolean$ = z.coerce.boolean();
+export const BetterAuthId$ = z.string().min(1);
 ```
 
-### Authentication Schemas (`schemas/auth.ts`)
+### Entity Schemas
 
-User authentication and session management:
+#### Organization Schema
 
 ```typescript
-export const UserRole$ = z.enum(['admin', 'user']);
-export const User$ = z.object({
+export const Organization$ = z.object({
   id: BetterAuthId$,
-  name: z.string(),
-  email: Email$,
-  role: UserRole$.default('user'),
-  // ... other user fields
+  name: z.string().min(1),
+  slug: z.string().nullish(),
+  logo: z.string().nullish(),
+  createdAt: Date$,
+  // ... additional fields
 });
+
+export type Organization = z.infer<typeof Organization$>;
 ```
 
-### Competition Schemas (`schemas/competition.ts`)
-
-Competition and event management:
+#### Competition Schema
 
 ```typescript
 export const Competition$ = z.object({
@@ -141,201 +82,170 @@ export const Competition$ = z.object({
   eid: Cuid$,
   name: z.string(),
   startDate: Date$,
+  endDate: Date$.nullish(),
   isPublished: Boolean$.default(false),
-  // ... other competition fields
+  description: z.string().default(''),
+  location: z.string().default(''),
+  // ... configuration fields
+});
+
+export type Competition = z.infer<typeof Competition$>;
+```
+
+### API Schemas
+
+Request and response schemas for API endpoints:
+
+```typescript
+// Create competition request
+export const CreateCompetitionRequest$ = Competition$.omit({
+  id: true,
+  eid: true,
+  createdAt: true,
+  updatedAt: true,
+});
+
+// Competition list response
+export const CompetitionListResponse$ = z.array(
+  Competition$.extend({
+    organization: Organization$.pick({ name: true, slug: true }),
+    _count: z.object({
+      events: z.number(),
+      athletes: z.number(),
+    }),
+  })
+);
+```
+
+## 🔧 Usage
+
+### In Backend (API Validation)
+
+```typescript
+import { Competition$, CreateCompetitionRequest$ } from '@repo/core/schemas';
+import { zValidator } from '@hono/zod-validator';
+
+// Route handler with validation
+app.post(
+  '/competitions',
+  zValidator('json', CreateCompetitionRequest$),
+  async (c) => {
+    const data = c.req.valid('json'); // Type-safe data
+    // ... handle request
+  }
+);
+
+// Database result validation
+const competition = Competition$.parse(dbResult);
+```
+
+### In Frontend (Type Safety)
+
+```typescript
+import type { Competition, CreateCompetitionRequest } from '@repo/core/schemas';
+import { CreateCompetitionRequest$ } from '@repo/core/schemas';
+
+// Type-safe API calls
+const createCompetition = async (
+  data: CreateCompetitionRequest
+): Promise<Competition> => {
+  // Validate before sending
+  const validData = CreateCompetitionRequest$.parse(data);
+
+  const response = await api.post('/competitions', validData);
+  return Competition$.parse(response.data);
+};
+
+// Form validation
+const formSchema = CreateCompetitionRequest$.extend({
+  // Additional frontend-only fields
+  confirmPassword: z.string(),
 });
 ```
 
-### Socket Types (`types/socket.ts`)
+## 🏷️ Types
 
-Real-time communication type definitions:
+### Socket.IO Event Types
 
 ```typescript
+// types/socket.ts
 export interface ServerToClientEvents {
-  error: (data: ErrorData) => void;
-  notification: (data: NotificationData) => void;
+  competitionUpdate: (data: CompetitionUpdateEvent) => void;
+  athleteRegistered: (data: AthleteRegistrationEvent) => void;
+  notification: (data: NotificationEvent) => void;
 }
 
 export interface ClientToServerEvents {
-  joinCompetition: (data: JoinCompetitionData) => void;
-  leaveCompetition: (data: LeaveCompetitionData) => void;
+  joinCompetition: (competitionId: string) => void;
+  leaveCompetition: (competitionId: string) => void;
 }
 ```
 
-## 🔐 Permission System
-
-### Permission Utilities (`utils/permissions.ts`)
-
-Role-based access control utilities:
+### Database Types
 
 ```typescript
-export const PERMISSIONS = {
-  events: ['create', 'read', 'update', 'delete'],
-  categories: ['create', 'read', 'update', 'delete'],
-  competitions: ['create', 'read', 'update', 'delete'],
-  logs: ['read', 'cleanup'],
-} as const;
-
-export function hasPermission(
-  userRole: string,
-  resource: keyof typeof PERMISSIONS,
-  action: string
-): boolean {
-  // Permission checking logic
-}
+// Prisma-compatible types
+export type PrismaCompetition = Prisma.CompetitionGetPayload<{
+  include: {
+    organization: true;
+    events: true;
+    athletes: true;
+  };
+}>;
 ```
 
-### Organization Permissions (`utils/organization-permissions.ts`)
+## 🛠️ Utilities
 
-Organization-level permission management:
+### Common Helper Functions
 
 ```typescript
-export const ORGANIZATION_PERMISSIONS = {
-  competitions: ['create', 'read', 'update', 'delete'],
-  members: ['invite', 'remove', 'update_role'],
-} as const;
+// utils/index.ts
+export const formatDate = (date: Date, locale = 'en-US'): string => {
+  return new Intl.DateTimeFormat(locale).format(date);
+};
 
-export function getOrganizationPermissions(
-  memberRole: string
-): OrganizationPermissions {
-  // Organization permission logic
-}
+export const generateSlug = (text: string): string => {
+  return text
+    .toLowerCase()
+    .replace(/[^a-z0-9 -]/g, '')
+    .replace(/\s+/g, '-')
+    .replace(/-+/g, '-')
+    .trim();
+};
+
+export const validateEmail = (email: string): boolean => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  return emailRegex.test(email);
+};
 ```
 
-## 📋 Schema Categories
-
-### Athletic Management
-
-- **Event$**: Athletic event types (sprint, jump, throw, etc.)
-- **Category$**: Age and gender-based categories
-- **Athlete$**: Athlete information and registration
-- **Club$**: Sports club information
-- **AthleteInfo$**: Season-specific athlete data
-
-### Competition Management
-
-- **Competition$**: Main competition entity
-- **CompetitionEvent$**: Events within competitions
-- **Organization$**: Multi-tenant organizations
-- **Member$**: Organization membership
-
-### System Management
-
-- **Log$**: Application logging
-- **User$**: User authentication
-- **Session$**: Session management
-
-## 🎯 Usage Examples
-
-### Schema Validation
+### Schema Utilities
 
 ```typescript
-import { User$, Competition$ } from '@repo/core/schemas';
+// Schema composition helpers
+export const withPagination = <T extends z.ZodTypeAny>(itemSchema: T) =>
+  z.object({
+    items: z.array(itemSchema),
+    pagination: z.object({
+      page: z.number(),
+      pageSize: z.number(),
+      total: z.number(),
+      hasNext: z.boolean(),
+      hasPrev: z.boolean(),
+    }),
+  });
 
-// Validate user data
-const userData = User$.parse(rawUserData);
-
-// Validate competition data
-const competitionData = Competition$.parse(rawCompetitionData);
-
-// Create schemas for API endpoints
-const CreateCompetition$ = Competition$.omit({ id: true, createdAt: true });
+// Usage
+const PaginatedCompetitions$ = withPagination(Competition$);
 ```
 
-### Permission Checking
+## 📦 Build & Distribution
 
-```typescript
-import { hasPermission } from '@repo/core/utils';
-
-// Check if user can create events
-if (hasPermission(user.role, 'events', 'create')) {
-  // Allow event creation
-}
-
-// Check organization permissions
-const orgPermissions = getOrganizationPermissions(member.role);
-if (orgPermissions.competitions.includes('create')) {
-  // Allow competition creation
-}
-```
-
-### Socket.IO Types
-
-```typescript
-import type {
-  ClientToServerEvents,
-  ServerToClientEvents,
-} from '@repo/core/types';
-
-// Backend Socket.IO server
-const io = new Server<ClientToServerEvents, ServerToClientEvents>(httpServer);
-
-// Frontend Socket.IO client
-const socket = io<ServerToClientEvents, ClientToServerEvents>();
-```
-
-## 🔄 Development Workflow
-
-### Making Changes
-
-1. **Modify Schemas**: Update validation schemas in `src/schemas/`
-2. **Update Types**: Add new types in `src/types/`
-3. **Add Utilities**: Create shared functions in `src/utils/`
-4. **Build Package**: Run `npm run build`
-5. **Update Dependents**: Restart backend/frontend dev servers
-
-### Schema Evolution
-
-When updating schemas:
-
-1. **Backward Compatibility**: Consider existing data
-2. **Migration Support**: Plan database migrations
-3. **Version Awareness**: Document breaking changes
-4. **Validation Testing**: Test with real data
-
-### Type Safety
-
-The package ensures type safety across the application:
-
-- **Compile-time Checks**: TypeScript validation
-- **Runtime Validation**: Zod schema validation
-- **API Contracts**: Consistent data shapes
-- **Database Types**: Prisma schema alignment
-
-## 🚢 Build Process
-
-### TypeScript Compilation
-
-```bash
-# Single build
-npm run build
-
-# Watch mode for development
-npm run dev
-```
-
-### Output Structure
-
-```
-dist/
-├── schemas/
-│   ├── index.js
-│   ├── index.d.ts
-│   └── ... (all schema files)
-├── types/
-│   ├── socket.js
-│   └── socket.d.ts
-└── utils/
-    ├── index.js
-    └── index.d.ts
-```
-
-### Package Exports
-
-The package.json defines specific export paths:
+### Package Configuration
 
 ```json
 {
+  "name": "@repo/core",
   "exports": {
     "./utils": {
       "types": "./dist/utils/index.d.ts",
@@ -353,93 +263,128 @@ The package.json defines specific export paths:
 }
 ```
 
-## 🔍 Validation Features
+### Development
 
-### Runtime Validation
+```bash
+# Build the package
+npm run build
 
-Zod schemas provide runtime type checking:
+# Watch mode for development
+npm run dev
 
-```typescript
-// Safe parsing with error handling
-const result = User$.safeParse(data);
-if (result.success) {
-  // Use validated data
-  const user = result.data;
-} else {
-  // Handle validation errors
-  console.error(result.error.issues);
-}
+# Type checking
+npm run type-check
 ```
 
-### API Integration
-
-Schemas integrate seamlessly with API validation:
+### Import Examples
 
 ```typescript
-// Backend route validation
-app.post('/api/users', zValidator('json', UserCreate$), async (c) => {
-  const userData = c.req.valid('json'); // Type-safe!
-  // ... handle request
-});
+// Import schemas
+import { Competition$, CreateCompetitionRequest$ } from '@repo/core/schemas';
+
+// Import types
+import type { Competition, ServerToClientEvents } from '@repo/core/types';
+
+// Import utilities
+import { formatDate, generateSlug } from '@repo/core/utils';
 ```
 
-### Database Integration
-
-Schemas align with Prisma database models:
-
-```typescript
-// Prisma model matches schema
-model User {
-  id            String   @id
-  name          String
-  email         String   @unique
-  role          String?
-  // ... other fields
-}
-```
-
-## 🤝 Contributing
+## 🔄 Schema Evolution
 
 ### Adding New Schemas
 
-1. Create schema file in `src/schemas/`
-2. Export from `src/schemas/index.ts`
-3. Add corresponding types if needed
-4. Update utilities if required
-5. Build and test
+1. **Create the schema file** in `src/schemas/`
+2. **Export from index.ts**
+3. **Add type exports** for TypeScript support
+4. **Update dependent packages** (backend/frontend)
 
-### Schema Guidelines
+### Versioning Strategy
 
-- **Consistent Naming**: Use PascalCase with $ suffix (e.g., `User$`)
-- **Comprehensive Validation**: Include all necessary constraints
-- **Documentation**: Add JSDoc comments for complex schemas
-- **Reusability**: Compose from base schemas when possible
+- **Breaking Changes**: Bump major version
+- **New Fields**: Bump minor version (with `.optional()` or `.default()`)
+- **Bug Fixes**: Bump patch version
 
-### Type Guidelines
+### Migration Patterns
 
-- **Export Types**: Export TypeScript interfaces
-- **Naming Consistency**: Match schema names without $ suffix
-- **Documentation**: Document complex type relationships
+```typescript
+// Backward-compatible field addition
+export const UserV2$ = UserV1$.extend({
+  newField: z.string().optional(), // Safe addition
+});
 
-## 📚 Resources
+// Schema transformation for breaking changes
+export const migrateUserV1ToV2 = (v1: UserV1): UserV2 => ({
+  ...v1,
+  newField: 'default-value',
+});
+```
 
-- [Zod Documentation](https://zod.dev/)
-- [TypeScript Handbook](https://www.typescriptlang.org/docs/)
-- [Better Auth Types](https://better-auth.com/)
-- [Socket.IO TypeScript](https://socket.io/docs/v4/typescript/)
+## 🧪 Testing Schemas
 
-## 🐛 Troubleshooting
+### Validation Testing
 
-### Common Issues
+```typescript
+import { describe, it, expect } from 'vitest';
+import { Competition$ } from './competition';
 
-1. **Build Errors**: Check TypeScript configuration
-2. **Import Errors**: Verify package exports in package.json
-3. **Type Mismatches**: Ensure schemas and types align
-4. **Validation Failures**: Check Zod schema definitions
+describe('Competition Schema', () => {
+  it('should validate valid competition data', () => {
+    const validData = {
+      id: 1,
+      eid: 'cuid123',
+      name: 'Test Competition',
+      startDate: new Date(),
+      isPublished: false,
+      // ...
+    };
 
-### Development Tips
+    expect(() => Competition$.parse(validData)).not.toThrow();
+  });
 
-- Always build after schema changes
-- Use TypeScript strict mode for better type checking
-- Test schemas with real data
-- Keep schemas simple and composable
+  it('should reject invalid competition data', () => {
+    const invalidData = {
+      id: 'not-a-number', // Should be number
+      name: '', // Should not be empty
+    };
+
+    expect(() => Competition$.parse(invalidData)).toThrow();
+  });
+});
+```
+
+## 📝 Best Practices
+
+### Schema Design
+
+1. **Use descriptive names** for schemas and fields
+2. **Provide default values** where appropriate
+3. **Use `.optional()` for non-required fields**
+4. **Compose schemas** rather than duplicating
+5. **Document complex validation logic**
+
+### Type Safety
+
+1. **Always infer types** from schemas using `z.infer<>`
+2. **Export both schemas and types**
+3. **Use const assertions** for literal types
+4. **Validate at boundaries** (API, database, external services)
+
+### Performance
+
+1. **Reuse schema instances** rather than recreating
+2. \*\*Use `.partial()` and `.pick()` for derived schemas
+3. **Avoid deep nesting** in complex schemas
+4. **Cache parsed results** when appropriate
+
+## 🔗 Dependencies
+
+### Core Dependencies
+
+- **zod**: Runtime validation and type inference
+- **typescript**: Type definitions and compilation
+
+### Peer Dependencies
+
+- Used by backend and frontend packages
+- Socket.IO types (for real-time features)
+- Prisma types (for database integration)

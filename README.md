@@ -1,261 +1,192 @@
 # Competition Manager
 
-A comprehensive competition management system built with modern web technologies for organizing and managing athletic competitions. The system supports multi-organization management, athlete tracking, event scheduling, and real-time updates.
-
-## 🏗️ Architecture
-
-This project follows a **monorepo architecture** with three main packages:
-
-```
-competition-manager/
-├── backend/          # Node.js API server (Hono + PostgreSQL)
-├── frontend/         # React SPA (Vite + TypeScript)
-├── core/             # Shared utilities, schemas, and types
-└── docker-compose.yml # PostgreSQL database setup
-```
-
-## 🛠️ Tech Stack
-
-### Backend
-
-- **Framework**: [Hono](https://hono.dev/) - Ultra-fast web framework
-- **Database**: PostgreSQL with [Prisma ORM](https://prisma.io/)
-- **Authentication**: [Better Auth](https://better-auth.com/)
-- **Real-time**: Socket.IO for live updates
-- **Validation**: Zod schemas
-- **Runtime**: Node.js with TypeScript
-
-### Frontend
-
-- **Framework**: React 19 with TypeScript
-- **Build Tool**: Vite
-- **Routing**: React Router v7
-- **State Management**: Zustand + TanStack Query
-- **UI Components**: Shadcn/ui (Radix UI + Tailwind CSS)
-- **Styling**: Tailwind CSS v4
-- **Internationalization**: i18next
-
-### Core Package
-
-- **Shared Types**: TypeScript definitions
-- **Validation Schemas**: Zod schemas for data validation
-- **Utilities**: Common functions and permissions system
+A modern, full-stack competition management system built for athletic organizations to manage competitions, athletes, events, and results.
 
 ## 🚀 Quick Start
 
 ### Prerequisites
 
-- **Node.js** >= 18
-- **Docker** and **Docker Compose** (for database)
-- **npm**
+- **Node.js**: Version 20 or higher
+- **Docker & Docker Compose**: For database and containerized deployment
+- **PostgreSQL**: Version 16 (or use Docker)
 
-### 1. Database Setup
+### Development Setup
 
-Start the PostgreSQL database:
+1. **Clone and Install Dependencies**
 
-```bash
-docker-compose up -d
-```
+   ```bash
+   git clone <repository-url>
+   cd CompetitionManager
 
-### 2. Install Dependencies
+   # Install dependencies for all packages
+   cd backend && npm install
+   cd ../frontend && npm install
+   cd ../core && npm install
+   cd ../e2e && npm install
+   ```
 
-Install dependencies for all packages:
+2. **Setup Database**
 
-```bash
-# Install backend dependencies
-cd backend && npm install
+   ```bash
+   # Start PostgreSQL with Docker
+   docker-compose -f docker-compose.db.yml up -d
 
-# Install frontend dependencies
-cd ../frontend && npm install
+   # Run database migrations
+   cd backend
+   npx prisma migrate dev
+   ```
 
-# Install core package dependencies
-cd ../core && npm install
-```
+3. **Start Development Servers**
 
-### 3. Environment Configuration
+   ```bash
+   # Terminal 1: Backend API (Port 3000)
+   cd backend && npm run dev
 
-Create a `.env` file in the `backend/` directory:
+   # Terminal 2: Frontend App (Port 5173)
+   cd frontend && npm run dev
+   ```
 
-```env
-NODE_ENV=development
-PORT=3000
-DATABASE_URL=postgresql://postgres:postgres@localhost:5555/postgres
-BETTER_AUTH_SECRET=your-secret-key-min-32-chars
-BETTER_AUTH_URL=http://localhost:5173
+4. **Access the Application**
+   - Frontend: http://localhost:5173
+   - Backend API: http://localhost:3000
 
-# Log cleanup configuration
-LOG_CLEANUP_ENABLED=true
-LOG_CLEANUP_DAYS_TO_KEEP=30
-LOG_CLEANUP_SCHEDULE=@daily
+## 🏗️ Architecture
 
-# Database seeding
-DB_SEED_ENABLED=true
-DB_SEED_FORCE_RESEED=false
+### Tech Stack
 
-# Athlete sync with LBFA (Belgian Athletics Federation)
-ATHLETE_SYNC_ENABLED=true
-ATHLETE_SYNC_SCHEDULE=@daily
-ATHLETE_SYNC_USE_MOCK=false
-LBFA_URL=https://api.lbfa.be
-LBFA_USERNAME=your-lbfa-username
-LBFA_PASSWORD=your-lbfa-password
-```
-
-### 4. Database Migration
-
-Run Prisma migrations to set up the database schema:
-
-```bash
-cd backend
-npx prisma migrate deploy
-```
-
-### 5. Build Core Package
-
-The core package needs to be built first as it's used by both backend and frontend:
-
-```bash
-cd core
-npm run build
-```
-
-### 6. Start Development Servers
-
-Start the backend server:
-
-```bash
-cd backend
-npm run dev
-```
-
-Start the frontend development server:
-
-```bash
-cd frontend
-npm run dev
-```
-
-### 7. Access the Application
-
-- **Frontend**: http://localhost:5173
-- **Backend API**: http://localhost:3000/api
-- **Database**: localhost:5555 (PostgreSQL)
-
-## 📱 Features
-
-### Core Features
-
-- **Multi-organization Management**: Support for multiple sports organizations
-- **Competition Management**: Create and manage athletic competitions
-- **Event & Category Management**: Organize events by categories and age groups
-- **Athlete Management**: Track athletes with license numbers and club affiliations
-- **Real-time Updates**: Live updates using Socket.IO
-- **Role-based Access Control**: Admin and organization-level permissions
-
-### Admin Features
-
-- **User Management**: Manage users and their permissions
-- **System Monitoring**: View logs and system analytics
-- **Database Management**: Manage events, categories, and clubs
-- **Organization Oversight**: Monitor all organizations in the system
-
-### Organization Features
-
-- **Competition Creation**: Create and manage competitions
-- **Member Management**: Manage organization members and roles
-- **Analytics Dashboard**: View competition and member statistics
-- **Settings Management**: Configure organization preferences
-
-## 🏃‍♂️ Development
+- **Backend**: Node.js 20, Hono 3, PostgreSQL 16, Prisma ORM
+- **Frontend**: React 19, Vite 5, TanStack Query, Zustand, shadcn/ui
+- **Shared**: Zod validation, TypeScript, i18next (EN/FR/NL)
+- **Real-time**: Socket.IO
+- **Auth**: Better Auth
+- **Testing**: Playwright E2E
 
 ### Project Structure
 
-Each package has its own detailed README with specific setup instructions:
+```
+├── backend/          # API server and business logic
+├── frontend/         # React SPA application
+├── core/            # Shared types, schemas, and utilities
+├── e2e/             # End-to-end tests with Playwright
+├── .github/         # CI/CD workflows
+└── docker-compose.yml # Container orchestration
+```
 
-- [`backend/README.md`](./backend/README.md) - API server setup and architecture
-- [`frontend/README.md`](./frontend/README.md) - React application setup and components
-- [`core/README.md`](./core/README.md) - Shared utilities and schemas
+## 📋 Key Features
 
-### Development Workflow
+### Competition Management
 
-1. **Core Development**: Make changes to shared types/schemas in `core/`
-2. **Build Core**: Run `npm run build` in `core/` after changes
-3. **Backend Development**: API endpoints, services, and database operations
-4. **Frontend Development**: UI components and user interactions
-5. **Testing**: Test changes across all packages
+- Create and manage athletic competitions
+- Configure events, categories, and participants
+- Handle online registrations and payments
+- Manage competition schedules and locations
+
+### Organization & User Management
+
+- Multi-tenant organizations with role-based access
+- User authentication and authorization
+- Organization member management and invitations
+
+### Athlete & Club Management
+
+- Athlete registration and profile management
+- Club affiliations and management
+- Seasonal athlete information tracking
+
+### Real-time Features
+
+- Live competition updates via Socket.IO
+- Real-time notifications and status changes
+
+### Internationalization
+
+- Multi-language support (English, French, Dutch)
+- Localized date, time, and number formatting
+
+## 🛠️ Development
+
+### Available Scripts
+
+```bash
+# Backend
+cd backend
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run start    # Start production server
+
+# Frontend
+cd frontend
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+
+# Core (Shared Package)
+cd core
+npm run build    # Build shared package
+npm run dev      # Watch mode for development
+
+# E2E Tests
+cd e2e
+npm run test     # Run all tests
+npm run test:ui  # Run tests with UI
+```
 
 ### Database Management
 
-- **View Data**: Use Prisma Studio: `cd backend && npx prisma studio`
-- **Reset Database**: `cd backend && npx prisma migrate reset`
-- **Generate Types**: `cd backend && npx prisma generate`
+```bash
+cd backend
 
-### External Integration
+# Create new migration
+npx prisma migrate dev --name <migration-name>
 
-The system integrates with **LBFA** (Belgian Athletics Federation) for athlete synchronization:
+# Reset database
+npx prisma migrate reset
 
-- Automatic daily sync of athlete data
-- Club information synchronization
-- License validation
+# Generate Prisma client
+npx prisma generate
 
-## 🛡️ Security
+# View database in browser
+npx prisma studio
+```
 
-- **Authentication**: JWT-based auth with Better Auth
-- **Authorization**: Role-based permissions (Admin/Organization/Member)
-- **Data Validation**: Comprehensive Zod schemas
-- **SQL Injection Protection**: Prisma ORM parameterized queries
-- **CORS Configuration**: Proper cross-origin setup
+### Code Quality
 
-## 📊 Monitoring & Logging
+The project includes automated code quality checks:
 
-- **Winston Logging**: Structured logging with multiple levels
-- **Log Cleanup**: Automated log rotation and cleanup
-- **Error Tracking**: Comprehensive error logging and handling
-- **Performance Monitoring**: Request timing and performance metrics
+- **ESLint**: Code linting and formatting
+- **TypeScript**: Strict type checking
+- **Playwright**: End-to-end testing
+- **GitHub Actions**: Automated CI/CD pipeline
 
 ## 🚢 Deployment
 
-### Production Build
+### Docker Deployment
 
 ```bash
-# Build core package
-cd core && npm run build
+# Build and start all services
+docker-compose up --build
 
-# Build frontend
-cd frontend && npm run build
-
-# Build backend
-cd backend && npm run build
+# Production deployment
+docker-compose -f docker-compose.yml up -d
 ```
 
 ### Environment Variables
 
-Ensure all production environment variables are properly configured, especially:
+Create appropriate `.env` files in each package:
 
-- Database connection strings
-- Authentication secrets
-- External API credentials (LBFA)
+- `backend/.env` - Database URLs, API keys, auth secrets
+- `frontend/.env` - API endpoints, feature flags
+
+## 📁 Package Details
+
+- **[Backend](./backend/README.md)** - API server, database, and business logic
+- **[Frontend](./frontend/README.md)** - React application and user interface
+- **[Core](./core/README.md)** - Shared utilities, types, and schemas
+- **[E2E](./e2e/README.md)** - End-to-end testing suite
 
 ## 🤝 Contributing
 
-1. **Fork** the repository
-2. **Create** a feature branch
-3. **Make** your changes
-4. **Test** thoroughly across all packages
-5. **Submit** a pull request
-
-## 📄 License
-
-This project is licensed under the MIT License - see the LICENSE file for details.
-
-## 🆘 Support
-
-For questions and support:
-
-- Check the individual package READMEs for detailed information
-- Review the code comments and documentation
-- Open an issue for bugs or feature requests
-
----
-
-Built with ❤️ for athletic competition management
+1. Follow the coding standards defined in each package
+2. Write tests for new features
+3. Ensure all CI checks pass
+4. Update documentation as needed
