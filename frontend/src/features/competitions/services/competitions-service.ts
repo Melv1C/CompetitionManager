@@ -13,6 +13,13 @@ export class CompetitionsService {
     return Competition$.array().parse(response.data);
   }
 
+  static async getOrganizationCompetition(id: string) {
+    const response = await apiClient.get(
+      `/api/organization/competitions/${id}`,
+    );
+    return Competition$.parse(response.data);
+  }
+
   static async createCompetition(data: CompetitionCreate) {
     const response = await apiClient.post(
       '/api/organization/competitions',

@@ -25,12 +25,14 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { OrganizationSelector } from '@/features/organization';
+import { useCompetitionStore } from '@/store/competition';
 import { authClient } from '@/lib/auth-client';
 import {
   ArrowLeft,
   BarChart3,
   ChevronDown,
   Home,
+  Calendar,
   LogOut,
   Settings,
   Trophy,
@@ -50,6 +52,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('common');
+  const { currentCompetition, clearCompetition } = useCompetitionStore();
 
   const navItems = [
     {
@@ -78,6 +81,36 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
       icon: Settings,
     },
   ];
+
+  const competitionNavItems = currentCompetition
+    ? [
+        {
+          title: 'Overview',
+          url: `/organization/competitions/${currentCompetition.id}`,
+          icon: Home,
+        },
+        {
+          title: 'Participants',
+          url: `/organization/competitions/${currentCompetition.id}/participants`,
+          icon: Users,
+        },
+        {
+          title: 'Events',
+          url: `/organization/competitions/${currentCompetition.id}/events`,
+          icon: Calendar,
+        },
+        {
+          title: 'Results',
+          url: `/organization/competitions/${currentCompetition.id}/results`,
+          icon: BarChart3,
+        },
+        {
+          title: 'Settings',
+          url: `/organization/competitions/${currentCompetition.id}/settings`,
+          icon: Settings,
+        },
+      ]
+    : [];
   const handleSignOut = async () => {
     try {
       await authClient.signOut({
@@ -105,11 +138,33 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
           </SidebarMenu>
         </SidebarHeader>
         <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
+        <SidebarGroup>
+          <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
+          <SidebarGroupContent>
+            <SidebarMenu>
+              {navItems.map((item) => (
+                  <SidebarMenuItem key={item.title}>
+                    <SidebarMenuButton
+                      asChild
+                      isActive={location.pathname === item.url}
+                    >
+                      <Link to={item.url}>
+                        <item.icon />
+                        <span>{item.title}</span>
+                      </Link>
+                    </SidebarMenuButton>
+                  </SidebarMenuItem>
+              ))}
+            </SidebarMenu>
+          </SidebarGroupContent>
+        </SidebarGroup>
+
+        {currentCompetition && (
+          <SidebarGroup className="mt-4">
+            <SidebarGroupLabel>{currentCompetition.name}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
-                {navItems.map((item) => (
+                {competitionNavItems.map((item) => (
                   <SidebarMenuItem key={item.title}>
                     <SidebarMenuButton
                       asChild
@@ -122,9 +177,16 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
                     </SidebarMenuButton>
                   </SidebarMenuItem>
                 ))}
+                <SidebarMenuItem>
+                  <SidebarMenuButton onClick={clearCompetition}>
+                    <ArrowLeft className="size-4" />
+                    <span>Exit Competition</span>
+                  </SidebarMenuButton>
+                </SidebarMenuItem>
               </SidebarMenu>
             </SidebarGroupContent>
           </SidebarGroup>
+        )}
 
           <SidebarGroup className="mt-4">
             <SidebarGroupContent>

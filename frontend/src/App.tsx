@@ -18,6 +18,7 @@ import {
 } from 'react-router-dom';
 import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
+import { CompetitionOutlet } from './pages/organization/competition/outlet';
 
 // Static import mapping for Vite's build-time analysis
 const pageImports = {
@@ -78,6 +79,26 @@ const pageImports = {
     import('./pages/organization/organization-settings').then((m) => ({
       default: m.OrganizationSettings,
     })),
+  CompetitionOverview: () =>
+    import('./pages/organization/competition/overview').then((m) => ({
+      default: m.CompetitionOverview,
+    })),
+  CompetitionParticipants: () =>
+    import('./pages/organization/competition/participants').then((m) => ({
+      default: m.CompetitionParticipants,
+    })),
+  CompetitionEvents: () =>
+    import('./pages/organization/competition/events').then((m) => ({
+      default: m.CompetitionEvents,
+    })),
+  CompetitionResults: () =>
+    import('./pages/organization/competition/results').then((m) => ({
+      default: m.CompetitionResults,
+    })),
+  CompetitionSettings: () =>
+    import('./pages/organization/competition/settings').then((m) => ({
+      default: m.CompetitionSettings,
+    })),
 } as const;
 
 // Helper function to create lazy components from static imports
@@ -106,6 +127,11 @@ const OrganizationCompetitions = createLazyComponent(
 const OrganizationMembers = createLazyComponent('OrganizationMembers');
 const OrganizationAnalytics = createLazyComponent('OrganizationAnalytics');
 const OrganizationSettings = createLazyComponent('OrganizationSettings');
+const CompetitionOverview = createLazyComponent('CompetitionOverview');
+const CompetitionParticipants = createLazyComponent('CompetitionParticipants');
+const CompetitionEvents = createLazyComponent('CompetitionEvents');
+const CompetitionResults = createLazyComponent('CompetitionResults');
+const CompetitionSettings = createLazyComponent('CompetitionSettings');
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -216,6 +242,17 @@ const router = createBrowserRouter([
       {
         path: 'competitions',
         element: <OrganizationCompetitions />,
+      },
+      {
+        path: 'competitions/:competitionId',
+        element: <CompetitionOutlet />,
+        children: [
+          { index: true, element: <CompetitionOverview /> },
+          { path: 'participants', element: <CompetitionParticipants /> },
+          { path: 'events', element: <CompetitionEvents /> },
+          { path: 'results', element: <CompetitionResults /> },
+          { path: 'settings', element: <CompetitionSettings /> },
+        ],
       },
       {
         path: 'members',

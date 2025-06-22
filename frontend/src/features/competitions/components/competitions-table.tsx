@@ -1,4 +1,6 @@
 import { Button } from '@/components/ui/button';
+import { Link } from 'react-router-dom';
+import { useCompetitionStore } from '@/store/competition';
 import {
   Table,
   TableBody,
@@ -18,6 +20,7 @@ export function CompetitionsTable({
   competitions,
   isLoading,
 }: CompetitionsTableProps) {
+  const { setCompetition } = useCompetitionStore();
   if (isLoading) {
     return <div className="py-4 text-center">Loading competitions...</div>;
   }
@@ -52,8 +55,13 @@ export function CompetitionsTable({
             <TableCell className="font-medium">{comp.name}</TableCell>
             <TableCell>{formatDate(comp.startDate)}</TableCell>
             <TableCell>
-              <Button size="sm" variant="outline">
-                View
+              <Button
+                size="sm"
+                variant="outline"
+                asChild
+                onClick={() => setCompetition(comp)}
+              >
+                <Link to={`/organization/competitions/${comp.id}`}>View</Link>
               </Button>
             </TableCell>
           </TableRow>
