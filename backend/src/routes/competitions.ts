@@ -1,8 +1,9 @@
-import { type Prisma } from '@/lib/prisma';
+import { prisma, type Prisma } from '@/lib/prisma';
 import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
-import { CompetitionQuery$ } from '@repo/core/schemas';
+import { Competition$, competitionInclude, CompetitionQuery$, Cuid$ } from '@repo/core/schemas';
+import { z } from 'zod/v4';
 import { Hono } from 'hono';
 
 const competitionsRoutes = new Hono();
@@ -37,6 +38,30 @@ competitionsRoutes.get(
     } catch (error) {
       logError('Failed to fetch competitions', error, c);
       return c.json({ error: 'Failed to fetch competitions' }, 500);
+    }
+  }
+);
+
+// GET /competitions/:eid - Get single competition details (public)
+competitionsRoutes.get(
+  '/:eid',
+  zValidator('param', z.object({ eid: Cuid$ })),
+  async (c) => {
+    try {
+      const { eid } = c.req.valid('param');
+      const competition = await prisma.competition.findFirst({
+        where: { eid, isPublished: true },
+        include: competitionInclude,
+      });
+
+      if (!competition) {
+        return c.json({ error: 'Competition not found' }, 404);
+      }
+
+      return c.json(Competition$.parse(competition));
+    } catch (error) {
+      logError('Failed to fetch competition', error, c);
+      return c.json({ error: 'Failed to fetch competition' }, 500);
     }
   }
 );
