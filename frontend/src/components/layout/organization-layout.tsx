@@ -26,20 +26,25 @@ import {
 import { useAuth } from '@/features/auth/hooks/use-auth';
 import { OrganizationSelector } from '@/features/organization';
 import { authClient } from '@/lib/auth-client';
+import { useOrganizationCompetitionStore } from '@/store/organization-competition';
 import {
   ArrowLeft,
-  BarChart3,
+  CalendarClock,
+  CalendarDays,
   ChevronDown,
   Home,
   LogOut,
   Settings,
+  TrendingUp,
   Trophy,
+  UserCheck2,
   Users,
 } from 'lucide-react';
-import { type ReactNode } from 'react';
+import { useMemo, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
+import { ScrollArea } from '../ui/scroll-area';
 
 interface OrganizationLayoutProps {
   children: ReactNode;
@@ -50,7 +55,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('common');
-
+  const { currentCompetition } = useOrganizationCompetitionStore();
   const navItems = [
     {
       title: t('overview'),
@@ -60,7 +65,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
     {
       title: t('competitions'),
       url: '/organization/competitions',
-      icon: Trophy,
+      icon: CalendarDays,
     },
     {
       title: t('members'),
@@ -70,7 +75,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
     {
       title: t('analytics'),
       url: '/organization/analytics',
-      icon: BarChart3,
+      icon: TrendingUp,
     },
     {
       title: t('settings'),
@@ -78,6 +83,43 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
       icon: Settings,
     },
   ];
+  const competitionNavItems = useMemo(() => {
+    return currentCompetition
+      ? [
+          {
+            title: 'Overview',
+            url: `/organization/competitions/${currentCompetition.eid}`,
+            icon: Home,
+          },
+          {
+            title: 'Inscriptions',
+            url: `/organization/competitions/${currentCompetition.eid}/inscriptions`,
+            icon: Users,
+          },
+          {
+            title: 'Confirmations',
+            url: `/organization/competitions/${currentCompetition.eid}/confirmations`,
+            icon: UserCheck2,
+          },
+          {
+            title: 'Events',
+            url: `/organization/competitions/${currentCompetition.eid}/events`,
+            icon: CalendarClock,
+          },
+          {
+            title: 'Results',
+            url: `/organization/competitions/${currentCompetition.eid}/results`,
+            icon: Trophy,
+          },
+          {
+            title: 'Settings',
+            url: `/organization/competitions/${currentCompetition.eid}/settings`,
+            icon: Settings,
+          },
+        ]
+      : [];
+  }, [currentCompetition]);
+
   const handleSignOut = async () => {
     try {
       await authClient.signOut({
@@ -104,43 +146,68 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <SidebarContent>
-          <SidebarGroup>
-            <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
-            <SidebarGroupContent>
-              <SidebarMenu>
-                {navItems.map((item) => (
-                  <SidebarMenuItem key={item.title}>
-                    <SidebarMenuButton
-                      asChild
-                      isActive={location.pathname === item.url}
-                    >
-                      <Link to={item.url}>
-                        <item.icon />
-                        <span>{item.title}</span>
+        <ScrollArea className="flex-1 overflow-hidden">
+          <SidebarContent>
+            <SidebarGroup>
+              <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  {navItems.map((item) => (
+                    <SidebarMenuItem key={item.title}>
+                      <SidebarMenuButton
+                        asChild
+                        isActive={location.pathname === item.url}
+                      >
+                        <Link to={item.url}>
+                          <item.icon />
+                          <span>{item.title}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  ))}
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+
+            {currentCompetition && (
+              <SidebarGroup className="mt-4">
+                <SidebarGroupLabel>{currentCompetition.name}</SidebarGroupLabel>
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    {competitionNavItems.map((item) => (
+                      <SidebarMenuItem key={item.title}>
+                        <SidebarMenuButton
+                          asChild
+                          isActive={location.pathname === item.url}
+                        >
+                          <Link to={item.url}>
+                            <item.icon />
+                            <span>{item.title}</span>
+                          </Link>
+                        </SidebarMenuButton>
+                      </SidebarMenuItem>
+                    ))}
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            )}
+
+            <SidebarGroup className="mt-4">
+              <SidebarGroupContent>
+                <SidebarMenu>
+                  <SidebarMenuItem>
+                    <SidebarMenuButton asChild>
+                      <Link to="/" className="flex items-center gap-2">
+                        <ArrowLeft className="size-4" />
+                        <span>{t('backToSite')}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>
-                ))}
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-
-          <SidebarGroup className="mt-4">
-            <SidebarGroupContent>
-              <SidebarMenu>
-                <SidebarMenuItem>
-                  <SidebarMenuButton asChild>
-                    <Link to="/" className="flex items-center gap-2">
-                      <ArrowLeft className="size-4" />
-                      <span>{t('backToSite')}</span>
-                    </Link>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              </SidebarMenu>
-            </SidebarGroupContent>
-          </SidebarGroup>
-        </SidebarContent>
+                </SidebarMenu>
+              </SidebarGroupContent>
+            </SidebarGroup>
+          </SidebarContent>
+        </ScrollArea>
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -211,6 +278,11 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
       <SidebarInset>
         <header className="flex h-16 shrink-0 items-center gap-2 border-b px-4">
           <SidebarTrigger className="-ml-1" />
+          <h1 className="text-lg font-semibold">
+            {location.pathname.includes('/competitions/') && currentCompetition
+              ? currentCompetition.name
+              : 'Organization'}
+          </h1>
         </header>
         <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
       </SidebarInset>

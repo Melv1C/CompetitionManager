@@ -92,6 +92,40 @@ organizationCompetitionsRoutes.post(
   }
 );
 
+// GET /organization/competitions/:eid - Get single competition details
+organizationCompetitionsRoutes.get(
+  '/:eid',
+  requirePermissions({
+    competitions: ['read'],
+  }),
+  zValidator('param', z.object({ eid: Cuid$ })),
+  async (c) => {
+    try {
+      const { eid } = c.req.valid('param');
+      const session = await getRequiredSession(c);
+
+      if (!session.activeOrganizationId) {
+        logger.error('No active organization found for user', { session });
+        return c.json({ error: 'No active organization found' }, 400);
+      }
+
+      const competition = await prisma.competition.findFirst({
+        where: { eid, organizationId: session.activeOrganizationId },
+        include: competitionInclude,
+      });
+
+      if (!competition) {
+        return c.json({ error: 'Competition not found' }, 404);
+      }
+
+      return c.json(Competition$.parse(competition));
+    } catch (error) {
+      logError('Failed to fetch competition', error, c);
+      return c.json({ error: 'Failed to fetch competition' }, 500);
+    }
+  }
+);
+
 // PUT /organization/competitions/:eid - Update existing competition
 organizationCompetitionsRoutes.put(
   '/:eid',

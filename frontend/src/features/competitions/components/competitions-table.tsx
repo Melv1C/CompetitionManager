@@ -8,6 +8,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type { Competition } from '@repo/core/schemas';
+import { Link } from 'react-router-dom';
 
 interface CompetitionsTableProps {
   competitions: Competition[];
@@ -52,8 +53,8 @@ export function CompetitionsTable({
             <TableCell className="font-medium">{comp.name}</TableCell>
             <TableCell>{formatDate(comp.startDate)}</TableCell>
             <TableCell>
-              <Button size="sm" variant="outline">
-                View
+              <Button size="sm" variant="outline" asChild>
+                <Link to={`/organization/competitions/${comp.eid}`}>View</Link>
               </Button>
             </TableCell>
           </TableRow>

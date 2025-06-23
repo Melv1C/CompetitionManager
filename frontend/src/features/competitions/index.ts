@@ -5,3 +5,4 @@ export {
   useCompetitions,
   useOrganizationCompetitions,
 } from './hooks/use-competitions';
+export { useOrganizationCompetition } from './hooks/use-competition';
