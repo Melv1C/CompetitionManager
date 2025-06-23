@@ -29,6 +29,16 @@ const pageImports = {
     import('./pages/SignIn').then((m) => ({ default: m.SignInPage })),
   SignUp: () =>
     import('./pages/SignUp').then((m) => ({ default: m.SignUpPage })),
+  Competitions: () =>
+    import('./pages/Competitions').then((m) => ({
+      default: m.CompetitionsPage,
+    })),
+  Results: () =>
+    import('./pages/Results').then((m) => ({ default: m.ResultsPage })),
+  CompetitionDetail: () =>
+    import('./pages/CompetitionDetail').then((m) => ({
+      default: m.CompetitionDetailPage,
+    })),
 
   // Admin pages
   AdminDashboard: () =>
@@ -115,6 +125,9 @@ const Home = createLazyComponent('Home');
 const NotFound = createLazyComponent('NotFound');
 const SignInPage = createLazyComponent('SignIn');
 const SignUpPage = createLazyComponent('SignUp');
+const CompetitionsPage = createLazyComponent('Competitions');
+const ResultsPage = createLazyComponent('Results');
+const CompetitionDetailPage = createLazyComponent('CompetitionDetail');
 
 const AdminDashboard = createLazyComponent('AdminDashboard');
 const AdminUsers = createLazyComponent('AdminUsers');
@@ -217,7 +230,11 @@ const router = createBrowserRouter([
       },
       {
         path: 'competitions',
-        element: <div>Competitions</div>,
+        element: <CompetitionsPage />,
+      },
+      {
+        path: 'competitions/:eid',
+        element: <CompetitionDetailPage />,
       },
       {
         path: 'participants',
@@ -225,7 +242,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'results',
-        element: <div>Results</div>,
+        element: <ResultsPage />,
       },
       {
         path: 'auth/sign-in',

@@ -1,4 +1,4 @@
-import type { Competition, CompetitionCreate } from '@repo/core/schemas';
+import type { Competition, CompetitionCreate, CompetitionQuery } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CompetitionsService } from '../services/competitions-service';
@@ -22,10 +22,18 @@ export function useCreateCompetition() {
   });
 }
 
-export function useCompetitions() {
+export function useCompetitions(query?: Partial<CompetitionQuery>) {
   return useQuery<Competition[]>({
-    queryKey: [COMPETITIONS_QUERY_KEY],
-    queryFn: CompetitionsService.getCompetitions,
+    queryKey: [COMPETITIONS_QUERY_KEY, query],
+    queryFn: () => CompetitionsService.getCompetitions(query),
+  });
+}
+
+export function useCompetition(eid?: string) {
+  return useQuery<Competition | undefined>({
+    queryKey: [COMPETITIONS_QUERY_KEY, 'detail', eid],
+    queryFn: () => (eid ? CompetitionsService.getCompetition(eid) : Promise.resolve(undefined)),
+    enabled: Boolean(eid),
   });
 }
 

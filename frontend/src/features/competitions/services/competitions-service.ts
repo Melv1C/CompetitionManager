@@ -1,11 +1,22 @@
 import { apiClient } from '@/lib/api-client';
-import type { CompetitionCreate, Cuid } from '@repo/core/schemas';
+import type {
+  CompetitionCreate,
+  CompetitionQuery,
+  Cuid,
+} from '@repo/core/schemas';
 import { Competition$ } from '@repo/core/schemas';
 
 export class CompetitionsService {
-  static async getCompetitions() {
-    const response = await apiClient.get('/api/competitions');
+  static async getCompetitions(query?: Partial<CompetitionQuery>) {
+    const response = await apiClient.get('/api/competitions', {
+      params: query,
+    });
     return Competition$.array().parse(response.data);
+  }
+
+  static async getCompetition(eid: string) {
+    const response = await apiClient.get(`/api/competitions/${eid}`);
+    return Competition$.parse(response.data);
   }
 
   static async getOrganizationCompetitions() {
@@ -15,7 +26,7 @@ export class CompetitionsService {
 
   static async getOrganizationCompetition(eid: Cuid) {
     const response = await apiClient.get(
-      `/api/organization/competitions/${eid}`,
+      `/api/organization/competitions/${eid}`
     );
     return Competition$.parse(response.data);
   }
