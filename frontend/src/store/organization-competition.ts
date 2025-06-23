@@ -8,19 +8,15 @@ interface OrganizationCompetitionStore {
   clearCompetition: () => void;
 }
 
-export const useOrganizationCompetitionStore = create<OrganizationCompetitionStore>()(
-  devtools(
-    (set) => ({
-      currentCompetition: null,
-      setCompetition: (competition) => {
-        console.log('Setting current competition:', competition)
-        set({ currentCompetition: competition })
-      },
-      clearCompetition: () => {
-        console.log('Clearing current competition');
-        set({ currentCompetition: null });
-      }
-    }),
-    { name: 'organization-competition-store' }
-  )
-);
+export const useOrganizationCompetitionStore =
+  create<OrganizationCompetitionStore>()(
+    devtools(
+      (set) => ({
+        currentCompetition: null,
+        setCompetition: (competition) =>
+          set({ currentCompetition: competition }),
+        clearCompetition: () => set({ currentCompetition: null }),
+      }),
+      { name: 'organization-competition-store' }
+    )
+  );
