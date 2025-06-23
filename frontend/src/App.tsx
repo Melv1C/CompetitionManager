@@ -237,10 +237,6 @@ const router = createBrowserRouter([
         element: <CompetitionDetailPage />,
       },
       {
-        path: 'participants',
-        element: <div>Participants</div>,
-      },
-      {
         path: 'results',
         element: <ResultsPage />,
       },
