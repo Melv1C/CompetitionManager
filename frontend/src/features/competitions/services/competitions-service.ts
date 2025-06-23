@@ -1,5 +1,5 @@
 import { apiClient } from '@/lib/api-client';
-import type { CompetitionCreate } from '@repo/core/schemas';
+import type { CompetitionCreate, Cuid } from '@repo/core/schemas';
 import { Competition$ } from '@repo/core/schemas';
 
 export class CompetitionsService {
@@ -13,9 +13,9 @@ export class CompetitionsService {
     return Competition$.array().parse(response.data);
   }
 
-  static async getOrganizationCompetition(id: string) {
+  static async getOrganizationCompetition(eid: Cuid) {
     const response = await apiClient.get(
-      `/api/organization/competitions/${id}`,
+      `/api/organization/competitions/${eid}`,
     );
     return Competition$.parse(response.data);
   }

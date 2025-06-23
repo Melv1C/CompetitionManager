@@ -83,9 +83,13 @@ const pageImports = {
     import('./pages/organization/competition/overview').then((m) => ({
       default: m.CompetitionOverview,
     })),
-  CompetitionParticipants: () =>
-    import('./pages/organization/competition/participants').then((m) => ({
-      default: m.CompetitionParticipants,
+  CompetitionInscriptions: () =>
+    import('./pages/organization/competition/inscriptions').then((m) => ({
+      default: m.CompetitionInscriptions,
+    })),
+  CompetitionConfirmations: () =>
+    import('./pages/organization/competition/confirmations').then((m) => ({
+      default: m.CompetitionConfirmations,
     })),
   CompetitionEvents: () =>
     import('./pages/organization/competition/events').then((m) => ({
@@ -128,7 +132,10 @@ const OrganizationMembers = createLazyComponent('OrganizationMembers');
 const OrganizationAnalytics = createLazyComponent('OrganizationAnalytics');
 const OrganizationSettings = createLazyComponent('OrganizationSettings');
 const CompetitionOverview = createLazyComponent('CompetitionOverview');
-const CompetitionParticipants = createLazyComponent('CompetitionParticipants');
+const CompetitionInscriptions = createLazyComponent('CompetitionInscriptions');
+const CompetitionConfirmations = createLazyComponent(
+  'CompetitionConfirmations'
+);
 const CompetitionEvents = createLazyComponent('CompetitionEvents');
 const CompetitionResults = createLazyComponent('CompetitionResults');
 const CompetitionSettings = createLazyComponent('CompetitionSettings');
@@ -244,11 +251,12 @@ const router = createBrowserRouter([
         element: <OrganizationCompetitions />,
       },
       {
-        path: 'competitions/:competitionId',
+        path: 'competitions/:competitionEid',
         element: <CompetitionOutlet />,
         children: [
           { index: true, element: <CompetitionOverview /> },
-          { path: 'participants', element: <CompetitionParticipants /> },
+          { path: 'inscriptions', element: <CompetitionInscriptions /> },
+          { path: 'confirmations', element: <CompetitionConfirmations /> },
           { path: 'events', element: <CompetitionEvents /> },
           { path: 'results', element: <CompetitionResults /> },
           { path: 'settings', element: <CompetitionSettings /> },
@@ -330,7 +338,6 @@ function PageLoadingSkeleton() {
         </div>
       </div>
     </div>
-
   );
 }
 
