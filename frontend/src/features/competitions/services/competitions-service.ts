@@ -1,6 +1,7 @@
 import { apiClient } from '@/lib/api-client';
 import type {
   CompetitionCreate,
+  CompetitionUpdate,
   CompetitionQuery,
   Cuid,
 } from '@repo/core/schemas';
@@ -34,6 +35,17 @@ export class CompetitionsService {
   static async createCompetition(data: CompetitionCreate) {
     const response = await apiClient.post(
       '/api/organization/competitions',
+      data
+    );
+    return Competition$.parse(response.data);
+  }
+
+  static async updateOrganizationCompetition(
+    eid: Cuid,
+    data: CompetitionUpdate
+  ) {
+    const response = await apiClient.put(
+      `/api/organization/competitions/${eid}`,
       data
     );
     return Competition$.parse(response.data);

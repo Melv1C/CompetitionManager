@@ -7,4 +7,7 @@ export {
   useOrganizationCompetitions,
   useCompetition,
 } from './hooks/use-competitions';
-export { useOrganizationCompetition } from './hooks/use-competition';
+export {
+  useOrganizationCompetition,
+  useUpdateOrganizationCompetition,
+} from './hooks/use-competition';
