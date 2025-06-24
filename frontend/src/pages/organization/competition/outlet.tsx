@@ -13,7 +13,7 @@ export function CompetitionOutlet() {
   // If the competitionEid is not in the URL, clear the current competition
 
   useEffect(() => {
-    if (data && (!currentCompetition || currentCompetition.id !== data.id)) {
+    if (data && (!currentCompetition || currentCompetition.updatedAt !== data.updatedAt)) {
       setCompetition(data);
     }
   }, [data, currentCompetition, setCompetition]);
