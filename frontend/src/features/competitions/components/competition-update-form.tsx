@@ -16,14 +16,21 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@/components/ui/tooltip';
+import { UnsavedChangesDialog } from '@/components/unsaved-changes-dialog';
 import { useClubs } from '@/features/clubs/hooks/use-clubs';
 import { useUpdateCompetition } from '@/features/competitions/hooks/use-organization-competitions';
+import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { authClient } from '@/lib/auth-client';
 import { useOrganizationCompetitionStore } from '@/store/organization-competition';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CompetitionUpdate$, type CompetitionUpdate } from '@repo/core/schemas';
 import { Save } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod/v4';
 import { ClubSelector } from './club-selector';
@@ -94,15 +101,45 @@ export function CompetitionUpdateForm() {
       });
     }
   }, [currentCompetition, form]);
-
-  const onSubmit = async (data: CompetitionUpdate) => {
-    if (!currentCompetition) return;
-    await updateMutation.mutateAsync({ eid: currentCompetition.eid, data });
-  };
+  const onSubmit = useCallback(
+    async (data: CompetitionUpdate) => {
+      if (!currentCompetition) return;
+      try {
+        await updateMutation.mutateAsync({ eid: currentCompetition.eid, data });
+        // Reset form dirty state after successful save
+        form.reset(form.getValues());
+      } catch (error) {
+        // Error handling is managed by the mutation
+        console.error('Failed to update competition:', error);
+      }
+    },
+    [currentCompetition, updateMutation, form]
+  );
 
   const { isDirty } = form.formState;
   console.log('Form dirty state:', isDirty);
   const disabled = !isDirty || !canEdit || updateMutation.isPending;
+  // Handle unsaved changes navigation blocking
+  const { blocker, proceedNavigation, resetNavigation } = useUnsavedChanges({
+    hasUnsavedChanges: isDirty && canEdit,
+    message:
+      'You have unsaved changes to the competition. Are you sure you want to leave?',
+  });
+
+  // Add keyboard shortcut for saving (Ctrl+S or Cmd+S)
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+        event.preventDefault();
+        if (!disabled) {
+          form.handleSubmit(onSubmit)();
+        }
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+    return () => document.removeEventListener('keydown', handleKeyDown);
+  }, [disabled, form, onSubmit]);
 
   if (!currentCompetition) {
     return <div>No competition selected</div>;
@@ -112,15 +149,23 @@ export function CompetitionUpdateForm() {
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
         {/* Save button */}
-        <div className="absolute top-4 right-4 flex items-center space-x-2">
-          <Button
-            type="submit"
-            disabled={disabled}
-            className="ml-auto"
-          >
-            <Save className="mr-2 h-4 w-4" />
-            Save Changes
-          </Button>
+        <div className="absolute top-4 right-4 flex flex-col items-center gap-2">
+          <Tooltip>
+            <TooltipTrigger asChild>
+              <Button type="submit" disabled={disabled} className="ml-auto">
+                <Save className="mr-2 h-4 w-4" />
+                {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Save changes (Ctrl+S)</p>
+            </TooltipContent>
+          </Tooltip>
+          {isDirty && canEdit && (
+            <span className="text-sm text-muted-foreground">
+              Unsaved changes
+            </span>
+          )}
         </div>
         {/* Basic Information */}
         <div className="space-y-4">
@@ -217,7 +262,7 @@ export function CompetitionUpdateForm() {
               )}
             />
           </div>
-        </div>{' '}
+        </div>
         {/* Publication Settings */}
         <div className="space-y-4">
           <h2 className="text-xl font-semibold">Publication Settings</h2>
@@ -244,7 +289,6 @@ export function CompetitionUpdateForm() {
               Registration & Payment Settings
             </AccordionTrigger>
             <AccordionContent className="space-y-4">
-              {' '}
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
@@ -399,6 +443,15 @@ export function CompetitionUpdateForm() {
           </AccordionItem>
         </Accordion>
       </form>
+
+      {/* Unsaved changes dialog */}
+      <UnsavedChangesDialog
+        open={blocker.state === 'blocked'}
+        onConfirm={proceedNavigation}
+        onCancel={resetNavigation}
+        title="Unsaved Competition Changes"
+        description="You have unsaved changes to the competition that will be lost if you continue. Are you sure you want to leave?"
+      />
     </Form>
   );
 }
