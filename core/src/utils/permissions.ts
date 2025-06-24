@@ -13,6 +13,7 @@ export const statement = {
   competitions: ['read', 'create', 'update', 'delete'],
   inscriptions: ['read', 'create', 'update', 'delete'],
   results: ['read', 'create', 'update', 'delete'],
+  events: ['read', 'create', 'update', 'delete'],
 } as const;
 
 // Create access control instance
@@ -42,6 +43,7 @@ export const owner = ac.newRole({
   competitions: ['read', 'create', 'update', 'delete'],
   inscriptions: ['read', 'create', 'update', 'delete'],
   results: ['read', 'create', 'update', 'delete'],
+  events: ['read', 'create', 'update', 'delete'],
 });
 
 export const admin = ac.newRole({
@@ -49,10 +51,12 @@ export const admin = ac.newRole({
   competitions: ['read', 'create', 'update'],
   inscriptions: ['read', 'create', 'update', 'delete'],
   results: ['read', 'create', 'update', 'delete'],
+  events: ['read', 'create', 'update', 'delete'],
 });
 
 export const resultManager = ac.newRole({
   results: ['read', 'create', 'update', 'delete'],
   competitions: ['read'],
   inscriptions: ['read'],
+  events: ['read'],
 });
