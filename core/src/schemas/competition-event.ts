@@ -1,5 +1,5 @@
 import z from 'zod/v4';
-import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
+import { BetterAuthId$, Cuid$, Date$, Id$, ParameterId$ } from './base';
 import { Category$ } from './category';
 import { Event$ } from './event';
 
@@ -31,3 +31,24 @@ export const competitionEventInclude = {
   event: true,
   categories: true,
 };
+
+// Schema for creating a competition event directly with Prisma
+export const CompetitionEventPrismaCreate$ = CompetitionEvent$.omit({
+  id: true,
+  eid: true,
+  createdAt: true,
+  updatedAt: true,
+  event: true,
+  categories: true,
+});
+export type CompetitionEventPrismaCreate = z.infer<typeof CompetitionEventPrismaCreate$>;
+
+// Schema for API competition event creation
+export const CompetitionEventCreate$ = CompetitionEventPrismaCreate$.omit({
+  competitionId: true,
+  createdBy: true,
+  updatedBy: true,
+}).extend({
+  categoryIds: z.array(ParameterId$).optional(),
+});
+export type CompetitionEventCreate = z.infer<typeof CompetitionEventCreate$>;
