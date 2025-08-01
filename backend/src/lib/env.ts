@@ -23,10 +23,10 @@ const envSchema = z.object({
   // User seeding configuration
   DB_SEED_USERS_ENABLED: z.stringbool().default(false),
   DB_SEED_ADMIN_EMAIL: User$.shape.email.default('admin@example.com'),
-  DB_SEED_ADMIN_PASSWORD: Password$.default('admin123'),
+  DB_SEED_ADMIN_PASSWORD: Password$.default('admin-password'),
   DB_SEED_ADMIN_NAME: User$.shape.name.default('Admin'),
   DB_SEED_USER_EMAIL: User$.shape.email.default('user@example.com'),
-  DB_SEED_USER_PASSWORD: Password$.default('user1234'),
+  DB_SEED_USER_PASSWORD: Password$.default('user-password'),
   DB_SEED_USER_NAME: User$.shape.name.default('User'),
 
   // Athlete sync configuration

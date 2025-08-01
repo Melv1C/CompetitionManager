@@ -84,7 +84,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
     ]);
   }, [status, isConnected]);
 
-  if (env.MODE === 'development') {
+  if (env.VITE_NODE_ENV === 'development') {
     return null;
   }
 

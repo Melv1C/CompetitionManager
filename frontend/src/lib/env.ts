@@ -11,10 +11,7 @@ import { z } from 'zod';
  */
 const envSchema = z.object({
   // Mode is provided by Vite automatically
-  MODE: z.enum(['development', 'production', 'test']).default('development'),
-
-  // Base URL for the application (usually set by Vite)
-  BASE_URL: z.string().default('/'),
+  VITE_NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
 
   // API Configuration
   VITE_API_URL: z.string().url().default('http://localhost:3000'),
@@ -23,18 +20,13 @@ const envSchema = z.object({
   VITE_SOCKET_URL: z.string().url().default('http://localhost:3000'),
 });
 
-
-console.log('Environment variables:', import.meta.env);
-
 /**
  * Parsed and validated environment variables
  *
  * In Vite, import.meta.env contains the environment variables.
  * We merge it with some Vite-specific defaults.
  */
-export const env = envSchema.parse({
-  ...import.meta.env,
-});
+export const env = envSchema.parse(import.meta.env);
 
 /**
  * Type-safe environment variables
