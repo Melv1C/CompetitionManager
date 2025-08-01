@@ -6,26 +6,31 @@ A modern, full-stack competition management system built for athletic organizati
 
 ### Prerequisites
 
-- **Node.js**: Version 20 or higher
+- **Node.js**: Version 20 or higher (see `.nvmrc` for exact version)
 - **Docker & Docker Compose**: For database and containerized deployment
 - **PostgreSQL**: Version 16 (or use Docker)
 
+> **Note**: This project includes a `.nvmrc` file. If you use nvm, you can run `nvm use` in the project root to automatically switch to the correct Node.js version.
+
 ### Development Setup
 
-1. **Clone and Install Dependencies**
+1. **Install Dependencies**
 
    ```bash
-   git clone <repository-url>
-   cd CompetitionManager
-
-   # Install dependencies for all packages
    cd backend && npm install
    cd ../frontend && npm install
-   cd ../core && npm install
+   cd ../core && npm install && npm run build
    cd ../e2e && npm install
    ```
 
-2. **Setup Database**
+2. **Environment Variables**
+
+   Create `.env` files in the `backend` and `frontend` directories with the necessary configurations:
+
+   - **Backend**: Copy `.env.example` to `.env` and fill in the required values.
+   - **Frontend**: Copy `.env.example` to `.env` and set the API URL.
+
+3. **Setup Database**
 
    ```bash
    # Start PostgreSQL with Docker
@@ -36,7 +41,7 @@ A modern, full-stack competition management system built for athletic organizati
    npx prisma migrate dev
    ```
 
-3. **Start Development Servers**
+4. **Start Development Servers**
 
    ```bash
    # Terminal 1: Backend API (Port 3000)
@@ -44,11 +49,41 @@ A modern, full-stack competition management system built for athletic organizati
 
    # Terminal 2: Frontend App (Port 5173)
    cd frontend && npm run dev
+
+   # Terminal 3: Core Package (for shared types)
+   cd core && npm run dev
    ```
 
-4. **Access the Application**
+5. **Access the Application**
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:3000
+
+## Testing
+
+### End-to-End Tests
+
+The project uses Playwright for comprehensive end-to-end testing.
+
+```bash
+# Install test dependencies (if not already done)
+cd e2e && npm install
+
+# Run all E2E tests
+npm run test
+
+# Run tests in headed mode (with browser UI)
+npm run test:headed
+
+# Run tests in debug mode
+npm run test:debug
+
+# Generate test report
+npm run test:report
+```
+
+### Running Tests in CI/CD
+
+Tests are automatically run in GitHub Actions via the `e2e-tests.yml` workflow. The tests run against a containerized environment to ensure consistency.
 
 ## 🏗️ Architecture
 
@@ -72,121 +107,9 @@ A modern, full-stack competition management system built for athletic organizati
 └── docker-compose.yml # Container orchestration
 ```
 
-## 📋 Key Features
-
-### Competition Management
-
-- Create and manage athletic competitions
-- Configure events, categories, and participants
-- Handle online registrations and payments
-- Manage competition schedules and locations
-
-### Organization & User Management
-
-- Multi-tenant organizations with role-based access
-- User authentication and authorization
-- Organization member management and invitations
-
-### Athlete & Club Management
-
-- Athlete registration and profile management
-- Club affiliations and management
-- Seasonal athlete information tracking
-
-### Real-time Features
-
-- Live competition updates via Socket.IO
-- Real-time notifications and status changes
-
-### Internationalization
-
-- Multi-language support (English, French, Dutch)
-- Localized date, time, and number formatting
-
-## 🛠️ Development
-
-### Available Scripts
-
-```bash
-# Backend
-cd backend
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run start    # Start production server
-
-# Frontend
-cd frontend
-npm run dev      # Start development server
-npm run build    # Build for production
-npm run preview  # Preview production build
-
-# Core (Shared Package)
-cd core
-npm run build    # Build shared package
-npm run dev      # Watch mode for development
-
-# E2E Tests
-cd e2e
-npm run test     # Run all tests
-npm run test:ui  # Run tests with UI
-```
-
-### Database Management
-
-```bash
-cd backend
-
-# Create new migration
-npx prisma migrate dev --name <migration-name>
-
-# Reset database
-npx prisma migrate reset
-
-# Generate Prisma client
-npx prisma generate
-
-# View database in browser
-npx prisma studio
-```
-
-### Code Quality
-
-The project includes automated code quality checks:
-
-- **ESLint**: Code linting and formatting
-- **TypeScript**: Strict type checking
-- **Playwright**: End-to-end testing
-- **GitHub Actions**: Automated CI/CD pipeline
-
-## 🚢 Deployment
-
-### Docker Deployment
-
-```bash
-# Build and start all services
-docker-compose up --build
-
-# Production deployment
-docker-compose -f docker-compose.yml up -d
-```
-
-### Environment Variables
-
-Create appropriate `.env` files in each package:
-
-- `backend/.env` - Database URLs, API keys, auth secrets
-- `frontend/.env` - API endpoints, feature flags
-
 ## 📁 Package Details
 
 - **[Backend](./backend/README.md)** - API server, database, and business logic
 - **[Frontend](./frontend/README.md)** - React application and user interface
 - **[Core](./core/README.md)** - Shared utilities, types, and schemas
 - **[E2E](./e2e/README.md)** - End-to-end testing suite
-
-## 🤝 Contributing
-
-1. Follow the coding standards defined in each package
-2. Write tests for new features
-3. Ensure all CI checks pass
-4. Update documentation as needed
