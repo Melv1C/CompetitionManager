@@ -303,6 +303,9 @@ model Competition {
   isSelection          Boolean
   isInscriptionVisible Boolean
 
+  inscriptionStartDate DateTime
+  inscriptionEndDate   DateTime
+
   createdAt         DateTime     @default(now())
   createdBy         String
   updatedAt         DateTime     @updatedAt

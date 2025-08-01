@@ -1,11 +1,11 @@
-import { DateTimePicker } from '@/components/date-time-picker';
+import { DateTimePicker } from "@/components/date-time-picker";
 import {
   Accordion,
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
-import { Button } from '@/components/ui/button';
+} from "@/components/ui/accordion";
+import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
@@ -13,28 +13,28 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
   TooltipTrigger,
-} from '@/components/ui/tooltip';
-import { UnsavedChangesDialog } from '@/components/unsaved-changes-dialog';
-import { useClubs } from '@/features/clubs/hooks/use-clubs';
-import { useUpdateCompetition } from '@/features/competitions/hooks/use-organization-competitions';
-import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
-import { authClient } from '@/lib/auth-client';
-import { useOrganizationCompetitionStore } from '@/store/organization-competition';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { CompetitionUpdate$, type CompetitionUpdate } from '@repo/core/schemas';
-import { Save } from 'lucide-react';
-import { useCallback, useEffect, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import z from 'zod/v4';
-import { ClubSelector } from './club-selector';
-import { SwitchField } from './switch-field';
+} from "@/components/ui/tooltip";
+import { UnsavedChangesDialog } from "@/components/unsaved-changes-dialog";
+import { useClubs } from "@/features/clubs/hooks/use-clubs";
+import { useUpdateCompetition } from "@/features/competitions/hooks/use-organization-competitions";
+import { useUnsavedChanges } from "@/hooks/use-unsaved-changes";
+import { authClient } from "@/lib/auth-client";
+import { useOrganizationCompetitionStore } from "@/store/organization-competition";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { CompetitionUpdate$, type CompetitionUpdate } from "@repo/core/schemas";
+import { Save } from "lucide-react";
+import { useCallback, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
+import z from "zod/v4";
+import { ClubSelector } from "./club-selector";
+import { SwitchField } from "./switch-field";
 
 export function CompetitionUpdateForm() {
   const { currentCompetition } = useOrganizationCompetitionStore();
@@ -46,7 +46,7 @@ export function CompetitionUpdateForm() {
     const checkPermission = async () => {
       try {
         const result = await authClient.organization.hasPermission({
-          permissions: { competitions: ['update'] },
+          permissions: { competitions: ["update"] },
         });
         if (result.data?.success) {
           setCanEdit(true);
@@ -65,6 +65,8 @@ export function CompetitionUpdateForm() {
       CompetitionUpdate$.extend({
         startDate: z.date(), // Ensure startDate is a Date object
         endDate: z.date().nullish(), // Allow endDate to be optional
+        inscriptionStartDate: z.date(),
+        inscriptionEndDate: z.date(),
         isPublished: z.boolean(),
         isInscriptionVisible: z.boolean(),
         isPaidOnline: z.boolean(),
@@ -79,15 +81,21 @@ export function CompetitionUpdateForm() {
   });
 
   useEffect(() => {
-    console.log('Current competition:', currentCompetition);
+    console.log("Current competition:", currentCompetition);
     if (currentCompetition) {
-      console.log('Resetting form with competition data');
+      console.log("Resetting form with competition data");
       form.reset({
         name: currentCompetition.name,
         startDate: new Date(currentCompetition.startDate),
         endDate: currentCompetition.endDate
           ? new Date(currentCompetition.endDate)
           : undefined,
+        inscriptionStartDate: currentCompetition.inscriptionStartDate
+          ? new Date(currentCompetition.inscriptionStartDate)
+          : new Date(),
+        inscriptionEndDate: currentCompetition.inscriptionEndDate
+          ? new Date(currentCompetition.inscriptionEndDate)
+          : new Date(new Date().getTime() - 24 * 60 * 60 * 1000), // Default to yesterday
         isPublished: currentCompetition.isPublished,
         description: currentCompetition.description,
         location: currentCompetition.location,
@@ -110,26 +118,26 @@ export function CompetitionUpdateForm() {
         form.reset(form.getValues());
       } catch (error) {
         // Error handling is managed by the mutation
-        console.error('Failed to update competition:', error);
+        console.error("Failed to update competition:", error);
       }
     },
     [currentCompetition, updateMutation, form]
   );
 
   const { isDirty } = form.formState;
-  console.log('Form dirty state:', isDirty);
+  console.log("Form dirty state:", isDirty);
   const disabled = !isDirty || !canEdit || updateMutation.isPending;
   // Handle unsaved changes navigation blocking
   const { blocker, proceedNavigation, resetNavigation } = useUnsavedChanges({
     hasUnsavedChanges: isDirty && canEdit,
     message:
-      'You have unsaved changes to the competition. Are you sure you want to leave?',
+      "You have unsaved changes to the competition. Are you sure you want to leave?",
   });
 
   // Add keyboard shortcut for saving (Ctrl+S or Cmd+S)
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if ((event.ctrlKey || event.metaKey) && event.key === 's') {
+      if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
         if (!disabled) {
           form.handleSubmit(onSubmit)();
@@ -137,8 +145,8 @@ export function CompetitionUpdateForm() {
       }
     };
 
-    document.addEventListener('keydown', handleKeyDown);
-    return () => document.removeEventListener('keydown', handleKeyDown);
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
   }, [disabled, form, onSubmit]);
 
   if (!currentCompetition) {
@@ -154,7 +162,7 @@ export function CompetitionUpdateForm() {
             <TooltipTrigger asChild>
               <Button type="submit" disabled={disabled} className="ml-auto">
                 <Save className="mr-2 h-4 w-4" />
-                {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+                {updateMutation.isPending ? "Saving..." : "Save Changes"}
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -220,6 +228,7 @@ export function CompetitionUpdateForm() {
                       placeholder="Select end date and time"
                       allowClear
                       disabled={!canEdit}
+                      minDate={form.watch("startDate")}
                     />
                   </FormControl>
                   <FormMessage />
@@ -289,6 +298,49 @@ export function CompetitionUpdateForm() {
               Registration & Payment Settings
             </AccordionTrigger>
             <AccordionContent className="space-y-4">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <FormField
+                  control={form.control}
+                  name="inscriptionStartDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Registration Start Date & Time</FormLabel>
+                      <FormControl>
+                        <DateTimePicker
+                          value={field.value}
+                          onChange={(date) => date && field.onChange(date)}
+                          placeholder="Select registration start date and time"
+                          allowClear={false}
+                          disabled={!canEdit}
+                          maxDate={form.watch("inscriptionEndDate")}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="inscriptionEndDate"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Registration End Date & Time</FormLabel>
+                      <FormControl>
+                        <DateTimePicker
+                          value={field.value}
+                          onChange={(date) => date && field.onChange(date)}
+                          placeholder="Select registration end date and time"
+                          allowClear={false}
+                          disabled={!canEdit}
+                          minDate={form.watch("inscriptionStartDate")}
+                          maxDate={form.watch("startDate")}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
                 <FormField
                   control={form.control}
@@ -348,7 +400,7 @@ export function CompetitionUpdateForm() {
                       <FormControl>
                         <Textarea
                           rows={3}
-                          value={(field.value ?? []).join('\n')}
+                          value={(field.value ?? []).join("\n")}
                           onChange={(e) =>
                             field.onChange(
                               e.target.value
@@ -374,10 +426,10 @@ export function CompetitionUpdateForm() {
                       <FormControl>
                         <Input
                           type="number"
-                          value={field.value ?? ''}
+                          value={field.value ?? ""}
                           onChange={(e) =>
                             field.onChange(
-                              e.target.value === ''
+                              e.target.value === ""
                                 ? undefined
                                 : Number(e.target.value)
                             )
@@ -446,7 +498,7 @@ export function CompetitionUpdateForm() {
 
       {/* Unsaved changes dialog */}
       <UnsavedChangesDialog
-        open={blocker.state === 'blocked'}
+        open={blocker.state === "blocked"}
         onConfirm={proceedNavigation}
         onCancel={resetNavigation}
         title="Unsaved Competition Changes"
