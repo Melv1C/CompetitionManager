@@ -7,7 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { format } from "date-fns";
 import { CalendarIcon, Clock, X } from "lucide-react";
-import { useEffect, useState } from "react";
+import { useMemo, useState } from "react";
 import { Input } from "./ui/input";
 
 interface DateTimePickerProps {
@@ -15,7 +15,6 @@ interface DateTimePickerProps {
   onChange: (date: Date | undefined) => void;
   placeholder?: string;
   disabled?: boolean;
-  initialTime?: string; // Format: 'HH:mm'
   allowClear?: boolean;
   minDate?: Date;
   maxDate?: Date;
@@ -26,25 +25,17 @@ export function DateTimePicker({
   onChange,
   placeholder,
   disabled,
-  initialTime = "00:00",
   allowClear = true,
   minDate,
   maxDate,
 }: DateTimePickerProps) {
   const [isOpen, setIsOpen] = useState(false);
-  const [timeValue, setTimeValue] = useState(initialTime || "00:00");
+  const timeValue = useMemo(() => {
+    return value
+      ? value.toLocaleString("fr-FR", { hour: "2-digit", minute: "2-digit" })
+      : "00:00";
+  }, [value]);
   const [error, setError] = useState<string | null>(null);
-
-  // set the value based on the initial value prop
-  useEffect(() => {
-    if (initialTime && value) {
-      const [hours, minutes] = initialTime.split(":").map(Number);
-      const newDate = new Date(value);
-      newDate.setHours(hours, minutes, 0, 0);
-      onChange(newDate);
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialTime]);
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (!selectedDate) {
@@ -60,7 +51,6 @@ export function DateTimePicker({
   };
 
   const handleTimeChange = (time: string) => {
-    setTimeValue(time);
     if (value) {
       const [hours, minutes] = time.split(":").map(Number);
       const newDate = new Date(value);
@@ -82,7 +72,6 @@ export function DateTimePicker({
   };
   const handleClear = () => {
     onChange(undefined);
-    setTimeValue("00:00");
     setIsOpen(false);
   };
   return (
