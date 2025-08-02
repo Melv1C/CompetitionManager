@@ -41,7 +41,9 @@ export const CompetitionEventPrismaCreate$ = CompetitionEvent$.omit({
   event: true,
   categories: true,
 });
-export type CompetitionEventPrismaCreate = z.infer<typeof CompetitionEventPrismaCreate$>;
+export type CompetitionEventPrismaCreate = z.infer<
+  typeof CompetitionEventPrismaCreate$
+>;
 
 // Schema for API competition event creation
 export const CompetitionEventCreate$ = CompetitionEventPrismaCreate$.omit({
@@ -52,3 +54,7 @@ export const CompetitionEventCreate$ = CompetitionEventPrismaCreate$.omit({
   categoryIds: z.array(ParameterId$).optional(),
 });
 export type CompetitionEventCreate = z.infer<typeof CompetitionEventCreate$>;
+
+export const CompetitionEventUpdate$ = CompetitionEventCreate$;
+
+export type CompetitionEventUpdate = z.infer<typeof CompetitionEventUpdate$>;
