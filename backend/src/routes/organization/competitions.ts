@@ -7,7 +7,7 @@ import { zValidator } from "@hono/zod-validator";
 import {
   Competition$,
   CompetitionCreate$,
-  CompetitionPrismaCreate$,
+  CompetitionPrisma$,
   CompetitionUpdate$,
   Cuid$,
   competitionInclude,
@@ -77,7 +77,7 @@ organizationCompetitionsRoutes.post(
       const oneDayBeforeStart = new Date(competitionStartDate);
       oneDayBeforeStart.setDate(oneDayBeforeStart.getDate() - 1);
 
-      const data = CompetitionPrismaCreate$.parse({
+      const data = CompetitionPrisma$.parse({
         name,
         startDate: competitionStartDate,
         inscriptionStartDate: today,
@@ -145,9 +145,9 @@ organizationCompetitionsRoutes.put(
   async (c) => {
     try {
       const { eid } = c.req.valid("param");
-      const updateBody = c.req.valid("json");
-      const session = await getRequiredSession(c);
+      const { freeClubIds, allowedClubIds, ...updateData } = c.req.valid("json");
 
+      const session = await getRequiredSession(c);
       if (!session.activeOrganizationId) {
         logger.error("No active organization found for user", {
           session,
@@ -158,29 +158,22 @@ organizationCompetitionsRoutes.put(
       const competition = await prisma.competition.findFirst({
         where: { eid, organizationId: session.activeOrganizationId },
       });
-
       if (!competition) {
         return c.json({ error: "Competition not found" }, 404);
       }
 
-      const { freeClubIds, allowedClubIds, ...updateData } = updateBody;
-
-      const data: Record<string, unknown> = {
+      const data = CompetitionPrisma$.partial().parse({
         ...updateData,
         updatedBy: session.userId,
-      };
-
-      if (freeClubIds) {
-        data.freeClubs = { set: freeClubIds.map((id) => ({ id })) };
-      }
-
-      if (allowedClubIds) {
-        data.allowedClubs = { set: allowedClubIds.map((id) => ({ id })) };
-      }
+      });
 
       const updatedCompetition = await prisma.competition.update({
         where: { eid },
-        data,
+        data: {
+          ...data,
+          freeClubs: { set: freeClubIds?.map((id) => ({ id })) },
+          allowedClubs: { set: allowedClubIds?.map((id) => ({ id })) },
+        },
         include: competitionInclude,
       });
 

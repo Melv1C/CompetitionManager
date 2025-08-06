@@ -1,4 +1,4 @@
-import { z } from "zod/v4";
+import { z } from 'zod/v4';
 import {
   BetterAuthId$,
   Boolean$,
@@ -6,13 +6,13 @@ import {
   Date$,
   Id$,
   ParameterId$,
-} from "./base";
-import { Club$ } from "./club";
+} from './base';
+import { Club$ } from './club';
 import {
   CompetitionEvent$,
   competitionEventInclude,
-} from "./competition-event";
-import { Organization$ } from "./organization";
+} from './competition-event';
+import { Organization$ } from './organization';
 
 // Competition base schema
 export const Competition$ = z.object({
@@ -22,8 +22,8 @@ export const Competition$ = z.object({
   startDate: Date$,
   endDate: Date$.nullish(),
   isPublished: Boolean$.default(false),
-  description: z.string().default(""),
-  location: z.string().default(""),
+  description: z.string().default(''),
+  location: z.string().default(''),
 
   bibPermissions: z.array(z.string()).default([]),
   bibStartNumber: z.number().nullish(),
@@ -59,7 +59,7 @@ export const competitionInclude = {
   organization: true,
 };
 
-export const CompetitionPrismaCreate$ = Competition$.omit({
+export const CompetitionPrisma$ = Competition$.omit({
   id: true,
   eid: true,
   createdAt: true,
@@ -75,8 +75,8 @@ export const CompetitionPrismaCreate$ = Competition$.omit({
       return data.inscriptionStartDate < data.inscriptionEndDate;
     },
     {
-      message: "Registration start date must be before registration end date",
-      path: ["inscriptionStartDate"],
+      message: 'Registration start date must be before registration end date',
+      path: ['inscriptionStartDate'],
     }
   )
   .refine(
@@ -86,49 +86,27 @@ export const CompetitionPrismaCreate$ = Competition$.omit({
     },
     {
       message:
-        "Registration end date cannot be later than competition start date",
-      path: ["inscriptionEndDate"],
+        'Registration end date cannot be later than competition start date',
+      path: ['inscriptionEndDate'],
     }
   );
-export type CompetitionPrismaCreate = z.infer<typeof CompetitionPrismaCreate$>;
+export type CompetitionPrisma = z.infer<typeof CompetitionPrisma$>;
 
-export const CompetitionCreate$ = CompetitionPrismaCreate$.pick({
+export const CompetitionCreate$ = CompetitionPrisma$.pick({
   name: true,
   startDate: true,
 });
 export type CompetitionCreate = z.infer<typeof CompetitionCreate$>;
 
 // Update schema for competitions, extending the create schema
-export const CompetitionUpdate$ = CompetitionPrismaCreate$.omit({
+export const CompetitionUpdate$ = CompetitionPrisma$.omit({
   organizationId: true,
   createdBy: true,
   updatedBy: true,
-})
-  .extend({
-    freeClubIds: z.array(ParameterId$).default([]),
-    allowedClubIds: z.array(ParameterId$).default([]),
-  })
-  .refine(
-    (data) => {
-      // Inscription start date should be before inscription end date
-      return data.inscriptionStartDate < data.inscriptionEndDate;
-    },
-    {
-      message: "Registration start date must be before registration end date",
-      path: ["inscriptionStartDate"],
-    }
-  )
-  .refine(
-    (data) => {
-      // Inscription end date should be before or equal to competition start date
-      return data.inscriptionEndDate <= data.startDate;
-    },
-    {
-      message:
-        "Registration end date cannot be later than competition start date",
-      path: ["inscriptionEndDate"],
-    }
-  );
+}).extend({
+  freeClubIds: z.array(ParameterId$).default([]),
+  allowedClubIds: z.array(ParameterId$).default([]),
+});
 export type CompetitionUpdate = z.infer<typeof CompetitionUpdate$>;
 
 // Query schema for listing competitions

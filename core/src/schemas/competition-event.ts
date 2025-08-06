@@ -33,7 +33,7 @@ export const competitionEventInclude = {
 };
 
 // Schema for creating a competition event directly with Prisma
-export const CompetitionEventPrismaCreate$ = CompetitionEvent$.omit({
+export const CompetitionEventPrisma$ = CompetitionEvent$.omit({
   id: true,
   eid: true,
   createdAt: true,
@@ -41,17 +41,15 @@ export const CompetitionEventPrismaCreate$ = CompetitionEvent$.omit({
   event: true,
   categories: true,
 });
-export type CompetitionEventPrismaCreate = z.infer<
-  typeof CompetitionEventPrismaCreate$
->;
+export type CompetitionEventPrisma = z.infer<typeof CompetitionEventPrisma$>;
 
 // Schema for API competition event creation
-export const CompetitionEventCreate$ = CompetitionEventPrismaCreate$.omit({
+export const CompetitionEventCreate$ = CompetitionEventPrisma$.omit({
   competitionId: true,
   createdBy: true,
   updatedBy: true,
 }).extend({
-  categoryIds: z.array(ParameterId$).optional(),
+  categoryIds: z.array(ParameterId$).default([]),
 });
 export type CompetitionEventCreate = z.infer<typeof CompetitionEventCreate$>;
 
