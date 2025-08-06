@@ -1,12 +1,5 @@
 import { z } from 'zod/v4';
-import {
-  BetterAuthId$,
-  Boolean$,
-  Cuid$,
-  Date$,
-  Id$,
-  ParameterId$,
-} from './base';
+import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
 import { Club$ } from './club';
 import {
   CompetitionEvent$,
@@ -104,8 +97,8 @@ export const CompetitionUpdate$ = CompetitionPrisma$.omit({
   createdBy: true,
   updatedBy: true,
 }).extend({
-  freeClubIds: z.array(ParameterId$).default([]),
-  allowedClubIds: z.array(ParameterId$).default([]),
+  freeClubIds: z.array(Id$).default([]),
+  allowedClubIds: z.array(Id$).default([]),
 });
 export type CompetitionUpdate = z.infer<typeof CompetitionUpdate$>;
 

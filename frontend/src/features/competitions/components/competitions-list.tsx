@@ -3,14 +3,9 @@ import type { Competition } from '@repo/core/schemas';
 
 interface CompetitionsListProps {
   competitions: Competition[];
-  isLoading?: boolean;
 }
 
-export function CompetitionsList({ competitions, isLoading }: CompetitionsListProps) {
-  if (isLoading) {
-    return <div className="py-4 text-center">Loading competitions...</div>;
-  }
-
+export function CompetitionsList({ competitions }: CompetitionsListProps) {
   if (competitions.length === 0) {
     return (
       <div className="py-4 text-center text-muted-foreground">
