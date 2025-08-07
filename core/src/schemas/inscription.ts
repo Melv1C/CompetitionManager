@@ -1,8 +1,10 @@
 import { z } from 'zod/v4';
 import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
 import { Athlete$, athleteInclude } from './athlete';
-import { CompetitionEvent$, competitionEventInclude } from './competition-event';
-import { competitionInclude } from './competition';
+import {
+  CompetitionEvent$,
+  competitionEventInclude,
+} from './competition-event';
 
 // Record schema for personal records
 export const Record$ = z.object({
@@ -89,5 +91,5 @@ export const InscriptionPublic$ = Inscription$.pick({
   inscriptionDate: true,
   status: true,
   presenceStatus: true,
-})
+});
 export type InscriptionPublic = z.infer<typeof InscriptionPublic$>;
