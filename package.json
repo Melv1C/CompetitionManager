@@ -4,12 +4,6 @@
   "description": "Competition Manager - Full Stack Application",
   "private": true,
   "type": "module",
-  "workspaces": [
-    "backend",
-    "frontend",
-    "core",
-    "e2e"
-  ],
   "scripts": {
     "dev": "concurrently \"npm run dev:core\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:core": "cd core && npm run dev",
@@ -29,9 +23,5 @@
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
-  },
-  "engines": {
-    "node": ">=20.0.0",
-    "npm": ">=10.0.0"
   }
 }
