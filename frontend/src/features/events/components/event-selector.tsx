@@ -5,12 +5,20 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from '@/components/ui/popover';
+import {
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import type { Event, EventGroup } from '@repo/core/schemas';
 import { useEvents } from '../hooks/use-events';
 import { ScrollArea } from '@/components/ui/scroll-area';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface EventSelectorProps {
   events?: Event[]; // Made optional - will use hook data if not provided
@@ -30,6 +38,7 @@ export function EventSelector({
   excludeCombinedEvents = false,
 }: EventSelectorProps) {
   const eventsFromHook = useEvents(); // Fetch events from hook
+  const isMobile = useIsMobile();
 
   // Use external events if provided, otherwise use hook data
   const events = externalEvents || eventsFromHook.data;
@@ -69,99 +78,140 @@ export function EventSelector({
     setOpen(false);
   };
 
+  // Trigger button component
+  const TriggerButton = (
+    <Button
+      variant="outline"
+      role="combobox"
+      aria-expanded={open}
+      className="w-full justify-between"
+      disabled={disabled}
+    >
+      {selectedEvent ? (
+        <span className="truncate">{selectedEvent.name}</span>
+      ) : (
+        <span className="text-muted-foreground">{placeholder}</span>
+      )}
+      <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+    </Button>
+  );
+
+  // Content component
+  const ContentComponent = (
+    <div className="flex flex-col h-full">
+      <Tabs
+        value={activeTab}
+        onValueChange={setActiveTab}
+        className="flex flex-col h-full"
+      >
+        <TabsList
+          className={cn(
+            'grid w-full h-auto p-1 shrink-0',
+            isMobile ? 'grid-cols-3 gap-1' : ''
+          )}
+          style={
+            !isMobile
+              ? {
+                  gridTemplateColumns: `repeat(${availableGroups.length}, 1fr)`,
+                }
+              : {}
+          }
+        >
+          {availableGroups.map((group) => (
+            <TabsTrigger
+              key={group}
+              value={group}
+              className={cn(
+                'data-[state=active]:bg-background',
+                isMobile ? 'text-xs px-2 py-1.5 min-w-0' : 'text-xs px-2 py-1.5'
+              )}
+            >
+              <span className={isMobile ? 'truncate' : ''}>
+                {group.charAt(0).toUpperCase() + group.slice(1)}
+              </span>
+            </TabsTrigger>
+          ))}
+        </TabsList>
+
+        <div className="flex-1 overflow-hidden">
+          {availableGroups.map((group) => (
+            <TabsContent
+              key={group}
+              value={group}
+              className="h-full m-0 data-[state=inactive]:hidden"
+            >
+              <ScrollArea className="h-full">
+                <div
+                  className={cn('space-y-1', isMobile ? 'p-4' : 'p-2')}
+                  tabIndex={0}
+                  style={{ scrollbarWidth: 'thin' }}
+                >
+                  {groupedEvents[group]
+                    ?.sort((a, b) => a.id - b.id)
+                    .map((event) => (
+                      <Button
+                        key={event.id}
+                        variant="ghost"
+                        className={cn(
+                          'w-full justify-start text-left font-normal h-auto',
+                          isMobile ? 'px-4 py-3' : 'px-3 py-2',
+                          value === event.id &&
+                            'bg-accent text-accent-foreground'
+                        )}
+                        onClick={() => handleSelect(event.id)}
+                      >
+                        <Check
+                          className={cn(
+                            'shrink-0',
+                            isMobile ? 'mr-3 h-5 w-5' : 'mr-2 h-4 w-4',
+                            value === event.id ? 'opacity-100' : 'opacity-0'
+                          )}
+                        />
+                        <div className="flex flex-col items-start min-w-0">
+                          <span
+                            className={cn(
+                              'truncate w-full',
+                              isMobile ? 'text-base' : ''
+                            )}
+                          >
+                            {event.name}
+                          </span>
+                        </div>
+                      </Button>
+                    ))}
+                </div>
+              </ScrollArea>
+            </TabsContent>
+          ))}
+        </div>
+      </Tabs>
+    </div>
+  );
+
+  if (isMobile) {
+    return (
+      <Sheet open={open} onOpenChange={handleOpenChange}>
+        <SheetTrigger asChild>{TriggerButton}</SheetTrigger>
+        <SheetContent side="bottom" className="h-[80vh] max-h-[600px] p-0">
+          <SheetHeader className="px-4 py-3 border-b">
+            <SheetTitle>Select an Event</SheetTitle>
+          </SheetHeader>
+          <div className="flex-1 overflow-hidden">{ContentComponent}</div>
+        </SheetContent>
+      </Sheet>
+    );
+  }
+
   return (
     <Popover open={open} onOpenChange={handleOpenChange} modal={true}>
-      <PopoverTrigger asChild>
-        <Button
-          variant="outline"
-          role="combobox"
-          aria-expanded={open}
-          className="w-full justify-between"
-          disabled={disabled}
-        >
-          {selectedEvent ? (
-            <span>{selectedEvent.name}</span>
-          ) : (
-            <span className="text-muted-foreground">{placeholder}</span>
-          )}
-          <ChevronDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-        </Button>
-      </PopoverTrigger>
+      <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
       <PopoverContent
         className="w-[600px] h-[450px] p-0"
         align="start"
         side="bottom"
         sideOffset={4}
       >
-        <div className="flex flex-col h-full">
-          <Tabs
-            value={activeTab}
-            onValueChange={setActiveTab}
-            className="flex flex-col h-full"
-          >
-            <TabsList
-              className="grid w-full h-auto p-1 shrink-0"
-              style={{
-                gridTemplateColumns: `repeat(${availableGroups.length}, 1fr)`,
-              }}
-            >
-              {availableGroups.map((group) => (
-                <TabsTrigger
-                  key={group}
-                  value={group}
-                  className="text-xs px-2 py-1.5 data-[state=active]:bg-background"
-                >
-                  {group.charAt(0).toUpperCase() + group.slice(1)}
-                </TabsTrigger>
-              ))}
-            </TabsList>
-
-            <div className="flex-1 overflow-hidden">
-              {availableGroups.map((group) => (
-                <TabsContent
-                  key={group}
-                  value={group}
-                  className="h-full m-0 data-[state=inactive]:hidden"
-                >
-                  <ScrollArea className="h-full">
-                    <div
-                      className="p-2 space-y-1"
-                      tabIndex={0}
-                      style={{ scrollbarWidth: 'thin' }}
-                    >
-                      {groupedEvents[group]
-                        ?.sort((a, b) => a.id - b.id)
-                        .map((event) => (
-                          <Button
-                            key={event.id}
-                            variant="ghost"
-                            className={cn(
-                              'w-full justify-start px-3 py-2 text-left font-normal h-auto',
-                              value === event.id &&
-                                'bg-accent text-accent-foreground'
-                            )}
-                            onClick={() => handleSelect(event.id)}
-                          >
-                            <Check
-                              className={cn(
-                                'mr-2 h-4 w-4 shrink-0',
-                                value === event.id ? 'opacity-100' : 'opacity-0'
-                              )}
-                            />
-                            <div className="flex flex-col items-start min-w-0">
-                              <span className="truncate w-full">
-                                {event.name}
-                              </span>
-                            </div>
-                          </Button>
-                        ))}
-                    </div>
-                  </ScrollArea>
-                </TabsContent>
-              ))}
-            </div>
-          </Tabs>
-        </div>
+        {ContentComponent}
       </PopoverContent>
     </Popover>
   );
