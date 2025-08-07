@@ -2,11 +2,20 @@ import { prisma, type Prisma } from '@/lib/prisma';
 import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
-import { Competition$, competitionInclude, CompetitionQuery$, Cuid$ } from '@repo/core/schemas';
+import {
+  Competition$,
+  competitionInclude,
+  CompetitionQuery$,
+  Cuid$,
+} from '@repo/core/schemas';
 import { z } from 'zod/v4';
 import { Hono } from 'hono';
+import { competitionInscriptionsRoutes } from './inscriptions';
 
 const competitionsRoutes = new Hono();
+
+// Mount inscription routes
+competitionsRoutes.route('/', competitionInscriptionsRoutes);
 
 // GET /competitions - Get competitions with optional filters (public)
 competitionsRoutes.get(

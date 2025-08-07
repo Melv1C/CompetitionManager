@@ -7,6 +7,7 @@ import { eventsRoutes } from './events';
 import { clubsRoutes } from './clubs';
 import { logsRoutes } from './logs';
 import { organizationRoutes } from './organization';
+import { usersRoutes } from './users';
 
 /**
  * Creates and configures all API routes
@@ -28,6 +29,7 @@ export function createApiRoutes() {
   api.route('/clubs', clubsRoutes);
   api.route('/competitions', competitionsRoutes);
   api.route('/organization', organizationRoutes);
+  api.route('/users', usersRoutes);
 
   return api;
 }

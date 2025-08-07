@@ -6,6 +6,7 @@ export * from './club';
 export * from './competition';
 export * from './competition-event';
 export * from './event';
+export * from './inscription';
 export * from './log';
 export * from './organization';
 
@@ -17,5 +18,6 @@ export type * from './club';
 export type * from './competition';
 export type * from './competition-event';
 export type * from './event';
+export type * from './inscription';
 export type * from './log';
 export type * from './organization';
