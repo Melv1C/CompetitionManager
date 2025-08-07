@@ -4,7 +4,11 @@ import type {
   CompetitionUpdate,
   Cuid,
 } from '@repo/core/schemas';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CompetitionsService } from '../services/competitions-service';
 import { COMPETITIONS_QUERY_KEY } from './use-competitions';
@@ -12,14 +16,14 @@ import { COMPETITIONS_QUERY_KEY } from './use-competitions';
 export const ORGANIZATION_COMPETITIONS_QUERY_KEY = 'organizationCompetitions';
 
 export function useOrganizationCompetitions() {
-  return useQuery<Competition[]>({
+  return useSuspenseQuery<Competition[]>({
     queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY],
     queryFn: CompetitionsService.getOrganizationCompetitions,
   });
 }
 
 export function useOrganizationCompetition(eid: Cuid) {
-  return useQuery<Competition>({
+  return useSuspenseQuery<Competition>({
     queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY, eid],
     queryFn: () => CompetitionsService.getOrganizationCompetition(eid),
   });
