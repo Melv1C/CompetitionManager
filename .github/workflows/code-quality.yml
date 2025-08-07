@@ -27,7 +27,7 @@ jobs:
       - name: Install dependencies (core)
         run: |
           cd core
-          npm ci
+          npm i
 
       - name: Build core
         run: |
@@ -37,7 +37,7 @@ jobs:
       - name: Install dependencies (backend)
         run: |
           cd backend
-          npm ci
+          npm i
 
       - name: Check Prisma schema
         run: |
@@ -54,7 +54,7 @@ jobs:
       - name: Install dependencies (frontend)
         run: |
           cd frontend
-          npm ci
+          npm i
 
       - name: Lint frontend
         run: |
