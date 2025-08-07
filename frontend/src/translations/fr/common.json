@@ -2,7 +2,7 @@
   "overview": "Aperçu",
   "competitions": "Compétitions",
   "members": "Membres",
-  "analytics": "Analyses",
+  "analytics": "Analytiques",
   "settings": "Paramètres",
   "users": "Utilisateurs",
   "organizations": "Organisations",
@@ -19,5 +19,11 @@
   "toggleTheme": "Basculer le thème",
   "light": "Clair",
   "dark": "Sombre",
-  "system": "Système"
+  "system": "Système",
+  "schedule": "Horaire",
+  "participants": "Participants",
+  "registerNow": "S'inscrire maintenant",
+  "registrationOpen": "Inscription ouverte",
+  "registrationClosed": "Inscription fermée",
+  "registrationClosingSoon": "Inscription se ferme bientôt"
 }

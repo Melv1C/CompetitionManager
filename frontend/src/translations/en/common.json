@@ -19,5 +19,11 @@
   "toggleTheme": "Toggle theme",
   "light": "Light",
   "dark": "Dark",
-  "system": "System"
+  "system": "System",
+  "schedule": "Schedule",
+  "participants": "Participants",
+  "registerNow": "Register Now",
+  "registrationOpen": "Registration Open",
+  "registrationClosed": "Registration Closed",
+  "registrationClosingSoon": "Registration Closing Soon"
 }
