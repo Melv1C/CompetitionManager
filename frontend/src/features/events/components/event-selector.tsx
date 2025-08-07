@@ -13,7 +13,7 @@ import { useEvents } from '../hooks/use-events';
 import { ScrollArea } from '@/components/ui/scroll-area';
 
 interface EventSelectorProps {
-  events: Event[];
+  events?: Event[]; // Made optional - will use hook data if not provided
   value?: number;
   onValueChange: (value: number | undefined) => void;
   placeholder?: string;
@@ -22,23 +22,27 @@ interface EventSelectorProps {
 }
 
 export function EventSelector({
+  events: externalEvents,
   value,
   onValueChange,
   placeholder = 'Select an event',
   disabled = false,
   excludeCombinedEvents = false,
 }: EventSelectorProps) {
-  const events = useEvents(); // Assuming useEvents is a hook that fetches events
+  const eventsFromHook = useEvents(); // Fetch events from hook
+
+  // Use external events if provided, otherwise use hook data
+  const events = externalEvents || eventsFromHook.data;
 
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('');
 
-  const selectedEvent = events.data.find((event) => event.id === value);
+  const selectedEvent = events.find((event) => event.id === value);
 
   // Filter out combined events if excludeCombinedEvents is true
   const filteredEvents = excludeCombinedEvents
-    ? events.data.filter((event) => event.group !== 'combined')
-    : events.data;
+    ? events.filter((event) => event.group !== 'combined')
+    : events;
 
   // Group events by their group property
   const groupedEvents = filteredEvents.reduce((acc, event) => {
