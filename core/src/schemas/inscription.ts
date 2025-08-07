@@ -15,6 +15,11 @@ export const Record$ = z.object({
 });
 export type Record = z.infer<typeof Record$>;
 
+export const RecordPrisma$ = Record$.omit({
+  id: true,
+});
+export type RecordPrisma = z.infer<typeof RecordPrisma$>;
+
 // Inscription status enum
 export const InscriptionStatus$ = z.enum([
   'PENDING',
@@ -62,21 +67,22 @@ export const inscriptionInclude = {
   record: true,
 };
 
-export const InscriptionPrisma$ = Inscription$.omit({
+export const UpsertInscription$ = Inscription$.omit({
   id: true,
   eid: true,
+  userId: true,
   athlete: true,
   competitionEvent: true,
+  paymentSessionId: true,
   record: true,
+  status: true,
+  amountPaid: true,
+  inscriptionDate: true,
+  isDeleted: true,
   createdAt: true,
   updatedAt: true,
-});
-export type InscriptionPrisma = z.infer<typeof InscriptionPrisma$>;
-
-export const UpsertInscription$ = InscriptionPrisma$.omit({
   createdBy: true,
   updatedBy: true,
-  userId: true,
 }).extend({
   record: Record$.extend({
     id: Id$.nullish(),

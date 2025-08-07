@@ -21,7 +21,7 @@ const organizationCompetitionEventsRoutes = new Hono();
 organizationCompetitionEventsRoutes.post(
   '/:eid/events',
   requirePermissions({
-    events: ['create'],
+    events: ['manage'],
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
   zValidator('json', CompetitionEventCreate$),
@@ -87,7 +87,7 @@ organizationCompetitionEventsRoutes.post(
 organizationCompetitionEventsRoutes.put(
   '/:eid/events/:eventEid',
   requirePermissions({
-    events: ['update'],
+    events: ['manage'],
   }),
   zValidator('param', z.object({ eid: Cuid$, eventEid: Cuid$ })),
   zValidator('json', CompetitionEventUpdate$),
@@ -169,7 +169,7 @@ organizationCompetitionEventsRoutes.put(
 organizationCompetitionEventsRoutes.delete(
   '/:eid/events/:eventEid',
   requirePermissions({
-    events: ['delete'],
+    events: ['manage'],
   }),
   zValidator('param', z.object({ eid: Cuid$, eventEid: Cuid$ })),
   async (c) => {

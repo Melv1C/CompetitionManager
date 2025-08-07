@@ -39,6 +39,12 @@ const envSchema = z.object({
   LBFA_URL: z.url().optional(),
   LBFA_USERNAME: z.string().optional(),
   LBFA_PASSWORD: z.string().optional(),
+
+  // Payment session cleanup configuration
+  PAYMENT_SESSION_CLEANUP_ENABLED: z.stringbool().default(true),
+  PAYMENT_SESSION_CLEANUP_SCHEDULE: z
+    .enum(['@daily', '@hourly', '@weekly'])
+    .default('@hourly'),
 });
 
 export const env = envSchema.parse(process.env);

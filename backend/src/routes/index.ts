@@ -8,6 +8,7 @@ import { clubsRoutes } from './clubs';
 import { logsRoutes } from './logs';
 import { organizationRoutes } from './organization';
 import { usersRoutes } from './users';
+import { webhooksRoutes } from './webhooks';
 
 /**
  * Creates and configures all API routes
@@ -30,6 +31,7 @@ export function createApiRoutes() {
   api.route('/competitions', competitionsRoutes);
   api.route('/organization', organizationRoutes);
   api.route('/users', usersRoutes);
+  api.route('/webhooks', webhooksRoutes);
 
   return api;
 }
