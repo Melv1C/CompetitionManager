@@ -1,7 +1,7 @@
 import { CompetitionsList, useCompetitions } from '@/features/competitions';
 
 export function CompetitionsPage() {
-  const { data: competitions = [], isLoading } = useCompetitions({
+  const competitions = useCompetitions({
     upcoming: true,
     past: false,
   });
@@ -12,7 +12,7 @@ export function CompetitionsPage() {
         <h1 className="text-3xl font-bold tracking-tight">Competitions</h1>
         <p className="text-muted-foreground">Upcoming competitions calendar.</p>
       </div>
-      <CompetitionsList competitions={competitions} isLoading={isLoading} />
+      <CompetitionsList competitions={competitions.data} />
     </div>
   );
 }
