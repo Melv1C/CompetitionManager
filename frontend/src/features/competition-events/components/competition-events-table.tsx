@@ -19,6 +19,7 @@ import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteCompetitionEvent } from '../hooks/use-competition-events';
 import { CompetitionEventFormDialog } from './competition-event-form-dialog';
+import { formatTime, formatDateFull, formatCurrency } from '@/lib/formatters';
 
 interface CompetitionEventsTableProps {
   competitionEid: Cuid;
@@ -53,29 +54,6 @@ export function CompetitionEventsTable({
     } else {
       setEditingEvent(competitionEvent);
     }
-  };
-
-  const formatTime = (date: Date) => {
-    return new Intl.DateTimeFormat('fr-FR', {
-      hour: 'numeric',
-      minute: '2-digit',
-    }).format(new Date(date));
-  };
-
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('fr-FR', {
-      weekday: 'long',
-      month: 'long',
-      day: 'numeric',
-      year: 'numeric',
-    }).format(new Date(date));
-  };
-
-  const formatPrice = (price: number) => {
-    return new Intl.NumberFormat('fr-FR', {
-      style: 'currency',
-      currency: 'EUR',
-    }).format(price);
   };
 
   // Filter events based on showSubEvents preference
@@ -142,7 +120,7 @@ export function CompetitionEventsTable({
           {sortedGroups.map((group) => (
             <div key={group.date.toDateString()} className="space-y-4">
               <h3 className="text-lg font-semibold text-foreground border-b pb-2">
-                {formatDate(group.date)}
+                {formatDateFull(group.date)}
               </h3>
               <Table>
                 <TableHeader>
@@ -169,7 +147,7 @@ export function CompetitionEventsTable({
                           ` / ${competitionEvent.maxParticipants}`}
                       </TableCell>
                       <TableCell>
-                        {formatPrice(competitionEvent.price)}
+                        {formatCurrency(competitionEvent.price)}
                       </TableCell>
                       <TableCell>
                         <DropdownMenu>

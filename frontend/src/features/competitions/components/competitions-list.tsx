@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import type { Competition } from '@repo/core/schemas';
+import { formatDateShort } from '@/lib/formatters';
 
 interface CompetitionsListProps {
   competitions: Competition[];
@@ -14,13 +15,6 @@ export function CompetitionsList({ competitions }: CompetitionsListProps) {
     );
   }
 
-  const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(date));
-
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       {competitions.map((comp) => (
@@ -31,7 +25,7 @@ export function CompetitionsList({ competitions }: CompetitionsListProps) {
         >
           <h3 className="font-semibold">{comp.name}</h3>
           <p className="text-sm text-muted-foreground">
-            {formatDate(comp.startDate)} &bull; {comp.organization.name}
+            {formatDateShort(comp.startDate)} &bull; {comp.organization.name}
           </p>
         </Link>
       ))}

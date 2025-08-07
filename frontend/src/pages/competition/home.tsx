@@ -1,8 +1,8 @@
 import { useCompetition } from '@/features/competitions';
 import { useParams } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { formatDate, formatDateTime } from '@/lib/formatters';
 import {
   CalendarIcon,
   MapPinIcon,
@@ -16,29 +16,12 @@ import {
 
 export function CompetitionHomePage() {
   const { eid } = useParams<{ eid: string }>();
-  const { i18n } = useTranslation();
 
   if (!eid) {
     throw new Error('Competition ID (eid) is required');
   }
 
   const competition = useCompetition(eid);
-
-  const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat(i18n.language, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-    }).format(new Date(date));
-
-  const formatDateTime = (date: Date) =>
-    new Intl.DateTimeFormat(i18n.language, {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric',
-      hour: '2-digit',
-      minute: '2-digit',
-    }).format(new Date(date));
 
   const getRegistrationStatus = () => {
     const now = new Date();
