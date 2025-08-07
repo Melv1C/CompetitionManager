@@ -21,6 +21,7 @@ export const InscriptionStatus$ = z.enum([
   'CONFIRMED',
   'CANCELLED',
   'REFUNDED',
+  'PENDING_PAYMENT',
 ]);
 export type InscriptionStatus = z.infer<typeof InscriptionStatus$>;
 
@@ -38,6 +39,8 @@ export const Inscription$ = z.object({
   athlete: Athlete$,
   competitionEventId: Id$,
   competitionEvent: CompetitionEvent$,
+
+  paymentSessionId: Id$.nullish(),
 
   record: Record$.nullish(),
   status: InscriptionStatus$,
@@ -77,7 +80,7 @@ export const UpsertInscription$ = InscriptionPrisma$.omit({
 }).extend({
   record: Record$.extend({
     id: Id$.nullish(),
-  }),
+  }).optional(),
 });
 export type UpsertInscription = z.infer<typeof UpsertInscription$>;
 

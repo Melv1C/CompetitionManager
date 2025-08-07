@@ -30,9 +30,10 @@ model User {
   banReason  String?
   banExpires DateTime?
 
-  members      Member[]
-  invitations  Invitation[]
-  inscriptions Inscription[]
+  members        Member[]
+  invitations    Invitation[]
+  inscriptions   Inscription[]
+  paymentSessions PaymentSession[]
 
   @@unique([email])
   @@map("user")
@@ -320,10 +321,39 @@ model Competition {
   organizationId String
   organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
 
-  inscriptions Inscription[]
-  results      Result[]
+  inscriptions    Inscription[]
+  results         Result[]
+  paymentSessions PaymentSession[]
 
   @@map("competitions")
+}
+
+////////////////////////////////////////////////////////////
+// Payment Session
+// This model is used to store payment session information for inscriptions.
+////////////////////////////////////////////////////////////
+model PaymentSession {
+  id               Int      @id @default(autoincrement())
+  eid              String   @unique @default(cuid())
+
+  userId           String   @map("user_id")
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  competitionId    Int      @map("competition_id")
+  competition      Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+
+  paymentIntentId  String?  @map("payment_intent_id")
+  status           String   // 'pending', 'paid', 'cancelled', 'expired'
+  amountTotal      Float    @map("amount_total")
+  metadata         Json?    // To keep track of initial inscriptions info
+  
+  createdAt        DateTime @default(now()) @map("created_at")
+  expiresAt        DateTime @map("expires_at")
+  paidAt           DateTime? @map("paid_at")
+
+  inscriptions     Inscription[]
+
+  @@map("payment_sessions")
 }
 
 ////////////////////////////////////////////////////////////
@@ -342,6 +372,9 @@ model Inscription {
   competitionEvent   CompetitionEvent @relation(fields: [competitionEventId], references: [id], onDelete: Cascade)
   competitionId      Int              @map("competition_id")
   competition        Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+
+  paymentSessionId   Int?             @map("payment_session_id")
+  paymentSession     PaymentSession?  @relation(fields: [paymentSessionId], references: [id], onDelete: SetNull)
 
   record             Record?
   status             String

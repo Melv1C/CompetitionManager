@@ -9,6 +9,7 @@ export * from './event';
 export * from './inscription';
 export * from './log';
 export * from './organization';
+export * from './payment-session';
 
 export type * from './athlete';
 export type * from './auth';
@@ -21,3 +22,4 @@ export type * from './event';
 export type * from './inscription';
 export type * from './log';
 export type * from './organization';
+export type * from './payment-session';
