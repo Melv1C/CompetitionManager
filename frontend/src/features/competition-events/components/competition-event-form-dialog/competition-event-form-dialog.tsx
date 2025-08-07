@@ -48,7 +48,7 @@ export type CompetitionEventFormDialogProps = {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   competitionEvent?: CompetitionEvent;
-}
+};
 
 export function CompetitionEventFormDialog({
   competitionEid,
@@ -272,7 +272,7 @@ export function CompetitionEventFormDialog({
                             placeholder="Select start time"
                             disabled={isLoading}
                             minDate={competition.data.startDate}
-                            maxDate={competition.data.endDate || undefined}
+                            maxDate={competition.data.endDate}
                           />
                         </FormControl>
                         <FormMessage />
@@ -339,7 +339,7 @@ export function CompetitionEventFormDialog({
                   selectedEvent={selectedEvent}
                   subEventsCount={subEventsCount}
                   competitionStartDate={competition.data?.startDate}
-                  competitionEndDate={competition.data?.endDate || undefined}
+                  competitionEndDate={competition.data?.endDate}
                   mainEventStartTime={form.watch('eventStartTime')}
                 />
               )}

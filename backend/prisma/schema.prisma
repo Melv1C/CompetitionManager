@@ -289,7 +289,7 @@ model Competition {
   eid         String    @unique @default(cuid())
   name        String
   startDate   DateTime
-  endDate     DateTime?
+  endDate     DateTime
   isPublished Boolean
   description String    @db.Text
   location    String

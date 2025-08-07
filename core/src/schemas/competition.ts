@@ -13,7 +13,7 @@ export const Competition$ = z.object({
   eid: Cuid$,
   name: z.string(),
   startDate: Date$,
-  endDate: Date$.nullish(),
+  endDate: Date$,
   isPublished: Boolean$.default(false),
   description: z.string().default(''),
   location: z.string().default(''),
@@ -62,6 +62,16 @@ export const CompetitionPrisma$ = Competition$.omit({
   events: true,
   organization: true,
 })
+  .refine(
+    (data) => {
+      // End date should be after start date
+      return data.endDate > data.startDate;
+    },
+    {
+      message: 'Competition end date must be after start date',
+      path: ['endDate'],
+    }
+  )
   .refine(
     (data) => {
       // Inscription start date should be before inscription end date
