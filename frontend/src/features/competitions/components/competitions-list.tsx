@@ -1,16 +1,12 @@
 import { Link } from 'react-router-dom';
 import type { Competition } from '@repo/core/schemas';
+import { formatDateShort } from '@/lib/formatters';
 
 interface CompetitionsListProps {
   competitions: Competition[];
-  isLoading?: boolean;
 }
 
-export function CompetitionsList({ competitions, isLoading }: CompetitionsListProps) {
-  if (isLoading) {
-    return <div className="py-4 text-center">Loading competitions...</div>;
-  }
-
+export function CompetitionsList({ competitions }: CompetitionsListProps) {
   if (competitions.length === 0) {
     return (
       <div className="py-4 text-center text-muted-foreground">
@@ -18,13 +14,6 @@ export function CompetitionsList({ competitions, isLoading }: CompetitionsListPr
       </div>
     );
   }
-
-  const formatDate = (date: Date) =>
-    new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(date));
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
@@ -36,7 +25,7 @@ export function CompetitionsList({ competitions, isLoading }: CompetitionsListPr
         >
           <h3 className="font-semibold">{comp.name}</h3>
           <p className="text-sm text-muted-foreground">
-            {formatDate(comp.startDate)} &bull; {comp.organization.name}
+            {formatDateShort(comp.startDate)} &bull; {comp.organization.name}
           </p>
         </Link>
       ))}
