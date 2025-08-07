@@ -17,10 +17,14 @@ A modern, full-stack competition management system built for athletic organizati
 1. **Install Dependencies**
 
    ```bash
-   cd backend && npm install
-   cd ../frontend && npm install
-   cd ../core && npm install && npm run build
-   cd ../e2e && npm install
+   # Install root dependencies
+   npm install
+
+   # Install all package dependencies
+   npm run install:core
+   npm run install:backend
+   npm run install:frontend
+   npm run install:e2e
    ```
 
 2. **Environment Variables**
@@ -34,29 +38,54 @@ A modern, full-stack competition management system built for athletic organizati
 
    ```bash
    # Start PostgreSQL with Docker
-   docker-compose -f docker-compose.db.yml up -d
+   npm run docker:db
 
    # Run database migrations
-   cd backend
-   npx prisma migrate dev
+   npm run db:migrate
    ```
 
-4. **Start Development Servers**
+4. **Start Development**
 
    ```bash
-   # Terminal 1: Backend API (Port 3000)
-   cd backend && npm run dev
+   # Start all development servers (core, backend, frontend)
+   npm run dev
 
-   # Terminal 2: Frontend App (Port 5173)
-   cd frontend && npm run dev
-
-   # Terminal 3: Core Package (for shared types)
-   cd core && npm run dev
+   # Or start individually:
+   npm run dev:backend   # Backend API (Port 3000)
+   npm run dev:frontend  # Frontend App (Port 5173)
+   npm run dev:core      # Core package watch mode
    ```
 
 5. **Access the Application**
    - Frontend: http://localhost:5173
    - Backend API: http://localhost:3000
+
+## 📝 Available Commands
+
+All commands can be run from the project root:
+
+### Development
+
+- `npm run dev` - Start all development servers (core, backend, frontend)
+- `npm run dev:core` - Start core package in watch mode
+- `npm run dev:backend` - Start backend API server
+- `npm run dev:frontend` - Start frontend development server
+
+### Dependencies
+
+- `npm run install:core` - Install core package dependencies
+- `npm run install:backend` - Install backend dependencies
+- `npm run install:frontend` - Install frontend dependencies
+- `npm run install:e2e` - Install e2e test dependencies
+
+### Database
+
+- `npm run db:migrate` - Run Prisma database migrations
+- `npm run docker:db` - Start PostgreSQL database with Docker
+
+### Testing
+
+- `npm run test` - Run end-to-end tests
 
 ## Testing
 
@@ -65,11 +94,14 @@ A modern, full-stack competition management system built for athletic organizati
 The project uses Playwright for comprehensive end-to-end testing.
 
 ```bash
-# Install test dependencies (if not already done)
-cd e2e && npm install
-
 # Run all E2E tests
 npm run test
+```
+
+or run specific tests:
+
+```bash
+cd e2e
 
 # Run tests in headed mode (with browser UI)
 npm run test:headed

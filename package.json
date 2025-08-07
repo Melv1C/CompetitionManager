@@ -1,0 +1,37 @@
+{
+  "name": "competition-manager",
+  "version": "1.0.0",
+  "description": "Competition Manager - Full Stack Application",
+  "private": true,
+  "type": "module",
+  "workspaces": [
+    "backend",
+    "frontend",
+    "core",
+    "e2e"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:core\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev:core": "cd core && npm run dev",
+    "dev:backend": "cd backend && npm run dev",
+    "dev:frontend": "cd frontend && npm run dev",
+
+    "install:core": "cd core && npm install",
+    "install:backend": "cd backend && npm install",
+    "install:frontend": "cd frontend && npm install",
+    "install:e2e": "cd e2e && npm install",
+
+    "test": "npm run test:e2e",
+
+    "db:migrate": "cd backend && npx prisma migrate dev",
+
+    "docker:db": "docker-compose -f docker-compose.db.yml up -d"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.0"
+  },
+  "engines": {
+    "node": ">=20.0.0",
+    "npm": ">=10.0.0"
+  }
+}
