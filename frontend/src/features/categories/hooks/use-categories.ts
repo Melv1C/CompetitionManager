@@ -1,22 +1,25 @@
 import type { CategoryCreate, CategoryUpdate } from '@repo/core/schemas';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  useMutation,
+  useQueryClient,
+  useSuspenseQuery,
+} from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CategoriesService } from '../services/categories-service';
 
 export const CATEGORIES_QUERY_KEY = 'categories';
 
 export function useCategories() {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: [CATEGORIES_QUERY_KEY],
     queryFn: CategoriesService.getCategories,
   });
 }
 
 export function useCategory(id: number) {
-  return useQuery({
+  return useSuspenseQuery({
     queryKey: [CATEGORIES_QUERY_KEY, id],
     queryFn: () => CategoriesService.getCategory(id),
-    enabled: !!id,
   });
 }
 

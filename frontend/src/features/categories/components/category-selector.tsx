@@ -10,9 +10,9 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import type { Category } from '@repo/core/schemas';
 import { Check, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
+import { useCategories } from '../hooks/use-categories';
 
 interface CategorySelectorProps {
-  categories: Category[];
   selectedIds: number[];
   onSelectionChange: (ids: number[]) => void;
   disabled?: boolean;
@@ -79,12 +79,12 @@ const QUICK_SELECTIONS: QuickSelection[] = [
 ];
 
 export function CategorySelector({
-  categories,
   selectedIds,
   onSelectionChange,
   disabled = false,
   placeholder = 'Select categories...',
 }: CategorySelectorProps) {
+  const { data: categories } = useCategories(); // Assuming useCategories is a hook that fetches categories
   const [open, setOpen] = useState(false);
 
   const selectedCategories = categories.filter((cat) =>
