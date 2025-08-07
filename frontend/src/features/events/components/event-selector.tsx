@@ -18,6 +18,7 @@ interface EventSelectorProps {
   onValueChange: (value: number | undefined) => void;
   placeholder?: string;
   disabled?: boolean;
+  excludeCombinedEvents?: boolean;
 }
 
 export function EventSelector({
@@ -25,6 +26,7 @@ export function EventSelector({
   onValueChange,
   placeholder = 'Select an event',
   disabled = false,
+  excludeCombinedEvents = false,
 }: EventSelectorProps) {
   const events = useEvents(); // Assuming useEvents is a hook that fetches events
 
@@ -33,8 +35,13 @@ export function EventSelector({
 
   const selectedEvent = events.data.find((event) => event.id === value);
 
+  // Filter out combined events if excludeCombinedEvents is true
+  const filteredEvents = excludeCombinedEvents
+    ? events.data.filter((event) => event.group !== 'combined')
+    : events.data;
+
   // Group events by their group property
-  const groupedEvents = events.data.reduce((acc, event) => {
+  const groupedEvents = filteredEvents.reduce((acc, event) => {
     if (!acc[event.group]) {
       acc[event.group] = [];
     }
@@ -69,9 +76,7 @@ export function EventSelector({
           disabled={disabled}
         >
           {selectedEvent ? (
-            <span>
-              {selectedEvent.name}
-            </span>
+            <span>{selectedEvent.name}</span>
           ) : (
             <span className="text-muted-foreground">{placeholder}</span>
           )}

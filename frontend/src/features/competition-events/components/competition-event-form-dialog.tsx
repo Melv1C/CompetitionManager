@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import {
   Dialog,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
 } from '@/components/ui/dialog';
@@ -14,21 +15,23 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
 import { EventSelector } from '@/features/events/components/event-selector';
 import { CategorySelector, useCategories } from '@/features/categories';
 import { useEvents } from '@/features/events/hooks/use-events';
 import { zodResolver } from '@hookform/resolvers/zod';
-import type {
-  CompetitionEvent,
-  CompetitionEventCreate,
-  CompetitionEventUpdate,
-  Cuid,
-} from '@repo/core/schemas';
 import {
   CompetitionEventCreate$,
+  CompetitionEventSubEvent$,
   CompetitionEventUpdate$,
+  type CompetitionEvent,
+  type CompetitionEventCreate,
+  type CompetitionEventUpdate,
+  type Cuid,
+  type Event,
 } from '@repo/core/schemas';
-import { useForm } from 'react-hook-form';
+import { getCombinedEventSubEventsCount } from '@repo/core/utils';
+import { useForm, useFieldArray } from 'react-hook-form';
 import {
   useCreateCompetitionEvent,
   useUpdateCompetitionEvent,
@@ -36,6 +39,8 @@ import {
 import z from 'zod/v4';
 import { DateTimePicker } from '@/components/date-time-picker';
 import { useOrganizationCompetition } from '@/features/competitions';
+import { useState, useEffect } from 'react';
+import { SubEventsSection } from './sub-events-section';
 
 interface CompetitionEventFormDialogProps {
   competitionEid: Cuid;
@@ -59,6 +64,7 @@ export function CompetitionEventFormDialog({
   const { data: events = [], isLoading: eventsLoading } = useEvents();
   const { data: categories = [], isLoading: categoriesLoading } =
     useCategories();
+  const [selectedEvent, setSelectedEvent] = useState<Event | undefined>();
 
   const form = useForm<CompetitionEventCreate | CompetitionEventUpdate>({
     resolver: zodResolver(
@@ -66,10 +72,24 @@ export function CompetitionEventFormDialog({
         ? CompetitionEventUpdate$.extend({
             eventStartTime: z.date(),
             categoryIds: z.array(z.number()),
+            subEvents: z
+              .array(
+                CompetitionEventSubEvent$.extend({
+                  eventStartTime: z.date(),
+                })
+              )
+              .optional(),
           })
         : CompetitionEventCreate$.extend({
             eventStartTime: z.date(),
             categoryIds: z.array(z.number()),
+            subEvents: z
+              .array(
+                CompetitionEventSubEvent$.extend({
+                  eventStartTime: z.date(),
+                })
+              )
+              .optional(),
           })
     ),
     defaultValues: {
@@ -79,29 +99,77 @@ export function CompetitionEventFormDialog({
       maxParticipants: competitionEvent?.maxParticipants ?? undefined,
       price: competitionEvent?.price ?? 0,
       categoryIds: competitionEvent?.categories?.map((cat) => cat.id) ?? [],
-      // subEvents: competitionEvent
-      //   ? competition.data.events
-      //       .filter((event) => event.parentId === competitionEvent?.id)
-      //       .map((event) => ({
-      //         id: event.id,
-      //         name: event.name,
-      //         eventStartTime: event.eventStartTime,
-      //         eventId: event.eventId,
-      //       }))
-      //   : [],
+      subEvents: competitionEvent
+        ? competition.data?.events
+            ?.filter((event) => event.parentId === competitionEvent?.id)
+            .map((event) => ({
+              id: event.id,
+              name: event.name,
+              eventStartTime: event.eventStartTime,
+              eventId: event.eventId,
+            })) ?? []
+        : [],
     },
   });
+
+  const { fields, replace } = useFieldArray({
+    control: form.control,
+    name: 'subEvents',
+  });
+
+  // Watch for event selection changes
+  const watchedEventId = form.watch('eventId');
+
+  useEffect(() => {
+    if (watchedEventId) {
+      const event = events.find((e) => e.id === watchedEventId);
+      setSelectedEvent(event);
+
+      // If it's a combined event, auto-generate sub-events
+      if (event?.group === 'combined') {
+        const subEventsCount = getCombinedEventSubEventsCount(event.name);
+        const newSubEvents = Array.from(
+          { length: subEventsCount },
+          (_, index) => ({
+            id: null,
+            name: `${event.name} - Event ${index + 1}`,
+          })
+        );
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        replace(newSubEvents as any[]);
+      } else {
+        // Clear sub-events for non-combined events
+        replace([]);
+      }
+    }
+  }, [watchedEventId, events, replace, form]);
+
+  const isCombinedEvent = selectedEvent?.group === 'combined';
+  const subEventsCount = isCombinedEvent
+    ? getCombinedEventSubEventsCount(selectedEvent.name)
+    : 0;
 
   const onSubmit = async (
     data: CompetitionEventCreate | CompetitionEventUpdate
   ) => {
+    // Convert form data to API format
+    const apiData = {
+      name: data.name,
+      eventId: data.eventId,
+      eventStartTime: data.eventStartTime,
+      maxParticipants: data.maxParticipants,
+      price: data.price,
+      categoryIds: data.categoryIds,
+      subEvents: data.subEvents,
+    };
+
     if (isEditing && competitionEvent) {
       await updateMutation.mutateAsync({
         eventEid: competitionEvent.eid,
-        data: data as CompetitionEventUpdate,
+        data: apiData as CompetitionEventUpdate,
       });
     } else {
-      await createMutation.mutateAsync(data as CompetitionEventCreate);
+      await createMutation.mutateAsync(apiData as CompetitionEventCreate);
     }
     form.reset();
     onOpenChange(false);
@@ -112,7 +180,7 @@ export function CompetitionEventFormDialog({
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
-        className="sm:max-w-[800px] lg:max-w-[900px] max-h-[90vh] w-[95vw]"
+        className="sm:max-w-6xl max-h-[95vh] w-[90vw]"
         onInteractOutside={(e) => {
           // Prevent closing the dialog when clicking outside
           e.preventDefault();
@@ -123,153 +191,179 @@ export function CompetitionEventFormDialog({
             {isEditing ? 'Edit Competition Event' : 'Create Competition Event'}
           </DialogTitle>
         </DialogHeader>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="eventId"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Event</FormLabel>
-                  <FormControl>
-                    <EventSelector
-                      events={events}
-                      value={field.value}
-                      onValueChange={field.onChange}
-                      placeholder="Select an event"
-                      disabled={eventsLoading}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
+
+        <ScrollArea className="max-h-[calc(95vh-140px)] pr-4">
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+              <div className="space-y-4">
+                <FormField
+                  control={form.control}
+                  name="eventId"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Event</FormLabel>
+                      <FormControl>
+                        <EventSelector
+                          events={events}
+                          value={field.value}
+                          onValueChange={field.onChange}
+                          placeholder="Select an event"
+                          disabled={eventsLoading}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <FormField
+                  control={form.control}
+                  name="categoryIds"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>Categories</FormLabel>
+                      <FormControl>
+                        <CategorySelector
+                          categories={categories}
+                          selectedIds={field.value}
+                          onSelectionChange={field.onChange}
+                          disabled={categoriesLoading || isLoading}
+                          placeholder="Select categories"
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="name"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Competition Event Name</FormLabel>
+                        <FormControl>
+                          <Input
+                            placeholder="Enter competition event name"
+                            {...field}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="eventStartTime"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Start Time</FormLabel>
+                        <FormControl>
+                          <DateTimePicker
+                            value={field.value}
+                            onChange={(date) => field.onChange(date)}
+                            placeholder="Select start time"
+                            disabled={isLoading}
+                            minDate={competition.data.startDate}
+                            maxDate={competition.data.endDate || undefined}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <FormField
+                    control={form.control}
+                    name="maxParticipants"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Max Participants (optional)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            placeholder="Leave empty for unlimited"
+                            {...field}
+                            onChange={(e) => {
+                              const value = e.target.value;
+                              field.onChange(value ? Number(value) : undefined);
+                            }}
+                            value={field.value ?? ''}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+
+                  <FormField
+                    control={form.control}
+                    name="price"
+                    render={({ field }) => (
+                      <FormItem>
+                        <FormLabel>Price (€)</FormLabel>
+                        <FormControl>
+                          <Input
+                            type="number"
+                            step="0.01"
+                            min="0"
+                            placeholder="0.00"
+                            {...field}
+                            onChange={(e) =>
+                              field.onChange(Number(e.target.value))
+                            }
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </div>
+              </div>
+
+              {/* Sub-Events Section for Combined Events */}
+              {isCombinedEvent && (
+                <SubEventsSection
+                  control={form.control}
+                  fields={fields}
+                  events={events}
+                  eventsLoading={eventsLoading}
+                  isLoading={isLoading}
+                  selectedEvent={selectedEvent}
+                  subEventsCount={subEventsCount}
+                  competitionStartDate={competition.data?.startDate}
+                  competitionEndDate={competition.data?.endDate || undefined}
+                  mainEventStartTime={form.watch('eventStartTime')}
+                />
               )}
-            />
-
-            <FormField
-              control={form.control}
-              name="categoryIds"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Categories</FormLabel>
-                  <FormControl>
-                    <CategorySelector
-                      categories={categories}
-                      selectedIds={field.value}
-                      onSelectionChange={field.onChange}
-                      disabled={categoriesLoading || isLoading}
-                      placeholder="Select categories"
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="name"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Competition Event Name</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="Enter competition event name"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="eventStartTime"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Start Time</FormLabel>
-                    <FormControl>
-                      <DateTimePicker
-                        value={field.value}
-                        onChange={(date) => field.onChange(date)}
-                        placeholder="Select start time"
-                        disabled={isLoading}
-                        minDate={competition.data.startDate}
-                        maxDate={competition.data.endDate || undefined}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              <FormField
-                control={form.control}
-                name="maxParticipants"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Max Participants (optional)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        placeholder="Leave empty for unlimited"
-                        {...field}
-                        onChange={(e) => {
-                          const value = e.target.value;
-                          field.onChange(value ? Number(value) : undefined);
-                        }}
-                        value={field.value ?? ''}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={form.control}
-                name="price"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Price (€)</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="number"
-                        step="0.01"
-                        min="0"
-                        placeholder="0.00"
-                        {...field}
-                        onChange={(e) => field.onChange(Number(e.target.value))}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-            </div>
-
-            <div className="flex justify-end space-x-2 pt-4">
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-                disabled={isLoading}
-              >
-                Cancel
-              </Button>
-              <Button type="submit" disabled={isLoading}>
-                {isLoading
-                  ? 'Saving...'
-                  : isEditing
-                  ? 'Update Event'
-                  : 'Create Event'}
-              </Button>
-            </div>
-          </form>
-        </Form>
+            </form>
+          </Form>
+        </ScrollArea>
+        <DialogFooter>
+          <Button
+            type="button"
+            variant="outline"
+            onClick={() => onOpenChange(false)}
+            disabled={isLoading}
+          >
+            Cancel
+          </Button>
+          <Button
+            type="submit"
+            disabled={isLoading}
+            onClick={form.handleSubmit(onSubmit)}
+          >
+            {isLoading
+              ? 'Saving...'
+              : isEditing
+              ? 'Update Event'
+              : 'Create Event'}
+          </Button>
+        </DialogFooter>
       </DialogContent>
     </Dialog>
   );

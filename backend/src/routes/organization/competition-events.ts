@@ -28,7 +28,7 @@ organizationCompetitionEventsRoutes.post(
   async (c) => {
     try {
       const { eid } = c.req.valid('param');
-      const { categoryIds, ...eventBody } = c.req.valid('json');
+      const { categoryIds, subEvents, ...eventBody } = c.req.valid('json');
       const session = await getRequiredSession(c);
 
       if (!session.activeOrganizationId) {
@@ -59,6 +59,22 @@ organizationCompetitionEventsRoutes.post(
         include: competitionEventInclude,
       });
 
+      if (subEvents && subEvents.length > 0) {
+        await prisma.competitionEvent.createMany({
+          data: subEvents.map((subEvent) => ({
+            ...CompetitionEventPrisma$.parse({
+              ...subEvent,
+              price: 0, // Assuming sub-events have no price
+              maxParticipants: eventBody.maxParticipants,
+              parentId: competitionEvent.id,
+              competitionId: competition.id,
+              createdBy: session.userId,
+              updatedBy: session.userId,
+            }),
+          })),
+        });
+      }
+
       return c.json(CompetitionEvent$.parse(competitionEvent), 201);
     } catch (error) {
       logError('Failed to create competition event', error, c);
@@ -78,7 +94,7 @@ organizationCompetitionEventsRoutes.put(
   async (c) => {
     try {
       const { eid, eventEid } = c.req.valid('param');
-      const { categoryIds, ...eventBody } = c.req.valid('json');
+      const { categoryIds, subEvents, ...eventBody } = c.req.valid('json');
 
       const session = await getRequiredSession(c);
       if (!session.activeOrganizationId) {
@@ -114,6 +130,32 @@ organizationCompetitionEventsRoutes.put(
         },
         include: competitionEventInclude,
       });
+
+      // subEvents has and id (subEvent.id) if it's an update, otherwise it's a new sub-event
+      if (subEvents && subEvents.length > 0) {
+        const subEventUpdates = subEvents.map((subEvent) => {
+          const subEventData = CompetitionEventPrisma$.parse({
+            ...subEvent,
+            price: 0, // Assuming sub-events have no price
+            maxParticipants: eventBody.maxParticipants,
+            parentId: updatedEvent.id,
+            competitionId: competition.id,
+            updatedBy: session.userId,
+          });
+
+          if (subEvent.id) {
+            return prisma.competitionEvent.update({
+              where: { id: subEvent.id },
+              data: subEventData,
+            });
+          } else {
+            return prisma.competitionEvent.create({
+              data: subEventData,
+            });
+          }
+        });
+        await Promise.all(subEventUpdates);
+      }
 
       return c.json(CompetitionEvent$.parse(updatedEvent), 200);
     } catch (error) {

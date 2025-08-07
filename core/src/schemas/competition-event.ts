@@ -47,6 +47,14 @@ export const CompetitionEventPrisma$ = CompetitionEvent$.omit({
 export type CompetitionEventPrisma = z.infer<typeof CompetitionEventPrisma$>;
 
 // Schema for API competition event creation
+export const CompetitionEventSubEvent$ = CompetitionEvent$.pick({
+  name: true,
+  eventId: true,
+  eventStartTime: true,
+}).extend({
+  id: Id$.nullish(),
+});
+
 export const CompetitionEventCreate$ = CompetitionEventPrisma$.omit({
   competitionId: true,
   parentId: true,
@@ -54,17 +62,7 @@ export const CompetitionEventCreate$ = CompetitionEventPrisma$.omit({
   updatedBy: true,
 }).extend({
   categoryIds: z.array(Id$).default([]),
-  // subEvents: z
-  //   .array(
-  //     CompetitionEvent$.pick({
-  //       name: true,
-  //       eventStartTime: true,
-  //       eventId: true,
-  //     }).extend({
-  //       id: Id$.nullish(),
-  //     })
-  //   )
-  //   .default([]),
+  subEvents: z.array(CompetitionEventSubEvent$).optional(),
 });
 export type CompetitionEventCreate = z.infer<typeof CompetitionEventCreate$>;
 
