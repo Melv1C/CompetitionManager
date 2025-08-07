@@ -8,7 +8,7 @@ import { useState } from 'react';
 
 export function OrganizationCompetitions() {
   const [dialogOpen, setDialogOpen] = useState(false);
-  const { data: competitions = [], isLoading } = useOrganizationCompetitions();
+  const competitions = useOrganizationCompetitions();
 
   return (
     <div className="space-y-6">
@@ -32,8 +32,7 @@ export function OrganizationCompetitions() {
         </div>
         <div className="border-t p-4">
           <CompetitionsTable
-            competitions={competitions}
-            isLoading={isLoading}
+            competitions={competitions.data}
           />
         </div>
       </div>
