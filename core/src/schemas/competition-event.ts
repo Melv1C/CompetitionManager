@@ -1,5 +1,5 @@
 import z from 'zod/v4';
-import { BetterAuthId$, Cuid$, Date$, Id$, ParameterId$ } from './base';
+import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { Category$ } from './category';
 import { Event$ } from './event';
 
@@ -7,7 +7,10 @@ import { Event$ } from './event';
 export const CompetitionEvent$ = z.object({
   id: Id$,
   eid: Cuid$,
-  name: z.string(),
+  name: z
+    .string()
+    .min(1, 'Event name is required')
+    .max(100, 'Event name must be less than 100 characters'),
   eventStartTime: Date$,
   maxParticipants: z.number().int().nullish(),
   price: z.number(),
@@ -33,7 +36,7 @@ export const competitionEventInclude = {
 };
 
 // Schema for creating a competition event directly with Prisma
-export const CompetitionEventPrismaCreate$ = CompetitionEvent$.omit({
+export const CompetitionEventPrisma$ = CompetitionEvent$.omit({
   id: true,
   eid: true,
   createdAt: true,
@@ -41,14 +44,28 @@ export const CompetitionEventPrismaCreate$ = CompetitionEvent$.omit({
   event: true,
   categories: true,
 });
-export type CompetitionEventPrismaCreate = z.infer<typeof CompetitionEventPrismaCreate$>;
+export type CompetitionEventPrisma = z.infer<typeof CompetitionEventPrisma$>;
 
 // Schema for API competition event creation
-export const CompetitionEventCreate$ = CompetitionEventPrismaCreate$.omit({
+export const CompetitionEventSubEvent$ = CompetitionEvent$.pick({
+  name: true,
+  eventId: true,
+  eventStartTime: true,
+}).extend({
+  id: Id$.nullish(),
+});
+
+export const CompetitionEventCreate$ = CompetitionEventPrisma$.omit({
   competitionId: true,
+  parentId: true,
   createdBy: true,
   updatedBy: true,
 }).extend({
-  categoryIds: z.array(ParameterId$).optional(),
+  categoryIds: z.array(Id$).default([]),
+  subEvents: z.array(CompetitionEventSubEvent$).optional(),
 });
 export type CompetitionEventCreate = z.infer<typeof CompetitionEventCreate$>;
+
+export const CompetitionEventUpdate$ = CompetitionEventCreate$;
+
+export type CompetitionEventUpdate = z.infer<typeof CompetitionEventUpdate$>;
