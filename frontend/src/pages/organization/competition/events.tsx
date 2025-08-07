@@ -20,9 +20,7 @@ export function CompetitionEvents() {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <h3 className="text-lg font-semibold">
-          Events
-        </h3>
+        <h3 className="text-lg font-semibold">Events</h3>
         <Button onClick={() => setShowCreateDialog(true)}>
           <Plus className="w-4 h-4 mr-2" />
           Add Event
