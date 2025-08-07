@@ -17,18 +17,11 @@ export function LogViewer() {
     })
   );
 
-  const { data, isLoading, error, refetch } = useLogs(filters);
+  const logs = useLogs(filters);
   const cleanupMutation = useLogCleanup();
 
-  // Extract data from the paginated response
-  const logs = data?.logs || [];
-  const totalCount = data?.totalCount || 0;
-  const totalPages = data?.totalPages || 1;
-  const currentPage = data?.page || 1;
-  const pageSize = data?.pageSize || 20;
-
   const handleRefresh = () => {
-    refetch();
+    logs.refetch();
     toast.success('Logs refreshed');
   };
 
@@ -60,17 +53,17 @@ export function LogViewer() {
           <Button
             variant="outline"
             onClick={handleRefresh}
-            disabled={isLoading}
+            disabled={logs.isLoading}
           >
             <RefreshCw
-              className={`w-4 h-4 mr-2 ${isLoading ? 'animate-spin' : ''}`}
+              className={`w-4 h-4 mr-2 ${logs.isLoading ? 'animate-spin' : ''}`}
             />
             Refresh
           </Button>
           <LogExportButton
-            logs={logs}
-            isLoading={isLoading}
-            disabled={isLoading || logs.length === 0}
+            logs={logs.data?.logs || []}
+            isLoading={logs.isLoading}
+            disabled={logs.isLoading || logs.data?.logs.length === 0}
           />
           <Button
             variant="destructive"
@@ -87,20 +80,20 @@ export function LogViewer() {
       <LogFilters
         filters={filters}
         onFiltersChange={setFilters}
-        isLoading={isLoading}
+        isLoading={logs.isLoading}
       />
 
       {/* Logs Table */}
       <LogTable
-        logs={logs}
-        isLoading={isLoading}
-        error={error}
+        logs={logs.data?.logs || []}
+        isLoading={logs.isLoading}
+        error={logs.error}
         onRefresh={handleRefresh}
-        currentPage={currentPage}
-        totalPages={totalPages}
+        currentPage={logs.data?.page || 1}
+        totalPages={logs.data?.totalPages || 1}
         onPageChange={handlePageChange}
-        pageSize={pageSize}
-        totalCount={totalCount}
+        pageSize={logs.data?.pageSize || 20}
+        totalCount={logs.data?.totalCount || 0}
       />
     </div>
   );
