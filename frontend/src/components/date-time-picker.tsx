@@ -39,6 +39,37 @@ export function DateTimePicker({
 
   const [error, setError] = useState<string | null>(null);
 
+  // Calculate the default month to display when the calendar opens
+  const defaultMonth = useMemo(() => {
+    // Priority 1: If there's a value, use that month
+    if (value) {
+      return value;
+    }
+
+    const today = new Date();
+    const startOfToday = new Date(today);
+    startOfToday.setHours(0, 0, 0, 0);
+    const endOfToday = new Date(today);
+    endOfToday.setHours(23, 59, 59, 999);
+
+    // Priority 2: If current date is available (within bounds), use current month
+    const isTodayAvailable =
+      (!minDate || endOfToday >= minDate) &&
+      (!maxDate || startOfToday <= maxDate);
+
+    if (isTodayAvailable) {
+      return today;
+    }
+
+    // Priority 3: Use the first available day
+    if (minDate) {
+      return minDate;
+    }
+
+    // Fallback to today if no constraints
+    return today;
+  }, [value, minDate, maxDate]);
+
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (!selectedDate) {
       if (allowClear) onChange(undefined);
@@ -138,6 +169,7 @@ export function DateTimePicker({
               onSelect={handleDateSelect}
               captionLayout="dropdown"
               className="w-auto max-w-xs"
+              defaultMonth={defaultMonth}
               disabled={(date) => {
                 // Create start and end of day for comparison
                 const startOfDay = new Date(date);
