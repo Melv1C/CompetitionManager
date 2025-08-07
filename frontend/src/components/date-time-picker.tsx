@@ -155,7 +155,6 @@ export function DateTimePicker({
         <PopoverContent
           className="w-auto p-0"
           align="center"
-          side="right"
           sideOffset={4}
           onInteractOutside={(e) => {
             // Prevent closing when clicking inside the calendar or time input

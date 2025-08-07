@@ -119,7 +119,6 @@ export function CompetitionUpdateForm() {
   );
 
   const { isDirty } = form.formState;
-  console.log('Form dirty state:', isDirty);
   const disabled = !isDirty || !canEdit || updateMutation.isPending;
   // Handle unsaved changes navigation blocking
   const { blocker, proceedNavigation, resetNavigation } = useUnsavedChanges({
@@ -150,8 +149,8 @@ export function CompetitionUpdateForm() {
   return (
     <Form {...form}>
       <form className="space-y-6" onSubmit={form.handleSubmit(onSubmit)}>
-        {/* Save button */}
-        <div className="absolute top-4 right-4 flex flex-col items-center gap-2">
+        {/* Save button (desktop only) */}
+        <div className="hidden md:absolute md:top-4 md:right-4 md:flex md:flex-col md:items-center md:gap-2">
           <Tooltip>
             <TooltipTrigger asChild>
               <Button type="submit" disabled={disabled} className="ml-auto">
@@ -199,7 +198,7 @@ export function CompetitionUpdateForm() {
                   <FormControl>
                     <DateTimePicker
                       value={field.value}
-                      onChange={(date) => date && field.onChange(date)}
+                      onChange={(date) => field.onChange(date)}
                       placeholder="Select start date and time"
                       allowClear={false}
                       disabled={!canEdit}
@@ -302,7 +301,7 @@ export function CompetitionUpdateForm() {
                       <FormControl>
                         <DateTimePicker
                           value={field.value}
-                          onChange={(date) => date && field.onChange(date)}
+                          onChange={(date) => field.onChange(date)}
                           placeholder="Select registration start date and time"
                           allowClear={false}
                           disabled={!canEdit}
@@ -322,10 +321,10 @@ export function CompetitionUpdateForm() {
                       <FormControl>
                         <DateTimePicker
                           value={field.value}
-                          onChange={(date) => date && field.onChange(date)}
+                          onChange={(date) => field.onChange(date)}
                           placeholder="Select registration end date and time"
-                          allowClear={false}
                           disabled={!canEdit}
+                          allowClear={false}
                           minDate={form.watch('inscriptionStartDate')}
                           maxDate={form.watch('startDate')}
                         />
@@ -488,6 +487,24 @@ export function CompetitionUpdateForm() {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+
+        {/* Mobile sticky save button */}
+        <div className="md:hidden sticky bottom-0 bg-background border-t pt-4 mt-8">
+          <Button
+            type="submit"
+            disabled={disabled}
+            className="w-full"
+            size="lg"
+          >
+            <Save className="mr-2 h-4 w-4" />
+            {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
+          </Button>
+          {isDirty && canEdit && (
+            <p className="text-center text-sm text-muted-foreground mt-2">
+              You have unsaved changes
+            </p>
+          )}
+        </div>
       </form>
 
       {/* Unsaved changes dialog */}

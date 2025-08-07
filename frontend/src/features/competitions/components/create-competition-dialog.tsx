@@ -90,8 +90,8 @@ export function CreateCompetitionDialog({
                       value={field.value}
                       onChange={(date) => date && field.onChange(date)}
                       placeholder="Select date and time"
-                      initialTime="10:00"
                       allowClear={false}
+                      minDate={new Date()}
                     />
                   </FormControl>
                   <FormMessage />
