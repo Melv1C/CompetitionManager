@@ -1,6 +1,6 @@
 {
   "overview": "Overzicht",
-  "competitions": "Competities",
+  "competitions": "Wedstrijden",
   "members": "Leden",
   "analytics": "Analytics",
   "settings": "Instellingen",
@@ -10,14 +10,20 @@
   "signOut": "Uitloggen",
   "adminPanel": "Beheerderspaneel",
   "organizationPanel": "Organisatiepaneel",
-  "home": "Thuis",
+  "home": "Home",
   "results": "Resultaten",
   "login": "Inloggen",
   "profile": "Profiel",
-  "organizationDashboard": "Organisatiedashboard",
-  "adminDashboard": "Beheerdersdasboard",
+  "organizationDashboard": "Organisatie Dashboard",
+  "adminDashboard": "Beheerder Dashboard",
   "toggleTheme": "Thema wisselen",
   "light": "Licht",
   "dark": "Donker",
-  "system": "Systeem"
+  "system": "Systeem",
+  "schedule": "Schema",
+  "participants": "Deelnemers",
+  "registerNow": "Nu registreren",
+  "registrationOpen": "Registratie open",
+  "registrationClosed": "Registratie gesloten",
+  "registrationClosingSoon": "Registratie sluit binnenkort"
 }

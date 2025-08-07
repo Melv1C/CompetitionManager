@@ -1,6 +1,7 @@
 import {
   AdminLayout,
   AdminSkeleton,
+  CompetitionLayout,
   MainLayout,
   OrganizationLayout,
   OrganizationSkeleton,
@@ -35,9 +36,23 @@ const pageImports = {
     })),
   Results: () =>
     import('./pages/Results').then((m) => ({ default: m.ResultsPage })),
-  CompetitionDetail: () =>
-    import('./pages/CompetitionDetail').then((m) => ({
-      default: m.CompetitionDetailPage,
+
+  // Competition sub-pages
+  CompetitionHome: () =>
+    import('./pages/competition/home').then((m) => ({
+      default: m.CompetitionHomePage,
+    })),
+  CompetitionSchedule: () =>
+    import('./pages/competition/schedule').then((m) => ({
+      default: m.CompetitionSchedulePage,
+    })),
+  CompetitionParticipants: () =>
+    import('./pages/competition/participants').then((m) => ({
+      default: m.CompetitionParticipantsPage,
+    })),
+  CompetitionResults: () =>
+    import('./pages/competition/results').then((m) => ({
+      default: m.CompetitionResultsPage,
     })),
 
   // Admin pages
@@ -89,27 +104,27 @@ const pageImports = {
     import('./pages/organization/organization-settings').then((m) => ({
       default: m.OrganizationSettings,
     })),
-  CompetitionOverview: () =>
+  OrganizationCompetitionOverview: () =>
     import('./pages/organization/competition/overview').then((m) => ({
       default: m.CompetitionOverview,
     })),
-  CompetitionInscriptions: () =>
+  OrganizationCompetitionInscriptions: () =>
     import('./pages/organization/competition/inscriptions').then((m) => ({
       default: m.CompetitionInscriptions,
     })),
-  CompetitionConfirmations: () =>
+  OrganizationCompetitionConfirmations: () =>
     import('./pages/organization/competition/confirmations').then((m) => ({
       default: m.CompetitionConfirmations,
     })),
-  CompetitionEvents: () =>
+  OrganizationCompetitionEvents: () =>
     import('./pages/organization/competition/events').then((m) => ({
       default: m.CompetitionEvents,
     })),
-  CompetitionResults: () =>
+  OrganizationCompetitionResults: () =>
     import('./pages/organization/competition/results').then((m) => ({
       default: m.CompetitionResults,
     })),
-  CompetitionSettings: () =>
+  OrganizationCompetitionSettings: () =>
     import('./pages/organization/competition/settings').then((m) => ({
       default: m.CompetitionSettings,
     })),
@@ -127,7 +142,14 @@ const SignInPage = createLazyComponent('SignIn');
 const SignUpPage = createLazyComponent('SignUp');
 const CompetitionsPage = createLazyComponent('Competitions');
 const ResultsPage = createLazyComponent('Results');
-const CompetitionDetailPage = createLazyComponent('CompetitionDetail');
+
+// Competition sub-pages
+const CompetitionHomePage = createLazyComponent('CompetitionHome');
+const CompetitionSchedulePage = createLazyComponent('CompetitionSchedule');
+const CompetitionParticipantsPage = createLazyComponent(
+  'CompetitionParticipants'
+);
+const CompetitionResultsPageSub = createLazyComponent('CompetitionResults');
 
 const AdminDashboard = createLazyComponent('AdminDashboard');
 const AdminUsers = createLazyComponent('AdminUsers');
@@ -144,14 +166,14 @@ const OrganizationCompetitions = createLazyComponent(
 const OrganizationMembers = createLazyComponent('OrganizationMembers');
 const OrganizationAnalytics = createLazyComponent('OrganizationAnalytics');
 const OrganizationSettings = createLazyComponent('OrganizationSettings');
-const CompetitionOverview = createLazyComponent('CompetitionOverview');
-const CompetitionInscriptions = createLazyComponent('CompetitionInscriptions');
-const CompetitionConfirmations = createLazyComponent(
-  'CompetitionConfirmations'
+const OrganizationCompetitionOverview = createLazyComponent('OrganizationCompetitionOverview');
+const OrganizationCompetitionInscriptions = createLazyComponent('OrganizationCompetitionInscriptions');
+const OrganizationCompetitionConfirmations = createLazyComponent(
+  'OrganizationCompetitionConfirmations'
 );
-const CompetitionEvents = createLazyComponent('CompetitionEvents');
-const CompetitionResults = createLazyComponent('CompetitionResults');
-const CompetitionSettings = createLazyComponent('CompetitionSettings');
+const OrganizationCompetitionEvents = createLazyComponent('OrganizationCompetitionEvents');
+const OrganizationCompetitionResults = createLazyComponent('OrganizationCompetitionResults');
+const OrganizationCompetitionSettings = createLazyComponent('OrganizationCompetitionSettings');
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -234,7 +256,29 @@ const router = createBrowserRouter([
       },
       {
         path: 'competitions/:eid',
-        element: <CompetitionDetailPage />,
+        element: (
+          <Suspense fallback={<Skeleton className="h-96 w-full" />}>
+            <CompetitionLayout />
+          </Suspense>
+        ),
+        children: [
+          {
+            index: true,
+            element: <CompetitionHomePage />,
+          },
+          {
+            path: 'schedule',
+            element: <CompetitionSchedulePage />,
+          },
+          {
+            path: 'participants',
+            element: <CompetitionParticipantsPage />,
+          },
+          {
+            path: 'results',
+            element: <CompetitionResultsPageSub />,
+          },
+        ],
       },
       {
         path: 'results',
@@ -267,12 +311,12 @@ const router = createBrowserRouter([
         path: 'competitions/:competitionEid',
         element: <CompetitionOutlet />,
         children: [
-          { index: true, element: <CompetitionOverview /> },
-          { path: 'inscriptions', element: <CompetitionInscriptions /> },
-          { path: 'confirmations', element: <CompetitionConfirmations /> },
-          { path: 'events', element: <CompetitionEvents /> },
-          { path: 'results', element: <CompetitionResults /> },
-          { path: 'settings', element: <CompetitionSettings /> },
+          { index: true, element: <OrganizationCompetitionOverview /> },
+          { path: 'inscriptions', element: <OrganizationCompetitionInscriptions /> },
+          { path: 'confirmations', element: <OrganizationCompetitionConfirmations /> },
+          { path: 'events', element: <OrganizationCompetitionEvents /> },
+          { path: 'results', element: <OrganizationCompetitionResults /> },
+          { path: 'settings', element: <OrganizationCompetitionSettings /> },
         ],
       },
       {

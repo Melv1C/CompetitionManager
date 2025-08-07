@@ -14,9 +14,6 @@ export function useCompetitions(query?: Partial<CompetitionQuery>) {
 export function useCompetition(eid: string) {
   return useSuspenseQuery({
     queryKey: [COMPETITIONS_QUERY_KEY, 'detail', eid],
-    queryFn: () =>
-      eid
-        ? CompetitionsService.getCompetition(eid)
-        : Promise.resolve(undefined),
+    queryFn: () => CompetitionsService.getCompetition(eid),
   });
 }
