@@ -14,6 +14,7 @@ import type {
   CompetitionEventCreate,
   CompetitionEventUpdate,
 } from '@repo/core/schemas';
+import { useEvents } from '@/features/events/hooks/use-events';
 
 interface SubEventsSectionProps {
   control: Control<CompetitionEventCreate | CompetitionEventUpdate>;
@@ -22,8 +23,6 @@ interface SubEventsSectionProps {
     'subEvents',
     'id'
   >[];
-  events: Event[];
-  eventsLoading: boolean;
   isLoading: boolean;
   selectedEvent: Event | undefined;
   subEventsCount: number;
@@ -35,13 +34,17 @@ interface SubEventsSectionProps {
 export function SubEventsSection({
   control,
   fields,
-  events,
-  eventsLoading,
   isLoading,
   subEventsCount,
   competitionStartDate,
   competitionEndDate,
 }: SubEventsSectionProps) {
+  console.log('SubEventsSection rendered', {
+    fieldsLength: fields.length,
+    subEventsCount,
+    competitionStartDate,
+    competitionEndDate,
+  });
   return (
     <>
       <Separator />
@@ -69,8 +72,6 @@ export function SubEventsSection({
               key={field.id}
               index={index}
               control={control}
-              events={events}
-              eventsLoading={eventsLoading}
               isLoading={isLoading}
               competitionStartDate={competitionStartDate}
               competitionEndDate={competitionEndDate}
@@ -85,8 +86,6 @@ export function SubEventsSection({
 interface SubEventCardProps {
   index: number;
   control: Control<CompetitionEventCreate | CompetitionEventUpdate>;
-  events: Event[];
-  eventsLoading: boolean;
   isLoading: boolean;
   competitionStartDate?: Date;
   competitionEndDate?: Date;
@@ -95,12 +94,12 @@ interface SubEventCardProps {
 function SubEventCard({
   index,
   control,
-  events,
-  eventsLoading,
   isLoading,
   competitionStartDate,
   competitionEndDate,
 }: SubEventCardProps) {
+  const events = useEvents();
+
   return (
     <div
       className="grid gap-2 px-1 py-1 items-center hover:bg-muted/20 rounded-sm"
@@ -117,11 +116,10 @@ function SubEventCard({
           <FormItem>
             <FormControl>
               <EventSelector
-                events={events}
+                events={events.data.filter((e) => e.group !== 'combined')}
                 value={field.value}
                 onValueChange={field.onChange}
                 placeholder="Select event"
-                disabled={eventsLoading || isLoading}
                 excludeCombinedEvents={true}
               />
             </FormControl>

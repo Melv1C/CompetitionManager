@@ -17,7 +17,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { EventSelector } from '@/features/events/components/event-selector';
-import { CategorySelector, useCategories } from '@/features/categories';
+import { CategorySelector } from '@/features/categories';
 import { useEvents } from '@/features/events/hooks/use-events';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -32,17 +32,18 @@ import {
 } from '@repo/core/schemas';
 import { getCombinedEventSubEventsCount } from '@repo/core/utils';
 import { useForm, useFieldArray } from 'react-hook-form';
-import {
-  useCreateCompetitionEvent,
-  useUpdateCompetitionEvent,
-} from '../hooks/use-competition-events';
+
 import z from 'zod/v4';
 import { DateTimePicker } from '@/components/date-time-picker';
 import { useOrganizationCompetition } from '@/features/competitions';
 import { useState, useEffect } from 'react';
+import {
+  useCreateCompetitionEvent,
+  useUpdateCompetitionEvent,
+} from '../../hooks/use-competition-events';
 import { SubEventsSection } from './sub-events-section';
 
-interface CompetitionEventFormDialogProps {
+export type CompetitionEventFormDialogProps = {
   competitionEid: Cuid;
   open: boolean;
   onOpenChange: (open: boolean) => void;
@@ -61,9 +62,7 @@ export function CompetitionEventFormDialog({
   const createMutation = useCreateCompetitionEvent(competitionEid);
   const updateMutation = useUpdateCompetitionEvent(competitionEid);
 
-  const { data: events = [], isLoading: eventsLoading } = useEvents();
-  const { data: categories = [], isLoading: categoriesLoading } =
-    useCategories();
+  const events = useEvents();
   const [selectedEvent, setSelectedEvent] = useState<Event | undefined>();
 
   const form = useForm<CompetitionEventCreate | CompetitionEventUpdate>({
@@ -122,7 +121,7 @@ export function CompetitionEventFormDialog({
 
   useEffect(() => {
     if (watchedEventId) {
-      const event = events.find((e) => e.id === watchedEventId);
+      const event = events.data.find((e) => e.id === watchedEventId);
       setSelectedEvent(event);
 
       // If it's a combined event, auto-generate sub-events
@@ -142,7 +141,7 @@ export function CompetitionEventFormDialog({
         replace([]);
       }
     }
-  }, [watchedEventId, events, replace, form]);
+  }, [watchedEventId, events.data, replace]);
 
   const isCombinedEvent = selectedEvent?.group === 'combined';
   const subEventsCount = isCombinedEvent
@@ -177,6 +176,16 @@ export function CompetitionEventFormDialog({
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
+  console.log('CompetitionEventFormDialog rendered', {
+    isEditing,
+    competitionEid,
+    open,
+    competitionEvent,
+    isLoading,
+    selectedEvent,
+    subEventsCount,
+  });
+
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
@@ -204,11 +213,9 @@ export function CompetitionEventFormDialog({
                       <FormLabel>Event</FormLabel>
                       <FormControl>
                         <EventSelector
-                          events={events}
                           value={field.value}
                           onValueChange={field.onChange}
                           placeholder="Select an event"
-                          disabled={eventsLoading}
                         />
                       </FormControl>
                       <FormMessage />
@@ -224,10 +231,8 @@ export function CompetitionEventFormDialog({
                       <FormLabel>Categories</FormLabel>
                       <FormControl>
                         <CategorySelector
-                          categories={categories}
                           selectedIds={field.value}
                           onSelectionChange={field.onChange}
-                          disabled={categoriesLoading || isLoading}
                           placeholder="Select categories"
                         />
                       </FormControl>
@@ -330,8 +335,6 @@ export function CompetitionEventFormDialog({
                 <SubEventsSection
                   control={form.control}
                   fields={fields}
-                  events={events}
-                  eventsLoading={eventsLoading}
                   isLoading={isLoading}
                   selectedEvent={selectedEvent}
                   subEventsCount={subEventsCount}
