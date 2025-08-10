@@ -29,9 +29,9 @@ import {
   CategoryCreate$,
   CategoryUpdate$,
   Gender$,
-  type Category,
   type CategoryCreate,
   type CategoryUpdate,
+  type FullCategory,
 } from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
 import { useCreateCategory, useUpdateCategory } from '../hooks/use-categories';
@@ -39,7 +39,7 @@ import { useCreateCategory, useUpdateCategory } from '../hooks/use-categories';
 interface CategoryFormDialogProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
-  category?: Category;
+  category?: FullCategory;
 }
 
 export function CategoryFormDialog({

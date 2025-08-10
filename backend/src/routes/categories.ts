@@ -3,9 +3,9 @@ import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
-  Category$,
   CategoryCreate$,
   CategoryUpdate$,
+  FullCategory$,
   ParameterId$,
 } from '@repo/core/schemas';
 import { Hono } from 'hono';
@@ -19,7 +19,7 @@ categoriesRoutes.get('/', async (c) => {
     const categories = await prisma.category.findMany({
       orderBy: { order: 'asc' },
     });
-    return c.json(Category$.array().parse(categories));
+    return c.json(FullCategory$.array().parse(categories));
   } catch (error) {
     logError('Failed to fetch categories', error, c);
     return c.json({ error: 'Failed to fetch categories' }, 500);
@@ -41,7 +41,7 @@ categoriesRoutes.get(
         return c.json({ error: 'Category not found' }, 404);
       }
 
-      return c.json(Category$.parse(category));
+      return c.json(FullCategory$.parse(category));
     } catch (error) {
       logError('Failed to fetch category', error, c);
       return c.json({ error: 'Failed to fetch category' }, 500);
@@ -60,7 +60,7 @@ categoriesRoutes.post(
       const category = await prisma.category.create({
         data,
       });
-      return c.json(Category$.parse(category), 201);
+      return c.json(FullCategory$.parse(category), 201);
     } catch (error) {
       logError('Failed to create category', error, c);
       return c.json({ error: 'Failed to create category' }, 500);
@@ -93,7 +93,7 @@ categoriesRoutes.put(
         data,
       });
 
-      return c.json(Category$.parse(category));
+      return c.json(FullCategory$.parse(category));
     } catch (error) {
       logError('Failed to update category', error, c);
       return c.json({ error: 'Failed to update category' }, 500);

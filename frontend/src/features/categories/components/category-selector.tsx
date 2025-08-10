@@ -14,12 +14,12 @@ import {
   SheetTrigger,
 } from '@/components/ui/sheet';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import type { Category } from '@repo/core/schemas';
 import { Check, ChevronDown } from 'lucide-react';
 import { useState } from 'react';
 import { useCategories } from '../hooks/use-categories';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
+import type { FullCategory } from '@repo/core/schemas';
 
 interface CategorySelectorProps {
   selectedIds: number[];
@@ -33,7 +33,7 @@ interface QuickSelection {
   id: string;
   label: string;
   description: string;
-  filter: (cat: Category) => boolean;
+  filter: (cat: FullCategory) => boolean;
 }
 
 const QUICK_SELECTIONS: QuickSelection[] = [
@@ -47,33 +47,33 @@ const QUICK_SELECTIONS: QuickSelection[] = [
     id: 'tc-m',
     label: 'TC M',
     description: 'All men categories',
-    filter: (cat: Category) => cat.gender === 'M',
+    filter: (cat: FullCategory) => cat.gender === 'M',
   },
   {
     id: 'tc-f',
     label: 'TC F',
     description: 'All women categories',
-    filter: (cat: Category) => cat.gender === 'F',
+    filter: (cat: FullCategory) => cat.gender === 'F',
   },
   {
     id: 'mas-m',
     label: 'MAS M',
     description: 'Master men categories',
-    filter: (cat: Category) =>
+    filter: (cat: FullCategory) =>
       cat.gender === 'M' && cat.baseCategory === 'Master',
   },
   {
     id: 'mas-f',
     label: 'MAS F',
     description: 'Master women categories',
-    filter: (cat: Category) =>
+    filter: (cat: FullCategory) =>
       cat.gender === 'F' && cat.baseCategory === 'Master',
   },
   {
     id: 'jsm-m',
     label: 'JSM M',
     description: 'Junior, Senior, Master men',
-    filter: (cat: Category) =>
+    filter: (cat: FullCategory) =>
       cat.gender === 'M' &&
       ['Junior', 'Senior', 'Master'].includes(cat.baseCategory),
   },
@@ -81,7 +81,7 @@ const QUICK_SELECTIONS: QuickSelection[] = [
     id: 'jsm-f',
     label: 'JSM F',
     description: 'Junior, Senior, Master women',
-    filter: (cat: Category) =>
+    filter: (cat: FullCategory) =>
       cat.gender === 'F' &&
       ['Junior', 'Senior', 'Master'].includes(cat.baseCategory),
   },
@@ -106,7 +106,7 @@ export function CategorySelector({
     if (!acc[cat.gender]) acc[cat.gender] = [];
     acc[cat.gender].push(cat);
     return acc;
-  }, {} as Record<string, Category[]>);
+  }, {} as Record<string, FullCategory[]>);
 
   const handleToggleCategory = (categoryId: number) => {
     const isSelected = selectedIds.includes(categoryId);

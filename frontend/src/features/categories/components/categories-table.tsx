@@ -14,14 +14,14 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import type { Category } from '@repo/core/schemas';
+import type { FullCategory } from '@repo/core/schemas';
 import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteCategory } from '../hooks/use-categories';
 import { CategoryFormDialog } from './category-form-dialog';
 
 interface CategoriesTableProps {
-  categories: Category[];
+  categories: FullCategory[];
   isLoading: boolean;
 }
 
@@ -29,7 +29,9 @@ export function CategoriesTable({
   categories,
   isLoading,
 }: CategoriesTableProps) {
-  const [editingCategory, setEditingCategory] = useState<Category | null>(null);
+  const [editingCategory, setEditingCategory] = useState<FullCategory | null>(
+    null
+  );
   const deleteMutation = useDeleteCategory();
 
   const handleDelete = async (id: number) => {

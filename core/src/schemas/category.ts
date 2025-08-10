@@ -32,7 +32,7 @@ export const BaseCategory$ = z.enum([
 export type BaseCategory = z.infer<typeof BaseCategory$>;
 
 // Category base schema
-export const Category$ = z.object({
+export const FullCategory$ = z.object({
   id: Id$,
   name: z.string(),
   abbr: z.string(),
@@ -42,12 +42,15 @@ export const Category$ = z.object({
   masterAgeGroup: z.number().nullish(),
   order: z.number().positive(),
 });
-export type Category = z.infer<typeof Category$>;
+export type FullCategory = z.infer<typeof FullCategory$>;
 
 // Category create schema (omit id)
-export const CategoryCreate$ = Category$.omit({ id: true });
+export const CategoryCreate$ = FullCategory$.omit({ id: true });
 export type CategoryCreate = z.infer<typeof CategoryCreate$>;
 
 // Category update schema (all fields optional except id)
 export const CategoryUpdate$ = CategoryCreate$.partial();
 export type CategoryUpdate = z.infer<typeof CategoryUpdate$>;
+
+export const Category$ = FullCategory$.omit({ id: true, order: true });
+export type Category = z.infer<typeof Category$>;

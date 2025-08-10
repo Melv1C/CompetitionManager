@@ -1,33 +1,33 @@
 import { apiClient } from '@/lib/api-client';
 import type {
-  Category,
   CategoryCreate,
   CategoryUpdate,
+  FullCategory,
 } from '@repo/core/schemas';
-import { Category$ } from '@repo/core/schemas';
+import { FullCategory$ } from '@repo/core/schemas';
 
 export class CategoriesService {
-  static async getCategories(): Promise<Category[]> {
+  static async getCategories(): Promise<FullCategory[]> {
     const response = await apiClient.get('/api/categories');
-    return Category$.array().parse(response.data);
+    return FullCategory$.array().parse(response.data);
   }
 
-  static async getCategory(id: number): Promise<Category> {
+  static async getCategory(id: number): Promise<FullCategory> {
     const response = await apiClient.get(`/api/categories/${id}`);
-    return Category$.parse(response.data);
+    return FullCategory$.parse(response.data);
   }
 
-  static async createCategory(data: CategoryCreate): Promise<Category> {
+  static async createCategory(data: CategoryCreate): Promise<FullCategory> {
     const response = await apiClient.post('/api/categories', data);
-    return Category$.parse(response.data);
+    return FullCategory$.parse(response.data);
   }
 
   static async updateCategory(
     id: number,
     data: CategoryUpdate
-  ): Promise<Category> {
+  ): Promise<FullCategory> {
     const response = await apiClient.put(`/api/categories/${id}`, data);
-    return Category$.parse(response.data);
+    return FullCategory$.parse(response.data);
   }
 
   static async deleteCategory(id: number): Promise<void> {
