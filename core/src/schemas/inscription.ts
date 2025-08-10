@@ -67,22 +67,9 @@ export const inscriptionInclude = {
   record: true,
 };
 
-export const UpsertInscription$ = Inscription$.omit({
-  id: true,
-  eid: true,
-  userId: true,
-  athlete: true,
-  competitionEvent: true,
-  paymentSessionId: true,
-  record: true,
-  status: true,
-  amountPaid: true,
-  inscriptionDate: true,
-  presenceStatus: true,
-  createdAt: true,
-  updatedAt: true,
-  createdBy: true,
-  updatedBy: true,
+export const UpsertInscription$ = Inscription$.pick({
+  athleteId: true,
+  competitionEventId: true,
 }).extend({
   record: Record$.extend({
     id: Id$.nullish(),
