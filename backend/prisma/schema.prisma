@@ -380,8 +380,7 @@ model Inscription {
   status             String
   amountPaid         Float            @map("amount_paid")
   inscriptionDate    DateTime         @map("inscription_date")
-  presenceStatus     String          
-  isDeleted          Boolean         
+  presenceStatus     String           @map("presence_status")       
   
   createdAt          DateTime         @default(now()) @map("created_at")
   createdBy          String           @map("created_by")
