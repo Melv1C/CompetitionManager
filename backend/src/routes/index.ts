@@ -1,5 +1,6 @@
 import { loggerMiddleware } from '@/middleware/logger';
 import { Hono } from 'hono';
+import { athletesRoutes } from './athletes';
 import { authRoutes } from './auth';
 import { categoriesRoutes } from './categories';
 import { competitionsRoutes } from './competitions';
@@ -24,6 +25,7 @@ export function createApiRoutes() {
 
   // Global logging middleware for all API routes
   api.use('/*', loggerMiddleware);
+  api.route('/athletes', athletesRoutes);
   api.route('/auth', authRoutes);
   api.route('/events', eventsRoutes);
   api.route('/categories', categoriesRoutes);

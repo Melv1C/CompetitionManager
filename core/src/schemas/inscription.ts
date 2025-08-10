@@ -1,5 +1,5 @@
 import { z } from 'zod/v4';
-import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
+import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { Athlete$, athleteInclude } from './athlete';
 import {
   CompetitionEvent$,
@@ -22,11 +22,12 @@ export type RecordPrisma = z.infer<typeof RecordPrisma$>;
 
 // Inscription status enum
 export const InscriptionStatus$ = z.enum([
-  'PENDING',
-  'CONFIRMED',
-  'CANCELLED',
-  'REFUNDED',
   'PENDING_PAYMENT',
+  'REGISTERED',
+  'SELECTED',
+  'REJECTED',
+  'CANCELLED',
+  // 'WAITING_LIST',
 ]);
 export type InscriptionStatus = z.infer<typeof InscriptionStatus$>;
 
@@ -52,7 +53,6 @@ export const Inscription$ = z.object({
   amountPaid: z.number().min(0),
   inscriptionDate: Date$,
   presenceStatus: PresenceStatus$.default('UNKNOWN'),
-  isDeleted: Boolean$.default(false),
 
   createdAt: Date$,
   createdBy: BetterAuthId$,
@@ -78,7 +78,7 @@ export const UpsertInscription$ = Inscription$.omit({
   status: true,
   amountPaid: true,
   inscriptionDate: true,
-  isDeleted: true,
+  presenceStatus: true,
   createdAt: true,
   updatedAt: true,
   createdBy: true,

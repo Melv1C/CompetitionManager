@@ -54,6 +54,10 @@ const pageImports = {
     import('./pages/competition/results').then((m) => ({
       default: m.CompetitionResultsPage,
     })),
+  CompetitionRegister: () =>
+    import('./pages/competition/register').then((m) => ({
+      default: m.CompetitionRegisterPage,
+    })),
 
   // Admin pages
   AdminDashboard: () =>
@@ -150,6 +154,7 @@ const CompetitionParticipantsPage = createLazyComponent(
   'CompetitionParticipants'
 );
 const CompetitionResultsPageSub = createLazyComponent('CompetitionResults');
+const CompetitionRegisterPage = createLazyComponent('CompetitionRegister');
 
 const AdminDashboard = createLazyComponent('AdminDashboard');
 const AdminUsers = createLazyComponent('AdminUsers');
@@ -166,14 +171,24 @@ const OrganizationCompetitions = createLazyComponent(
 const OrganizationMembers = createLazyComponent('OrganizationMembers');
 const OrganizationAnalytics = createLazyComponent('OrganizationAnalytics');
 const OrganizationSettings = createLazyComponent('OrganizationSettings');
-const OrganizationCompetitionOverview = createLazyComponent('OrganizationCompetitionOverview');
-const OrganizationCompetitionInscriptions = createLazyComponent('OrganizationCompetitionInscriptions');
+const OrganizationCompetitionOverview = createLazyComponent(
+  'OrganizationCompetitionOverview'
+);
+const OrganizationCompetitionInscriptions = createLazyComponent(
+  'OrganizationCompetitionInscriptions'
+);
 const OrganizationCompetitionConfirmations = createLazyComponent(
   'OrganizationCompetitionConfirmations'
 );
-const OrganizationCompetitionEvents = createLazyComponent('OrganizationCompetitionEvents');
-const OrganizationCompetitionResults = createLazyComponent('OrganizationCompetitionResults');
-const OrganizationCompetitionSettings = createLazyComponent('OrganizationCompetitionSettings');
+const OrganizationCompetitionEvents = createLazyComponent(
+  'OrganizationCompetitionEvents'
+);
+const OrganizationCompetitionResults = createLazyComponent(
+  'OrganizationCompetitionResults'
+);
+const OrganizationCompetitionSettings = createLazyComponent(
+  'OrganizationCompetitionSettings'
+);
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -278,6 +293,10 @@ const router = createBrowserRouter([
             path: 'results',
             element: <CompetitionResultsPageSub />,
           },
+          {
+            path: 'register',
+            element: <CompetitionRegisterPage />,
+          },
         ],
       },
       {
@@ -312,8 +331,14 @@ const router = createBrowserRouter([
         element: <CompetitionOutlet />,
         children: [
           { index: true, element: <OrganizationCompetitionOverview /> },
-          { path: 'inscriptions', element: <OrganizationCompetitionInscriptions /> },
-          { path: 'confirmations', element: <OrganizationCompetitionConfirmations /> },
+          {
+            path: 'inscriptions',
+            element: <OrganizationCompetitionInscriptions />,
+          },
+          {
+            path: 'confirmations',
+            element: <OrganizationCompetitionConfirmations />,
+          },
           { path: 'events', element: <OrganizationCompetitionEvents /> },
           { path: 'results', element: <OrganizationCompetitionResults /> },
           { path: 'settings', element: <OrganizationCompetitionSettings /> },

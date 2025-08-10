@@ -15,6 +15,7 @@ import {
   UpsertInscriptions$,
   competitionInclude,
   Competition$,
+  InscriptionStatus$,
 } from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
@@ -43,7 +44,9 @@ competitionInscriptionsRoutes.get(
       const inscriptions = await prisma.inscription.findMany({
         where: {
           competitionId: competition.id,
-          isDeleted: false,
+          status: {
+            not: InscriptionStatus$.enum.CANCELLED,
+          },
         },
         include: inscriptionInclude,
         orderBy: [{ inscriptionDate: 'desc' }],
@@ -88,14 +91,9 @@ competitionInscriptionsRoutes.post(
         session.userId
       );
 
-      const totalEventCost = calculateTotalEventCost(
-        competition,
-        inscriptions
-      );
+      const totalEventCost = calculateTotalEventCost(competition, inscriptions);
 
-      if (
-        totalEventCost > alreadyPaid
-      ) {
+      if (totalEventCost > alreadyPaid) {
         return c.json(
           { error: 'Additional payment required for these inscriptions' },
           400
@@ -109,6 +107,7 @@ competitionInscriptionsRoutes.post(
         alreadyPaid
       );
 
+      return c.json({ success: true }, 200);
     } catch (error) {
       logError('Failed to create inscriptions', error, c);
       return c.json(

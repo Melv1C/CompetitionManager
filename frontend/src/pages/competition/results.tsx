@@ -1,17 +1,9 @@
-import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrophyIcon } from 'lucide-react';
 
 export function CompetitionResultsPage() {
-  const { eid } = useParams<{ eid: string }>();
   const { t } = useTranslation();
-
-  if (!eid) {
-    throw new Error('Competition ID (eid) is required');
-  }
-
-  // const competition = useCompetition(eid);
 
   return (
     <div className="space-y-6">

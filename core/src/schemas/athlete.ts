@@ -28,7 +28,7 @@ export const Athlete$ = z.object({
   metadata: z.string().nullish(),
   createdAt: Date$,
   updatedAt: Date$,
-  competitionId: Id$,
+  competitionId: Id$.nullish(),
   athleteInfo: z.array(AthleteInfo$).default([]),
 });
 
@@ -39,3 +39,7 @@ export const athleteInclude = {
     include: athleteInfoInclude,
   },
 };
+
+// AthleteKey schema for search queries
+export const AthleteKey$ = z.string().min(2, 'Search key cannot be empty');
+export type AthleteKey = z.infer<typeof AthleteKey$>;

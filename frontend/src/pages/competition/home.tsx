@@ -1,5 +1,4 @@
 import { useCompetition } from '@/features/competitions';
-import { useParams } from 'react-router-dom';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { formatDate, formatDateTime } from '@/lib/formatters';
@@ -13,13 +12,10 @@ import {
   AlertCircleIcon,
   CheckCircleIcon,
 } from 'lucide-react';
+import { useCompetitionEid } from '@/hooks';
 
 export function CompetitionHomePage() {
-  const { eid } = useParams<{ eid: string }>();
-
-  if (!eid) {
-    throw new Error('Competition ID (eid) is required');
-  }
+  const eid = useCompetitionEid();
 
   const competition = useCompetition(eid);
 

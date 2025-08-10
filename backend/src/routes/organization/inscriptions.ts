@@ -149,7 +149,7 @@ organizationInscriptionsRoutes.post(
         );
       }
 
-      return c.status(201);
+      return c.json({ success: true }, 200);
     } catch (error) {
       logError('Failed to create organization inscriptions', error, c);
       return c.json(

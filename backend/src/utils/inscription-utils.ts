@@ -8,6 +8,7 @@ import {
   Inscription$,
   RecordPrisma$,
   InscriptionStatus$,
+  PresenceStatus$,
 } from '@repo/core/schemas';
 
 export interface CreateInscriptionsResult {
@@ -156,7 +157,6 @@ export async function upsertInscriptionsInDB(
 
       const updateData = {
         amountPaid: paidAmount,
-        isDeleted: false,
         updatedBy: userId,
       };
 
@@ -185,21 +185,17 @@ export async function upsertInscriptionsInDB(
       const paidAmount = Math.min(remainingPaid, event.price);
       remainingPaid -= paidAmount;
 
-      const createData = {
-        ...newInscription,
-        userId,
-        competitionId: competition.id,
-        status: InscriptionStatus$.enum.CONFIRMED, // Assuming confirmed for new inscriptions
-        amountPaid: paidAmount,
-        isDeleted: false,
-        inscriptionDate: new Date(),
-        createdBy: userId,
-        updatedBy: userId,
-      };
-
       await prisma.inscription.create({
         data: {
-          ...createData,
+          ...newInscription,
+          userId,
+          competitionId: competition.id,
+          status: InscriptionStatus$.enum.REGISTERED,
+          amountPaid: paidAmount,
+          presenceStatus: PresenceStatus$.enum.UNKNOWN,
+          inscriptionDate: new Date(),
+          createdBy: userId,
+          updatedBy: userId,
           record: newInscription.record
             ? {
                 create: RecordPrisma$.parse(newInscription.record),
@@ -209,7 +205,7 @@ export async function upsertInscriptionsInDB(
       });
     }
 
-    // Mark inscriptions as deleted (soft delete)
+    // Mark inscriptions as cancelled
     for (const inscriptionToDelete of toDeleteInscriptions) {
       const event = competition.events.find(
         (e) => e.id === inscriptionToDelete.competitionEventId
@@ -222,7 +218,7 @@ export async function upsertInscriptionsInDB(
       await prisma.inscription.update({
         where: { id: inscriptionToDelete.id },
         data: {
-          isDeleted: true,
+          status: InscriptionStatus$.enum.CANCELLED,
           amountPaid: paidAmount,
           updatedBy: userId,
         },

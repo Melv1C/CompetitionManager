@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useState, useMemo } from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
@@ -17,19 +17,16 @@ import { EventSelector } from '@/features/events/components/event-selector';
 import { CategorySelector } from '@/features/categories/components/category-selector';
 import { formatTime, formatDateFull } from '@/lib/formatters';
 import type { CompetitionEvent } from '@repo/core/schemas';
+import { useCompetitionEid } from '@/hooks';
 
 export function CompetitionSchedulePage() {
-  const { eid } = useParams<{ eid: string }>();
+  const eid = useCompetitionEid();
   const { t } = useTranslation();
 
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedEventId, setSelectedEventId] = useState<number | undefined>();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
-
-  if (!eid) {
-    throw new Error('Competition ID (eid) is required');
-  }
 
   const { data: competition } = useCompetition(eid);
 

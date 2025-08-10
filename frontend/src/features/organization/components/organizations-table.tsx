@@ -20,6 +20,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { authClient } from '@/lib/auth-client';
+import { formatDate } from '@repo/core/utils';
 import { Building2, ExternalLink, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
@@ -68,14 +69,6 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
       console.error('Failed to delete organization:', error);
       toast.error('Failed to delete organization');
     }
-  };
-
-  const formatDate = (date: Date) => {
-    return new Intl.DateTimeFormat('en-US', {
-      year: 'numeric',
-      month: 'short',
-      day: 'numeric',
-    }).format(new Date(date));
   };
 
   if (organizations.length === 0) {
