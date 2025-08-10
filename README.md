@@ -10,7 +10,20 @@ A modern, full-stack competition management system built for athletic organizati
 - **Docker & Docker Compose**: For database and containerized deployment
 - **PostgreSQL**: Version 16 (or use Docker)
 
-> **Note**: This project includes a `.nvmrc` file. If you use nvm, you can run `nvm use` in the project root to automatically switch to the correct Node.js version.
+#### Using NVM (Node Version Manager)
+
+This project includes a `.nvmrc` file specifying Node.js version 20. If you use NVM, run this command in the project root to automatically switch to the correct version:
+
+```bash
+nvm use
+```
+
+If you don't have Node.js 20 installed yet, you can install it with:
+
+```bash
+nvm install 20
+nvm use
+```
 
 ### Development Setup
 
