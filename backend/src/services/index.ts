@@ -3,7 +3,6 @@ import { logger } from '@/lib/logger';
 import type { Logger } from 'winston';
 import { AthleteSyncService } from './athlete-sync';
 import { LogCleanupService } from './log-cleanup';
-import { PaymentSessionCleanupService } from './payment-session-cleanup';
 import { scheduler } from './scheduler';
 import { SeedService } from './seed';
 
@@ -11,7 +10,6 @@ export class ServiceManager {
   private logCleanupService: LogCleanupService;
   private seedService: SeedService;
   private athleteSyncService: AthleteSyncService;
-  private paymentSessionCleanupService: PaymentSessionCleanupService;
   private isInitialized = false;
   private prodLogger: Logger | null = null;
 
@@ -37,11 +35,6 @@ export class ServiceManager {
       useMock: env.ATHLETE_SYNC_USE_MOCK,
     });
 
-    this.paymentSessionCleanupService = new PaymentSessionCleanupService({
-      enabled: env.PAYMENT_SESSION_CLEANUP_ENABLED,
-      cronExpression: env.PAYMENT_SESSION_CLEANUP_SCHEDULE,
-    });
-
     if (env.NODE_ENV === 'production') {
       this.prodLogger = logger;
     }
@@ -64,9 +57,6 @@ export class ServiceManager {
 
       // Initialize athlete sync service
       await this.athleteSyncService.initialize();
-
-      // Initialize payment session cleanup service
-      this.paymentSessionCleanupService.initialize();
 
       // Start the scheduler
       scheduler.start();
@@ -120,13 +110,6 @@ export class ServiceManager {
   }
 
   /**
-   * Get payment session cleanup service instance for manual operations
-   */
-  getPaymentSessionCleanupService(): PaymentSessionCleanupService {
-    return this.paymentSessionCleanupService;
-  }
-
-  /**
    * Health check for all services
    */
   getHealthStatus(): { healthy: boolean; services: Record<string, boolean> } {
@@ -137,8 +120,6 @@ export class ServiceManager {
         logCleanup: this.logCleanupService.getConfig().enabled,
         seeding: this.seedService.getConfig().enabled,
         athleteSync: this.athleteSyncService.getConfig().enabled,
-        paymentSessionCleanup:
-          this.paymentSessionCleanupService.getConfig().enabled,
       },
     };
   }
