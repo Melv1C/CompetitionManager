@@ -60,13 +60,14 @@ nvm use
 4. **Start Development**
 
    ```bash
-   # Start all development servers (core, backend, frontend)
+   # Start all development servers (core, backend, frontend and database)
    npm run dev
 
    # Or start individually:
+   npm run docker:db
+   npm run dev:core      # Core package watch mode
    npm run dev:backend   # Backend API (Port 3000)
    npm run dev:frontend  # Frontend App (Port 5173)
-   npm run dev:core      # Core package watch mode
    ```
 
 5. **Access the Application**
@@ -144,17 +145,9 @@ Tests are automatically run in GitHub Actions via the `e2e-tests.yml` workflow. 
 ### Project Structure
 
 ```
-├── backend/          # API server and business logic
-├── frontend/         # React SPA application
-├── core/            # Shared types, schemas, and utilities
-├── e2e/             # End-to-end tests with Playwright
-├── .github/         # CI/CD workflows
-└── docker-compose.yml # Container orchestration
+├── backend/            # API server and business logic
+├── frontend/           # React SPA application
+├── core/               # Shared types, schemas, and utilities
+├── e2e/                # End-to-end tests with Playwright
+└── docker-compose.yml  # Container orchestration
 ```
-
-## 📁 Package Details
-
-- **[Backend](./backend/README.md)** - API server, database, and business logic
-- **[Frontend](./frontend/README.md)** - React application and user interface
-- **[Core](./core/README.md)** - Shared utilities, types, and schemas
-- **[E2E](./e2e/README.md)** - End-to-end testing suite
