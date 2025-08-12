@@ -16,6 +16,7 @@
     "install:e2e": "cd e2e && npm install",
 
     "test": "npm run test:e2e",
+    "test:e2e": "cd e2e && npm run test",
 
     "db:migrate": "cd backend && npx prisma migrate dev",
 
