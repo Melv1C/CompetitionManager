@@ -1,5 +1,5 @@
 # Development/Runtime build for React/Vite frontend
-FROM node:22-alpine
+FROM node:20-alpine
 
 # Set working directory
 WORKDIR /app
@@ -13,7 +13,7 @@ COPY core/ /app/core/
 
 # Install dependencies and build core package
 WORKDIR /app/core
-RUN npm ci && npm run build
+RUN npm i && npm run build
 
 # Copy frontend source
 COPY frontend/ /app/frontend/

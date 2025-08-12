@@ -1,7 +1,3 @@
-import {
-  updatePaymentSessionStatus,
-  findPaymentSessionByPaymentIntent,
-} from '@/utils/payment-session-utils';
 import { logError } from '@/utils/log-utils';
 import { Hono } from 'hono';
 
@@ -24,28 +20,7 @@ webhooksRoutes.post('/stripe', async (c) => {
     const event = await c.req.json();
 
     if (event.type === 'payment_intent.succeeded') {
-      const paymentIntent = event.data.object;
-      const paymentIntentId = paymentIntent.id;
-
-      // Find the payment session associated with this payment intent
-      const paymentSession = await findPaymentSessionByPaymentIntent(
-        paymentIntentId
-      );
-
-      if (paymentSession) {
-        // Update payment session and related inscriptions
-        await updatePaymentSessionStatus(
-          paymentSession.id,
-          'paid',
-          paymentIntentId
-        );
-
-        console.log(`Payment confirmed for session ${paymentSession.eid}`);
-      } else {
-        console.warn(
-          `No payment session found for payment intent ${paymentIntentId}`
-        );
-      }
+      // TODO
     }
 
     return c.json({ received: true });

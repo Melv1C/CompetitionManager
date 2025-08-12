@@ -1,12 +1,5 @@
 import { defineConfig, devices } from '@playwright/test';
-import { config } from 'dotenv';
 
-// Load environment variables from .env file
-config({ path: '../backend/.env' });
-
-/**
- * @see https://playwright.dev/docs/test-configuration
- */
 export default defineConfig({
   // Look for test files in the "tests" directory
   testDir: './tests',

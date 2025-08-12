@@ -5,7 +5,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "concurrently \"npm run dev:core\" \"npm run dev:backend\" \"npm run dev:frontend\"",
+    "dev": "concurrently \"npm run docker:db\" \"npm run dev:core\" \"npm run dev:backend\" \"npm run dev:frontend\"",
     "dev:core": "cd core && npm run dev",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
@@ -16,6 +16,7 @@
     "install:e2e": "cd e2e && npm install",
 
     "test": "npm run test:e2e",
+    "test:e2e": "cd e2e && npm run test",
 
     "db:migrate": "cd backend && npx prisma migrate dev",
 

@@ -192,7 +192,8 @@ const StepperIndicator = React.forwardRef<HTMLDivElement, StepperIndicatorProps>
             </span>
             <CheckIcon
               className="absolute scale-0 opacity-0 transition-all group-data-[state=completed]/step:scale-100 group-data-[state=completed]/step:opacity-100"
-              size={16}
+              width={16}
+              height={16}
               strokeWidth={2}
               aria-hidden="true"
             />
