@@ -1,6 +1,6 @@
 import z from 'zod/v4';
 import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
-import { Category$ } from './category';
+import { FullCategory$ } from './category';
 import { Event$ } from './event';
 
 // CompetitionEvent base schema
@@ -26,7 +26,7 @@ export const CompetitionEvent$ = z.object({
 
   parentId: Id$.nullish(),
 
-  categories: z.array(Category$).default([]),
+  categories: z.array(FullCategory$).default([]),
 });
 export type CompetitionEvent = z.infer<typeof CompetitionEvent$>;
 
