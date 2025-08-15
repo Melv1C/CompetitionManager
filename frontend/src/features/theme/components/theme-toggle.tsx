@@ -11,7 +11,7 @@ import { useTheme } from '../hooks/use-theme';
 
 export function ThemeToggle() {
   const { setTheme } = useTheme();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('theme');
 
   return (
     <DropdownMenu>

@@ -24,21 +24,21 @@ interface UserButtonProps {
 export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
   const { organizations } = useOrganizations();
   const navigate = useNavigate();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation(['auth', 'messages']);
 
   const handleSignOut = async () => {
     try {
       await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
-            toast.success('Successfully signed out!');
+            toast.success(t('signOutSuccess', { ns: 'messages' }));
             navigate('/');
           },
         },
       });
     } catch (error) {
       console.error('Sign out error:', error);
-      toast.error('Failed to sign out. Please try again.');
+      toast.error(t('signOutError', { ns: 'messages' }));
     }
   };
 

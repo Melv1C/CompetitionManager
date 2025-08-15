@@ -48,7 +48,7 @@ const InscriptionForm$ = z.object({
 
 export function InscriptionForm() {
   const eid = useCompetitionEid();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['inscriptions', 'buttons']);
   const competition = useCompetition(eid);
 
   const {
@@ -186,11 +186,11 @@ export function InscriptionForm() {
             disabled={currentStep === 1}
           >
             <ChevronLeft className="w-4 h-4 mr-1" />
-            {t('back')}
+            {t('back', { ns: 'buttons' })}
           </Button>
 
           <Button onClick={handleNext} disabled={!canProceedToNextStep()}>
-            {currentStep === 3 ? t('addToBasket') : t('next')}
+            {currentStep === 3 ? t('addToBasket') : t('next', { ns: 'buttons' })}
             <ChevronRight className="w-4 h-4 ml-1" />
           </Button>
         </div>

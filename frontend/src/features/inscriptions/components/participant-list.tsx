@@ -1,6 +1,5 @@
-import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Skeleton } from '@/components/ui/skeleton';
 import {
   Table,
@@ -10,12 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { UsersIcon } from 'lucide-react';
-import type { InscriptionPublic } from '@repo/core/schemas';
-import { useCompetitionInscriptions } from '../hooks';
-import { useCompetitionEid } from '@/hooks';
-import { formatPerformance, getSeasonBib } from '@repo/core/utils';
 import { useCompetition } from '@/features/competitions';
+import { useCompetitionEid } from '@/hooks';
+import type { InscriptionPublic } from '@repo/core/schemas';
+import { formatPerformance, getSeasonBib } from '@repo/core/utils';
+import { UsersIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useCompetitionInscriptions } from '../hooks';
 
 function getStatusBadgeVariant(status: InscriptionPublic['status']) {
   switch (status) {
@@ -113,7 +113,7 @@ export function ParticipantListSkeleton() {
 }
 
 export function ParticipantList() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['inscriptions', 'common', 'enums']);
   const eid = useCompetitionEid();
   const competition = useCompetition(eid);
   const inscriptions = useCompetitionInscriptions(eid);
@@ -131,10 +131,10 @@ export function ParticipantList() {
           <div className="text-center py-8">
             <UsersIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
             <h3 className="text-lg font-medium text-muted-foreground">
-              {t('no_participants_yet')}
+              {t('noParticipantsYet')}
             </h3>
             <p className="text-sm text-muted-foreground mt-2">
-              {t('no_participants_description')}
+              {t('noParticipantsDescription')}
             </p>
           </div>
         </CardContent>
@@ -154,17 +154,20 @@ export function ParticipantList() {
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t('bib')}</TableHead>
-              <TableHead>{t('athlete')}</TableHead>
-              <TableHead>{t('event')}</TableHead>
-              <TableHead>{t('record')}</TableHead>
+              <TableHead>{t('bib', { ns: 'common' })}</TableHead>
+              <TableHead>{t('athlete', { ns: 'common' })}</TableHead>
+              <TableHead>{t('event', { ns: 'common' })}</TableHead>
+              <TableHead>{t('record', { ns: 'common' })}</TableHead>
               <TableHead>{t('status')}</TableHead>
-              <TableHead>{t('presence_status')}</TableHead>
+              <TableHead>{t('presenceStatus')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {inscriptions.data.map((inscription) => {
-              const bib = getSeasonBib(inscription.athlete, competition.data.startDate);
+              const bib = getSeasonBib(
+                inscription.athlete,
+                competition.data.startDate
+              );
               return (
                 <TableRow
                   key={`${inscription.athlete.id}-${inscription.competitionEvent.id}`}
@@ -188,7 +191,8 @@ export function ParticipantList() {
                   <TableCell>
                     <Badge variant={getStatusBadgeVariant(inscription.status)}>
                       {t(
-                        `inscription_status.${inscription.status.toLowerCase()}`
+                        `inscriptionStatus.${inscription.status.toLowerCase()}`,
+                        { ns: 'enums' }
                       )}
                     </Badge>
                   </TableCell>
@@ -199,7 +203,7 @@ export function ParticipantList() {
                       )}
                     >
                       {t(
-                        `presence_status.${inscription.presenceStatus.toLowerCase()}`
+                        `presenceStatus.${inscription.presenceStatus.toLowerCase()}`
                       )}
                     </Badge>
                   </TableCell>

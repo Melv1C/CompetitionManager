@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { TrophyIcon } from 'lucide-react';
 
 export function CompetitionResultsPage() {
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   return (
     <div className="space-y-6">

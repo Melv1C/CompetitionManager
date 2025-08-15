@@ -28,7 +28,7 @@ import { z } from 'zod';
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'validation', 'messages']);
   const signUpSchema = z
     .object({
       name: z.string().min(2, {
@@ -101,9 +101,9 @@ export function SignUpForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>{t('signUpTitle', { ns: 'auth' })}</CardTitle>
+        <CardTitle>{t('signUpTitle')}</CardTitle>
         <CardDescription>
-          {t('signUpDescription', { ns: 'auth' })}
+          {t('signUpDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -114,11 +114,11 @@ export function SignUpForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('name', { ns: 'auth' })}</FormLabel>
+                  <FormLabel>{t('name')}</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder={t('enterFullName', { ns: 'auth' })}
+                      placeholder={t('enterFullName')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -132,11 +132,11 @@ export function SignUpForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('email', { ns: 'auth' })}</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder={t('enterEmail', { ns: 'auth' })}
+                      placeholder={t('enterEmail')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -150,11 +150,11 @@ export function SignUpForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('password', { ns: 'auth' })}</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t('enterPassword', { ns: 'auth' })}
+                      placeholder={t('enterPassword')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -168,11 +168,11 @@ export function SignUpForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('confirmPassword', { ns: 'auth' })}</FormLabel>
+                  <FormLabel>{t('confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t('confirmYourPassword', { ns: 'auth' })}
+                      placeholder={t('confirmYourPassword')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -188,21 +188,21 @@ export function SignUpForm() {
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading
-                ? t('creatingAccount', { ns: 'auth' })
-                : t('signUp', { ns: 'auth' })}
+                ? t('creatingAccount')
+                : t('signUp')}
             </Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          {t('alreadyHaveAccount', { ns: 'auth' })}
+          {t('alreadyHaveAccount')}
           <Button
             variant="link"
             className="p-0 h-auto"
             onClick={() => navigate('/auth/sign-in')}
           >
-            {t('signIn', { ns: 'auth' })}
+            {t('signIn')}
           </Button>
         </p>
       </CardFooter>

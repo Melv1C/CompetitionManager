@@ -54,7 +54,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('navigation');
   const { currentCompetition } = useOrganizationCompetitionStore();
   const navItems = [
     {
@@ -87,32 +87,32 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
     return currentCompetition
       ? [
           {
-            title: 'Overview',
+            title: t('overview'),
             url: `/organization/competitions/${currentCompetition.eid}`,
             icon: Home,
           },
           {
-            title: 'Inscriptions',
+            title: t('inscriptions'),
             url: `/organization/competitions/${currentCompetition.eid}/inscriptions`,
             icon: Users,
           },
           {
-            title: 'Confirmations',
+            title: t('confirmations'),
             url: `/organization/competitions/${currentCompetition.eid}/confirmations`,
             icon: UserCheck2,
           },
           {
-            title: 'Events',
+            title: t('events'),
             url: `/organization/competitions/${currentCompetition.eid}/events`,
             icon: CalendarClock,
           },
           {
-            title: 'Results',
+            title: t('results'),
             url: `/organization/competitions/${currentCompetition.eid}/results`,
             icon: Trophy,
           },
           {
-            title: 'Settings',
+            title: t('settings'),
             url: `/organization/competitions/${currentCompetition.eid}/settings`,
             icon: Settings,
           },

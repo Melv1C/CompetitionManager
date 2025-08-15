@@ -23,7 +23,6 @@ interface AthleteSearchProps {
   athletes?: Athlete[]; // Optional list of athletes to search within
   value?: Athlete;
   onChange: (athlete: Athlete | undefined) => void;
-  placeholder?: string;
   disabled?: boolean;
   className?: string;
   referenceDate?: Date;
@@ -44,12 +43,11 @@ export function AthleteSearch({
   athletes: localAthletes,
   value,
   onChange,
-  placeholder,
   disabled = false,
   className,
   referenceDate,
 }: AthleteSearchProps) {
-  const { t } = useTranslation();
+  const { t } = useTranslation('athletes');
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -191,7 +189,7 @@ export function AthleteSearch({
         <Input
           ref={inputRef}
           type="text"
-          placeholder={placeholder || t('searchAthletes')}
+          placeholder={t('searchAthletes')}
           value={searchTerm}
           onChange={handleInputChange}
           disabled={disabled}

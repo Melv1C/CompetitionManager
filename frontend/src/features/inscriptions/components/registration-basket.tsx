@@ -13,7 +13,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCreateInscriptions } from '../hooks/use-inscriptions';
 
 export function RegistrationBasket() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['inscriptions']);
   const eid = useCompetitionEid();
   const navigate = useNavigate();
   const competition = useCompetition(eid);

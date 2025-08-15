@@ -11,7 +11,7 @@ export function CompetitionLayout() {
   const eid = useCompetitionEid();
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation('navigation');
 
   const competition = useCompetition(eid);
 

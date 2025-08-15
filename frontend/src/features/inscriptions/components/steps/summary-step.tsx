@@ -9,7 +9,7 @@ import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import { useInscriptionFormStore } from '../../../../store/inscription-form-store';
 
 export function SummaryStep() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['inscriptions', 'common']);
   const eid = useCompetitionEid();
   const competition = useCompetition(eid);
 
@@ -101,7 +101,7 @@ export function SummaryStep() {
                       {registration.athlete.lastName}
                     </span>
                     <Badge variant="outline" className="text-xs">
-                      {registration.inscriptions.length} {t('events')}
+                      {registration.inscriptions.length} {t('events', { ns: 'common' })}
                     </Badge>
                   </div>
                   <Button

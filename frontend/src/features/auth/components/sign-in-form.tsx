@@ -28,7 +28,7 @@ import { z } from 'zod';
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation();
+  const { t } = useTranslation(['auth', 'validation', 'messages']);
   // Create schema with translated messages
   const signInSchema = z.object({
     email: z.string().email({
@@ -90,9 +90,9 @@ export function SignInForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>{t('signInTitle', { ns: 'auth' })}</CardTitle>
+        <CardTitle>{t('signInTitle')}</CardTitle>
         <CardDescription>
-          {t('signInDescription', { ns: 'auth' })}
+          {t('signInDescription')}
         </CardDescription>
       </CardHeader>
       <CardContent>
@@ -103,11 +103,11 @@ export function SignInForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('email', { ns: 'auth' })}</FormLabel>
+                  <FormLabel>{t('email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder={t('enterEmail', { ns: 'auth' })}
+                      placeholder={t('enterEmail')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -121,11 +121,11 @@ export function SignInForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('password', { ns: 'auth' })}</FormLabel>
+                  <FormLabel>{t('password')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t('enterPassword', { ns: 'auth' })}
+                      placeholder={t('enterPassword')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -141,21 +141,21 @@ export function SignInForm() {
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading
-                ? t('signingIn', { ns: 'auth' })
-                : t('signIn', { ns: 'auth' })}
+                ? t('signingIn')
+                : t('signIn')}
             </Button>
           </form>
         </Form>
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          {t('dontHaveAccount', { ns: 'auth' })}
+          {t('dontHaveAccount')}
           <Button
             variant="link"
             className="p-0 h-auto"
             onClick={() => navigate('/auth/sign-up')}
           >
-            {t('signUp', { ns: 'auth' })}
+            {t('signUp')}
           </Button>
         </p>
       </CardFooter>

@@ -21,7 +21,7 @@ import { useCompetitionEid } from '@/hooks';
 
 export function CompetitionSchedulePage() {
   const eid = useCompetitionEid();
-  const { t } = useTranslation();
+  const { t } = useTranslation('common');
 
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');

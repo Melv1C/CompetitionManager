@@ -49,7 +49,7 @@ export function AdminLayout({ children }: AdminLayoutProps) {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('navigation');
   const navItems = [
     {
       title: t('overview'),
@@ -67,12 +67,12 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       icon: Trophy,
     },
     {
-      title: 'Database',
+      title: t('database'),
       url: '/admin/database',
       icon: Database,
     },
     {
-      title: 'Logs',
+      title: t('logs'),
       url: '/admin/logs',
       icon: FileText,
     },

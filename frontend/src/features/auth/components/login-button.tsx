@@ -11,14 +11,14 @@ export function LoginButton({
   isMobile = false,
   onMobileMenuClose,
 }: LoginButtonProps) {
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('auth');
 
   if (isMobile) {
     return (
       <div className="px-3 py-2">
         <Button className="w-full" asChild>
           <Link to="/auth/sign-in" onClick={onMobileMenuClose}>
-            {t('login')}
+            {t('signIn')}
           </Link>
         </Button>
       </div>
@@ -27,7 +27,7 @@ export function LoginButton({
 
   return (
     <Button asChild>
-      <Link to="/auth/sign-in">{t('login')}</Link>
+      <Link to="/auth/sign-in">{t('signIn')}</Link>
     </Button>
   );
 }

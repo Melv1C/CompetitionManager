@@ -11,7 +11,6 @@ export function AthleteSelectionStep() {
     <AthleteSearch
       value={currentAthlete}
       onChange={setCurrentAthlete}
-      placeholder={t('searchAndSelectAthlete')}
     />
   );
 }

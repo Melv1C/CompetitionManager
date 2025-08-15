@@ -12,7 +12,7 @@ import { Navigation } from './navigation';
 export function Header() {
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useTranslation('common');
+  const { t } = useTranslation('navigation');
 
   const navItems = [
     { href: '/', label: t('home') },

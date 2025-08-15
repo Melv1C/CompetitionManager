@@ -10,7 +10,7 @@ import { useInscriptionFormStore } from '../../../../store/inscription-form-stor
 import { getAthleteCategory } from '@repo/core/utils';
 
 export function EventSelectionStep() {
-  const { t } = useTranslation();
+  const { t } = useTranslation(['inscriptions']);
   const eid = useCompetitionEid();
   const competition = useCompetition(eid);
 

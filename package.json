@@ -9,20 +9,26 @@
     "dev:core": "cd core && npm run dev",
     "dev:backend": "cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
-
     "install:core": "cd core && npm install",
     "install:backend": "cd backend && npm install",
     "install:frontend": "cd frontend && npm install",
     "install:e2e": "cd e2e && npm install",
-
     "test": "npm run test:e2e",
     "test:e2e": "cd e2e && npm run test",
-
     "db:migrate": "cd backend && npx prisma migrate dev",
-
-    "docker:db": "docker-compose -f docker-compose.db.yml up -d"
+    "docker:db": "docker-compose -f docker-compose.db.yml up -d",
+    "i18n:validate": "node scripts/i18n/validate-translations.mjs",
+    "i18n:sort": "node scripts/i18n/sort-translations.mjs",
+    "i18n:validate-sort": "node scripts/i18n/validate-sort.mjs",
+    "i18n:analyze-usage": "node scripts/i18n/analyze-usage.mjs",
+    "i18n:validate-all": "node scripts/i18n/validate-all.mjs",
+    "i18n:validate-ci": "node scripts/i18n/validate-all.mjs --skip-usage",
+    "i18n:fix": "node scripts/i18n/validate-all.mjs --fix"
   },
   "devDependencies": {
     "concurrently": "^9.1.0"
+  },
+  "dependencies": {
+    "glob": "^11.0.3"
   }
 }
