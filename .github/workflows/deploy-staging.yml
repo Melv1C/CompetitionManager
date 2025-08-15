@@ -113,26 +113,26 @@ jobs:
 
             # Pull latest images
             echo "📦 Pulling Docker images..."
-            docker compose pull
+            docker-compose pull
 
             # Stop existing containers if running
             echo "⏹️ Stopping existing staging containers..."
-            docker compose down --remove-orphans || true
+            docker-compose down --remove-orphans || true
 
             # Start new containers
             echo "🚀 Starting staging containers..."
-            docker compose up -d
+            docker-compose up -d
 
             # Wait for services to be healthy
             echo "⏳ Waiting for services to be ready..."
             sleep 30
 
             # Check if services are running
-            if docker compose ps | grep -q "Up"; then
+            if docker-compose ps | grep -q "Up"; then
               echo "✅ Staging deployment completed successfully!"
             else
               echo "❌ Some services failed to start"
-              docker compose logs
+              docker-compose logs
               exit 1
             fi
 

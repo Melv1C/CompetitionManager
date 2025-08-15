@@ -20,7 +20,7 @@ services:
       - staging-network
 
   backend:
-    image: ${DOCKER_REGISTRY}/competitionmanager/backend:staging
+    image: ${DOCKER_REGISTRY}/staging-backend:staging
     container_name: competition-manager-staging-backend
     restart: unless-stopped
     environment:
@@ -39,7 +39,7 @@ services:
       - staging-network
 
   frontend:
-    image: ${DOCKER_REGISTRY}/competitionmanager/frontend:staging
+    image: ${DOCKER_REGISTRY}/staging-frontend:staging
     container_name: competition-manager-staging-frontend
     environment:
       - NODE_ENV=staging
@@ -62,15 +62,6 @@ services:
       - frontend
       - backend
     restart: unless-stopped
-    networks:
-      - staging-network
-
-  certbot:
-    image: certbot/certbot:latest
-    container_name: competition-manager-staging-certbot
-    volumes:
-      - ./certbot/www:/var/www/certbot
-      - ./certbot/conf:/etc/letsencrypt
     networks:
       - staging-network
 

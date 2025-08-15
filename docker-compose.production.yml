@@ -20,7 +20,7 @@ services:
       - production-network
 
   backend:
-    image: ${DOCKER_REGISTRY}/competitionmanager/backend:latest
+    image: ${DOCKER_REGISTRY}/production-backend:latest
     container_name: competition-manager-prod-backend
     restart: unless-stopped
     environment:
@@ -39,7 +39,7 @@ services:
       - production-network
 
   frontend:
-    image: ${DOCKER_REGISTRY}/competitionmanager/frontend:latest
+    image: ${DOCKER_REGISTRY}/production-frontend:latest
     container_name: competition-manager-prod-frontend
     environment:
       - NODE_ENV=production
