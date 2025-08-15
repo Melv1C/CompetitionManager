@@ -6,9 +6,8 @@ on:
   workflow_dispatch: # Allow manual deployment
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
-  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+  IMAGE_NAME_BACKEND: staging-backend
+  IMAGE_NAME_FRONTEND: staging-frontend
 
 jobs:
   # Only deploy if all quality checks pass
@@ -45,9 +44,8 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME_BACKEND }}
           tags: |
-            type=ref,event=branch
             type=sha,prefix={{branch}}-
-            type=raw,value=staging
+            type=raw,value=latest
 
       - name: Extract metadata for frontend
         id: meta-frontend
@@ -55,9 +53,8 @@ jobs:
         with:
           images: ${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME_FRONTEND }}
           tags: |
-            type=ref,event=branch
             type=sha,prefix={{branch}}-
-            type=raw,value=staging
+            type=raw,value=latest
 
       - name: Build and push backend image
         uses: docker/build-push-action@v5

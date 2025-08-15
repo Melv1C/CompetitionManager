@@ -12,9 +12,8 @@ on:
         type: string
 
 env:
-  REGISTRY: ghcr.io
-  IMAGE_NAME_BACKEND: ${{ github.repository }}/backend
-  IMAGE_NAME_FRONTEND: ${{ github.repository }}/frontend
+  IMAGE_NAME_BACKEND: production-backend
+  IMAGE_NAME_FRONTEND: production-frontend
 
 jobs:
   # Run quality checks on the tagged version
@@ -66,7 +65,6 @@ jobs:
           tags: |
             type=semver,pattern={{version}},value=${{ steps.version.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }}
-            type=raw,value=production
             type=raw,value=latest
 
       - name: Extract metadata for frontend
@@ -77,7 +75,6 @@ jobs:
           tags: |
             type=semver,pattern={{version}},value=${{ steps.version.outputs.version }}
             type=semver,pattern={{major}}.{{minor}},value=${{ steps.version.outputs.version }}
-            type=raw,value=production
             type=raw,value=latest
 
       - name: Build and push backend image
