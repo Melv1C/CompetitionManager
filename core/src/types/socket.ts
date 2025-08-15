@@ -34,9 +34,9 @@ export interface ClientToServerEvents {
   ping: () => void;
 }
 
-export type InterServerEvents = object
+export type InterServerEvents = object;
 
-export type SocketData = object
+export type SocketData = object;
 
 // Room naming conventions
 export const ROOM_PREFIXES = {

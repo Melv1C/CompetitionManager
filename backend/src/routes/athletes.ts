@@ -1,7 +1,14 @@
 import { prisma } from '@/lib/prisma';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
-import { Athlete, Athlete$, AthleteInfo, AthleteKey$, Date$, athleteInclude } from '@repo/core/schemas';
+import {
+  Athlete,
+  Athlete$,
+  AthleteInfo,
+  AthleteKey$,
+  Date$,
+  athleteInclude,
+} from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
 
