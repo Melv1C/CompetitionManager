@@ -37,6 +37,7 @@ services:
       context: .
       dockerfile: frontend/Dockerfile
     environment:
+      VITE_NODE_ENV: development
       VITE_API_URL: http://localhost:8080
       VITE_SOCKET_URL: http://localhost:8080
     volumes:

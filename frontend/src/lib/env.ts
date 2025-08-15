@@ -11,7 +11,7 @@ import { z } from 'zod';
  */
 const envSchema = z.object({
   // Mode is provided by Vite automatically
-  VITE_NODE_ENV: z.enum(['development', 'production', 'test']).default('development'),
+  VITE_NODE_ENV: z.enum(['development', 'production', 'staging']).default('development'),
 
   // API Configuration
   VITE_API_URL: z.string().url().default('http://localhost:3000'),

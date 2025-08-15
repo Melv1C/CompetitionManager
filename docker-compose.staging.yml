@@ -42,7 +42,7 @@ services:
     image: ${DOCKER_REGISTRY}/staging-frontend:latest
     container_name: competition-manager-staging-frontend
     environment:
-      - NODE_ENV=staging
+      - VITE_NODE_ENV=staging
       - VITE_API_URL=http://localhost:18080
       - VITE_SOCKET_URL=http://localhost:18080
     volumes:

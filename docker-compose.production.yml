@@ -42,7 +42,7 @@ services:
     image: ${DOCKER_REGISTRY}/production-frontend:latest
     container_name: competition-manager-prod-frontend
     environment:
-      - NODE_ENV=production
+      - VITE_NODE_ENV=production
       - VITE_API_URL=https://competitionmanager.be
       - VITE_SOCKET_URL=https://competitionmanager.be
     volumes:
