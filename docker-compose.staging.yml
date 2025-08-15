@@ -20,7 +20,7 @@ services:
       - staging-network
 
   backend:
-    image: ${DOCKER_REGISTRY}/staging-backend:staging
+    image: ${DOCKER_REGISTRY}/staging-backend:latest
     container_name: competition-manager-staging-backend
     restart: unless-stopped
     environment:
@@ -39,7 +39,7 @@ services:
       - staging-network
 
   frontend:
-    image: ${DOCKER_REGISTRY}/staging-frontend:staging
+    image: ${DOCKER_REGISTRY}/staging-frontend:latest
     container_name: competition-manager-staging-frontend
     environment:
       - NODE_ENV=staging
