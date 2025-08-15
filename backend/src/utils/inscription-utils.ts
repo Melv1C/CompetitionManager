@@ -1,15 +1,15 @@
 import { prisma } from '@/lib/prisma';
 import {
-  UpsertInscriptions,
-  Competition,
   BetterAuthId,
-  inscriptionInclude,
+  Competition,
   Id,
+  Inscription,
   Inscription$,
-  RecordPrisma$,
+  inscriptionInclude,
   InscriptionStatus$,
   PresenceStatus$,
-  Inscription,
+  RecordPrisma$,
+  UpsertInscriptions,
 } from '@repo/core/schemas';
 
 export interface CreateInscriptionsResult {
