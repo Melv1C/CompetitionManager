@@ -30,6 +30,8 @@ docker-compose.dev.yml
 docker-compose.local.yml
 postgres-data
 
+*.md
+
 # Misc
 *.swp
 *.swo
