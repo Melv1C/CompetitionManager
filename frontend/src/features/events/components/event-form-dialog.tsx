@@ -1,10 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -23,12 +18,7 @@ import {
 } from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import type { Event, EventCreate, EventUpdate } from '@repo/core/schemas';
-import {
-  EventCreate$,
-  EventGroup$,
-  EventType$,
-  EventUpdate$,
-} from '@repo/core/schemas';
+import { EventCreate$, EventGroup$, EventType$, EventUpdate$ } from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
 import { useCreateEvent, useUpdateEvent } from '../hooks/use-events';
 
@@ -38,11 +28,7 @@ interface EventFormDialogProps {
   event?: Event;
 }
 
-export function EventFormDialog({
-  open,
-  onOpenChange,
-  event,
-}: EventFormDialogProps) {
+export function EventFormDialog({ open, onOpenChange, event }: EventFormDialogProps) {
   const isEditing = !!event;
   const createMutation = useCreateEvent();
   const updateMutation = useUpdateEvent();
@@ -112,17 +98,14 @@ export function EventFormDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Group</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select group" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {EventGroup$.options.map((group) => (
+                      {EventGroup$.options.map(group => (
                         <SelectItem key={group} value={group}>
                           {group}
                         </SelectItem>
@@ -139,17 +122,14 @@ export function EventFormDialog({
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Type</FormLabel>
-                  <Select
-                    onValueChange={field.onChange}
-                    defaultValue={field.value}
-                  >
+                  <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
                       <SelectTrigger>
                         <SelectValue placeholder="Select type" />
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {EventType$.options.map((type) => (
+                      {EventType$.options.map(type => (
                         <SelectItem key={type} value={type}>
                           {type}
                         </SelectItem>

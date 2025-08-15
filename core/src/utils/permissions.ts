@@ -1,11 +1,5 @@
-import {
-  createAccessControl,
-  type AccessControl,
-} from 'better-auth/plugins/access';
-import {
-  adminAc,
-  defaultStatements,
-} from 'better-auth/plugins/organization/access';
+import { createAccessControl, type AccessControl } from 'better-auth/plugins/access';
+import { adminAc, defaultStatements } from 'better-auth/plugins/organization/access';
 
 /**
  * Define custom permissions for the application
@@ -30,8 +24,7 @@ export const ac = createAccessControl(statement) as AccessControl;
  * Type definitions for permission checking
  */
 export type PermissionResource = keyof typeof statement;
-export type PermissionAction<T extends PermissionResource> =
-  (typeof statement)[T][number];
+export type PermissionAction<T extends PermissionResource> = (typeof statement)[T][number];
 
 /**
  * Strongly typed permission check structure

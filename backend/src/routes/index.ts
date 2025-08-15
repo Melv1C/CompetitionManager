@@ -17,7 +17,7 @@ import { webhooksRoutes } from './webhooks';
  */
 export function createApiRoutes() {
   const api = new Hono(); // Mount route modules
-  api.get('/health', (c) => {
+  api.get('/health', c => {
     return c.json({ status: 'ok' });
   });
 

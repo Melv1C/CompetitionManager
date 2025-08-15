@@ -1,10 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { requirePermissions } from '@/middleware/access-control';
 import { getRequiredSession } from '@/utils/auth-utils';
-import {
-  calculateAlreadyPaidAmount,
-  upsertInscriptionsInDB,
-} from '@/utils/inscription-utils';
+import { calculateAlreadyPaidAmount, upsertInscriptionsInDB } from '@/utils/inscription-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
@@ -31,7 +28,7 @@ organizationInscriptionsRoutes.get(
     inscriptions: ['read'],
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
-  async (c) => {
+  async c => {
     try {
       const { eid } = c.req.valid('param');
       const session = await getRequiredSession(c);
@@ -65,14 +62,10 @@ organizationInscriptionsRoutes.get(
 
       return c.json(Inscription$.array().parse(inscriptions));
     } catch (error) {
-      logError(
-        'Failed to fetch organization competition inscriptions',
-        error,
-        c
-      );
+      logError('Failed to fetch organization competition inscriptions', error, c);
       return c.json({ error: 'Failed to fetch competition inscriptions' }, 500);
     }
-  }
+  },
 );
 
 // POST /organization/competitions/:eid/inscriptions - Create inscriptions without payment (admin/org)
@@ -83,7 +76,7 @@ organizationInscriptionsRoutes.post(
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
   zValidator('json', UpsertInscriptions$),
-  async (c) => {
+  async c => {
     try {
       const session = await getRequiredSession(c);
       const { eid } = c.req.valid('param');
@@ -102,7 +95,7 @@ organizationInscriptionsRoutes.post(
             organizationId: session.activeOrganizationId,
           },
           include: competitionInclude,
-        })
+        }),
       );
 
       if (!competition) {
@@ -110,18 +103,21 @@ organizationInscriptionsRoutes.post(
       }
 
       // Group inscriptions by athleteId
-      const groupedInscriptions = inscriptions.reduce((acc, inscription) => {
-        const athleteId = inscription.athleteId;
-        if (!acc[athleteId]) {
-          acc[athleteId] = [];
-        }
-        acc[athleteId].push(inscription);
-        return acc;
-      }, {} as Record<Id, UpsertInscriptions>);
+      const groupedInscriptions = inscriptions.reduce(
+        (acc, inscription) => {
+          const athleteId = inscription.athleteId;
+          if (!acc[athleteId]) {
+            acc[athleteId] = [];
+          }
+          acc[athleteId].push(inscription);
+          return acc;
+        },
+        {} as Record<Id, UpsertInscriptions>,
+      );
 
       // for each athlete, create or update their inscriptions
-      for (const athleteId of Object.keys(groupedInscriptions).map(
-        (athleteId) => ParameterId$.parse(athleteId)
+      for (const athleteId of Object.keys(groupedInscriptions).map(athleteId =>
+        ParameterId$.parse(athleteId),
       )) {
         const athleteInscriptions = groupedInscriptions[athleteId];
 
@@ -138,15 +134,10 @@ organizationInscriptionsRoutes.post(
         const alreadyPaid = await calculateAlreadyPaidAmount(
           competition,
           athleteInscriptions,
-          userId
+          userId,
         );
 
-        await upsertInscriptionsInDB(
-          competition,
-          athleteInscriptions,
-          userId,
-          alreadyPaid
-        );
+        await upsertInscriptionsInDB(competition, athleteInscriptions, userId, alreadyPaid);
       }
 
       return c.json({ success: true }, 200);
@@ -154,15 +145,12 @@ organizationInscriptionsRoutes.post(
       logError('Failed to create organization inscriptions', error, c);
       return c.json(
         {
-          error:
-            error instanceof Error
-              ? error.message
-              : 'Failed to create inscriptions',
+          error: error instanceof Error ? error.message : 'Failed to create inscriptions',
         },
-        400
+        400,
       );
     }
-  }
+  },
 );
 
 export { organizationInscriptionsRoutes };

@@ -21,7 +21,7 @@ export function RacingBib({ number, size = 'md', className }: RacingBibProps) {
             'h-10 w-16 text-sm': size === 'md',
             'h-12 w-20 text-base': size === 'lg',
           },
-          className
+          className,
         )}
       >
         <span className="text-xs opacity-60">--</span>
@@ -41,7 +41,7 @@ export function RacingBib({ number, size = 'md', className }: RacingBibProps) {
           'h-10 w-16 text-sm': size === 'md',
           'h-12 w-20 text-base': size === 'lg',
         },
-        className
+        className,
       )}
       role="img"
       aria-label={`Racing bib number ${number}`}

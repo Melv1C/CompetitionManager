@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 const webhooksRoutes = new Hono();
 
 // POST /webhooks/stripe - Handle Stripe webhook events
-webhooksRoutes.post('/stripe', async (c) => {
+webhooksRoutes.post('/stripe', async c => {
   try {
     const sig = c.req.header('stripe-signature');
 

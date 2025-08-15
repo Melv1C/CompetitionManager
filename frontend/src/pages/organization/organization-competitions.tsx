@@ -26,21 +26,15 @@ export function OrganizationCompetitions() {
         <div className="p-4">
           <h3 className="font-semibold">Competition List</h3>
           <p className="text-sm text-muted-foreground">
-            Manage competitions with their inscriptions, confirmations, results,
-            and analytics.
+            Manage competitions with their inscriptions, confirmations, results, and analytics.
           </p>
         </div>
         <div className="border-t p-4">
-          <CompetitionsTable
-            competitions={competitions.data}
-          />
+          <CompetitionsTable competitions={competitions.data} />
         </div>
       </div>
 
-      <CreateCompetitionDialog
-        open={dialogOpen}
-        onOpenChange={setDialogOpen}
-      />
+      <CreateCompetitionDialog open={dialogOpen} onOpenChange={setDialogOpen} />
     </div>
   );
 }

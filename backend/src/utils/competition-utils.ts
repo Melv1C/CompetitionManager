@@ -31,8 +31,6 @@ export async function getCompetitions(options: GetCompetitionsOptions = {}) {
 /**
  * Get competitions count with optional filtering
  */
-export async function getCompetitionsCount(
-  where?: Prisma.CompetitionWhereInput
-) {
+export async function getCompetitionsCount(where?: Prisma.CompetitionWhereInput) {
   return prisma.competition.count({ where });
 }

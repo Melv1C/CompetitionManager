@@ -1,8 +1,4 @@
-import type {
-  CompetitionEventCreate,
-  CompetitionEventUpdate,
-  Cuid,
-} from '@repo/core/schemas';
+import type { CompetitionEventCreate, CompetitionEventUpdate, Cuid } from '@repo/core/schemas';
 import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CompetitionEventsService } from '../services/competition-events-service';
@@ -26,7 +22,7 @@ export function useCreateCompetitionEvent(competitionEid: Cuid) {
         queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY, competitionEid],
       });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Create competition event error:', error);
       toast.error('Failed to create competition event');
     },
@@ -37,18 +33,8 @@ export function useUpdateCompetitionEvent(competitionEid: Cuid) {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({
-      eventEid,
-      data,
-    }: {
-      eventEid: Cuid;
-      data: CompetitionEventUpdate;
-    }) =>
-      CompetitionEventsService.updateCompetitionEvent(
-        competitionEid,
-        eventEid,
-        data
-      ),
+    mutationFn: ({ eventEid, data }: { eventEid: Cuid; data: CompetitionEventUpdate }) =>
+      CompetitionEventsService.updateCompetitionEvent(competitionEid, eventEid, data),
     onSuccess: () => {
       toast.success('Competition event updated successfully');
       queryClient.invalidateQueries({
@@ -58,7 +44,7 @@ export function useUpdateCompetitionEvent(competitionEid: Cuid) {
         queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY, competitionEid],
       });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Update competition event error:', error);
       toast.error('Failed to update competition event');
     },
@@ -80,7 +66,7 @@ export function useDeleteCompetitionEvent(competitionEid: Cuid) {
         queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY, competitionEid],
       });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Delete competition event error:', error);
       toast.error('Failed to delete competition event');
     },

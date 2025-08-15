@@ -11,9 +11,7 @@ const envSchema = z.object({
   // Log cleanup configuration
   LOG_CLEANUP_ENABLED: z.stringbool().default(true),
   LOG_CLEANUP_DAYS_TO_KEEP: z.coerce.number().default(30),
-  LOG_CLEANUP_SCHEDULE: z
-    .enum(['@daily', '@hourly', '@weekly'])
-    .default('@daily'),
+  LOG_CLEANUP_SCHEDULE: z.enum(['@daily', '@hourly', '@weekly']).default('@daily'),
   LOG_CLEANUP_MAX_PER_RUN: z.coerce.number().optional(),
 
   // Database seeding configuration
@@ -31,9 +29,7 @@ const envSchema = z.object({
 
   // Athlete sync configuration
   ATHLETE_SYNC_ENABLED: z.stringbool().default(true),
-  ATHLETE_SYNC_SCHEDULE: z
-    .enum(['@daily', '@hourly', '@weekly'])
-    .default('@daily'),
+  ATHLETE_SYNC_SCHEDULE: z.enum(['@daily', '@hourly', '@weekly']).default('@daily'),
   ATHLETE_SYNC_USE_MOCK: z.stringbool().default(false),
 
   LBFA_URL: z.url().optional(),
@@ -42,9 +38,7 @@ const envSchema = z.object({
 
   // Payment session cleanup configuration
   PAYMENT_SESSION_CLEANUP_ENABLED: z.stringbool().default(true),
-  PAYMENT_SESSION_CLEANUP_SCHEDULE: z
-    .enum(['@daily', '@hourly', '@weekly'])
-    .default('@hourly'),
+  PAYMENT_SESSION_CLEANUP_SCHEDULE: z.enum(['@daily', '@hourly', '@weekly']).default('@hourly'),
 });
 
 export const env = envSchema.parse(process.env);

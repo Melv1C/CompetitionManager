@@ -2,9 +2,7 @@ export function OrganizationDashboard() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Organization Dashboard
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight">Organization Dashboard</h1>
         <p className="text-muted-foreground">
           Manage your organization, competitions, and members.
         </p>
@@ -57,12 +55,8 @@ export function OrganizationDashboard() {
             <button className="w-full rounded-md bg-primary px-3 py-2 text-sm text-primary-foreground">
               Create New Competition
             </button>
-            <button className="w-full rounded-md border px-3 py-2 text-sm">
-              Invite Members
-            </button>
-            <button className="w-full rounded-md border px-3 py-2 text-sm">
-              View Analytics
-            </button>
+            <button className="w-full rounded-md border px-3 py-2 text-sm">Invite Members</button>
+            <button className="w-full rounded-md border px-3 py-2 text-sm">View Analytics</button>
           </div>
         </div>
       </div>

@@ -2,9 +2,7 @@ export function OrganizationSettings() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-3xl font-bold tracking-tight">
-          Organization Settings
-        </h1>
+        <h1 className="text-3xl font-bold tracking-tight">Organization Settings</h1>
         <p className="text-muted-foreground">
           Manage your organization's settings and preferences.
         </p>
@@ -52,9 +50,7 @@ export function OrganizationSettings() {
             <div className="flex items-center justify-between">
               <div>
                 <p className="font-medium">Email notifications</p>
-                <p className="text-sm text-muted-foreground">
-                  Send email updates to participants
-                </p>
+                <p className="text-sm text-muted-foreground">Send email updates to participants</p>
               </div>
               <button className="rounded-full bg-primary w-11 h-6 relative">
                 <div className="absolute left-1 top-1 h-4 w-4 rounded-full bg-white transition-transform"></div>

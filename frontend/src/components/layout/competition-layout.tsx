@@ -42,9 +42,7 @@ export function CompetitionLayout() {
       <div className="space-y-4">
         <div className="flex flex-col gap-4 md:flex-row md:items-start md:justify-between">
           <div className="space-y-2">
-            <h1 className="text-3xl font-bold tracking-tight">
-              {competition.data.name}
-            </h1>
+            <h1 className="text-3xl font-bold tracking-tight">{competition.data.name}</h1>
             <div className="flex flex-wrap items-center gap-4 text-muted-foreground">
               <div className="flex items-center gap-1">
                 <CalendarIcon className="h-4 w-4" />

@@ -8,16 +8,12 @@ interface CompetitionsListProps {
 
 export function CompetitionsList({ competitions }: CompetitionsListProps) {
   if (competitions.length === 0) {
-    return (
-      <div className="py-4 text-center text-muted-foreground">
-        No competitions found
-      </div>
-    );
+    return <div className="py-4 text-center text-muted-foreground">No competitions found</div>;
   }
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-      {competitions.map((comp) => (
+      {competitions.map(comp => (
         <Link
           key={comp.id}
           to={`/competitions/${comp.eid}`}

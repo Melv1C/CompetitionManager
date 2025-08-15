@@ -1,10 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -42,11 +37,7 @@ interface CategoryFormDialogProps {
   category?: FullCategory;
 }
 
-export function CategoryFormDialog({
-  open,
-  onOpenChange,
-  category,
-}: CategoryFormDialogProps) {
+export function CategoryFormDialog({ open, onOpenChange, category }: CategoryFormDialogProps) {
   const isEditing = !!category;
   const createMutation = useCreateCategory();
   const updateMutation = useUpdateCategory();
@@ -57,8 +48,7 @@ export function CategoryFormDialog({
       name: category?.name ?? '',
       abbr: category?.abbr ?? '',
       baseCategory: category?.baseCategory ?? BaseCategory$.enum.Senior,
-      abbrBaseCategory:
-        category?.abbrBaseCategory ?? AbbrBaseCategory$.enum.SEN,
+      abbrBaseCategory: category?.abbrBaseCategory ?? AbbrBaseCategory$.enum.SEN,
       gender: category?.gender ?? Gender$.enum.M,
       masterAgeGroup: category?.masterAgeGroup ?? null,
       order: category?.order ?? 1,
@@ -84,16 +74,11 @@ export function CategoryFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-[500px] max-h-[90vh]">
         <DialogHeader>
-          <DialogTitle>
-            {isEditing ? 'Edit Category' : 'Create Category'}
-          </DialogTitle>
+          <DialogTitle>{isEditing ? 'Edit Category' : 'Create Category'}</DialogTitle>
         </DialogHeader>
         <ScrollArea className="max-h-[70vh]">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-4 pr-4"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 pr-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
                   control={form.control}
@@ -127,17 +112,14 @@ export function CategoryFormDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Gender</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select gender" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {Gender$.options.map((gender) => (
+                          {Gender$.options.map(gender => (
                             <SelectItem key={gender} value={gender}>
                               {gender === 'M' ? 'Male' : 'Female'}
                             </SelectItem>
@@ -154,17 +136,14 @@ export function CategoryFormDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Base Category</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select base category" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {BaseCategory$.options.map((baseCategory) => (
+                          {BaseCategory$.options.map(baseCategory => (
                             <SelectItem key={baseCategory} value={baseCategory}>
                               {baseCategory}
                             </SelectItem>
@@ -181,21 +160,15 @@ export function CategoryFormDialog({
                   render={({ field }) => (
                     <FormItem>
                       <FormLabel>Base Category Abbr.</FormLabel>
-                      <Select
-                        onValueChange={field.onChange}
-                        defaultValue={field.value}
-                      >
+                      <Select onValueChange={field.onChange} defaultValue={field.value}>
                         <FormControl>
                           <SelectTrigger>
                             <SelectValue placeholder="Select abbreviation" />
                           </SelectTrigger>
                         </FormControl>
                         <SelectContent>
-                          {AbbrBaseCategory$.options.map((abbrBaseCategory) => (
-                            <SelectItem
-                              key={abbrBaseCategory}
-                              value={abbrBaseCategory}
-                            >
+                          {AbbrBaseCategory$.options.map(abbrBaseCategory => (
+                            <SelectItem key={abbrBaseCategory} value={abbrBaseCategory}>
                               {abbrBaseCategory}
                             </SelectItem>
                           ))}
@@ -218,7 +191,7 @@ export function CategoryFormDialog({
                           min="1"
                           {...field}
                           value={field.value?.toString() || ''}
-                          onChange={(event) => {
+                          onChange={event => {
                             const value = event.target.value;
                             field.onChange(value === '' ? '' : Number(value));
                           }}
@@ -241,7 +214,7 @@ export function CategoryFormDialog({
                           min="0"
                           {...field}
                           value={field.value?.toString() || ''}
-                          onChange={(event) => {
+                          onChange={event => {
                             const value = event.target.value;
                             field.onChange(value === '' ? null : Number(value));
                           }}

@@ -103,12 +103,7 @@ export class SeedService {
 
       for (const eventData of eventsData) {
         // Skip incomplete entries
-        if (
-          !eventData.name ||
-          !eventData.abbr ||
-          !eventData.type ||
-          !eventData.group
-        ) {
+        if (!eventData.name || !eventData.abbr || !eventData.type || !eventData.group) {
           logger.warn('Skipping incomplete event entry', eventData);
           skipped++;
           continue;
@@ -302,11 +297,7 @@ export class SeedService {
       let skipped = 0;
 
       // Seed admin user
-      if (
-        env.DB_SEED_ADMIN_EMAIL &&
-        env.DB_SEED_ADMIN_PASSWORD &&
-        env.DB_SEED_ADMIN_NAME
-      ) {
+      if (env.DB_SEED_ADMIN_EMAIL && env.DB_SEED_ADMIN_PASSWORD && env.DB_SEED_ADMIN_NAME) {
         // Check if admin user already exists
         const existingAdmin = await prisma.user.findUnique({
           where: { email: env.DB_SEED_ADMIN_EMAIL },
@@ -355,11 +346,7 @@ export class SeedService {
       }
 
       // Seed regular user
-      if (
-        env.DB_SEED_USER_EMAIL &&
-        env.DB_SEED_USER_PASSWORD &&
-        env.DB_SEED_USER_NAME
-      ) {
+      if (env.DB_SEED_USER_EMAIL && env.DB_SEED_USER_PASSWORD && env.DB_SEED_USER_NAME) {
         // Check if regular user already exists
         const existingUser = await prisma.user.findUnique({
           where: { email: env.DB_SEED_USER_EMAIL },

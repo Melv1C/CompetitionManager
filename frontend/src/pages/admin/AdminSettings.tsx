@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Separator } from '@/components/ui/separator';
@@ -16,18 +10,14 @@ export function AdminSettings() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Settings</h1>
-        <p className="text-muted-foreground">
-          Manage your organization and system preferences
-        </p>
+        <p className="text-muted-foreground">Manage your organization and system preferences</p>
       </div>
 
       <div className="grid gap-6">
         <Card>
           <CardHeader>
             <CardTitle>Organization Settings</CardTitle>
-            <CardDescription>
-              Configure your organization details and preferences
-            </CardDescription>
+            <CardDescription>Configure your organization details and preferences</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">
@@ -37,19 +27,12 @@ export function AdminSettings() {
               </div>
               <div className="space-y-2">
                 <Label htmlFor="org-email">Contact Email</Label>
-                <Input
-                  id="org-email"
-                  type="email"
-                  defaultValue="admin@competitionorg.com"
-                />
+                <Input id="org-email" type="email" defaultValue="admin@competitionorg.com" />
               </div>
             </div>
             <div className="space-y-2">
               <Label htmlFor="org-description">Description</Label>
-              <Input
-                id="org-description"
-                defaultValue="Managing competitions since 2020"
-              />
+              <Input id="org-description" defaultValue="Managing competitions since 2020" />
             </div>
             <Button>Save Organization Settings</Button>
           </CardContent>
@@ -58,9 +41,7 @@ export function AdminSettings() {
         <Card>
           <CardHeader>
             <CardTitle>Competition Settings</CardTitle>
-            <CardDescription>
-              Default settings for new competitions
-            </CardDescription>
+            <CardDescription>Default settings for new competitions</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="flex items-center justify-between">
@@ -76,9 +57,7 @@ export function AdminSettings() {
             <div className="flex items-center justify-between">
               <div className="space-y-0.5">
                 <Label>Email notifications</Label>
-                <p className="text-sm text-muted-foreground">
-                  Send email updates to participants
-                </p>
+                <p className="text-sm text-muted-foreground">Send email updates to participants</p>
               </div>
               <Switch defaultChecked />
             </div>
@@ -98,9 +77,7 @@ export function AdminSettings() {
         <Card>
           <CardHeader>
             <CardTitle>System Preferences</CardTitle>
-            <CardDescription>
-              Configure system-wide settings and preferences
-            </CardDescription>
+            <CardDescription>Configure system-wide settings and preferences</CardDescription>
           </CardHeader>
           <CardContent className="space-y-4">
             <div className="grid grid-cols-2 gap-4">

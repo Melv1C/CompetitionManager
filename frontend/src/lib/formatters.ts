@@ -29,7 +29,7 @@ const getCurrentLocale = (): string => i18n.language || 'en-US';
  */
 export const formatDate = (
   date: Date | string,
-  options: Omit<FormatOptions, 'locale'> = {}
+  options: Omit<FormatOptions, 'locale'> = {},
 ): string => {
   return coreFormatDate(date, { ...options, locale: getCurrentLocale() });
 };
@@ -39,7 +39,7 @@ export const formatDate = (
  */
 export const formatDateShort = (
   date: Date | string,
-  options: Omit<FormatOptions, 'locale'> = {}
+  options: Omit<FormatOptions, 'locale'> = {},
 ): string => {
   return coreFormatDateShort(date, { ...options, locale: getCurrentLocale() });
 };
@@ -49,7 +49,7 @@ export const formatDateShort = (
  */
 export const formatDateTime = (
   date: Date | string,
-  options: Omit<FormatOptions, 'locale'> = {}
+  options: Omit<FormatOptions, 'locale'> = {},
 ): string => {
   return coreFormatDateTime(date, { ...options, locale: getCurrentLocale() });
 };
@@ -59,7 +59,7 @@ export const formatDateTime = (
  */
 export const formatDateFull = (
   date: Date | string,
-  options: Omit<FormatOptions, 'locale'> = {}
+  options: Omit<FormatOptions, 'locale'> = {},
 ): string => {
   return coreFormatDateFull(date, { ...options, locale: getCurrentLocale() });
 };
@@ -69,7 +69,7 @@ export const formatDateFull = (
  */
 export const formatTime = (
   date: Date | string,
-  options: Omit<FormatOptions, 'locale'> = {}
+  options: Omit<FormatOptions, 'locale'> = {},
 ): string => {
   return coreFormatTime(date, { ...options, locale: getCurrentLocale() });
 };
@@ -79,7 +79,7 @@ export const formatTime = (
  */
 export const formatTimeWithSeconds = (
   date: Date | string,
-  options: Omit<FormatOptions, 'locale'> = {}
+  options: Omit<FormatOptions, 'locale'> = {},
 ): string => {
   return coreFormatTimeWithSeconds(date, {
     ...options,
@@ -97,7 +97,7 @@ export const formatTimestamp = coreFormatTimestamp;
  */
 export const formatCurrency = (
   amount: number,
-  options: Omit<CurrencyOptions, 'locale'> = {}
+  options: Omit<CurrencyOptions, 'locale'> = {},
 ): string => {
   return coreFormatCurrency(amount, { ...options, locale: getCurrentLocale() });
 };
@@ -110,7 +110,7 @@ export const formatNumber = (
   options: Omit<FormatOptions, 'locale'> & {
     minimumFractionDigits?: number;
     maximumFractionDigits?: number;
-  } = {}
+  } = {},
 ): string => {
   return coreFormatNumber(value, { ...options, locale: getCurrentLocale() });
 };
@@ -123,7 +123,7 @@ export const formatPercentage = (
   options: Omit<FormatOptions, 'locale'> & {
     minimumFractionDigits?: number;
     maximumFractionDigits?: number;
-  } = {}
+  } = {},
 ): string => {
   return coreFormatPercentage(value, {
     ...options,

@@ -109,8 +109,7 @@ export class TestUtils {
    */
   async waitForApiResponse(urlPattern: string) {
     return this.page.waitForResponse(
-      (response) =>
-        response.url().includes(urlPattern) && response.status() === 200
+      response => response.url().includes(urlPattern) && response.status() === 200,
     );
   }
 }

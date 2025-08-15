@@ -1,9 +1,5 @@
 import type { CategoryCreate, CategoryUpdate } from '@repo/core/schemas';
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CategoriesService } from '../services/categories-service';
 
@@ -27,13 +23,12 @@ export function useCreateCategory() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CategoryCreate) =>
-      CategoriesService.createCategory(data),
+    mutationFn: (data: CategoryCreate) => CategoriesService.createCategory(data),
     onSuccess: () => {
       toast.success('Category created successfully');
       queryClient.invalidateQueries({ queryKey: [CATEGORIES_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Create category error:', error);
       toast.error('Failed to create category');
     },
@@ -50,7 +45,7 @@ export function useUpdateCategory() {
       toast.success('Category updated successfully');
       queryClient.invalidateQueries({ queryKey: [CATEGORIES_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Update category error:', error);
       toast.error('Failed to update category');
     },
@@ -66,7 +61,7 @@ export function useDeleteCategory() {
       toast.success('Category deleted successfully');
       queryClient.invalidateQueries({ queryKey: [CATEGORIES_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Delete category error:', error);
       toast.error('Failed to delete category');
     },

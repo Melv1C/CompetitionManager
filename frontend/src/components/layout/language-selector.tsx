@@ -39,7 +39,7 @@ export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
             </div>
           </SelectTrigger>
           <SelectContent>
-            {languages.map((lang) => (
+            {languages.map(lang => (
               <SelectItem key={lang.code} value={lang.code}>
                 <div className="flex items-center gap-2">{lang.label}</div>
               </SelectItem>
@@ -58,7 +58,7 @@ export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
         </div>
       </SelectTrigger>
       <SelectContent>
-        {languages.map((lang) => (
+        {languages.map(lang => (
           <SelectItem key={lang.code} value={lang.code}>
             <div className="flex items-center gap-2">{lang.label}</div>
           </SelectItem>

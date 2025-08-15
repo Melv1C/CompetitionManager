@@ -6,19 +6,14 @@ export type Id = z.infer<typeof Id$>;
 export const ParameterId$ = z.coerce.number().int().positive();
 export type ParameterId = z.infer<typeof ParameterId$>;
 
-export const BetterAuthId$ = z
-  .string()
-  .regex(/^[A-Za-z0-9]{32}$/, 'Invalid Better Auth ID format');
+export const BetterAuthId$ = z.string().regex(/^[A-Za-z0-9]{32}$/, 'Invalid Better Auth ID format');
 export type BetterAuthId = z.infer<typeof BetterAuthId$>;
 
 export const Cuid$ = z.cuid();
 export type Cuid = z.infer<typeof Cuid$>;
 
 // Not use coerce because it can lead to unexpected behavior in react hook forms
-export const Date$ = z.union([
-  z.date(),
-  z.iso.datetime().transform((date) => new Date(date)),
-]);
+export const Date$ = z.union([z.date(), z.iso.datetime().transform(date => new Date(date))]);
 export type Date = z.infer<typeof Date$>;
 
 export const Email$ = z.email();

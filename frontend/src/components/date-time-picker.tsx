@@ -1,10 +1,6 @@
 import { Button } from '@/components/ui/button';
 import { Calendar } from '@/components/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { format } from 'date-fns';
 import { CalendarIcon, Clock, X, Check } from 'lucide-react';
 import { useMemo, useRef, useState, useEffect } from 'react';
@@ -32,9 +28,7 @@ export function DateTimePicker({
   const [isOpen, setIsOpen] = useState(false);
   const timeInputRef = useRef<HTMLInputElement>(null);
   const timeValue = useMemo(() => {
-    return value
-      ? value.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' })
-      : '00:00';
+    return value ? value.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '00:00';
   }, [value]);
 
   const [error, setError] = useState<string | null>(null);
@@ -54,8 +48,7 @@ export function DateTimePicker({
 
     // Priority 2: If current date is available (within bounds), use current month
     const isTodayAvailable =
-      (!minDate || endOfToday >= minDate) &&
-      (!maxDate || startOfToday <= maxDate);
+      (!minDate || endOfToday >= minDate) && (!maxDate || startOfToday <= maxDate);
 
     if (isTodayAvailable) {
       return today;
@@ -147,16 +140,14 @@ export function DateTimePicker({
             disabled={disabled}
           >
             <CalendarIcon className="mr-2 h-4 w-4" />
-            {value
-              ? format(value, 'dd MMM yyyy, HH:mm')
-              : placeholder || 'Pick a date'}
+            {value ? format(value, 'dd MMM yyyy, HH:mm') : placeholder || 'Pick a date'}
           </Button>
         </PopoverTrigger>
         <PopoverContent
           className="w-auto p-0"
           align="center"
           sideOffset={4}
-          onInteractOutside={(e) => {
+          onInteractOutside={e => {
             // Prevent closing when clicking inside the calendar or time input
             e.preventDefault();
           }}
@@ -169,7 +160,7 @@ export function DateTimePicker({
               captionLayout="dropdown"
               className="w-auto max-w-xs"
               defaultMonth={defaultMonth}
-              disabled={(date) => {
+              disabled={date => {
                 // Create start and end of day for comparison
                 const startOfDay = new Date(date);
                 startOfDay.setHours(0, 0, 0, 0);
@@ -195,14 +186,12 @@ export function DateTimePicker({
                 ref={timeInputRef}
                 type="time"
                 value={timeValue}
-                onChange={(e) => handleTimeChange(e.target.value)}
+                onChange={e => handleTimeChange(e.target.value)}
                 disabled={value ? false : true}
                 className="peer ps-9 [&::-webkit-calendar-picker-indicator]:hidden"
               />
             </div>
-            {error && (
-              <div className="mt-2 text-sm text-destructive">{error}</div>
-            )}
+            {error && <div className="mt-2 text-sm text-destructive">{error}</div>}
             <div className="mt-3 pt-3 border-t flex gap-2">
               {allowClear && value && (
                 <Button

@@ -11,12 +11,7 @@ import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
-import {
-  createBrowserRouter,
-  Outlet,
-  RouterProvider,
-  useNavigate,
-} from 'react-router-dom';
+import { createBrowserRouter, Outlet, RouterProvider, useNavigate } from 'react-router-dom';
 import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
 import { CompetitionOutlet } from './pages/organization/competition/outlet';
@@ -26,110 +21,106 @@ const pageImports = {
   // Main pages
   Home: () => import('./pages/Home'),
   NotFound: () => import('./pages/NotFound'),
-  SignIn: () =>
-    import('./pages/SignIn').then((m) => ({ default: m.SignInPage })),
-  SignUp: () =>
-    import('./pages/SignUp').then((m) => ({ default: m.SignUpPage })),
+  SignIn: () => import('./pages/SignIn').then(m => ({ default: m.SignInPage })),
+  SignUp: () => import('./pages/SignUp').then(m => ({ default: m.SignUpPage })),
   Competitions: () =>
-    import('./pages/Competitions').then((m) => ({
+    import('./pages/Competitions').then(m => ({
       default: m.CompetitionsPage,
     })),
-  Results: () =>
-    import('./pages/Results').then((m) => ({ default: m.ResultsPage })),
+  Results: () => import('./pages/Results').then(m => ({ default: m.ResultsPage })),
 
   // Competition sub-pages
   CompetitionHome: () =>
-    import('./pages/competition/home').then((m) => ({
+    import('./pages/competition/home').then(m => ({
       default: m.CompetitionHomePage,
     })),
   CompetitionSchedule: () =>
-    import('./pages/competition/schedule').then((m) => ({
+    import('./pages/competition/schedule').then(m => ({
       default: m.CompetitionSchedulePage,
     })),
   CompetitionParticipants: () =>
-    import('./pages/competition/participants').then((m) => ({
+    import('./pages/competition/participants').then(m => ({
       default: m.CompetitionParticipantsPage,
     })),
   CompetitionResults: () =>
-    import('./pages/competition/results').then((m) => ({
+    import('./pages/competition/results').then(m => ({
       default: m.CompetitionResultsPage,
     })),
   CompetitionRegister: () =>
-    import('./pages/competition/register').then((m) => ({
+    import('./pages/competition/register').then(m => ({
       default: m.CompetitionRegisterPage,
     })),
 
   // Admin pages
   AdminDashboard: () =>
-    import('./pages/admin/AdminDashboard').then((m) => ({
+    import('./pages/admin/AdminDashboard').then(m => ({
       default: m.AdminDashboard,
     })),
   AdminUsers: () =>
-    import('./pages/admin/admin-users').then((m) => ({
+    import('./pages/admin/admin-users').then(m => ({
       default: m.AdminUsers,
     })),
   AdminOrganizations: () =>
-    import('./pages/admin/admin-organizations').then((m) => ({
+    import('./pages/admin/admin-organizations').then(m => ({
       default: m.AdminOrganizations,
     })),
   AdminDatabase: () =>
-    import('./pages/admin/AdminDatabase').then((m) => ({
+    import('./pages/admin/AdminDatabase').then(m => ({
       default: m.AdminDatabase,
     })),
-  AdminLogs: () =>
-    import('./pages/admin/admin-logs').then((m) => ({ default: m.AdminLogs })),
+  AdminLogs: () => import('./pages/admin/admin-logs').then(m => ({ default: m.AdminLogs })),
   AdminAnalytics: () =>
-    import('./pages/admin/AdminAnalytics').then((m) => ({
+    import('./pages/admin/AdminAnalytics').then(m => ({
       default: m.AdminAnalytics,
     })),
   AdminSettings: () =>
-    import('./pages/admin/AdminSettings').then((m) => ({
+    import('./pages/admin/AdminSettings').then(m => ({
       default: m.AdminSettings,
     })),
 
   // Organization pages
   OrganizationDashboard: () =>
-    import('./pages/organization/organization-dashboard').then((m) => ({
+    import('./pages/organization/organization-dashboard').then(m => ({
       default: m.OrganizationDashboard,
     })),
   OrganizationCompetitions: () =>
-    import('./pages/organization/organization-competitions').then((m) => ({
+    import('./pages/organization/organization-competitions').then(m => ({
       default: m.OrganizationCompetitions,
     })),
   OrganizationMembers: () =>
-    import('./pages/organization/organization-members').then((m) => ({
+    import('./pages/organization/organization-members').then(m => ({
       default: m.OrganizationMembers,
     })),
   OrganizationAnalytics: () =>
-    import('./pages/organization/organization-analytics').then((m) => ({
+    import('./pages/organization/organization-analytics').then(m => ({
       default: m.OrganizationAnalytics,
     })),
   OrganizationSettings: () =>
-    import('./pages/organization/organization-settings').then((m) => ({
+    import('./pages/organization/organization-settings').then(m => ({
       default: m.OrganizationSettings,
     })),
   OrganizationCompetitionOverview: () =>
-    import('./pages/organization/competition/overview').then((m) => ({
+    import('./pages/organization/competition/overview').then(m => ({
       default: m.CompetitionOverview,
     })),
   OrganizationCompetitionInscriptions: () =>
-    import('./pages/organization/competition/inscriptions').then((m) => ({
+    import('./pages/organization/competition/inscriptions').then(m => ({
       default: m.CompetitionInscriptions,
     })),
   OrganizationCompetitionConfirmations: () =>
-    import('./pages/organization/competition/confirmations').then((m) => ({
+    import('./pages/organization/competition/confirmations').then(m => ({
       default: m.CompetitionConfirmations,
     })),
   OrganizationCompetitionEvents: () =>
-    import('./pages/organization/competition/events').then((m) => ({
+    import('./pages/organization/competition/events').then(m => ({
       default: m.CompetitionEvents,
     })),
   OrganizationCompetitionResults: () =>
-    import('./pages/organization/competition/results').then((m) => ({
+    import('./pages/organization/competition/results').then(m => ({
       default: m.CompetitionResults,
     })),
   OrganizationCompetitionSettings: () =>
-    import('./pages/organization/competition/settings').then((m) => ({
+    import('./pages/organization/competition/settings').then(m => ({
       default: m.CompetitionSettings,
     })),
 } as const;
@@ -150,9 +141,7 @@ const ResultsPage = createLazyComponent('Results');
 // Competition sub-pages
 const CompetitionHomePage = createLazyComponent('CompetitionHome');
 const CompetitionSchedulePage = createLazyComponent('CompetitionSchedule');
-const CompetitionParticipantsPage = createLazyComponent(
-  'CompetitionParticipants'
-);
+const CompetitionParticipantsPage = createLazyComponent('CompetitionParticipants');
 const CompetitionResultsPageSub = createLazyComponent('CompetitionResults');
 const CompetitionRegisterPage = createLazyComponent('CompetitionRegister');
 
@@ -165,30 +154,20 @@ const AdminAnalytics = createLazyComponent('AdminAnalytics');
 const AdminSettings = createLazyComponent('AdminSettings');
 
 const OrganizationDashboard = createLazyComponent('OrganizationDashboard');
-const OrganizationCompetitions = createLazyComponent(
-  'OrganizationCompetitions'
-);
+const OrganizationCompetitions = createLazyComponent('OrganizationCompetitions');
 const OrganizationMembers = createLazyComponent('OrganizationMembers');
 const OrganizationAnalytics = createLazyComponent('OrganizationAnalytics');
 const OrganizationSettings = createLazyComponent('OrganizationSettings');
-const OrganizationCompetitionOverview = createLazyComponent(
-  'OrganizationCompetitionOverview'
-);
+const OrganizationCompetitionOverview = createLazyComponent('OrganizationCompetitionOverview');
 const OrganizationCompetitionInscriptions = createLazyComponent(
-  'OrganizationCompetitionInscriptions'
+  'OrganizationCompetitionInscriptions',
 );
 const OrganizationCompetitionConfirmations = createLazyComponent(
-  'OrganizationCompetitionConfirmations'
+  'OrganizationCompetitionConfirmations',
 );
-const OrganizationCompetitionEvents = createLazyComponent(
-  'OrganizationCompetitionEvents'
-);
-const OrganizationCompetitionResults = createLazyComponent(
-  'OrganizationCompetitionResults'
-);
-const OrganizationCompetitionSettings = createLazyComponent(
-  'OrganizationCompetitionSettings'
-);
+const OrganizationCompetitionEvents = createLazyComponent('OrganizationCompetitionEvents');
+const OrganizationCompetitionResults = createLazyComponent('OrganizationCompetitionResults');
+const OrganizationCompetitionSettings = createLazyComponent('OrganizationCompetitionSettings');
 // Create a QueryClient instance
 const queryClient = new QueryClient({
   defaultOptions: {

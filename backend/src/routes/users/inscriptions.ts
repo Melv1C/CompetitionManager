@@ -7,7 +7,7 @@ import { Hono } from 'hono';
 const userInscriptionsRoutes = new Hono();
 
 // GET /users/me/inscriptions - Get all inscriptions for the current user
-userInscriptionsRoutes.get('/me/inscriptions', async (c) => {
+userInscriptionsRoutes.get('/me/inscriptions', async c => {
   try {
     const session = await getRequiredSession(c);
 
@@ -17,9 +17,7 @@ userInscriptionsRoutes.get('/me/inscriptions', async (c) => {
         userId: session.userId,
       },
       include: inscriptionInclude,
-      orderBy: [
-        { inscriptionDate: 'desc' },
-      ],
+      orderBy: [{ inscriptionDate: 'desc' }],
     });
 
     return c.json(Inscription$.array().parse(inscriptions));

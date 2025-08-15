@@ -8,10 +8,7 @@ interface AuthButtonProps {
   onMobileMenuClose?: () => void;
 }
 
-export function AuthButton({
-  isMobile = false,
-  onMobileMenuClose,
-}: AuthButtonProps) {
+export function AuthButton({ isMobile = false, onMobileMenuClose }: AuthButtonProps) {
   const { user, isLoading } = useAuth();
 
   if (isLoading) {
@@ -19,9 +16,7 @@ export function AuthButton({
   }
 
   if (!user) {
-    return (
-      <LoginButton isMobile={isMobile} onMobileMenuClose={onMobileMenuClose} />
-    );
+    return <LoginButton isMobile={isMobile} onMobileMenuClose={onMobileMenuClose} />;
   }
 
   return <UserButton user={user} onMobileMenuClose={onMobileMenuClose} />;

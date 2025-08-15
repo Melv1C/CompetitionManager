@@ -29,7 +29,7 @@ interface SocketStore extends SocketState {
 
 export const useSocketStore = create<SocketStore>()(
   devtools(
-    (set) => ({
+    set => ({
       // Initial state
       socket: null,
       status: 'disconnected',
@@ -72,12 +72,12 @@ export const useSocketStore = create<SocketStore>()(
     }),
     {
       name: 'socket-store',
-    }
-  )
+    },
+  ),
 );
 
 // Subscribe to socket service state changes
-socketService.onStateChange((socketState) => {
+socketService.onStateChange(socketState => {
   console.log('Socket state changed:', socketState);
   useSocketStore.setState(socketState);
 });

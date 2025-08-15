@@ -4,7 +4,11 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "tsx dist/index.js"
+    "start": "tsx dist/index.js",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix",
+    "format": "prettier --write \"**/*.{ts,js,json}\"",
+    "format:check": "prettier --check \"**/*.{ts,js,json}\""
   },
   "dependencies": {
     "@hono/node-server": "^1.14.4",
@@ -23,6 +27,10 @@
     "@types/node": "^20.11.17",
     "prisma": "^6.13.0",
     "tsx": "^4.7.1",
-    "typescript": "^5.8.3"
+    "typescript": "^5.8.3",
+    "@eslint/js": "^9.25.0",
+    "eslint": "^9.25.0",
+    "typescript-eslint": "^8.30.1",
+    "prettier": "^3.4.2"
   }
 }

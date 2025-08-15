@@ -24,7 +24,7 @@ export function RegistrationBasket() {
 
   const handleProceedToPayment = async () => {
     try {
-      const allInscriptions = registrations.flatMap((reg) => reg.inscriptions);
+      const allInscriptions = registrations.flatMap(reg => reg.inscriptions);
 
       if (allInscriptions.length > 0) {
         await createInscriptions.mutateAsync({ inscriptions: allInscriptions });
@@ -35,13 +35,9 @@ export function RegistrationBasket() {
     }
   };
 
-  const calculateRegistrationTotal = (
-    registration: (typeof registrations)[0]
-  ) => {
+  const calculateRegistrationTotal = (registration: (typeof registrations)[0]) => {
     return registration.inscriptions.reduce((total, inscription) => {
-      const event = competition.data.events.find(
-        (e) => e.id === inscription.competitionEventId
-      );
+      const event = competition.data.events.find(e => e.id === inscription.competitionEventId);
       return total + (event?.price || 0);
     }, 0);
   };
@@ -50,13 +46,12 @@ export function RegistrationBasket() {
     return total + calculateRegistrationTotal(registration);
   }, 0);
 
-  const alreadyPaidTotal = registrations.reduce((total) => {
+  const alreadyPaidTotal = registrations.reduce(total => {
     return total + 0; // TODO: Implement already paid calculation
   }, 0);
 
   const processingFee = 0.99;
-  const totalPrice =
-    subtotalPrice - alreadyPaidTotal + (subtotalPrice > 0 ? processingFee : 0);
+  const totalPrice = subtotalPrice - alreadyPaidTotal + (subtotalPrice > 0 ? processingFee : 0);
 
   if (!hasRegistrations()) {
     return (
@@ -67,12 +62,8 @@ export function RegistrationBasket() {
             <ShoppingCart className="w-8 h-8 text-muted-foreground" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold mb-2">
-              {t('registrationBasket')}
-            </h1>
-            <p className="text-muted-foreground">
-              {t('noRegistrationsInBasket')}
-            </p>
+            <h1 className="text-2xl font-bold mb-2">{t('registrationBasket')}</h1>
+            <p className="text-muted-foreground">{t('noRegistrationsInBasket')}</p>
           </div>
           <Button onClick={goToForm} size="lg">
             <UserPlus className="w-4 h-4 mr-2" />
@@ -91,9 +82,7 @@ export function RegistrationBasket() {
           <ShoppingCart className="w-6 h-6" />
           <span>{t('registrationBasket')}</span>
         </h1>
-        <p className="text-sm text-muted-foreground">
-          {t('reviewRegistrationsAndProceed')}
-        </p>
+        <p className="text-sm text-muted-foreground">{t('reviewRegistrationsAndProceed')}</p>
       </div>
 
       {/* Ticket-style Registration List */}
@@ -104,8 +93,7 @@ export function RegistrationBasket() {
             <CardHeader className="pb-1 px-3 pt-3">
               <div className="flex items-center justify-between">
                 <CardTitle className="text-lg font-bold">
-                  {registration.athlete.firstName}{' '}
-                  {registration.athlete.lastName}
+                  {registration.athlete.firstName} {registration.athlete.lastName}
                 </CardTitle>
                 <div className="flex items-center gap-2">
                   <Button
@@ -125,7 +113,7 @@ export function RegistrationBasket() {
               <div className="space-y-1">
                 {registration.inscriptions.map((inscription, idx) => {
                   const event = competition.data.events.find(
-                    (e) => e.id === inscription.competitionEventId
+                    e => e.id === inscription.competitionEventId,
                   );
                   return (
                     <div key={idx} className="py-1">
@@ -134,21 +122,17 @@ export function RegistrationBasket() {
                           <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded">
                             {formatTime(event!.eventStartTime)}
                           </span>
-                          <span className="font-medium text-sm">
-                            {event!.name}
-                          </span>
+                          <span className="font-medium text-sm">{event!.name}</span>
                           {inscription.record?.performanceValue && (
                             <span className="text-xs text-muted-foreground">
                               {formatPerformance(
                                 inscription.record?.performanceValue,
-                                event!.event.type
+                                event!.event.type,
                               )}
                             </span>
                           )}
                         </div>
-                        <div className="text-sm font-medium">
-                          €{event?.price.toFixed(2)}
-                        </div>
+                        <div className="text-sm font-medium">€{event?.price.toFixed(2)}</div>
                       </div>
                     </div>
                   );
@@ -161,9 +145,7 @@ export function RegistrationBasket() {
               <div className="space-y-1">
                 <div className="flex justify-between text-sm">
                   <span>{t('subtotal')}</span>
-                  <span>
-                    €{calculateRegistrationTotal(registration).toFixed(2)}
-                  </span>
+                  <span>€{calculateRegistrationTotal(registration).toFixed(2)}</span>
                 </div>
               </div>
             </CardContent>
@@ -222,8 +204,8 @@ export function RegistrationBasket() {
           {createInscriptions.isPending
             ? t('processing')
             : totalPrice > 0
-            ? t('proceedToPayment')
-            : t('confirmRegistration')}
+              ? t('proceedToPayment')
+              : t('confirmRegistration')}
         </Button>
       </div>
     </div>

@@ -1,12 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
-import {
-  Athlete$,
-  AthleteKey$,
-  Date$,
-  athleteInclude,
-} from '@repo/core/schemas';
+import { Athlete, Athlete$, AthleteInfo, AthleteKey$, Date$, athleteInclude } from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
 
@@ -19,15 +14,15 @@ const athletesRoutes = new Hono();
  * - Then athletes with matching last name
  * - Finally all other athletes
  */
-const orderAthletes = async (athletes: any[], key: string) => {
-  const athletesWithBib = athletes.filter((athlete) =>
-    athlete.athleteInfo.some((info: any) => info.bib === parseInt(key))
+const orderAthletes = async (athletes: Athlete[], key: string) => {
+  const athletesWithBib = athletes.filter(athlete =>
+    athlete.athleteInfo.some((info: AthleteInfo) => info.bib === parseInt(key)),
   );
-  const athletesWithFirstName = athletes.filter((athlete) =>
-    athlete.firstName.toLowerCase().startsWith(key.toLowerCase())
+  const athletesWithFirstName = athletes.filter(athlete =>
+    athlete.firstName.toLowerCase().startsWith(key.toLowerCase()),
   );
-  const athletesWithLastName = athletes.filter((athlete) =>
-    athlete.lastName.toLowerCase().startsWith(key.toLowerCase())
+  const athletesWithLastName = athletes.filter(athlete =>
+    athlete.lastName.toLowerCase().startsWith(key.toLowerCase()),
   );
 
   // Create a unique set while preserving order
@@ -49,19 +44,19 @@ athletesRoutes.get(
     z.object({
       key: AthleteKey$,
       refDate: Date$.optional().default(new Date()),
-    })
+    }),
   ),
-  async (c) => {
+  async c => {
     try {
       const { key, refDate } = c.req.valid('query');
       const season = new Date(refDate).getFullYear();
-      const keys = key.split(' ').filter((k) => k.trim().length > 0);
+      const keys = key.split(' ').filter(k => k.trim().length > 0);
 
       const athletes = await prisma.athlete.findMany({
         where: {
           AND: [
             {
-              AND: keys.map((k) => ({
+              AND: keys.map(k => ({
                 OR: [
                   { firstName: { contains: k, mode: 'insensitive' } },
                   { lastName: { contains: k, mode: 'insensitive' } },
@@ -90,15 +85,15 @@ athletesRoutes.get(
         return c.json({ error: 'No athlete found' }, 404);
       }
 
-      const sortedAthletes = await orderAthletes(athletes, key);
-      const validatedAthletes = Athlete$.array().parse(sortedAthletes);
+      const validatedAthletes = Athlete$.array().parse(athletes);
+      const sortedAthletes = await orderAthletes(validatedAthletes, key);
 
-      return c.json(validatedAthletes);
+      return c.json(sortedAthletes);
     } catch (error) {
       logError('Failed to search athletes', error, c);
       return c.json({ error: 'Failed to search athletes' }, 500);
     }
-  }
+  },
 );
 
 export { athletesRoutes };

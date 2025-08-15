@@ -1,11 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  Card,
-  CardAction,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -62,7 +56,7 @@ export function AthleteSearch({
       debounce((term: string) => {
         setDebouncedSearchTerm(term);
       }, 300),
-    []
+    [],
   );
 
   useEffect(() => {
@@ -75,7 +69,7 @@ export function AthleteSearch({
   // API search - only used when no local athletes provided
   const apiSearch = useSearchAthletes(
     debouncedSearchTerm,
-    !isLocalMode && AthleteKey$.safeParse(debouncedSearchTerm).success
+    !isLocalMode && AthleteKey$.safeParse(debouncedSearchTerm).success,
   );
 
   // Local search - filter provided athletes
@@ -83,11 +77,9 @@ export function AthleteSearch({
     if (!localAthletes || !searchTerm.trim()) return [];
 
     const searchTermLower = searchTerm.toLowerCase();
-    const searchWords = searchTermLower
-      .split(' ')
-      .filter((word) => word.length > 0);
+    const searchWords = searchTermLower.split(' ').filter(word => word.length > 0);
 
-    return localAthletes.filter((athlete) => {
+    return localAthletes.filter(athlete => {
       const fullName = `${athlete.firstName} ${athlete.lastName}`.toLowerCase();
       const license = athlete.license.toLowerCase();
 
@@ -96,10 +88,7 @@ export function AthleteSearch({
       const bibString = bib ? bib.toString() : '';
 
       return searchWords.every(
-        (word) =>
-          fullName.includes(word) ||
-          license.includes(word) ||
-          bibString.includes(word)
+        word => fullName.includes(word) || license.includes(word) || bibString.includes(word),
       );
     });
   }, [localAthletes, searchTerm, referenceDate]);
@@ -147,8 +136,7 @@ export function AthleteSearch({
     return `${athlete.firstName} ${athlete.lastName}`;
   };
 
-  const shouldShowResults =
-    showResults && searchTerm.trim().length > 0 && !disabled;
+  const shouldShowResults = showResults && searchTerm.trim().length > 0 && !disabled;
 
   if (value) {
     return (
@@ -158,11 +146,7 @@ export function AthleteSearch({
             <CardTitle>{t('athleteSelected')}</CardTitle>
           </CardHeader>
           <CardContent>
-            <AthleteCard
-              athlete={value}
-              referenceDate={referenceDate}
-              isClickable={false}
-            />
+            <AthleteCard athlete={value} referenceDate={referenceDate} isClickable={false} />
             <CardAction>
               <Button
                 variant="outline"
@@ -237,7 +221,7 @@ export function AthleteSearch({
               {/* Athletes List */}
               {!isLoading && !error && athletes.length > 0 && (
                 <div className="space-y-1">
-                  {athletes.map((athlete) => (
+                  {athletes.map(athlete => (
                     <AthleteCard
                       key={athlete.id}
                       athlete={athlete}

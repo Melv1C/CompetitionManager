@@ -34,9 +34,7 @@ function getStatusBadgeVariant(status: InscriptionPublic['status']) {
   }
 }
 
-function getPresenceStatusBadgeVariant(
-  status: InscriptionPublic['presenceStatus']
-) {
+function getPresenceStatusBadgeVariant(status: InscriptionPublic['presenceStatus']) {
   switch (status) {
     case 'PRESENT':
       return 'default';
@@ -130,12 +128,8 @@ export function ParticipantList() {
         <CardContent>
           <div className="text-center py-8">
             <UsersIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-muted-foreground">
-              {t('noParticipantsYet')}
-            </h3>
-            <p className="text-sm text-muted-foreground mt-2">
-              {t('noParticipantsDescription')}
-            </p>
+            <h3 className="text-lg font-medium text-muted-foreground">{t('noParticipantsYet')}</h3>
+            <p className="text-sm text-muted-foreground mt-2">{t('noParticipantsDescription')}</p>
           </div>
         </CardContent>
       </Card>
@@ -163,48 +157,31 @@ export function ParticipantList() {
             </TableRow>
           </TableHeader>
           <TableBody>
-            {inscriptions.data.map((inscription) => {
-              const bib = getSeasonBib(
-                inscription.athlete,
-                competition.data.startDate
-              );
+            {inscriptions.data.map(inscription => {
+              const bib = getSeasonBib(inscription.athlete, competition.data.startDate);
               return (
-                <TableRow
-                  key={`${inscription.athlete.id}-${inscription.competitionEvent.id}`}
-                >
+                <TableRow key={`${inscription.athlete.id}-${inscription.competitionEvent.id}`}>
                   <TableCell className="font-medium">{bib ?? '-'}</TableCell>
                   <TableCell>
                     <div className="font-medium">
-                      {inscription.athlete.firstName}{' '}
-                      {inscription.athlete.lastName}
+                      {inscription.athlete.firstName} {inscription.athlete.lastName}
                     </div>
                   </TableCell>
-                  <TableCell>
-                    {inscription.competitionEvent.event.name}
-                  </TableCell>
+                  <TableCell>{inscription.competitionEvent.event.name}</TableCell>
                   <TableCell>
                     {formatPerformance(
                       inscription.record?.performanceValue,
-                      inscription.competitionEvent.event.type
+                      inscription.competitionEvent.event.type,
                     )}
                   </TableCell>
                   <TableCell>
                     <Badge variant={getStatusBadgeVariant(inscription.status)}>
-                      {t(
-                        `inscriptionStatus.${inscription.status.toLowerCase()}`,
-                        { ns: 'enums' }
-                      )}
+                      {t(`inscriptionStatus.${inscription.status.toLowerCase()}`, { ns: 'enums' })}
                     </Badge>
                   </TableCell>
                   <TableCell>
-                    <Badge
-                      variant={getPresenceStatusBadgeVariant(
-                        inscription.presenceStatus
-                      )}
-                    >
-                      {t(
-                        `presenceStatus.${inscription.presenceStatus.toLowerCase()}`
-                      )}
+                    <Badge variant={getPresenceStatusBadgeVariant(inscription.presenceStatus)}>
+                      {t(`presenceStatus.${inscription.presenceStatus.toLowerCase()}`)}
                     </Badge>
                   </TableCell>
                 </TableRow>

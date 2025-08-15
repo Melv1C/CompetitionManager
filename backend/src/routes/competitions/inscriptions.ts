@@ -26,7 +26,7 @@ const competitionInscriptionsRoutes = new Hono();
 competitionInscriptionsRoutes.get(
   '/:eid/inscriptions',
   zValidator('param', z.object({ eid: Cuid$ })),
-  async (c) => {
+  async c => {
     try {
       const { eid } = c.req.valid('param');
 
@@ -57,7 +57,7 @@ competitionInscriptionsRoutes.get(
       logError('Failed to fetch competition inscriptions', error, c);
       return c.json({ error: 'Failed to fetch competition inscriptions' }, 500);
     }
-  }
+  },
 );
 
 // POST /competitions/:eid/inscriptions - Create inscriptions for a competition
@@ -65,7 +65,7 @@ competitionInscriptionsRoutes.post(
   '/:eid/inscriptions',
   zValidator('param', z.object({ eid: Cuid$ })),
   zValidator('json', UpsertInscriptions$),
-  async (c) => {
+  async c => {
     try {
       const session = await getRequiredSession(c);
       const { eid } = c.req.valid('param');
@@ -76,7 +76,7 @@ competitionInscriptionsRoutes.post(
         await prisma.competition.findFirst({
           where: { eid, isPublished: true },
           include: competitionInclude,
-        })
+        }),
       );
 
       if (!competition) {
@@ -88,39 +88,28 @@ competitionInscriptionsRoutes.post(
       const alreadyPaid = await calculateAlreadyPaidAmount(
         competition,
         inscriptions,
-        session.userId
+        session.userId,
       );
 
       const totalEventCost = calculateTotalEventCost(competition, inscriptions);
 
       if (totalEventCost > alreadyPaid) {
-        return c.json(
-          { error: 'Additional payment required for these inscriptions' },
-          400
-        );
+        return c.json({ error: 'Additional payment required for these inscriptions' }, 400);
       }
 
-      await upsertInscriptionsInDB(
-        competition,
-        inscriptions,
-        session.userId,
-        alreadyPaid
-      );
+      await upsertInscriptionsInDB(competition, inscriptions, session.userId, alreadyPaid);
 
       return c.json({ success: true }, 200);
     } catch (error) {
       logError('Failed to create inscriptions', error, c);
       return c.json(
         {
-          error:
-            error instanceof Error
-              ? error.message
-              : 'Failed to create inscriptions',
+          error: error instanceof Error ? error.message : 'Failed to create inscriptions',
         },
-        400
+        400,
       );
     }
-  }
+  },
 );
 
 export { competitionInscriptionsRoutes };

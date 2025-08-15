@@ -29,9 +29,7 @@ test.describe('Health Check Tests', () => {
         expect(response.status()).toBeGreaterThanOrEqual(200);
       }
     } catch (error) {
-      console.log(
-        '⚠️  API health endpoint not available (this is ok for basic setup)'
-      );
+      console.log('⚠️  API health endpoint not available (this is ok for basic setup)');
       // Don't fail the test if there's no health endpoint
     }
   });
@@ -48,9 +46,7 @@ test.describe('Health Check Tests', () => {
 
   test('page object model pattern works', async ({ page }) => {
     // Test that our utilities work
-    await page.goto(
-      'data:text/html,<div data-testid="test-element">Hello World</div>'
-    );
+    await page.goto('data:text/html,<div data-testid="test-element">Hello World</div>');
 
     // Test data-testid selector
     const element = page.locator('[data-testid="test-element"]');

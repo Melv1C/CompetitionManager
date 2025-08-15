@@ -2,11 +2,7 @@ import { Card, CardContent } from '@/components/ui/card';
 import { RacingBib } from '@/components/racing-bib';
 import { cn } from '@/lib/utils';
 import type { Athlete } from '@repo/core/schemas';
-import {
-  getAthleteCategory,
-  getSeasonBib,
-  getSeasonClub,
-} from '@repo/core/utils';
+import { getAthleteCategory, getSeasonBib, getSeasonClub } from '@repo/core/utils';
 
 interface AthleteCardProps {
   athlete: Athlete;
@@ -34,7 +30,7 @@ export function AthleteCard({
     <Card
       className={cn(
         'transition-colors border-0 shadow-none py-1',
-        isClickable && 'cursor-pointer hover:bg-accent'
+        isClickable && 'cursor-pointer hover:bg-accent',
       )}
       onClick={isClickable ? onClick : undefined}
     >

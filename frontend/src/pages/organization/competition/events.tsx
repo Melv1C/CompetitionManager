@@ -1,8 +1,5 @@
 import { Button } from '@/components/ui/button';
-import {
-  CompetitionEventsTable,
-  CompetitionEventFormDialog,
-} from '@/features/competition-events';
+import { CompetitionEventsTable, CompetitionEventFormDialog } from '@/features/competition-events';
 import { useOrganizationCompetition } from '@/features/competitions';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';

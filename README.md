@@ -43,7 +43,6 @@ nvm use
 2. **Environment Variables**
 
    Create `.env` files in the `backend` and `frontend` directories with the necessary configurations:
-
    - **Backend**: Copy `.env.example` to `.env` and fill in the required values.
    - **Frontend**: Copy `.env.example` to `.env` and set the API URL.
 

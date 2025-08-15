@@ -1,9 +1,5 @@
 import type { EventCreate, EventUpdate } from '@repo/core/schemas';
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { EventsService } from '../services/events-service';
 
@@ -32,7 +28,7 @@ export function useCreateEvent() {
       toast.success('Event created successfully');
       queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Create event error:', error);
       toast.error('Failed to create event');
     },
@@ -49,7 +45,7 @@ export function useUpdateEvent() {
       toast.success('Event updated successfully');
       queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Update event error:', error);
       toast.error('Failed to update event');
     },
@@ -65,7 +61,7 @@ export function useDeleteEvent() {
       toast.success('Event deleted successfully');
       queryClient.invalidateQueries({ queryKey: [EVENTS_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Delete event error:', error);
       toast.error('Failed to delete event');
     },

@@ -1,17 +1,7 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import {
-  Sheet,
-  SheetContent,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from '@/components/ui/sheet';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
+import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { Check, ChevronDown } from 'lucide-react';
 import { cn } from '@/lib/utils';
@@ -46,21 +36,24 @@ export function EventSelector({
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('');
 
-  const selectedEvent = events.find((event) => event.id === value);
+  const selectedEvent = events.find(event => event.id === value);
 
   // Filter out combined events if excludeCombinedEvents is true
   const filteredEvents = excludeCombinedEvents
-    ? events.filter((event) => event.group !== 'combined')
+    ? events.filter(event => event.group !== 'combined')
     : events;
 
   // Group events by their group property
-  const groupedEvents = filteredEvents.reduce((acc, event) => {
-    if (!acc[event.group]) {
-      acc[event.group] = [];
-    }
-    acc[event.group].push(event);
-    return acc;
-  }, {} as Record<EventGroup, Event[]>);
+  const groupedEvents = filteredEvents.reduce(
+    (acc, event) => {
+      if (!acc[event.group]) {
+        acc[event.group] = [];
+      }
+      acc[event.group].push(event);
+      return acc;
+    },
+    {} as Record<EventGroup, Event[]>,
+  );
 
   // Get available groups
   const availableGroups = Object.keys(groupedEvents) as EventGroup[];
@@ -99,16 +92,9 @@ export function EventSelector({
   // Content component
   const ContentComponent = (
     <div className="flex flex-col h-full">
-      <Tabs
-        value={activeTab}
-        onValueChange={setActiveTab}
-        className="flex flex-col h-full"
-      >
+      <Tabs value={activeTab} onValueChange={setActiveTab} className="flex flex-col h-full">
         <TabsList
-          className={cn(
-            'grid w-full h-auto p-1 shrink-0',
-            isMobile ? 'grid-cols-3 gap-1' : ''
-          )}
+          className={cn('grid w-full h-auto p-1 shrink-0', isMobile ? 'grid-cols-3 gap-1' : '')}
           style={
             !isMobile
               ? {
@@ -117,13 +103,13 @@ export function EventSelector({
               : {}
           }
         >
-          {availableGroups.map((group) => (
+          {availableGroups.map(group => (
             <TabsTrigger
               key={group}
               value={group}
               className={cn(
                 'data-[state=active]:bg-background',
-                isMobile ? 'text-xs px-2 py-1.5 min-w-0' : 'text-xs px-2 py-1.5'
+                isMobile ? 'text-xs px-2 py-1.5 min-w-0' : 'text-xs px-2 py-1.5',
               )}
             >
               <span className={isMobile ? 'truncate' : ''}>
@@ -134,7 +120,7 @@ export function EventSelector({
         </TabsList>
 
         <div className="flex-1 overflow-hidden">
-          {availableGroups.map((group) => (
+          {availableGroups.map(group => (
             <TabsContent
               key={group}
               value={group}
@@ -148,15 +134,14 @@ export function EventSelector({
                 >
                   {groupedEvents[group]
                     ?.sort((a, b) => a.id - b.id)
-                    .map((event) => (
+                    .map(event => (
                       <Button
                         key={event.id}
                         variant="ghost"
                         className={cn(
                           'w-full justify-start text-left font-normal h-auto',
                           isMobile ? 'px-4 py-3' : 'px-3 py-2',
-                          value === event.id &&
-                            'bg-accent text-accent-foreground'
+                          value === event.id && 'bg-accent text-accent-foreground',
                         )}
                         onClick={() => handleSelect(event.id)}
                       >
@@ -164,16 +149,11 @@ export function EventSelector({
                           className={cn(
                             'shrink-0',
                             isMobile ? 'mr-3 h-5 w-5' : 'mr-2 h-4 w-4',
-                            value === event.id ? 'opacity-100' : 'opacity-0'
+                            value === event.id ? 'opacity-100' : 'opacity-0',
                           )}
                         />
                         <div className="flex flex-col items-start min-w-0">
-                          <span
-                            className={cn(
-                              'truncate w-full',
-                              isMobile ? 'text-base' : ''
-                            )}
-                          >
+                          <span className={cn('truncate w-full', isMobile ? 'text-base' : '')}>
                             {event.name}
                           </span>
                         </div>

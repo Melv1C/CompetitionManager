@@ -16,21 +16,15 @@ export function SummaryStep() {
   const { currentAthlete, currentEventIds, registrations, removeRegistration } =
     useInscriptionFormStore();
 
-  const selectedEvents = competition.data.events.filter((e) =>
-    currentEventIds.includes(e.id)
-  );
+  const selectedEvents = competition.data.events.filter(e => currentEventIds.includes(e.id));
 
   const calculateCurrentTotal = () => {
     return selectedEvents.reduce((total, event) => total + event.price, 0);
   };
 
-  const calculateRegistrationTotal = (
-    registration: (typeof registrations)[0]
-  ) => {
+  const calculateRegistrationTotal = (registration: (typeof registrations)[0]) => {
     return registration.inscriptions.reduce((total, inscription) => {
-      const event = competition.data.events.find(
-        (e) => e.id === inscription.competitionEventId
-      );
+      const event = competition.data.events.find(e => e.id === inscription.competitionEventId);
       return total + (event?.price || 0);
     }, 0);
   };
@@ -50,9 +44,7 @@ export function SummaryStep() {
         {currentAthlete && selectedEvents.length > 0 && (
           <div className="border rounded-lg p-4 bg-blue-50/50 border-blue-200">
             <div className="flex items-center justify-between mb-3">
-              <h3 className="font-medium text-sm">
-                {t('currentRegistration')}
-              </h3>
+              <h3 className="font-medium text-sm">{t('currentRegistration')}</h3>
               <Badge variant="secondary">{t('pending')}</Badge>
             </div>
 
@@ -64,11 +56,8 @@ export function SummaryStep() {
               </div>
 
               <div className="space-y-1 text-sm">
-                {selectedEvents.map((event) => (
-                  <div
-                    key={event.id}
-                    className="flex justify-between items-center"
-                  >
+                {selectedEvents.map(event => (
+                  <div key={event.id} className="flex justify-between items-center">
                     <span className="text-muted-foreground">{event.name}</span>
                     <span>€{event.price.toFixed(2)}</span>
                   </div>
@@ -97,8 +86,7 @@ export function SummaryStep() {
                 <div className="flex items-center justify-between mb-3">
                   <div className="flex items-center space-x-3">
                     <span className="font-medium text-sm">
-                      {registration.athlete.firstName}{' '}
-                      {registration.athlete.lastName}
+                      {registration.athlete.firstName} {registration.athlete.lastName}
                     </span>
                     <Badge variant="outline" className="text-xs">
                       {registration.inscriptions.length} {t('events', { ns: 'common' })}
@@ -116,16 +104,11 @@ export function SummaryStep() {
                 <div className="space-y-1 text-sm">
                   {registration.inscriptions.map((inscription, idx) => {
                     const event = competition.data.events.find(
-                      (e) => e.id === inscription.competitionEventId
+                      e => e.id === inscription.competitionEventId,
                     );
                     return (
-                      <div
-                        key={idx}
-                        className="flex justify-between items-center"
-                      >
-                        <span className="text-muted-foreground">
-                          {event?.name}
-                        </span>
+                      <div key={idx} className="flex justify-between items-center">
+                        <span className="text-muted-foreground">{event?.name}</span>
                         <span>€{event?.price.toFixed(2)}</span>
                       </div>
                     );
@@ -135,9 +118,7 @@ export function SummaryStep() {
                 <Separator className="my-2" />
                 <div className="flex justify-between items-center font-medium text-sm">
                   <span>{t('subtotal')}</span>
-                  <span>
-                    €{calculateRegistrationTotal(registration).toFixed(2)}
-                  </span>
+                  <span>€{calculateRegistrationTotal(registration).toFixed(2)}</span>
                 </div>
               </div>
             ))}
@@ -145,15 +126,14 @@ export function SummaryStep() {
         )}
 
         {/* Empty State */}
-        {registrations.length === 0 &&
-          (!currentAthlete || selectedEvents.length === 0) && (
-            <div className="text-center py-12 border rounded-lg border-dashed">
-              <p className="text-muted-foreground">{t('noRegistrationsYet')}</p>
-              <p className="text-sm text-muted-foreground mt-2">
-                {t('completeTheFormToSeeRegistrations')}
-              </p>
-            </div>
-          )}
+        {registrations.length === 0 && (!currentAthlete || selectedEvents.length === 0) && (
+          <div className="text-center py-12 border rounded-lg border-dashed">
+            <p className="text-muted-foreground">{t('noRegistrationsYet')}</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              {t('completeTheFormToSeeRegistrations')}
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

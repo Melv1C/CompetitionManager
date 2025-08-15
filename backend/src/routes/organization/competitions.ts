@@ -24,7 +24,7 @@ organizationCompetitionsRoutes.get(
   requirePermissions({
     competitions: ['read'],
   }),
-  async (c) => {
+  async c => {
     try {
       const session = await getRequiredSession(c);
 
@@ -45,12 +45,9 @@ organizationCompetitionsRoutes.get(
       return c.json(competitions);
     } catch (error) {
       logError('Failed to fetch organization competitions', error, c);
-      return c.json(
-        { error: 'Failed to fetch organization competitions' },
-        500
-      );
+      return c.json({ error: 'Failed to fetch organization competitions' }, 500);
     }
-  }
+  },
 );
 
 // POST /organization/competitions - Create new competition
@@ -60,7 +57,7 @@ organizationCompetitionsRoutes.post(
     competitions: ['create'],
   }),
   zValidator('json', CompetitionCreate$),
-  async (c) => {
+  async c => {
     try {
       const { name, startDate } = c.req.valid('json');
       const session = await getRequiredSession(c);
@@ -102,7 +99,7 @@ organizationCompetitionsRoutes.post(
       logError('Failed to create competition', error, c);
       return c.json({ error: 'Failed to create competition' }, 500);
     }
-  }
+  },
 );
 
 // GET /organization/competitions/:eid - Get single competition details
@@ -112,7 +109,7 @@ organizationCompetitionsRoutes.get(
     competitions: ['read'],
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
-  async (c) => {
+  async c => {
     try {
       const { eid } = c.req.valid('param');
       const session = await getRequiredSession(c);
@@ -136,7 +133,7 @@ organizationCompetitionsRoutes.get(
       logError('Failed to fetch competition', error, c);
       return c.json({ error: 'Failed to fetch competition' }, 500);
     }
-  }
+  },
 );
 
 // PUT /organization/competitions/:eid - Update existing competition
@@ -147,11 +144,10 @@ organizationCompetitionsRoutes.put(
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
   zValidator('json', CompetitionUpdate$),
-  async (c) => {
+  async c => {
     try {
       const { eid } = c.req.valid('param');
-      const { freeClubIds, allowedClubIds, ...updateData } =
-        c.req.valid('json');
+      const { freeClubIds, allowedClubIds, ...updateData } = c.req.valid('json');
 
       const session = await getRequiredSession(c);
       if (!session.activeOrganizationId) {
@@ -177,8 +173,8 @@ organizationCompetitionsRoutes.put(
         where: { eid },
         data: {
           ...data,
-          freeClubs: { set: freeClubIds?.map((id) => ({ id })) },
-          allowedClubs: { set: allowedClubIds?.map((id) => ({ id })) },
+          freeClubs: { set: freeClubIds?.map(id => ({ id })) },
+          allowedClubs: { set: allowedClubIds?.map(id => ({ id })) },
         },
         include: competitionInclude,
       });
@@ -188,7 +184,7 @@ organizationCompetitionsRoutes.put(
       logError('Failed to update competition', error, c);
       return c.json({ error: 'Failed to update competition' }, 500);
     }
-  }
+  },
 );
 
 export { organizationCompetitionsRoutes };

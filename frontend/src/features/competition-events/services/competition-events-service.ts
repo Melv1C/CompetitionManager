@@ -1,19 +1,12 @@
 import { apiClient } from '@/lib/api-client';
-import type {
-  CompetitionEventCreate,
-  CompetitionEventUpdate,
-  Cuid,
-} from '@repo/core/schemas';
+import type { CompetitionEventCreate, CompetitionEventUpdate, Cuid } from '@repo/core/schemas';
 import { CompetitionEvent$ } from '@repo/core/schemas';
 
 export class CompetitionEventsService {
-  static async createCompetitionEvent(
-    competitionEid: Cuid,
-    data: CompetitionEventCreate
-  ) {
+  static async createCompetitionEvent(competitionEid: Cuid, data: CompetitionEventCreate) {
     const response = await apiClient.post(
       `/api/organization/competitions/${competitionEid}/events`,
-      data
+      data,
     );
     return CompetitionEvent$.parse(response.data);
   }
@@ -21,18 +14,18 @@ export class CompetitionEventsService {
   static async updateCompetitionEvent(
     competitionEid: Cuid,
     eventEid: Cuid,
-    data: CompetitionEventUpdate
+    data: CompetitionEventUpdate,
   ) {
     const response = await apiClient.put(
       `/api/organization/competitions/${competitionEid}/events/${eventEid}`,
-      data
+      data,
     );
     return CompetitionEvent$.parse(response.data);
   }
 
   static async deleteCompetitionEvent(competitionEid: Cuid, eventEid: Cuid) {
     const response = await apiClient.delete(
-      `/api/organization/competitions/${competitionEid}/events/${eventEid}`
+      `/api/organization/competitions/${competitionEid}/events/${eventEid}`,
     );
     return response.data;
   }

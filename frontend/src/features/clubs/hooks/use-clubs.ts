@@ -29,7 +29,7 @@ export function useCreateClub() {
       toast.success('Club created successfully');
       queryClient.invalidateQueries({ queryKey: [CLUBS_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Create club error:', error);
       toast.error('Failed to create club');
     },
@@ -46,7 +46,7 @@ export function useUpdateClub() {
       toast.success('Club updated successfully');
       queryClient.invalidateQueries({ queryKey: [CLUBS_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Update club error:', error);
       toast.error('Failed to update club');
     },
@@ -62,7 +62,7 @@ export function useDeleteClub() {
       toast.success('Club deleted successfully');
       queryClient.invalidateQueries({ queryKey: [CLUBS_QUERY_KEY] });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Delete club error:', error);
       toast.error('Failed to delete club');
     },

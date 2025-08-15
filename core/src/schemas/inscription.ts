@@ -1,10 +1,7 @@
 import { z } from 'zod/v4';
 import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { Athlete$, athleteInclude } from './athlete';
-import {
-  CompetitionEvent$,
-  competitionEventInclude,
-} from './competition-event';
+import { CompetitionEvent$, competitionEventInclude } from './competition-event';
 
 // Record schema for personal records
 export const Record$ = z.object({

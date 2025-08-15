@@ -24,7 +24,7 @@ export function useUnsavedChanges({
   // Block in-app navigation using React Router's useBlocker
   const blocker = useBlocker(
     ({ currentLocation, nextLocation }) =>
-      hasUnsavedChanges && currentLocation.pathname !== nextLocation.pathname
+      hasUnsavedChanges && currentLocation.pathname !== nextLocation.pathname,
   );
 
   // Handle browser navigation (refresh, close tab, back/forward buttons)

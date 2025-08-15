@@ -1,14 +1,5 @@
-import type {
-  Competition,
-  CompetitionCreate,
-  CompetitionUpdate,
-  Cuid,
-} from '@repo/core/schemas';
-import {
-  useMutation,
-  useQueryClient,
-  useSuspenseQuery,
-} from '@tanstack/react-query';
+import type { Competition, CompetitionCreate, CompetitionUpdate, Cuid } from '@repo/core/schemas';
+import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { CompetitionsService } from '../services/competitions-service';
 import { COMPETITIONS_QUERY_KEY } from './use-competitions';
@@ -33,8 +24,7 @@ export function useCreateCompetition() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CompetitionCreate) =>
-      CompetitionsService.createCompetition(data),
+    mutationFn: (data: CompetitionCreate) => CompetitionsService.createCompetition(data),
     onSuccess: () => {
       toast.success('Competition created successfully');
       queryClient.invalidateQueries({
@@ -44,7 +34,7 @@ export function useCreateCompetition() {
         queryKey: [COMPETITIONS_QUERY_KEY],
       });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Create competition error:', error);
       toast.error('Failed to create competition');
     },
@@ -66,7 +56,7 @@ export function useUpdateCompetition() {
         queryKey: [COMPETITIONS_QUERY_KEY],
       });
     },
-    onError: (error) => {
+    onError: error => {
       console.error('Update competition error:', error);
       toast.error('Failed to update competition');
     },

@@ -9,12 +9,12 @@ import {
   RecordPrisma$,
   InscriptionStatus$,
   PresenceStatus$,
+  Inscription,
 } from '@repo/core/schemas';
 
 export interface CreateInscriptionsResult {
-  freeInscriptions: any[];
-  paidInscriptions: any[];
-  paymentSession?: any;
+  freeInscriptions: Inscription[];
+  paidInscriptions: Inscription[];
   totalAmount: number;
 }
 
@@ -24,32 +24,30 @@ export interface CreateInscriptionsResult {
 export async function validateInscriptions(
   competition: Competition,
   inscriptions: UpsertInscriptions,
-  userId: BetterAuthId
+  userId: BetterAuthId,
 ): Promise<void> {
   // 1. Check if events exist and belong to the competition
-  const eventIds = inscriptions.map((i) => i.competitionEventId);
-  const competitionEventIds = new Set(competition.events.map((e) => e.id));
-  if (eventIds.some((id) => !competitionEventIds.has(id))) {
-    throw new Error(
-      'Some events do not exist or do not belong to this competition'
-    );
+  const eventIds = inscriptions.map(i => i.competitionEventId);
+  const competitionEventIds = new Set(competition.events.map(e => e.id));
+  if (eventIds.some(id => !competitionEventIds.has(id))) {
+    throw new Error('Some events do not exist or do not belong to this competition');
   }
 
   // 2. Check inscription dates - verify we are within the registration period
   const now = new Date();
   if (now < competition.inscriptionStartDate) {
     throw new Error(
-      `Registration period has not started yet. Registration opens on ${competition.inscriptionStartDate.toLocaleDateString()}`
+      `Registration period has not started yet. Registration opens on ${competition.inscriptionStartDate.toLocaleDateString()}`,
     );
   }
   if (now > competition.inscriptionEndDate) {
     throw new Error(
-      `Registration period has ended. Registration closed on ${competition.inscriptionEndDate.toLocaleDateString()}`
+      `Registration period has ended. Registration closed on ${competition.inscriptionEndDate.toLocaleDateString()}`,
     );
   }
 
   // 3. Verify that each inscription is related to an athlete
-  const athleteIds = inscriptions.map((i) => i.athleteId);
+  const athleteIds = inscriptions.map(i => i.athleteId);
   const uniqueAthleteIds = [...new Set(athleteIds)];
 
   // Check if all athletes exist
@@ -60,15 +58,11 @@ export async function validateInscriptions(
     select: { id: true },
   });
 
-  const existingAthleteIds = new Set(existingAthletes.map((a) => a.id));
-  const missingAthleteIds = uniqueAthleteIds.filter(
-    (id) => !existingAthleteIds.has(id)
-  );
+  const existingAthleteIds = new Set(existingAthletes.map(a => a.id));
+  const missingAthleteIds = uniqueAthleteIds.filter(id => !existingAthleteIds.has(id));
 
   if (missingAthleteIds.length > 0) {
-    throw new Error(
-      `The following athletes do not exist: ${missingAthleteIds.join(', ')}`
-    );
+    throw new Error(`The following athletes do not exist: ${missingAthleteIds.join(', ')}`);
   }
 
   // 4. Check for conflicting inscriptions - verify no other user has registered the same athlete for the same competition
@@ -93,13 +87,13 @@ export async function validateInscriptions(
 
   if (conflictingInscriptions.length > 0) {
     const conflictDetails = conflictingInscriptions.map(
-      (inscription) =>
-        `${inscription.athlete.firstName} ${inscription.athlete.lastName} (registered by another user)`
+      inscription =>
+        `${inscription.athlete.firstName} ${inscription.athlete.lastName} (registered by another user)`,
     );
     throw new Error(
       `The following athletes are already registered by another user for this competition: ${conflictDetails.join(
-        ', '
-      )}`
+        ', ',
+      )}`,
     );
   }
 
@@ -107,14 +101,13 @@ export async function validateInscriptions(
   // Group inscriptions by event to handle multiple athletes registering for the same event
   const inscriptionsByEvent = new Map<Id, UpsertInscriptions>();
   for (const inscription of inscriptions) {
-    const existing =
-      inscriptionsByEvent.get(inscription.competitionEventId) || [];
+    const existing = inscriptionsByEvent.get(inscription.competitionEventId) || [];
     existing.push(inscription);
     inscriptionsByEvent.set(inscription.competitionEventId, existing);
   }
 
   for (const [eventId, eventInscriptions] of inscriptionsByEvent) {
-    const event = competition.events.find((e) => e.id === eventId);
+    const event = competition.events.find(e => e.id === eventId);
     if (!event) continue; // This should not happen as we checked above, but for safety
 
     if (event.maxParticipants !== null && event.maxParticipants !== undefined) {
@@ -127,25 +120,24 @@ export async function validateInscriptions(
       });
 
       // Check how many of the current request athletes are already registered for this event by the same user
-      const athleteIdsInRequest = eventInscriptions.map((i) => i.athleteId);
-      const existingInscriptionsForRequestedAthletes =
-        await prisma.inscription.findMany({
-          where: {
-            competitionEventId: event.id,
-            athleteId: { in: athleteIdsInRequest },
-            userId,
-            status: { in: ['PENDING_PAYMENT', 'REGISTERED', 'SELECTED'] },
-          },
-          select: { athleteId: true },
-        });
+      const athleteIdsInRequest = eventInscriptions.map(i => i.athleteId);
+      const existingInscriptionsForRequestedAthletes = await prisma.inscription.findMany({
+        where: {
+          competitionEventId: event.id,
+          athleteId: { in: athleteIdsInRequest },
+          userId,
+          status: { in: ['PENDING_PAYMENT', 'REGISTERED', 'SELECTED'] },
+        },
+        select: { athleteId: true },
+      });
 
       const existingAthleteIds = new Set(
-        existingInscriptionsForRequestedAthletes.map((i) => i.athleteId)
+        existingInscriptionsForRequestedAthletes.map(i => i.athleteId),
       );
 
       // Count how many are updates vs new inscriptions
-      const updatesCount = eventInscriptions.filter((i) =>
-        existingAthleteIds.has(i.athleteId)
+      const updatesCount = eventInscriptions.filter(i =>
+        existingAthleteIds.has(i.athleteId),
       ).length;
       const newInscriptionsCount = eventInscriptions.length - updatesCount;
 
@@ -153,30 +145,25 @@ export async function validateInscriptions(
       const effectiveCurrentCount = currentInscriptionsCount - updatesCount;
 
       // Check if adding the new inscriptions would exceed the limit
-      if (
-        effectiveCurrentCount + newInscriptionsCount >
-        event.maxParticipants
-      ) {
+      if (effectiveCurrentCount + newInscriptionsCount > event.maxParticipants) {
         const availableSlots = event.maxParticipants - effectiveCurrentCount;
         throw new Error(
           `Event "${event.name}" doesn't have enough space. ` +
             `Maximum participants: ${event.maxParticipants}, ` +
             `current participants: ${currentInscriptionsCount}, ` +
             `available slots: ${availableSlots}, ` +
-            `requested new inscriptions: ${newInscriptionsCount}`
+            `requested new inscriptions: ${newInscriptionsCount}`,
         );
       }
     }
   }
 
   // 6. Check for duplicate inscriptions in the same request
-  const inscriptionKeys = inscriptions.map(
-    (i) => `${i.athleteId}-${i.competitionEventId}`
-  );
+  const inscriptionKeys = inscriptions.map(i => `${i.athleteId}-${i.competitionEventId}`);
   const uniqueKeys = new Set(inscriptionKeys);
   if (inscriptionKeys.length !== uniqueKeys.size) {
     throw new Error(
-      'Duplicate inscriptions detected in the request. An athlete cannot be registered multiple times for the same event.'
+      'Duplicate inscriptions detected in the request. An athlete cannot be registered multiple times for the same event.',
     );
   }
 }
@@ -186,20 +173,15 @@ export async function validateInscriptions(
  */
 export function calculateTotalEventCost(
   competition: Competition,
-  inscriptions: UpsertInscriptions
+  inscriptions: UpsertInscriptions,
 ) {
   const inscriptionEventIds = new Set(
-    inscriptions.map((inscription) => inscription.competitionEventId)
+    inscriptions.map(inscription => inscription.competitionEventId),
   );
 
-  const relevantEvents = competition.events.filter((event) =>
-    inscriptionEventIds.has(event.id)
-  );
+  const relevantEvents = competition.events.filter(event => inscriptionEventIds.has(event.id));
 
-  return relevantEvents.reduce(
-    (totalCost, event) => totalCost + event.price,
-    0
-  );
+  return relevantEvents.reduce((totalCost, event) => totalCost + event.price, 0);
 }
 
 /**
@@ -208,9 +190,9 @@ export function calculateTotalEventCost(
 export async function calculateAlreadyPaidAmount(
   competition: Competition,
   inscriptions: UpsertInscriptions,
-  userId: BetterAuthId
+  userId: BetterAuthId,
 ) {
-  const athleteIds = inscriptions.map((inscription) => inscription.athleteId);
+  const athleteIds = inscriptions.map(inscription => inscription.athleteId);
 
   const paidAmountResult = await prisma.inscription.aggregate({
     _sum: {
@@ -233,14 +215,13 @@ export async function upsertInscriptionsInDB(
   competition: Competition,
   inscriptions: UpsertInscriptions,
   userId: BetterAuthId,
-  totalPaid: number
+  totalPaid: number,
 ) {
   // Group inscriptions by athlete to process them together
   const athleteGroupedInscriptions = new Map<Id, UpsertInscriptions>();
 
   for (const inscription of inscriptions) {
-    const existing =
-      athleteGroupedInscriptions.get(inscription.athleteId) || [];
+    const existing = athleteGroupedInscriptions.get(inscription.athleteId) || [];
     existing.push(inscription);
     athleteGroupedInscriptions.set(inscription.athleteId, existing);
   }
@@ -257,41 +238,37 @@ export async function upsertInscriptionsInDB(
           userId,
         },
         include: inscriptionInclude,
-      })
+      }),
     );
 
     // Determine which inscriptions to delete, update, or create
-    const competitionEventIds = athleteInscriptions.map(
-      (i) => i.competitionEventId
-    );
+    const competitionEventIds = athleteInscriptions.map(i => i.competitionEventId);
 
     const toDeleteInscriptions = existingInscriptions.filter(
-      (existing) => !competitionEventIds.includes(existing.competitionEventId)
+      existing => !competitionEventIds.includes(existing.competitionEventId),
     );
 
-    const toUpdateInscriptions = existingInscriptions.filter((existing) =>
-      competitionEventIds.includes(existing.competitionEventId)
+    const toUpdateInscriptions = existingInscriptions.filter(existing =>
+      competitionEventIds.includes(existing.competitionEventId),
     );
 
     const toCreateInscriptions = athleteInscriptions.filter(
-      (newInsc) =>
+      newInsc =>
         !existingInscriptions.some(
-          (existing) =>
-            existing.competitionEventId === newInsc.competitionEventId
-        )
+          existing => existing.competitionEventId === newInsc.competitionEventId,
+        ),
     );
 
     // Update existing inscriptions
     for (const existingInscription of toUpdateInscriptions) {
       const matchingNewInscription = athleteInscriptions.find(
-        (newInsc) =>
-          newInsc.competitionEventId === existingInscription.competitionEventId
+        newInsc => newInsc.competitionEventId === existingInscription.competitionEventId,
       );
 
       if (!matchingNewInscription) continue;
 
       const event = competition.events.find(
-        (e) => e.id === matchingNewInscription.competitionEventId
+        e => e.id === matchingNewInscription.competitionEventId,
       );
       if (!event) throw new Error('Event not found');
 
@@ -320,9 +297,7 @@ export async function upsertInscriptionsInDB(
 
     // Create new inscriptions
     for (const newInscription of toCreateInscriptions) {
-      const event = competition.events.find(
-        (e) => e.id === newInscription.competitionEventId
-      );
+      const event = competition.events.find(e => e.id === newInscription.competitionEventId);
       if (!event) throw new Error('Event not found');
 
       const paidAmount = Math.min(remainingPaid, event.price);
@@ -350,9 +325,7 @@ export async function upsertInscriptionsInDB(
 
     // Mark inscriptions as cancelled
     for (const inscriptionToDelete of toDeleteInscriptions) {
-      const event = competition.events.find(
-        (e) => e.id === inscriptionToDelete.competitionEventId
-      );
+      const event = competition.events.find(e => e.id === inscriptionToDelete.competitionEventId);
       if (!event) throw new Error('Event not found');
 
       const paidAmount = Math.min(remainingPaid, event.price);

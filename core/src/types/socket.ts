@@ -34,9 +34,9 @@ export interface ClientToServerEvents {
   ping: () => void;
 }
 
-export interface InterServerEvents {}
+export type InterServerEvents = object
 
-export interface SocketData {}
+export type SocketData = object
 
 // Room naming conventions
 export const ROOM_PREFIXES = {
@@ -45,6 +45,5 @@ export const ROOM_PREFIXES = {
 
 // Helper functions for room names
 export const getRoomName = {
-  competition: (competitionId: string) =>
-    `${ROOM_PREFIXES.COMPETITION}${competitionId}`,
+  competition: (competitionId: string) => `${ROOM_PREFIXES.COMPETITION}${competitionId}`,
 } as const;

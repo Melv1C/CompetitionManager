@@ -7,10 +7,7 @@ interface LoginButtonProps {
   onMobileMenuClose?: () => void;
 }
 
-export function LoginButton({
-  isMobile = false,
-  onMobileMenuClose,
-}: LoginButtonProps) {
+export function LoginButton({ isMobile = false, onMobileMenuClose }: LoginButtonProps) {
   const { t } = useTranslation('auth');
 
   if (isMobile) {

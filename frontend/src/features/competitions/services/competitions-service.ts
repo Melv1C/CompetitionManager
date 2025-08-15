@@ -26,28 +26,17 @@ export class CompetitionsService {
   }
 
   static async getOrganizationCompetition(eid: Cuid) {
-    const response = await apiClient.get(
-      `/api/organization/competitions/${eid}`
-    );
+    const response = await apiClient.get(`/api/organization/competitions/${eid}`);
     return Competition$.parse(response.data);
   }
 
   static async createCompetition(data: CompetitionCreate) {
-    const response = await apiClient.post(
-      '/api/organization/competitions',
-      data
-    );
+    const response = await apiClient.post('/api/organization/competitions', data);
     return Competition$.parse(response.data);
   }
 
-  static async updateOrganizationCompetition(
-    eid: Cuid,
-    data: CompetitionUpdate
-  ) {
-    const response = await apiClient.put(
-      `/api/organization/competitions/${eid}`,
-      data
-    );
+  static async updateOrganizationCompetition(eid: Cuid, data: CompetitionUpdate) {
+    const response = await apiClient.put(`/api/organization/competitions/${eid}`, data);
     return Competition$.parse(response.data);
   }
 }

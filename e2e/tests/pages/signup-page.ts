@@ -41,12 +41,7 @@ export class SignUpPage {
     await this.page.click(this.submitButton);
   }
 
-  async signUp(
-    name: string,
-    email: string,
-    password: string,
-    confirmPassword?: string
-  ) {
+  async signUp(name: string, email: string, password: string, confirmPassword?: string) {
     await this.fillName(name);
     await this.fillEmail(email);
     await this.fillPassword(password);

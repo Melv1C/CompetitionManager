@@ -1,11 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Form } from '@/components/ui/form';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
   Stepper,
   StepperIndicator,
@@ -22,11 +18,7 @@ import { ChevronLeft, ChevronRight, Eye, ShoppingCart } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import z from 'zod/v4';
-import {
-  AthleteSelectionStep,
-  EventSelectionStep,
-  RecordsEntryStep,
-} from './steps';
+import { AthleteSelectionStep, EventSelectionStep, RecordsEntryStep } from './steps';
 
 const steps = [
   { id: 1, title: 'Athlete' },
@@ -42,7 +34,7 @@ const InscriptionForm$ = z.object({
     Record$.pick({
       performanceValue: true,
       location: true,
-    })
+    }),
   ),
 });
 
@@ -81,9 +73,7 @@ export function InscriptionForm() {
       return (
         total +
         registration.inscriptions.reduce((regTotal, inscription) => {
-          const event = competition.data.events.find(
-            (e) => e.id === inscription.competitionEventId
-          );
+          const event = competition.data.events.find(e => e.id === inscription.competitionEventId);
           return regTotal + (event?.price || 0);
         }, 0)
       );
@@ -125,8 +115,7 @@ export function InscriptionForm() {
                   {registrations.map((registration, index) => (
                     <div key={index} className="text-sm">
                       <div className="font-medium">
-                        {registration.athlete.firstName}{' '}
-                        {registration.athlete.lastName}
+                        {registration.athlete.firstName} {registration.athlete.lastName}
                       </div>
                       <div className="text-muted-foreground">
                         {registration.inscriptions.length} {t('events')}
@@ -173,18 +162,12 @@ export function InscriptionForm() {
 
         {/* Step Content */}
         <Form {...form}>
-          <div className="bg-card rounded-lg border p-6">
-            {renderStepContent()}
-          </div>
+          <div className="bg-card rounded-lg border p-6">{renderStepContent()}</div>
         </Form>
 
         {/* Navigation */}
         <div className="flex justify-between">
-          <Button
-            variant="outline"
-            onClick={previousStep}
-            disabled={currentStep === 1}
-          >
+          <Button variant="outline" onClick={previousStep} disabled={currentStep === 1}>
             <ChevronLeft className="w-4 h-4 mr-1" />
             {t('back', { ns: 'buttons' })}
           </Button>

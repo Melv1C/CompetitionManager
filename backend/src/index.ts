@@ -12,7 +12,7 @@ const httpServer = serve(
     fetch: app.fetch,
     port: env.PORT,
   },
-  async (info) => {
+  async info => {
     console.log(`Server is running on http://localhost:${info.port}`);
 
     // Initialize services after server is running
@@ -24,7 +24,7 @@ const httpServer = serve(
       });
       process.exit(1);
     }
-  }
+  },
 );
 
 // Initialize Socket.IO server

@@ -12,9 +12,7 @@ export function RecordsEntryStep() {
           <Clock className="w-6 h-6 text-primary" />
         </div>
         <h2 className="text-xl font-semibold">{t('enterPersonalRecords')}</h2>
-        <p className="text-muted-foreground text-sm">
-          {t('optionalPersonalBestTimes')}
-        </p>
+        <p className="text-muted-foreground text-sm">{t('optionalPersonalBestTimes')}</p>
       </div>
 
       <div className="max-w-md mx-auto">
@@ -25,9 +23,7 @@ export function RecordsEntryStep() {
               <h3 className="font-medium text-blue-900 text-sm">
                 {t('comingSoon', { ns: 'common' })}
               </h3>
-              <p className="text-sm text-blue-700">
-                {t('recordsStepPlaceholder')}
-              </p>
+              <p className="text-sm text-blue-700">{t('recordsStepPlaceholder')}</p>
               <Badge variant="secondary" className="text-xs">
                 {t('thisFeatureWillBeImplemented', { ns: 'common' })}
               </Badge>

@@ -17,6 +17,12 @@
     "test:e2e": "cd e2e && npm run test",
     "db:migrate": "cd backend && npx prisma migrate dev",
     "docker:db": "docker-compose -f docker-compose.db.yml up -d",
+    "lint": "npm run lint:core && npm run lint:backend && npm run lint:frontend",
+    "lint:core": "cd core && npm run lint",
+    "lint:backend": "cd backend && npm run lint",
+    "lint:frontend": "cd frontend && npm run lint",
+    "format": "prettier --write \"**/*.{js,ts,tsx,json,md,yml,yaml}\"",
+    "format:check": "prettier --check \"**/*.{js,ts,tsx,json,md,yml,yaml}\"",
     "i18n:validate": "node scripts/i18n/validate-translations.mjs",
     "i18n:sort": "node scripts/i18n/sort-translations.mjs",
     "i18n:validate-sort": "node scripts/i18n/validate-sort.mjs",
@@ -26,7 +32,11 @@
     "i18n:fix": "node scripts/i18n/validate-all.mjs --fix"
   },
   "devDependencies": {
-    "concurrently": "^9.1.0"
+    "concurrently": "^9.1.0",
+    "prettier": "^3.4.2",
+    "@eslint/js": "^9.25.0",
+    "eslint": "^9.25.0",
+    "typescript-eslint": "^8.30.1"
   },
   "dependencies": {
     "glob": "^11.0.3"

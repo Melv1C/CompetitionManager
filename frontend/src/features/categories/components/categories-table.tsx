@@ -25,13 +25,8 @@ interface CategoriesTableProps {
   isLoading: boolean;
 }
 
-export function CategoriesTable({
-  categories,
-  isLoading,
-}: CategoriesTableProps) {
-  const [editingCategory, setEditingCategory] = useState<FullCategory | null>(
-    null
-  );
+export function CategoriesTable({ categories, isLoading }: CategoriesTableProps) {
+  const [editingCategory, setEditingCategory] = useState<FullCategory | null>(null);
   const deleteMutation = useDeleteCategory();
 
   const handleDelete = async (id: number) => {
@@ -84,23 +79,17 @@ export function CategoriesTable({
           </TableRow>
         </TableHeader>
         <TableBody>
-          {categories.map((category) => (
+          {categories.map(category => (
             <TableRow key={category.id}>
               <TableCell className="font-medium">{category.name}</TableCell>
               <TableCell>{category.abbr}</TableCell>
               <TableCell>
-                <Badge
-                  className={getCategoryColor(category.baseCategory)}
-                  variant="secondary"
-                >
+                <Badge className={getCategoryColor(category.baseCategory)} variant="secondary">
                   {category.abbrBaseCategory}
                 </Badge>
               </TableCell>
               <TableCell>
-                <Badge
-                  className={getGenderColor(category.gender)}
-                  variant="secondary"
-                >
+                <Badge className={getGenderColor(category.gender)} variant="secondary">
                   {category.gender}
                 </Badge>
               </TableCell>
@@ -114,9 +103,7 @@ export function CategoriesTable({
                     </Button>
                   </DropdownMenuTrigger>
                   <DropdownMenuContent align="end">
-                    <DropdownMenuItem
-                      onClick={() => setEditingCategory(category)}
-                    >
+                    <DropdownMenuItem onClick={() => setEditingCategory(category)}>
                       <Edit className="mr-2 h-4 w-4" />
                       Edit
                     </DropdownMenuItem>
@@ -138,7 +125,7 @@ export function CategoriesTable({
       {!!editingCategory && (
         <CategoryFormDialog
           open={!!editingCategory}
-          onOpenChange={(open) => !open && setEditingCategory(null)}
+          onOpenChange={open => !open && setEditingCategory(null)}
           category={editingCategory}
         />
       )}

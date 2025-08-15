@@ -58,7 +58,7 @@ class SocketService {
    */
   private notifyStateChange() {
     const state = this.getState();
-    this.statusCallbacks.forEach((callback) => callback(state));
+    this.statusCallbacks.forEach(callback => callback(state));
   }
 
   /**
@@ -119,12 +119,12 @@ class SocketService {
       this.notifyStateChange();
     });
 
-    this.socket.on('disconnect', (reason) => {
+    this.socket.on('disconnect', reason => {
       console.log('🔌 Socket disconnected:', reason);
       this.notifyStateChange();
     });
 
-    this.socket.on('connect_error', (error) => {
+    this.socket.on('connect_error', error => {
       console.error('🔌 Socket connection error:', error);
       this.reconnectAttempts++;
       this.notifyStateChange();
@@ -157,10 +157,7 @@ class SocketService {
   /**
    * Listen to server events
    */
-  on<K extends keyof ServerToClientEvents>(
-    event: K,
-    listener: ServerToClientEvents[K]
-  ) {
+  on<K extends keyof ServerToClientEvents>(event: K, listener: ServerToClientEvents[K]) {
     if (this.socket) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.socket.on(event, listener as any);
@@ -170,10 +167,7 @@ class SocketService {
   /**
    * Remove event listener
    */
-  off<K extends keyof ServerToClientEvents>(
-    event: K,
-    listener?: ServerToClientEvents[K]
-  ) {
+  off<K extends keyof ServerToClientEvents>(event: K, listener?: ServerToClientEvents[K]) {
     if (this.socket) {
       // eslint-disable-next-line @typescript-eslint/no-explicit-any
       this.socket.off(event, listener as any);

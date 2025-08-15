@@ -22,14 +22,7 @@ interface SocketStatusViewerProps {
 }
 
 export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
-  const {
-    status,
-    isConnected,
-    reconnectAttempts,
-    connect,
-    disconnect,
-    socket,
-  } = useSocket();
+  const { status, isConnected, reconnectAttempts, connect, disconnect, socket } = useSocket();
   const { onError, onNotification } = useSocketEvents();
   const [logs, setLogs] = useState<
     Array<{
@@ -44,8 +37,8 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
   useEffect(() => {
     if (!isConnected) return;
 
-    const unsubscribeError = onError((data) => {
-      setLogs((prev) => [
+    const unsubscribeError = onError(data => {
+      setLogs(prev => [
         ...prev.slice(-9), // Keep only last 10 logs
         {
           timestamp: new Date(),
@@ -55,8 +48,8 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
       ]);
     });
 
-    const unsubscribeNotification = onNotification((data) => {
-      setLogs((prev) => [
+    const unsubscribeNotification = onNotification(data => {
+      setLogs(prev => [
         ...prev.slice(-9), // Keep only last 10 logs
         {
           timestamp: new Date(),
@@ -74,7 +67,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
 
   // Add connection status changes to logs
   useEffect(() => {
-    setLogs((prev) => [
+    setLogs(prev => [
       ...prev.slice(-9),
       {
         timestamp: new Date(),
@@ -113,7 +106,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
   const testConnection = () => {
     if (socket?.connected) {
       socket.emit('ping');
-      setLogs((prev) => [
+      setLogs(prev => [
         ...prev.slice(-9),
         { timestamp: new Date(), message: 'Ping sent', type: 'info' },
       ]);
@@ -126,20 +119,13 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
           isExpanded ? 'max-h-96' : 'h-auto'
         } overflow-hidden bg-background/95 backdrop-blur border-2 transition-all duration-200`}
       >
-        <CardHeader
-          className="block cursor-pointer"
-          onClick={() => setIsExpanded(!isExpanded)}
-        >
+        <CardHeader className="block cursor-pointer" onClick={() => setIsExpanded(!isExpanded)}>
           <CardTitle className="flex items-center gap-2 text-sm">
             <Activity className="h-4 w-4" />
             Socket Status (Dev Mode)
             <div className={`w-2 h-2 rounded-full ${getStatusColor()}`} />
             <div className="flex-1" />
-            {isExpanded ? (
-              <ChevronDown className="h-4 w-4" />
-            ) : (
-              <ChevronUp className="h-4 w-4" />
-            )}
+            {isExpanded ? <ChevronDown className="h-4 w-4" /> : <ChevronUp className="h-4 w-4" />}
           </CardTitle>
         </CardHeader>
 
@@ -153,9 +139,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
                   {status.toUpperCase()}
                 </Badge>
               </div>
-              <div className="text-xs text-muted-foreground">
-                Attempts: {reconnectAttempts}
-              </div>
+              <div className="text-xs text-muted-foreground">Attempts: {reconnectAttempts}</div>
             </div>
 
             {/* Connection Info */}
@@ -195,12 +179,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
                 )}
               </Button>
 
-              <Button
-                size="sm"
-                variant="outline"
-                onClick={testConnection}
-                disabled={!isConnected}
-              >
+              <Button size="sm" variant="outline" onClick={testConnection} disabled={!isConnected}>
                 <RotateCcw className="h-3 w-3 mr-1" />
                 Ping
               </Button>
@@ -217,9 +196,7 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
 
               <div className="max-h-24 overflow-y-auto space-y-1 text-xs">
                 {logs.length === 0 ? (
-                  <div className="text-muted-foreground italic">
-                    No events yet...
-                  </div>
+                  <div className="text-muted-foreground italic">No events yet...</div>
                 ) : (
                   logs
                     .slice(-5)
@@ -234,8 +211,8 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
                             log.type === 'error'
                               ? 'text-red-500'
                               : log.type === 'success'
-                              ? 'text-green-500'
-                              : 'text-foreground'
+                                ? 'text-green-500'
+                                : 'text-foreground'
                           }`}
                         >
                           {log.message}

@@ -33,12 +33,8 @@ export function OrganizationMembers() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Edit Role
-                </button>
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Remove
-                </button>
+                <button className="rounded-md border px-3 py-1 text-sm">Edit Role</button>
+                <button className="rounded-md border px-3 py-1 text-sm">Remove</button>
               </div>
             </div>
             <div className="flex items-center justify-between rounded-lg border p-3">
@@ -52,12 +48,8 @@ export function OrganizationMembers() {
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Edit Role
-                </button>
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Remove
-                </button>
+                <button className="rounded-md border px-3 py-1 text-sm">Edit Role</button>
+                <button className="rounded-md border px-3 py-1 text-sm">Remove</button>
               </div>
             </div>
           </div>

@@ -13,22 +13,20 @@ import { env } from './env';
 
 // Create and configure Socket.IO server
 export function createSocketServer(httpServer: ServerType) {
-  const io = new Server<
-    ClientToServerEvents,
-    ServerToClientEvents,
-    InterServerEvents,
-    SocketData
-  >(httpServer, {
-    cors: {
-      origin: env.BETTER_AUTH_URL,
-      methods: ['GET', 'POST'],
-      credentials: true,
+  const io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>(
+    httpServer,
+    {
+      cors: {
+        origin: env.BETTER_AUTH_URL,
+        methods: ['GET', 'POST'],
+        credentials: true,
+      },
+      transports: ['websocket', 'polling'],
     },
-    transports: ['websocket', 'polling'],
-  });
+  );
 
   // Connection handler
-  io.on('connection', (socket) => {
+  io.on('connection', socket => {
     console.log(`User connected: ${socket.id}`);
 
     // Handle joining competition
@@ -84,7 +82,7 @@ export function createSocketServer(httpServer: ServerType) {
     });
 
     // Handle disconnection
-    socket.on('disconnect', async (reason) => {
+    socket.on('disconnect', async reason => {
       console.log(`User disconnected: ${socket.id}, reason: ${reason}`);
     });
   });

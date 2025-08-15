@@ -2,19 +2,14 @@ import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
-import {
-  Event$,
-  EventCreate$,
-  EventUpdate$,
-  ParameterId$,
-} from '@repo/core/schemas';
+import { Event$, EventCreate$, EventUpdate$, ParameterId$ } from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
 
 const eventsRoutes = new Hono();
 
 // GET /events - Get all events (public)
-eventsRoutes.get('/', async (c) => {
+eventsRoutes.get('/', async c => {
   try {
     const events = await prisma.event.findMany({
       orderBy: { name: 'asc' },
@@ -27,46 +22,37 @@ eventsRoutes.get('/', async (c) => {
 });
 
 // GET /events/:id - Get event by ID (public)
-eventsRoutes.get(
-  '/:id',
-  zValidator('param', z.object({ id: ParameterId$ })),
-  async (c) => {
-    try {
-      const { id } = c.req.valid('param');
-      const event = await prisma.event.findUnique({
-        where: { id },
-      });
+eventsRoutes.get('/:id', zValidator('param', z.object({ id: ParameterId$ })), async c => {
+  try {
+    const { id } = c.req.valid('param');
+    const event = await prisma.event.findUnique({
+      where: { id },
+    });
 
-      if (!event) {
-        return c.json({ error: 'Event not found' }, 404);
-      }
-
-      return c.json(Event$.parse(event));
-    } catch (error) {
-      logError('Failed to fetch event', error, c);
-      return c.json({ error: 'Failed to fetch event' }, 500);
+    if (!event) {
+      return c.json({ error: 'Event not found' }, 404);
     }
+
+    return c.json(Event$.parse(event));
+  } catch (error) {
+    logError('Failed to fetch event', error, c);
+    return c.json({ error: 'Failed to fetch event' }, 500);
   }
-);
+});
 
 // POST /events - Create new event (admin only)
-eventsRoutes.post(
-  '/',
-  requireAdmin,
-  zValidator('json', EventCreate$),
-  async (c) => {
-    try {
-      const data = c.req.valid('json');
-      const event = await prisma.event.create({
-        data,
-      });
-      return c.json(Event$.parse(event), 201);
-    } catch (error) {
-      logError('Failed to create event', error, c);
-      return c.json({ error: 'Failed to create event' }, 500);
-    }
+eventsRoutes.post('/', requireAdmin, zValidator('json', EventCreate$), async c => {
+  try {
+    const data = c.req.valid('json');
+    const event = await prisma.event.create({
+      data,
+    });
+    return c.json(Event$.parse(event), 201);
+  } catch (error) {
+    logError('Failed to create event', error, c);
+    return c.json({ error: 'Failed to create event' }, 500);
   }
-);
+});
 
 // PUT /events/:id - Update event (admin only)
 eventsRoutes.put(
@@ -74,7 +60,7 @@ eventsRoutes.put(
   requireAdmin,
   zValidator('param', z.object({ id: ParameterId$ })),
   zValidator('json', EventUpdate$),
-  async (c) => {
+  async c => {
     try {
       const { id } = c.req.valid('param');
       const data = c.req.valid('json');
@@ -98,7 +84,7 @@ eventsRoutes.put(
       logError('Failed to update event', error, c);
       return c.json({ error: 'Failed to update event' }, 500);
     }
-  }
+  },
 );
 
 // DELETE /events/:id - Delete event (admin only)
@@ -106,7 +92,7 @@ eventsRoutes.delete(
   '/:id',
   requireAdmin,
   zValidator('param', z.object({ id: ParameterId$ })),
-  async (c) => {
+  async c => {
     try {
       const { id } = c.req.valid('param');
 
@@ -129,7 +115,7 @@ eventsRoutes.delete(
           {
             error: 'Cannot delete event with associated competition events',
           },
-          400
+          400,
         );
       }
 
@@ -142,7 +128,7 @@ eventsRoutes.delete(
       logError('Failed to delete event', error, c);
       return c.json({ error: 'Failed to delete event' }, 500);
     }
-  }
+  },
 );
 
 export { eventsRoutes };

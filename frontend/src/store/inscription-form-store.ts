@@ -61,7 +61,7 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
       isInBasketView: false,
 
       // Step management (max 3 steps now)
-      setStep: (step) => set({ currentStep: Math.min(Math.max(step, 1), 3) }),
+      setStep: step => set({ currentStep: Math.min(Math.max(step, 1), 3) }),
       nextStep: () => {
         const { currentStep } = get();
         if (currentStep < 3) {
@@ -79,37 +79,28 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
       },
 
       // Current athlete management
-      setCurrentAthlete: (athlete) => set({ currentAthlete: athlete }),
-      setCurrentEventIds: (eventIds) => set({ currentEventIds: eventIds }),
+      setCurrentAthlete: athlete => set({ currentAthlete: athlete }),
+      setCurrentEventIds: eventIds => set({ currentEventIds: eventIds }),
       setCurrentRecord: (eventId, record) =>
-        set((state) => ({
+        set(state => ({
           currentRecords: record
             ? { ...state.currentRecords, [eventId]: record }
             : Object.fromEntries(
-                Object.entries(state.currentRecords).filter(
-                  ([id]) => id !== eventId.toString()
-                )
+                Object.entries(state.currentRecords).filter(([id]) => id !== eventId.toString()),
               ),
         })),
 
       // Registration/basket management
       addCurrentRegistration: () => {
-        const {
-          currentAthlete,
-          currentEventIds,
-          currentRecords,
-          registrations,
-        } = get();
+        const { currentAthlete, currentEventIds, currentRecords, registrations } = get();
 
         if (!currentAthlete || currentEventIds.length === 0) return;
 
-        const inscriptions: UpsertInscription[] = currentEventIds.map(
-          (eventId) => ({
-            athleteId: currentAthlete.id,
-            competitionEventId: eventId,
-            record: currentRecords[eventId] || undefined,
-          })
-        );
+        const inscriptions: UpsertInscription[] = currentEventIds.map(eventId => ({
+          athleteId: currentAthlete.id,
+          competitionEventId: eventId,
+          record: currentRecords[eventId] || undefined,
+        }));
 
         const newRegistration: AthleteRegistration = {
           athlete: currentAthlete,
@@ -127,11 +118,9 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
         });
       },
 
-      removeRegistration: (athleteId) =>
-        set((state) => ({
-          registrations: state.registrations.filter(
-            (reg) => reg.athlete.id !== athleteId
-          ),
+      removeRegistration: athleteId =>
+        set(state => ({
+          registrations: state.registrations.filter(reg => reg.athlete.id !== athleteId),
         })),
 
       clearBasket: () =>
@@ -174,6 +163,6 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
         return registrations.length > 0;
       },
     }),
-    { name: 'inscription-form-store' }
-  )
+    { name: 'inscription-form-store' },
+  ),
 );

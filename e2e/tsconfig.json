@@ -25,10 +25,5 @@
     "allowSyntheticDefaultImports": true,
     "forceConsistentCasingInFileNames": true
   },
-  "include": [
-    "tests/**/*",
-    "playwright.config.ts",
-    "global-setup.ts",
-    "global-teardown.ts"
-  ]
+  "include": ["tests/**/*", "playwright.config.ts", "global-setup.ts", "global-teardown.ts"]
 }

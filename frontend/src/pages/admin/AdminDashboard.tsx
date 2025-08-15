@@ -1,11 +1,5 @@
 import { Badge } from '@/components/ui/badge';
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from '@/components/ui/card';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { BarChart3, TrendingUp, Trophy, Users } from 'lucide-react';
 
 export function AdminDashboard() {
@@ -44,25 +38,19 @@ export function AdminDashboard() {
     <div className="space-y-6">
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Admin Dashboard</h1>
-        <p className="text-muted-foreground">
-          System administration and platform management
-        </p>
+        <p className="text-muted-foreground">System administration and platform management</p>
       </div>
 
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {stats.map(stat => (
           <Card key={stat.title}>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                {stat.title}
-              </CardTitle>
+              <CardTitle className="text-sm font-medium">{stat.title}</CardTitle>
               <stat.icon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold">{stat.value}</div>
-              <p className="text-xs text-muted-foreground">
-                {stat.description}
-              </p>
+              <p className="text-xs text-muted-foreground">{stat.description}</p>
               <div className="mt-2">
                 <Badge variant="secondary" className="text-xs">
                   {stat.trend}
@@ -77,17 +65,13 @@ export function AdminDashboard() {
         <Card>
           <CardHeader>
             <CardTitle>Recent Activity</CardTitle>
-            <CardDescription>
-              Latest updates from your competitions
-            </CardDescription>
+            <CardDescription>Latest updates from your competitions</CardDescription>
           </CardHeader>
           <CardContent>
             <div className="space-y-4">
               <div className="flex items-center">
                 <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    New participant registered
-                  </p>
+                  <p className="text-sm font-medium leading-none">New participant registered</p>
                   <p className="text-sm text-muted-foreground">
                     John Doe joined "Spring Championship 2025"
                   </p>
@@ -96,9 +80,7 @@ export function AdminDashboard() {
               </div>
               <div className="flex items-center">
                 <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    Competition results updated
-                  </p>
+                  <p className="text-sm font-medium leading-none">Competition results updated</p>
                   <p className="text-sm text-muted-foreground">
                     Results added for "Winter Cup Finals"
                   </p>
@@ -107,9 +89,7 @@ export function AdminDashboard() {
               </div>
               <div className="flex items-center">
                 <div className="ml-4 space-y-1">
-                  <p className="text-sm font-medium leading-none">
-                    New competition created
-                  </p>
+                  <p className="text-sm font-medium leading-none">New competition created</p>
                   <p className="text-sm text-muted-foreground">
                     "Summer League 2025" is now accepting registrations
                   </p>
@@ -128,9 +108,7 @@ export function AdminDashboard() {
           <CardContent className="space-y-2">
             <div className="grid gap-2">
               <div className="flex items-center justify-between p-2 border rounded-lg hover:bg-muted/50 cursor-pointer">
-                <span className="text-sm font-medium">
-                  Create new competition
-                </span>
+                <span className="text-sm font-medium">Create new competition</span>
                 <Trophy className="h-4 w-4" />
               </div>
               <div className="flex items-center justify-between p-2 border rounded-lg hover:bg-muted/50 cursor-pointer">

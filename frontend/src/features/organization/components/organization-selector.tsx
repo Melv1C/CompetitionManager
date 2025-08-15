@@ -17,8 +17,7 @@ interface OrganizationSelectorProps {
 
 export function OrganizationSelector({ className }: OrganizationSelectorProps) {
   const { t } = useTranslation('organization');
-  const { organizations, activeOrganization, setActiveOrganization } =
-    useOrganizations();
+  const { organizations, activeOrganization, setActiveOrganization } = useOrganizations();
 
   const handleOrganizationSelect = (organizationId: string) => {
     setActiveOrganization(organizationId);
@@ -33,10 +32,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
         >
           {activeOrganization?.logo ? (
             <Avatar className="size-8 rounded-lg">
-              <AvatarImage
-                src={activeOrganization.logo}
-                alt={activeOrganization.name}
-              />
+              <AvatarImage src={activeOrganization.logo} alt={activeOrganization.name} />
               <AvatarFallback className="size-8 rounded-lg bg-sidebar-primary text-sidebar-primary-foreground">
                 <Building2 className="size-4" />
               </AvatarFallback>
@@ -64,7 +60,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
         <DropdownMenuLabel className="text-xs text-muted-foreground">
           {t('organizations')}
         </DropdownMenuLabel>
-        {organizations.map((org) => (
+        {organizations.map(org => (
           <DropdownMenuItem
             key={org.id}
             className="gap-2 p-2"

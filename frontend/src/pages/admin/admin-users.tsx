@@ -4,9 +4,7 @@ export function AdminUsers() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">User Management</h1>
-          <p className="text-muted-foreground">
-            Manage system users and their permissions.
-          </p>
+          <p className="text-muted-foreground">Manage system users and their permissions.</p>
         </div>
         <button className="rounded-md bg-primary px-4 py-2 text-sm text-primary-foreground">
           Create User
@@ -29,15 +27,11 @@ export function AdminUsers() {
                 </div>
                 <div>
                   <h4 className="font-medium">John Doe</h4>
-                  <p className="text-sm text-muted-foreground">
-                    john@example.com • Admin
-                  </p>
+                  <p className="text-sm text-muted-foreground">john@example.com • Admin</p>
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Edit
-                </button>
+                <button className="rounded-md border px-3 py-1 text-sm">Edit</button>
                 <button className="rounded-md border border-red-200 px-3 py-1 text-sm text-red-600">
                   Ban
                 </button>
@@ -50,15 +44,11 @@ export function AdminUsers() {
                 </div>
                 <div>
                   <h4 className="font-medium">Jane Smith</h4>
-                  <p className="text-sm text-muted-foreground">
-                    jane@example.com • User
-                  </p>
+                  <p className="text-sm text-muted-foreground">jane@example.com • User</p>
                 </div>
               </div>
               <div className="flex gap-2">
-                <button className="rounded-md border px-3 py-1 text-sm">
-                  Edit
-                </button>
+                <button className="rounded-md border px-3 py-1 text-sm">Edit</button>
                 <button className="rounded-md border border-red-200 px-3 py-1 text-sm text-red-600">
                   Ban
                 </button>

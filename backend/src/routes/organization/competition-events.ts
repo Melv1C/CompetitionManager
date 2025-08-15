@@ -25,7 +25,7 @@ organizationCompetitionEventsRoutes.post(
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
   zValidator('json', CompetitionEventCreate$),
-  async (c) => {
+  async c => {
     try {
       const { eid } = c.req.valid('param');
       const { categoryIds, subEvents, ...eventBody } = c.req.valid('json');
@@ -54,14 +54,14 @@ organizationCompetitionEventsRoutes.post(
       const competitionEvent = await prisma.competitionEvent.create({
         data: {
           ...data,
-          categories: { connect: categoryIds.map((id) => ({ id })) },
+          categories: { connect: categoryIds.map(id => ({ id })) },
         },
         include: competitionEventInclude,
       });
 
       if (subEvents && subEvents.length > 0) {
         await prisma.competitionEvent.createMany({
-          data: subEvents.map((subEvent) => ({
+          data: subEvents.map(subEvent => ({
             ...CompetitionEventPrisma$.parse({
               ...subEvent,
               price: 0, // Assuming sub-events have no price
@@ -80,7 +80,7 @@ organizationCompetitionEventsRoutes.post(
       logError('Failed to create competition event', error, c);
       return c.json({ error: 'Failed to create competition event' }, 500);
     }
-  }
+  },
 );
 
 // PUT /organization/competitions/:eid/events/:eventId - Update competition event
@@ -91,7 +91,7 @@ organizationCompetitionEventsRoutes.put(
   }),
   zValidator('param', z.object({ eid: Cuid$, eventEid: Cuid$ })),
   zValidator('json', CompetitionEventUpdate$),
-  async (c) => {
+  async c => {
     try {
       const { eid, eventEid } = c.req.valid('param');
       const { categoryIds, subEvents, ...eventBody } = c.req.valid('json');
@@ -126,14 +126,14 @@ organizationCompetitionEventsRoutes.put(
         where: { eid: eventEid },
         data: {
           ...data,
-          categories: { set: categoryIds.map((id) => ({ id })) },
+          categories: { set: categoryIds.map(id => ({ id })) },
         },
         include: competitionEventInclude,
       });
 
       // subEvents has and id (subEvent.id) if it's an update, otherwise it's a new sub-event
       if (subEvents && subEvents.length > 0) {
-        const subEventUpdates = subEvents.map((subEvent) => {
+        const subEventUpdates = subEvents.map(subEvent => {
           const subEventData = CompetitionEventPrisma$.parse({
             ...subEvent,
             price: 0, // Assuming sub-events have no price
@@ -162,7 +162,7 @@ organizationCompetitionEventsRoutes.put(
       logError('Failed to update competition event', error, c);
       return c.json({ error: 'Failed to update competition event' }, 500);
     }
-  }
+  },
 );
 
 // DELETE /organization/competitions/:eid/events/:eventEid - Delete competition event
@@ -172,7 +172,7 @@ organizationCompetitionEventsRoutes.delete(
     events: ['manage'],
   }),
   zValidator('param', z.object({ eid: Cuid$, eventEid: Cuid$ })),
-  async (c) => {
+  async c => {
     try {
       const { eid, eventEid } = c.req.valid('param');
 
@@ -205,7 +205,7 @@ organizationCompetitionEventsRoutes.delete(
       logError('Failed to delete competition event', error, c);
       return c.json({ error: 'Failed to delete competition event' }, 500);
     }
-  }
+  },
 );
 
 export { organizationCompetitionEventsRoutes };

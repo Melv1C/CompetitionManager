@@ -11,11 +11,7 @@ interface NavigationProps {
   onMobileMenuClose?: () => void;
 }
 
-export function Navigation({
-  navItems,
-  isMobile = false,
-  onMobileMenuClose,
-}: NavigationProps) {
+export function Navigation({ navItems, isMobile = false, onMobileMenuClose }: NavigationProps) {
   const location = useLocation();
 
   const isActivePath = (path: string) => {
@@ -28,7 +24,7 @@ export function Navigation({
   if (isMobile) {
     return (
       <>
-        {navItems.map((item) => (
+        {navItems.map(item => (
           <Link
             key={item.href}
             to={item.href}
@@ -48,14 +44,12 @@ export function Navigation({
 
   return (
     <nav className="hidden md:flex items-center space-x-1">
-      {navItems.map((item) => (
+      {navItems.map(item => (
         <Link
           key={item.href}
           to={item.href}
           className={`px-3 py-2 rounded-md text-sm font-medium transition-colors hover:bg-accent hover:text-accent-foreground ${
-            isActivePath(item.href)
-              ? 'bg-accent text-accent-foreground'
-              : 'text-muted-foreground'
+            isActivePath(item.href) ? 'bg-accent text-accent-foreground' : 'text-muted-foreground'
           }`}
         >
           {item.label}

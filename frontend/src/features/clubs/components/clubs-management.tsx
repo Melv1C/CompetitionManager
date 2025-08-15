@@ -21,10 +21,7 @@ export function ClubsManagement() {
 
       <ClubsTable clubs={clubs} isLoading={isLoading} />
 
-      <ClubFormDialog
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
-      />
+      <ClubFormDialog open={showCreateDialog} onOpenChange={setShowCreateDialog} />
     </div>
   );
 }

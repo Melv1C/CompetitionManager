@@ -42,7 +42,7 @@ export const auth = betterAuth({
         admin,
         resultManager,
       },
-      allowUserToCreateOrganization: async (user) => {
+      allowUserToCreateOrganization: async user => {
         return isAdmin(user.id);
       },
     }),
@@ -51,7 +51,7 @@ export const auth = betterAuth({
   databaseHooks: {
     session: {
       create: {
-        before: async (session) => {
+        before: async session => {
           const organization = await getActiveOrganization(session.userId);
           return {
             data: {

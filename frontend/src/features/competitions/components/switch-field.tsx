@@ -23,11 +23,7 @@ export function SwitchField({
         <div className="text-sm text-muted-foreground">{description}</div>
       </div>
       <FormControl>
-        <Switch
-          checked={checked}
-          onCheckedChange={onCheckedChange}
-          disabled={disabled}
-        />
+        <Switch checked={checked} onCheckedChange={onCheckedChange} disabled={disabled} />
       </FormControl>
     </FormItem>
   );

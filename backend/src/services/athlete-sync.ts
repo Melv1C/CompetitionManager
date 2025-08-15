@@ -1,9 +1,19 @@
+import mockAthletesData from '@/data/mock-athletes.json';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
 import type { Logger } from 'winston';
 import { scheduler } from './scheduler';
-import mockAthletesData from '@/data/mock-athletes.json';
+
+export interface AthleteData {
+  license: string;
+  bib: number;
+  firstName: string;
+  lastName: string;
+  gender: string;
+  birthdate: Date;
+  clubAbbr: string;
+}
 
 export interface AthleteSyncConfig {
   enabled: boolean;
@@ -46,9 +56,12 @@ export class AthleteSyncService {
     }
 
     // Validate configuration
-    if (!this.config.useMock && (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword)) {
+    if (
+      !this.config.useMock &&
+      (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword)
+    ) {
       this.prodLogger?.error(
-        'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.'
+        'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.',
       );
       return null;
     }
@@ -124,24 +137,27 @@ export class AthleteSyncService {
     }> = [];
 
     if (this.config.useMock) {
-      athletes = mockAthletesData.map((a) => ({
+      athletes = mockAthletesData.map(a => ({
         ...a,
         birthdate: new Date(a.birthdate),
       }));
     } else {
-      const { data } = await axios.get(this.config.lbfaUrl!, {
+      if (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword) {
+        throw new Error(
+          'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.',
+        );
+      }
+      const { data } = await axios.get(this.config.lbfaUrl, {
         headers: {
-          'User-Agent':
-            'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          Accept:
-            'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
           'Accept-Language': 'en-US,en;q=0.9',
           Referer: 'http://www.google.com/',
           Connection: 'keep-alive',
         },
         auth: {
-          username: this.config.lbfaUsername!,
-          password: this.config.lbfaPassword!,
+          username: this.config.lbfaUsername,
+          password: this.config.lbfaPassword,
         },
       });
 
@@ -283,9 +299,8 @@ export class AthleteSyncService {
   /**
    * Validate athlete data
    */
-  private isValidAthlete(athlete: any): boolean {
-    if (!athlete.license || !athlete.firstName || !athlete.lastName)
-      return false;
+  private isValidAthlete(athlete: AthleteData): boolean {
+    if (!athlete.license || !athlete.firstName || !athlete.lastName) return false;
     if (athlete.birthdate < new Date('1900-01-01')) return false;
     if (athlete.birthdate > new Date()) return false;
     return true;
@@ -304,9 +319,7 @@ export class AthleteSyncService {
     }
 
     try {
-      const { data } = await axios.get(
-        `https://www.beathletics.be/api/club/${clubAbbr}`
-      );
+      const { data } = await axios.get(`https://www.beathletics.be/api/club/${clubAbbr}`);
 
       const club = await prisma.club.create({
         data: {

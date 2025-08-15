@@ -16,20 +16,13 @@ interface CompetitionsTableProps {
   isLoading?: boolean;
 }
 
-export function CompetitionsTable({
-  competitions,
-  isLoading,
-}: CompetitionsTableProps) {
+export function CompetitionsTable({ competitions, isLoading }: CompetitionsTableProps) {
   if (isLoading) {
     return <div className="py-4 text-center">Loading competitions...</div>;
   }
 
   if (competitions.length === 0) {
-    return (
-      <div className="py-4 text-center text-muted-foreground">
-        No competitions found
-      </div>
-    );
+    return <div className="py-4 text-center text-muted-foreground">No competitions found</div>;
   }
 
   return (
@@ -42,7 +35,7 @@ export function CompetitionsTable({
         </TableRow>
       </TableHeader>
       <TableBody>
-        {competitions.map((comp) => (
+        {competitions.map(comp => (
           <TableRow key={comp.id}>
             <TableCell className="font-medium">{comp.name}</TableCell>
             <TableCell>{formatDate(comp.startDate)}</TableCell>

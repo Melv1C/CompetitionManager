@@ -10,7 +10,7 @@ i18n
   .use(
     resourcesToBackend((language: string, namespace: string) => {
       return import(`../translations/${language}/${namespace}.json`);
-    })
+    }),
   )
   // React integration
   .use(initReactI18next)

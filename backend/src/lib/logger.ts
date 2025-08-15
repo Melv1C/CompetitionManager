@@ -7,16 +7,17 @@ import { prisma } from './prisma';
  * Custom Prisma transport for Winston - stores logs in PostgreSQL
  */
 class PrismaTransport extends Transport {
-  constructor(opts: any = {}) {
+  constructor(opts: Transport.TransportStreamOptions = {}) {
     super(opts);
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   log(info: any, callback: () => void) {
     setImmediate(() => {
       this.emit('logged', info);
     });
 
-  const { level, message, timestamp, ...meta } = info;
+    const { level, message, timestamp, ...meta } = info;
 
     prisma.log
       .create({
@@ -24,10 +25,10 @@ class PrismaTransport extends Transport {
           level: level,
           message: message,
           meta: meta ? JSON.stringify(meta) : null,
-          timestamp: timestamp
+          timestamp: timestamp,
         },
       })
-      .catch((error) => {
+      .catch(error => {
         // Emit error but don't block logging
         this.emit('error', error);
       });
@@ -42,7 +43,7 @@ export const logger = winston.createLogger({
   format: winston.format.combine(
     winston.format.timestamp(),
     winston.format.errors({ stack: true }),
-    winston.format.json()
+    winston.format.json(),
   ),
   transports: [
     // Database transport for all logs
@@ -51,10 +52,7 @@ export const logger = winston.createLogger({
     ...(env.NODE_ENV !== 'production'
       ? [
           new winston.transports.Console({
-            format: winston.format.combine(
-              winston.format.colorize(),
-              winston.format.simple()
-            ),
+            format: winston.format.combine(winston.format.colorize(), winston.format.simple()),
           }),
         ]
       : [
@@ -68,10 +66,8 @@ export const logger = winston.createLogger({
 });
 
 // Handle uncaught exceptions and rejections
-logger.exceptions.handle(
-  new winston.transports.File({ filename: 'exceptions.log' })
-);
+logger.exceptions.handle(new winston.transports.File({ filename: 'exceptions.log' }));
 
-process.on('unhandledRejection', (ex) => {
+process.on('unhandledRejection', ex => {
   throw ex;
 });

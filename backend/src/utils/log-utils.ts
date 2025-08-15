@@ -3,12 +3,13 @@ import { prisma } from '@/lib/prisma';
 import { Log$, type LogQuery } from '@repo/core/schemas';
 import type { Context } from 'hono';
 import { getUser } from './auth-utils';
+import { Prisma } from '@generated/prisma'
 
 /**
  * Query logs from database with filtering and validation
  */
 export async function queryLogs(rawQuery: LogQuery) {
-  const where: any = {};
+  const where: Prisma.LogWhereInput = {};
 
   if (rawQuery.levels) {
     where.level = {
@@ -78,7 +79,7 @@ export async function logError(
   message: string,
   error: unknown,
   context: Context,
-  additionalInfo?: Record<string, any>
+  additionalInfo?: Record<string, unknown>,
 ) {
   const user = await getUser(context);
   const errorMessage = error instanceof Error ? error.message : 'Unknown error';

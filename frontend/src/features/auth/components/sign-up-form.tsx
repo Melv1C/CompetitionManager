@@ -42,7 +42,7 @@ export function SignUpForm() {
       }),
       confirmPassword: z.string(),
     })
-    .refine((data) => data.password === data.confirmPassword, {
+    .refine(data => data.password === data.confirmPassword, {
       message: t('passwordsNoMatch', { ns: 'validation' }),
       path: ['confirmPassword'],
     });
@@ -77,15 +77,14 @@ export function SignUpForm() {
             toast.success(t('accountCreatedSuccess', { ns: 'messages' }));
             navigate('/');
           },
-          onError: (ctx) => {
+          onError: ctx => {
             console.error('Sign up error:', ctx.error);
             form.setError('root', {
               type: 'manual',
-              message:
-                ctx.error.message || t('signUpError', { ns: 'messages' }),
+              message: ctx.error.message || t('signUpError', { ns: 'messages' }),
             });
           },
-        }
+        },
       );
     } catch (error) {
       console.error('Sign up error:', error);
@@ -102,9 +101,7 @@ export function SignUpForm() {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>{t('signUpTitle')}</CardTitle>
-        <CardDescription>
-          {t('signUpDescription')}
-        </CardDescription>
+        <CardDescription>{t('signUpDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -182,14 +179,10 @@ export function SignUpForm() {
               )}
             />
             {form.formState.errors.root && (
-              <div className="text-sm text-destructive">
-                {form.formState.errors.root.message}
-              </div>
+              <div className="text-sm text-destructive">{form.formState.errors.root.message}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading
-                ? t('creatingAccount')
-                : t('signUp')}
+              {isLoading ? t('creatingAccount') : t('signUp')}
             </Button>
           </form>
         </Form>
@@ -197,11 +190,7 @@ export function SignUpForm() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           {t('alreadyHaveAccount')}
-          <Button
-            variant="link"
-            className="p-0 h-auto"
-            onClick={() => navigate('/auth/sign-in')}
-          >
+          <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth/sign-in')}>
             {t('signIn')}
           </Button>
         </p>

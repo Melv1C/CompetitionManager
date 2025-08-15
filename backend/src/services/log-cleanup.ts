@@ -86,10 +86,7 @@ export class LogCleanupService {
         logger.warn('Log cleanup took longer than expected', { duration });
       }
 
-      if (
-        this.config.maxLogsPerCleanup &&
-        deletedCount > this.config.maxLogsPerCleanup
-      ) {
+      if (this.config.maxLogsPerCleanup && deletedCount > this.config.maxLogsPerCleanup) {
         logger.warn('Log cleanup deleted more logs than expected', {
           deletedCount,
           maxExpected: this.config.maxLogsPerCleanup,

@@ -30,9 +30,7 @@ export function CompetitionEventsTable({
   competitionEid,
   competitionEvents,
 }: CompetitionEventsTableProps) {
-  const [editingEvent, setEditingEvent] = useState<CompetitionEvent | null>(
-    null
-  );
+  const [editingEvent, setEditingEvent] = useState<CompetitionEvent | null>(null);
   const [showSubEvents, setShowSubEvents] = useState(false);
   const deleteMutation = useDeleteCompetitionEvent(competitionEid);
 
@@ -45,9 +43,7 @@ export function CompetitionEventsTable({
   const handleEdit = (competitionEvent: CompetitionEvent) => {
     // If this is a sub-event (has parentId), find and edit the parent event instead
     if (competitionEvent.parentId) {
-      const parentEvent = competitionEvents.find(
-        (event) => event.id === competitionEvent.parentId
-      );
+      const parentEvent = competitionEvents.find(event => event.id === competitionEvent.parentId);
       if (parentEvent) {
         setEditingEvent(parentEvent);
       }
@@ -59,41 +55,41 @@ export function CompetitionEventsTable({
   // Filter events based on showSubEvents preference
   const filteredEvents = showSubEvents
     ? competitionEvents
-    : competitionEvents.filter((event) => !event.parentId);
+    : competitionEvents.filter(event => !event.parentId);
 
   // Group events by day
-  const groupedEvents = filteredEvents.reduce((groups, event) => {
-    const eventDate = new Date(event.eventStartTime);
-    const dateKey = eventDate.toDateString(); // Use date string as key
+  const groupedEvents = filteredEvents.reduce(
+    (groups, event) => {
+      const eventDate = new Date(event.eventStartTime);
+      const dateKey = eventDate.toDateString(); // Use date string as key
 
-    if (!groups[dateKey]) {
-      groups[dateKey] = {
-        date: eventDate,
-        events: [],
-      };
-    }
+      if (!groups[dateKey]) {
+        groups[dateKey] = {
+          date: eventDate,
+          events: [],
+        };
+      }
 
-    groups[dateKey].events.push(event);
-    return groups;
-  }, {} as Record<string, { date: Date; events: CompetitionEvent[] }>);
+      groups[dateKey].events.push(event);
+      return groups;
+    },
+    {} as Record<string, { date: Date; events: CompetitionEvent[] }>,
+  );
 
   // Sort groups by date and sort events within each group by time
   const sortedGroups = Object.values(groupedEvents)
     .sort((a, b) => a.date.getTime() - b.date.getTime())
-    .map((group) => ({
+    .map(group => ({
       ...group,
       events: group.events.sort(
-        (a, b) =>
-          new Date(a.eventStartTime).getTime() -
-          new Date(b.eventStartTime).getTime()
+        (a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime(),
       ),
     }));
 
   if (filteredEvents.length === 0) {
     return (
       <div className="text-center py-8 text-muted-foreground">
-        No competition events found. Create your first competition event to get
-        started.
+        No competition events found. Create your first competition event to get started.
       </div>
     );
   }
@@ -103,11 +99,7 @@ export function CompetitionEventsTable({
       <div className="space-y-6">
         {/* Show sub-events toggle */}
         <div className="flex items-center space-x-3">
-          <Switch
-            id="show-sub-events"
-            checked={showSubEvents}
-            onCheckedChange={setShowSubEvents}
-          />
+          <Switch id="show-sub-events" checked={showSubEvents} onCheckedChange={setShowSubEvents} />
           <label
             htmlFor="show-sub-events"
             className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70 cursor-pointer"
@@ -117,7 +109,7 @@ export function CompetitionEventsTable({
         </div>
 
         <div className="space-y-8">
-          {sortedGroups.map((group) => (
+          {sortedGroups.map(group => (
             <div key={group.date.toDateString()} className="space-y-4">
               <h3 className="text-lg font-semibold text-foreground border-b pb-2">
                 {formatDateFull(group.date)}
@@ -133,22 +125,16 @@ export function CompetitionEventsTable({
                   </TableRow>
                 </TableHeader>
                 <TableBody>
-                  {group.events.map((competitionEvent) => (
+                  {group.events.map(competitionEvent => (
                     <TableRow key={competitionEvent.id}>
-                      <TableCell>
-                        {formatTime(competitionEvent.eventStartTime)}
-                      </TableCell>
-                      <TableCell className="font-medium">
-                        {competitionEvent.name}
-                      </TableCell>
+                      <TableCell>{formatTime(competitionEvent.eventStartTime)}</TableCell>
+                      <TableCell className="font-medium">{competitionEvent.name}</TableCell>
                       <TableCell>
                         0
                         {competitionEvent.maxParticipants &&
                           ` / ${competitionEvent.maxParticipants}`}
                       </TableCell>
-                      <TableCell>
-                        {formatCurrency(competitionEvent.price)}
-                      </TableCell>
+                      <TableCell>{formatCurrency(competitionEvent.price)}</TableCell>
                       <TableCell>
                         <DropdownMenu>
                           <DropdownMenuTrigger asChild>
@@ -157,13 +143,9 @@ export function CompetitionEventsTable({
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent align="end">
-                            <DropdownMenuItem
-                              onClick={() => handleEdit(competitionEvent)}
-                            >
+                            <DropdownMenuItem onClick={() => handleEdit(competitionEvent)}>
                               <Edit className="mr-2 h-4 w-4" />
-                              {competitionEvent.parentId
-                                ? 'Edit Parent Event'
-                                : 'Edit'}
+                              {competitionEvent.parentId ? 'Edit Parent Event' : 'Edit'}
                             </DropdownMenuItem>
                             <DropdownMenuItem
                               onClick={() => handleDelete(competitionEvent.eid)}
@@ -188,7 +170,7 @@ export function CompetitionEventsTable({
         <CompetitionEventFormDialog
           competitionEid={competitionEid}
           open={!!editingEvent}
-          onOpenChange={(open) => !open && setEditingEvent(null)}
+          onOpenChange={open => !open && setEditingEvent(null)}
           competitionEvent={editingEvent}
         />
       )}

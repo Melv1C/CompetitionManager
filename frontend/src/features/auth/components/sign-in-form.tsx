@@ -66,15 +66,14 @@ export function SignInForm() {
             toast.success(t('signInSuccess', { ns: 'messages' }));
             navigate('/');
           },
-          onError: (ctx) => {
+          onError: ctx => {
             console.error('Sign in error:', ctx.error);
             form.setError('root', {
               type: 'manual',
-              message:
-                ctx.error.message || t('signInError', { ns: 'messages' }),
+              message: ctx.error.message || t('signInError', { ns: 'messages' }),
             });
           },
-        }
+        },
       );
     } catch (error) {
       console.error('Sign in error:', error);
@@ -91,9 +90,7 @@ export function SignInForm() {
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
         <CardTitle>{t('signInTitle')}</CardTitle>
-        <CardDescription>
-          {t('signInDescription')}
-        </CardDescription>
+        <CardDescription>{t('signInDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -135,14 +132,10 @@ export function SignInForm() {
               )}
             />
             {form.formState.errors.root && (
-              <div className="text-sm text-destructive">
-                {form.formState.errors.root.message}
-              </div>
+              <div className="text-sm text-destructive">{form.formState.errors.root.message}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading
-                ? t('signingIn')
-                : t('signIn')}
+              {isLoading ? t('signingIn') : t('signIn')}
             </Button>
           </form>
         </Form>
@@ -150,11 +143,7 @@ export function SignInForm() {
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
           {t('dontHaveAccount')}
-          <Button
-            variant="link"
-            className="p-0 h-auto"
-            onClick={() => navigate('/auth/sign-up')}
-          >
+          <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth/sign-up')}>
             {t('signUp')}
           </Button>
         </p>

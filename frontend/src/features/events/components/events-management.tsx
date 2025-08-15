@@ -21,10 +21,7 @@ export function EventsManagement() {
 
       <EventsTable events={events} isLoading={isLoading} />
 
-      <EventFormDialog
-        open={showCreateDialog}
-        onOpenChange={setShowCreateDialog}
-      />
+      <EventFormDialog open={showCreateDialog} onOpenChange={setShowCreateDialog} />
     </div>
   );
 }

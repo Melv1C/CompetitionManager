@@ -1,11 +1,6 @@
 import { DateTimePicker } from '@/components/date-time-picker';
 import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
+import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
 import {
   Form,
   FormControl,
@@ -26,10 +21,7 @@ interface CreateCompetitionDialogProps {
   onOpenChange: (open: boolean) => void;
 }
 
-export function CreateCompetitionDialog({
-  open,
-  onOpenChange,
-}: CreateCompetitionDialogProps) {
+export function CreateCompetitionDialog({ open, onOpenChange }: CreateCompetitionDialogProps) {
   const createMutation = useCreateCompetition();
 
   const getDefaultStartDate = () => {
@@ -42,7 +34,7 @@ export function CreateCompetitionDialog({
     resolver: zodResolver(
       CompetitionCreate$.extend({
         startDate: z.date(), // Need to ensure startDate only accepts Date objects
-      })
+      }),
     ),
     defaultValues: {
       name: '',
@@ -88,7 +80,7 @@ export function CreateCompetitionDialog({
                   <FormControl>
                     <DateTimePicker
                       value={field.value}
-                      onChange={(date) => date && field.onChange(date)}
+                      onChange={date => date && field.onChange(date)}
                       placeholder="Select date and time"
                       allowClear={false}
                       minDate={new Date()}

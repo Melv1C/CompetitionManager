@@ -43,10 +43,7 @@ const createFormSchema = (t: (key: string) => string) =>
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;
 
-export function CreateOrganizationDialog({
-  open,
-  onOpenChange,
-}: CreateOrganizationDialogProps) {
+export function CreateOrganizationDialog({ open, onOpenChange }: CreateOrganizationDialogProps) {
   const { t } = useTranslation('organization');
 
   // Create schema with translations
@@ -171,7 +168,7 @@ export function CreateOrganizationDialog({
                       <Input
                         placeholder={t('slugPlaceholder')}
                         value={field.value}
-                        onChange={(e) => handleSlugChange(e.target.value)}
+                        onChange={e => handleSlugChange(e.target.value)}
                       />
                     ) : (
                       <Input
@@ -194,11 +191,7 @@ export function CreateOrganizationDialog({
                 <FormItem>
                   <FormLabel>{t('organizationLogo')}</FormLabel>
                   <FormControl>
-                    <Input
-                      type="url"
-                      placeholder={t('logoPlaceholder')}
-                      {...field}
-                    />
+                    <Input type="url" placeholder={t('logoPlaceholder')} {...field} />
                   </FormControl>
                   <FormDescription>{t('logoDescription')}</FormDescription>
                   <FormMessage />
@@ -207,15 +200,9 @@ export function CreateOrganizationDialog({
             />
             <DialogFooter>
               {form.formState.errors.root && (
-                <div className="text-sm text-destructive">
-                  {form.formState.errors.root.message}
-                </div>
+                <div className="text-sm text-destructive">{form.formState.errors.root.message}</div>
               )}
-              <Button
-                type="button"
-                variant="outline"
-                onClick={() => onOpenChange(false)}
-              >
+              <Button type="button" variant="outline" onClick={() => onOpenChange(false)}>
                 {t('cancel')}
               </Button>
               <Button type="submit">{t('create')}</Button>

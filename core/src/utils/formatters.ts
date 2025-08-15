@@ -11,10 +11,7 @@ export interface FormatOptions {
 /**
  * Format a date as a readable date string (e.g., "January 15, 2024")
  */
-export const formatDate = (
-  date: Date | string,
-  options: FormatOptions = {}
-): string => {
+export const formatDate = (date: Date | string, options: FormatOptions = {}): string => {
   const { locale = 'en-US' } = options;
 
   return new Intl.DateTimeFormat(locale, {
@@ -27,10 +24,7 @@ export const formatDate = (
 /**
  * Format a date as a short date string (e.g., "Jan 15, 2024")
  */
-export const formatDateShort = (
-  date: Date | string,
-  options: FormatOptions = {}
-): string => {
+export const formatDateShort = (date: Date | string, options: FormatOptions = {}): string => {
   const { locale = 'en-US' } = options;
 
   return new Intl.DateTimeFormat(locale, {
@@ -43,10 +37,7 @@ export const formatDateShort = (
 /**
  * Format a date with time (e.g., "January 15, 2024 at 2:30 PM")
  */
-export const formatDateTime = (
-  date: Date | string,
-  options: FormatOptions = {}
-): string => {
+export const formatDateTime = (date: Date | string, options: FormatOptions = {}): string => {
   const { locale = 'en-US' } = options;
 
   return new Intl.DateTimeFormat(locale, {
@@ -61,10 +52,7 @@ export const formatDateTime = (
 /**
  * Format a date with full details including weekday (e.g., "Monday, January 15, 2024")
  */
-export const formatDateFull = (
-  date: Date | string,
-  options: FormatOptions = {}
-): string => {
+export const formatDateFull = (date: Date | string, options: FormatOptions = {}): string => {
   const { locale = 'en-US' } = options;
 
   return new Intl.DateTimeFormat(locale, {
@@ -78,10 +66,7 @@ export const formatDateFull = (
 /**
  * Format time only (e.g., "2:30 PM")
  */
-export const formatTime = (
-  date: Date | string,
-  options: FormatOptions = {}
-): string => {
+export const formatTime = (date: Date | string, options: FormatOptions = {}): string => {
   const { locale = 'en-US' } = options;
 
   return new Intl.DateTimeFormat(locale, {
@@ -93,10 +78,7 @@ export const formatTime = (
 /**
  * Format time with seconds (e.g., "2:30:45 PM")
  */
-export const formatTimeWithSeconds = (
-  date: Date | string,
-  options: FormatOptions = {}
-): string => {
+export const formatTimeWithSeconds = (date: Date | string, options: FormatOptions = {}): string => {
   const { locale = 'en-US' } = options;
 
   return new Intl.DateTimeFormat(locale, {
@@ -134,10 +116,7 @@ export interface CurrencyOptions extends FormatOptions {
 /**
  * Format a number as currency (e.g., "€25.00")
  */
-export const formatCurrency = (
-  amount: number,
-  options: CurrencyOptions = {}
-): string => {
+export const formatCurrency = (amount: number, options: CurrencyOptions = {}): string => {
   const {
     locale = 'en-US',
     currency = 'EUR',
@@ -161,13 +140,9 @@ export const formatNumber = (
   options: FormatOptions & {
     minimumFractionDigits?: number;
     maximumFractionDigits?: number;
-  } = {}
+  } = {},
 ): string => {
-  const {
-    locale = 'en-US',
-    minimumFractionDigits,
-    maximumFractionDigits,
-  } = options;
+  const { locale = 'en-US', minimumFractionDigits, maximumFractionDigits } = options;
 
   return new Intl.NumberFormat(locale, {
     minimumFractionDigits,
@@ -178,9 +153,7 @@ export const formatNumber = (
 /**
  * Format metadata (JSON stringification with pretty printing)
  */
-export const formatMetadata = (
-  meta: string | null | undefined
-): string | null => {
+export const formatMetadata = (meta: string | null | undefined): string | null => {
   if (!meta) return null;
 
   try {
@@ -214,13 +187,9 @@ export const formatPercentage = (
   options: FormatOptions & {
     minimumFractionDigits?: number;
     maximumFractionDigits?: number;
-  } = {}
+  } = {},
 ): string => {
-  const {
-    locale = 'en-US',
-    minimumFractionDigits = 1,
-    maximumFractionDigits = 1,
-  } = options;
+  const { locale = 'en-US', minimumFractionDigits = 1, maximumFractionDigits = 1 } = options;
 
   return new Intl.NumberFormat(locale, {
     style: 'percent',

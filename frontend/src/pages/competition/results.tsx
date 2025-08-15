@@ -17,12 +17,9 @@ export function CompetitionResultsPage() {
         <CardContent>
           <div className="text-center py-8">
             <TrophyIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-muted-foreground">
-              Results not yet available
-            </h3>
+            <h3 className="text-lg font-medium text-muted-foreground">Results not yet available</h3>
             <p className="text-sm text-muted-foreground mt-2">
-              Competition results will be published here after the event
-              concludes.
+              Competition results will be published here after the event concludes.
             </p>
           </div>
         </CardContent>

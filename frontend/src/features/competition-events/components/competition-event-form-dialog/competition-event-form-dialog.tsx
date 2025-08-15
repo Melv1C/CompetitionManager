@@ -75,7 +75,7 @@ export function CompetitionEventFormDialog({
               .array(
                 CompetitionEventSubEvent$.extend({
                   eventStartTime: z.date(),
-                })
+                }),
               )
               .optional(),
           })
@@ -86,10 +86,10 @@ export function CompetitionEventFormDialog({
               .array(
                 CompetitionEventSubEvent$.extend({
                   eventStartTime: z.date(),
-                })
+                }),
               )
               .optional(),
-          })
+          }),
     ),
     defaultValues: {
       name: competitionEvent?.name ?? '',
@@ -97,16 +97,16 @@ export function CompetitionEventFormDialog({
       eventStartTime: competitionEvent?.eventStartTime ?? undefined,
       maxParticipants: competitionEvent?.maxParticipants ?? undefined,
       price: competitionEvent?.price ?? 0,
-      categoryIds: competitionEvent?.categories?.map((cat) => cat.id) ?? [],
+      categoryIds: competitionEvent?.categories?.map(cat => cat.id) ?? [],
       subEvents: competitionEvent
-        ? competition.data?.events
-            ?.filter((event) => event.parentId === competitionEvent?.id)
-            .map((event) => ({
+        ? (competition.data?.events
+            ?.filter(event => event.parentId === competitionEvent?.id)
+            .map(event => ({
               id: event.id,
               name: event.name,
               eventStartTime: event.eventStartTime,
               eventId: event.eventId,
-            })) ?? []
+            })) ?? [])
         : [],
     },
   });
@@ -121,19 +121,16 @@ export function CompetitionEventFormDialog({
 
   useEffect(() => {
     if (watchedEventId) {
-      const event = events.data.find((e) => e.id === watchedEventId);
+      const event = events.data.find(e => e.id === watchedEventId);
       setSelectedEvent(event);
 
       // If it's a combined event, auto-generate sub-events
       if (event?.group === 'combined') {
         const subEventsCount = getCombinedEventSubEventsCount(event.name);
-        const newSubEvents = Array.from(
-          { length: subEventsCount },
-          (_, index) => ({
-            id: null,
-            name: `${event.name} - Event ${index + 1}`,
-          })
-        );
+        const newSubEvents = Array.from({ length: subEventsCount }, (_, index) => ({
+          id: null,
+          name: `${event.name} - Event ${index + 1}`,
+        }));
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
         replace(newSubEvents as any[]);
       } else {
@@ -144,13 +141,9 @@ export function CompetitionEventFormDialog({
   }, [watchedEventId, events.data, replace]);
 
   const isCombinedEvent = selectedEvent?.group === 'combined';
-  const subEventsCount = isCombinedEvent
-    ? getCombinedEventSubEventsCount(selectedEvent.name)
-    : 0;
+  const subEventsCount = isCombinedEvent ? getCombinedEventSubEventsCount(selectedEvent.name) : 0;
 
-  const onSubmit = async (
-    data: CompetitionEventCreate | CompetitionEventUpdate
-  ) => {
+  const onSubmit = async (data: CompetitionEventCreate | CompetitionEventUpdate) => {
     // Convert form data to API format
     const apiData = {
       name: data.name,
@@ -190,7 +183,7 @@ export function CompetitionEventFormDialog({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="sm:max-w-6xl max-h-[95vh] w-[90vw]"
-        onInteractOutside={(e) => {
+        onInteractOutside={e => {
           // Prevent closing the dialog when clicking outside
           e.preventDefault();
         }}
@@ -249,10 +242,7 @@ export function CompetitionEventFormDialog({
                       <FormItem>
                         <FormLabel>Competition Event Name</FormLabel>
                         <FormControl>
-                          <Input
-                            placeholder="Enter competition event name"
-                            {...field}
-                          />
+                          <Input placeholder="Enter competition event name" {...field} />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
@@ -268,7 +258,7 @@ export function CompetitionEventFormDialog({
                         <FormControl>
                           <DateTimePicker
                             value={field.value}
-                            onChange={(date) => field.onChange(date)}
+                            onChange={date => field.onChange(date)}
                             placeholder="Select start time"
                             disabled={isLoading}
                             minDate={competition.data.startDate}
@@ -293,7 +283,7 @@ export function CompetitionEventFormDialog({
                             type="number"
                             placeholder="Leave empty for unlimited"
                             {...field}
-                            onChange={(e) => {
+                            onChange={e => {
                               const value = e.target.value;
                               field.onChange(value ? Number(value) : undefined);
                             }}
@@ -318,9 +308,7 @@ export function CompetitionEventFormDialog({
                             min="0"
                             placeholder="0.00"
                             {...field}
-                            onChange={(e) =>
-                              field.onChange(Number(e.target.value))
-                            }
+                            onChange={e => field.onChange(Number(e.target.value))}
                           />
                         </FormControl>
                         <FormMessage />
@@ -355,16 +343,8 @@ export function CompetitionEventFormDialog({
           >
             Cancel
           </Button>
-          <Button
-            type="submit"
-            disabled={isLoading}
-            onClick={form.handleSubmit(onSubmit)}
-          >
-            {isLoading
-              ? 'Saving...'
-              : isEditing
-              ? 'Update Event'
-              : 'Create Event'}
+          <Button type="submit" disabled={isLoading} onClick={form.handleSubmit(onSubmit)}>
+            {isLoading ? 'Saving...' : isEditing ? 'Update Event' : 'Create Event'}
           </Button>
         </DialogFooter>
       </DialogContent>

@@ -1,10 +1,7 @@
 import { z } from 'zod/v4';
 import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
 import { Club$ } from './club';
-import {
-  CompetitionEvent$,
-  competitionEventInclude,
-} from './competition-event';
+import { CompetitionEvent$, competitionEventInclude } from './competition-event';
 import { Organization$ } from './organization';
 
 // Competition base schema
@@ -63,35 +60,34 @@ export const CompetitionPrisma$ = Competition$.omit({
   organization: true,
 })
   .refine(
-    (data) => {
+    data => {
       // End date should be after start date
       return data.endDate > data.startDate;
     },
     {
       message: 'Competition end date must be after start date',
       path: ['endDate'],
-    }
+    },
   )
   .refine(
-    (data) => {
+    data => {
       // Inscription start date should be before inscription end date
       return data.inscriptionStartDate < data.inscriptionEndDate;
     },
     {
       message: 'Registration start date must be before registration end date',
       path: ['inscriptionStartDate'],
-    }
+    },
   )
   .refine(
-    (data) => {
+    data => {
       // Inscription end date should be before or equal to competition start date
       return data.inscriptionEndDate <= data.startDate;
     },
     {
-      message:
-        'Registration end date cannot be later than competition start date',
+      message: 'Registration end date cannot be later than competition start date',
       path: ['inscriptionEndDate'],
-    }
+    },
   );
 export type CompetitionPrisma = z.infer<typeof CompetitionPrisma$>;
 

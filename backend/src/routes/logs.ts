@@ -11,7 +11,7 @@ const logsRoutes = new Hono();
 logsRoutes.use('*', requireAuth);
 
 // GET /logs - Query logs with filters
-logsRoutes.get('/', requireAdmin, zValidator('query', LogQuery$), async (c) => {
+logsRoutes.get('/', requireAdmin, zValidator('query', LogQuery$), async c => {
   try {
     const query = c.req.valid('query');
     const result = await queryLogs(query);
@@ -23,7 +23,7 @@ logsRoutes.get('/', requireAdmin, zValidator('query', LogQuery$), async (c) => {
 });
 
 // POST /logs/cleanup - Trigger manual log cleanup
-logsRoutes.post('/cleanup', requireAdmin, async (c) => {
+logsRoutes.post('/cleanup', requireAdmin, async c => {
   try {
     const logCleanupService = serviceManager.getLogCleanupService();
     const result = await logCleanupService.triggerCleanup();

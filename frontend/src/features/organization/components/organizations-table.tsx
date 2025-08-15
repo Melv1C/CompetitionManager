@@ -55,10 +55,7 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
     }
   };
 
-  const handleDeleteOrganization = async (
-    organizationId: string,
-    organizationName: string
-  ) => {
+  const handleDeleteOrganization = async (organizationId: string, organizationName: string) => {
     try {
       await authClient.organization.delete({
         organizationId,
@@ -75,9 +72,7 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <Building2 className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-lg font-medium text-muted-foreground">
-          {t('noOrganizations')}
-        </p>
+        <p className="text-lg font-medium text-muted-foreground">{t('noOrganizations')}</p>
       </div>
     );
   }
@@ -95,7 +90,7 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {organizations.map((org) => (
+          {organizations.map(org => (
             <TableRow key={org.id}>
               <TableCell>
                 <Avatar className="h-8 w-8">
@@ -106,12 +101,8 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
                 </Avatar>
               </TableCell>
               <TableCell className="font-medium">{org.name}</TableCell>
-              <TableCell className="text-muted-foreground font-mono text-sm">
-                {org.slug}
-              </TableCell>
-              <TableCell className="text-muted-foreground">
-                {formatDate(org.createdAt)}
-              </TableCell>
+              <TableCell className="text-muted-foreground font-mono text-sm">{org.slug}</TableCell>
+              <TableCell className="text-muted-foreground">{formatDate(org.createdAt)}</TableCell>
               <TableCell>
                 <div className="flex items-center gap-2">
                   <Button
@@ -139,17 +130,14 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
                       <AlertDialogHeader>
                         <AlertDialogTitle>Delete Organization</AlertDialogTitle>
                         <AlertDialogDescription>
-                          Are you sure you want to delete "{org.name}"? This
-                          action cannot be undone and will permanently delete
-                          the organization and all associated data.
+                          Are you sure you want to delete "{org.name}"? This action cannot be undone
+                          and will permanently delete the organization and all associated data.
                         </AlertDialogDescription>
                       </AlertDialogHeader>
                       <AlertDialogFooter>
                         <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogAction
-                          onClick={() =>
-                            handleDeleteOrganization(org.id, org.name)
-                          }
+                          onClick={() => handleDeleteOrganization(org.id, org.name)}
                           className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
                           Delete

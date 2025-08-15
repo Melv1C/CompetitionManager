@@ -2,12 +2,7 @@ import { z } from 'zod/v4';
 import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 
 // Payment session status enum
-export const PaymentSessionStatus$ = z.enum([
-  'pending',
-  'paid',
-  'cancelled',
-  'expired',
-]);
+export const PaymentSessionStatus$ = z.enum(['pending', 'paid', 'cancelled', 'expired']);
 export type PaymentSessionStatus = z.infer<typeof PaymentSessionStatus$>;
 
 // Payment session schema

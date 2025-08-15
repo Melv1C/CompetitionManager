@@ -1,28 +1,15 @@
-import {
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
+import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { EventSelector } from '@/features/events/components/event-selector';
 import { DateTimePicker } from '@/components/date-time-picker';
 import { Separator } from '@/components/ui/separator';
 import type { Control, FieldArrayWithId } from 'react-hook-form';
-import type {
-  Event,
-  CompetitionEventCreate,
-  CompetitionEventUpdate,
-} from '@repo/core/schemas';
+import type { Event, CompetitionEventCreate, CompetitionEventUpdate } from '@repo/core/schemas';
 import { useEvents } from '@/features/events/hooks/use-events';
 
 interface SubEventsSectionProps {
   control: Control<CompetitionEventCreate | CompetitionEventUpdate>;
-  fields: FieldArrayWithId<
-    CompetitionEventCreate | CompetitionEventUpdate,
-    'subEvents',
-    'id'
-  >[];
+  fields: FieldArrayWithId<CompetitionEventCreate | CompetitionEventUpdate, 'subEvents', 'id'>[];
   isLoading: boolean;
   selectedEvent: Event | undefined;
   subEventsCount: number;
@@ -105,9 +92,7 @@ function SubEventCard({
       className="grid gap-2 px-1 py-1 items-center hover:bg-muted/20 rounded-sm"
       style={{ gridTemplateColumns: '2rem 1fr 1fr 1fr' }}
     >
-      <div className="text-xs text-muted-foreground font-mono text-center">
-        {index + 1}
-      </div>
+      <div className="text-xs text-muted-foreground font-mono text-center">{index + 1}</div>
 
       <FormField
         control={control}
@@ -116,7 +101,7 @@ function SubEventCard({
           <FormItem>
             <FormControl>
               <EventSelector
-                events={events.data.filter((e) => e.group !== 'combined')}
+                events={events.data.filter(e => e.group !== 'combined')}
                 value={field.value}
                 onValueChange={field.onChange}
                 placeholder="Select event"
@@ -134,11 +119,7 @@ function SubEventCard({
         render={({ field }) => (
           <FormItem>
             <FormControl>
-              <Input
-                placeholder="Custom name"
-                {...field}
-                className="text-xs h-8"
-              />
+              <Input placeholder="Custom name" {...field} className="text-xs h-8" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -153,7 +134,7 @@ function SubEventCard({
             <FormControl>
               <DateTimePicker
                 value={field.value}
-                onChange={(date) => field.onChange(date)}
+                onChange={date => field.onChange(date)}
                 placeholder="Start time"
                 disabled={isLoading}
                 minDate={competitionStartDate}

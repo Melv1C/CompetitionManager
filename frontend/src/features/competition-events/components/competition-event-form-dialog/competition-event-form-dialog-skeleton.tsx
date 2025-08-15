@@ -17,7 +17,7 @@ export function CompetitionEventFormDialogSkeleton({
     <Dialog open={open} onOpenChange={onOpenChange}>
       <DialogContent
         className="sm:max-w-6xl max-h-[95vh] w-[90vw]"
-        onInteractOutside={(e) => {
+        onInteractOutside={e => {
           e.preventDefault();
         }}
       >

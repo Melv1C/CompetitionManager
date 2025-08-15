@@ -73,16 +73,13 @@ export function ClubsTable({ clubs, isLoading }: ClubsTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {clubs.map((club) => (
+          {clubs.map(club => (
             <TableRow key={club.id}>
               <TableCell className="font-medium">{club.name}</TableCell>
               <TableCell>{club.abbr}</TableCell>
               <TableCell>
                 {club.province ? (
-                  <Badge
-                    className={getProvinceColor(club.province)}
-                    variant="secondary"
-                  >
+                  <Badge className={getProvinceColor(club.province)} variant="secondary">
                     {club.province}
                   </Badge>
                 ) : (
@@ -122,7 +119,7 @@ export function ClubsTable({ clubs, isLoading }: ClubsTableProps) {
       {!!editingClub && (
         <ClubFormDialog
           open={!!editingClub}
-          onOpenChange={(open) => !open && setEditingClub(null)}
+          onOpenChange={open => !open && setEditingClub(null)}
           club={editingClub}
         />
       )}

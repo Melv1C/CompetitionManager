@@ -14,18 +14,15 @@ export function EventSelectionStep() {
   const eid = useCompetitionEid();
   const competition = useCompetition(eid);
 
-  const { currentAthlete, currentEventIds, setCurrentEventIds } =
-    useInscriptionFormStore();
+  const { currentAthlete, currentEventIds, setCurrentEventIds } = useInscriptionFormStore();
 
   const currentAthleteCategory = currentAthlete
     ? getAthleteCategory(currentAthlete, competition.data.startDate)
     : null;
 
   const eligibleEvents = currentAthlete
-    ? competition.data.events.filter((event) =>
-        event.categories.some(
-          (category) => category.abbr === currentAthleteCategory?.abbr
-        )
+    ? competition.data.events.filter(event =>
+        event.categories.some(category => category.abbr === currentAthleteCategory?.abbr),
       )
     : [];
 
@@ -37,9 +34,7 @@ export function EventSelectionStep() {
         </div>
         <div>
           <h2 className="text-xl font-semibold">{t('selectEvents')}</h2>
-          <p className="text-muted-foreground text-sm">
-            {t('pleaseSelectAthleteFirst')}
-          </p>
+          <p className="text-muted-foreground text-sm">{t('pleaseSelectAthleteFirst')}</p>
         </div>
       </div>
     );
@@ -48,7 +43,7 @@ export function EventSelectionStep() {
   const handleEventToggle = (eventId: number, checked: boolean) => {
     const updatedIds = checked
       ? [...currentEventIds, eventId]
-      : currentEventIds.filter((id) => id !== eventId);
+      : currentEventIds.filter(id => id !== eventId);
     setCurrentEventIds(updatedIds);
   };
 
@@ -64,25 +59,21 @@ export function EventSelectionStep() {
           <div className="space-y-4">
             {/* Events */}
             <div className="grid gap-2">
-              {eligibleEvents.map((competitionEvent) => (
+              {eligibleEvents.map(competitionEvent => (
                 <div
                   key={competitionEvent.id}
                   className="flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors"
                 >
                   <Checkbox
                     checked={currentEventIds.includes(competitionEvent.id)}
-                    onCheckedChange={(checked) =>
+                    onCheckedChange={checked =>
                       handleEventToggle(competitionEvent.id, checked as boolean)
                     }
                   />
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center justify-between">
-                      <p className="font-medium text-sm">
-                        {competitionEvent.name}
-                      </p>
-                      <Badge variant="outline">
-                        €{competitionEvent.price.toFixed(2)}
-                      </Badge>
+                      <p className="font-medium text-sm">{competitionEvent.name}</p>
+                      <Badge variant="outline">€{competitionEvent.price.toFixed(2)}</Badge>
                     </div>
                   </div>
                 </div>

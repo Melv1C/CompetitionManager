@@ -29,17 +29,11 @@ export function Header() {
           {/* Logo */}
           <Link to="/" className="flex items-center space-x-2">
             <img
-              src={
-                getThemeValue(theme) === 'dark'
-                  ? '/logo-white.png'
-                  : '/logo-black.png'
-              }
+              src={getThemeValue(theme) === 'dark' ? '/logo-white.png' : '/logo-black.png'}
               alt="Competition Manager Logo"
               className="h-8 w-10"
             />
-            <span className="hidden font-bold sm:inline-block">
-              Competition Manager
-            </span>
+            <span className="hidden font-bold sm:inline-block">Competition Manager</span>
           </Link>
           {/* Desktop Navigation */}
           <Navigation navItems={navItems} /> {/* Desktop Actions */}
@@ -58,20 +52,12 @@ export function Header() {
               onClick={() => setIsOpen(!isOpen)}
               aria-label="Toggle menu"
             >
-              {isOpen ? (
-                <X className="h-5 w-5" />
-              ) : (
-                <Menu className="h-5 w-5" />
-              )}
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
         {/* Mobile Navigation */}
-        <MobileMenu
-          isOpen={isOpen}
-          navItems={navItems}
-          onClose={handleMobileMenuClose}
-        />
+        <MobileMenu isOpen={isOpen} navItems={navItems} onClose={handleMobileMenuClose} />
       </div>
     </header>
   );

@@ -5,13 +5,7 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import {
-  CalendarIcon,
-  ClockIcon,
-  UsersIcon,
-  SearchIcon,
-  XIcon,
-} from 'lucide-react';
+import { CalendarIcon, ClockIcon, UsersIcon, SearchIcon, XIcon } from 'lucide-react';
 import { useCompetition } from '@/features/competitions';
 import { EventSelector } from '@/features/events/components/event-selector';
 import { CategorySelector } from '@/features/categories/components/category-selector';
@@ -33,7 +27,7 @@ export function CompetitionSchedulePage() {
   // Get unique events from competition events for filtering
   const competitionEvents = useMemo(() => {
     const uniqueEvents = new Map();
-    competition.events.forEach((event) => {
+    competition.events.forEach(event => {
       if (event.event) {
         uniqueEvents.set(event.event.id, event.event);
       }
@@ -43,23 +37,15 @@ export function CompetitionSchedulePage() {
 
   // Filter events based on search and filter criteria
   const filteredEvents = useMemo(() => {
-    return competition.events.filter((event) => {
+    return competition.events.filter(event => {
       // Search filter
       if (searchQuery) {
         const query = searchQuery.toLowerCase();
-        const matchesCompetitionEventName = event.name
-          ?.toLowerCase()
-          .includes(query);
-        const matchesEventName = event.event?.name
-          ?.toLowerCase()
-          .includes(query);
-        const matchesEventAbbr = event.event?.abbr
-          ?.toLowerCase()
-          .includes(query);
+        const matchesCompetitionEventName = event.name?.toLowerCase().includes(query);
+        const matchesEventName = event.event?.name?.toLowerCase().includes(query);
+        const matchesEventAbbr = event.event?.abbr?.toLowerCase().includes(query);
         const matchesCategory = event.categories?.some(
-          (cat) =>
-            cat.name.toLowerCase().includes(query) ||
-            cat.abbr.toLowerCase().includes(query)
+          cat => cat.name.toLowerCase().includes(query) || cat.abbr.toLowerCase().includes(query),
         );
 
         if (
@@ -79,12 +65,8 @@ export function CompetitionSchedulePage() {
 
       // Category filter
       if (selectedCategoryIds.length > 0) {
-        const eventCategoryIds = event.categories?.map((cat) => cat.id) || [];
-        if (
-          !selectedCategoryIds.some((selectedCatId) =>
-            eventCategoryIds.includes(selectedCatId)
-          )
-        ) {
+        const eventCategoryIds = event.categories?.map(cat => cat.id) || [];
+        if (!selectedCategoryIds.some(selectedCatId => eventCategoryIds.includes(selectedCatId))) {
           return false;
         }
       }
@@ -94,30 +76,31 @@ export function CompetitionSchedulePage() {
   }, [competition.events, searchQuery, selectedEventId, selectedCategoryIds]);
 
   // Group filtered events by day
-  const groupedEvents = filteredEvents.reduce((groups, event) => {
-    const eventDate = new Date(event.eventStartTime);
-    const dateKey = eventDate.toDateString();
+  const groupedEvents = filteredEvents.reduce(
+    (groups, event) => {
+      const eventDate = new Date(event.eventStartTime);
+      const dateKey = eventDate.toDateString();
 
-    if (!groups[dateKey]) {
-      groups[dateKey] = {
-        date: eventDate,
-        events: [],
-      };
-    }
+      if (!groups[dateKey]) {
+        groups[dateKey] = {
+          date: eventDate,
+          events: [],
+        };
+      }
 
-    groups[dateKey].events.push(event);
-    return groups;
-  }, {} as Record<string, { date: Date; events: CompetitionEvent[] }>);
+      groups[dateKey].events.push(event);
+      return groups;
+    },
+    {} as Record<string, { date: Date; events: CompetitionEvent[] }>,
+  );
 
   // Sort groups by date and sort events within each group by time
   const sortedGroups = Object.values(groupedEvents)
     .sort((a, b) => a.date.getTime() - b.date.getTime())
-    .map((group) => ({
+    .map(group => ({
       ...group,
       events: group.events.sort(
-        (a, b) =>
-          new Date(a.eventStartTime).getTime() -
-          new Date(b.eventStartTime).getTime()
+        (a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime(),
       ),
     }));
 
@@ -129,8 +112,7 @@ export function CompetitionSchedulePage() {
   };
 
   // Check if any filters are active
-  const hasActiveFilters =
-    searchQuery || selectedEventId || selectedCategoryIds.length > 0;
+  const hasActiveFilters = searchQuery || selectedEventId || selectedCategoryIds.length > 0;
 
   if (competition.events.length === 0) {
     return (
@@ -149,8 +131,7 @@ export function CompetitionSchedulePage() {
                 Schedule not yet available
               </h3>
               <p className="text-sm text-muted-foreground mt-2">
-                The detailed competition schedule will be published here closer
-                to the event.
+                The detailed competition schedule will be published here closer to the event.
               </p>
             </div>
           </CardContent>
@@ -172,7 +153,7 @@ export function CompetitionSchedulePage() {
               <Input
                 placeholder="Search events, categories..."
                 value={searchQuery}
-                onChange={(e) => setSearchQuery(e.target.value)}
+                onChange={e => setSearchQuery(e.target.value)}
                 className="pl-10 pr-10"
               />
               {searchQuery && (
@@ -232,11 +213,7 @@ export function CompetitionSchedulePage() {
                 )}
                 {selectedEventId && (
                   <Badge variant="outline" className="gap-1">
-                    Event:{' '}
-                    {
-                      competitionEvents.find((e) => e.id === selectedEventId)
-                        ?.name
-                    }
+                    Event: {competitionEvents.find(e => e.id === selectedEventId)?.name}
                     <button
                       onClick={() => setSelectedEventId(undefined)}
                       className="ml-1 hover:bg-muted rounded-full"
@@ -248,9 +225,7 @@ export function CompetitionSchedulePage() {
                 {selectedCategoryIds.length > 0 && (
                   <Badge variant="outline" className="gap-1">
                     {selectedCategoryIds.length}{' '}
-                    {selectedCategoryIds.length === 1
-                      ? 'Category'
-                      : 'Categories'}
+                    {selectedCategoryIds.length === 1 ? 'Category' : 'Categories'}
                     <button
                       onClick={() => setSelectedCategoryIds([])}
                       className="ml-1 hover:bg-muted rounded-full"
@@ -288,11 +263,7 @@ export function CompetitionSchedulePage() {
                 Try adjusting your search criteria or clearing the filters.
               </p>
               {hasActiveFilters && (
-                <Button
-                  variant="outline"
-                  onClick={clearAllFilters}
-                  className="mt-4"
-                >
+                <Button variant="outline" onClick={clearAllFilters} className="mt-4">
                   Clear All Filters
                 </Button>
               )}
@@ -301,7 +272,7 @@ export function CompetitionSchedulePage() {
         </Card>
       ) : (
         <div className="space-y-6">
-          {sortedGroups.map((group) => (
+          {sortedGroups.map(group => (
             <Card key={group.date.toDateString()}>
               <CardHeader className="pb-4">
                 <CardTitle className="flex items-center gap-2 text-lg">
@@ -311,7 +282,7 @@ export function CompetitionSchedulePage() {
               </CardHeader>
               <CardContent>
                 <div className="space-y-2">
-                  {group.events.map((event) => (
+                  {group.events.map(event => (
                     <Link
                       key={event.id}
                       to={`/competitions/${eid}/events/${event.eid}`}

@@ -1,9 +1,5 @@
 import { apiClient } from '@/lib/api-client';
-import type {
-  CategoryCreate,
-  CategoryUpdate,
-  FullCategory,
-} from '@repo/core/schemas';
+import type { CategoryCreate, CategoryUpdate, FullCategory } from '@repo/core/schemas';
 import { FullCategory$ } from '@repo/core/schemas';
 
 export class CategoriesService {
@@ -22,10 +18,7 @@ export class CategoriesService {
     return FullCategory$.parse(response.data);
   }
 
-  static async updateCategory(
-    id: number,
-    data: CategoryUpdate
-  ): Promise<FullCategory> {
+  static async updateCategory(id: number, data: CategoryUpdate): Promise<FullCategory> {
     const response = await apiClient.put(`/api/categories/${id}`, data);
     return FullCategory$.parse(response.data);
   }

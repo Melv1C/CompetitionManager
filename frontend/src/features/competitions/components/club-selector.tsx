@@ -1,11 +1,7 @@
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Check, ChevronDown, X } from 'lucide-react';
 
@@ -24,19 +20,19 @@ export function ClubSelector({
   disabled = false,
   placeholder = 'Select clubs...',
 }: ClubSelectorProps) {
-  const selectedClubs = clubs.filter((club) => selectedIds.includes(club.id));
+  const selectedClubs = clubs.filter(club => selectedIds.includes(club.id));
 
   const toggleClub = (clubId: number) => {
     const isSelected = selectedIds.includes(clubId);
     if (isSelected) {
-      onSelectionChange(selectedIds.filter((id) => id !== clubId));
+      onSelectionChange(selectedIds.filter(id => id !== clubId));
     } else {
       onSelectionChange([...selectedIds, clubId]);
     }
   };
 
   const removeClub = (clubId: number) => {
-    onSelectionChange(selectedIds.filter((id) => id !== clubId));
+    onSelectionChange(selectedIds.filter(id => id !== clubId));
   };
 
   return (
@@ -44,7 +40,7 @@ export function ClubSelector({
       {/* Selected clubs display */}
       {selectedClubs.length > 0 && (
         <div className="flex flex-wrap gap-1">
-          {selectedClubs.map((club) => (
+          {selectedClubs.map(club => (
             <Badge key={club.id} variant="secondary" className="gap-1 pr-1">
               <span>{club.name}</span>
               {!disabled && (
@@ -73,9 +69,7 @@ export function ClubSelector({
             type="button"
           >
             {selectedClubs.length > 0
-              ? `${selectedClubs.length} club${
-                  selectedClubs.length === 1 ? '' : 's'
-                } selected`
+              ? `${selectedClubs.length} club${selectedClubs.length === 1 ? '' : 's'} selected`
               : placeholder}
             <ChevronDown className="h-4 w-4 opacity-50" />
           </Button>
@@ -83,7 +77,7 @@ export function ClubSelector({
         <PopoverContent className="w-full p-0" align="start">
           <ScrollArea className="h-60">
             <div className="p-2">
-              {clubs.map((club) => {
+              {clubs.map(club => {
                 const isSelected = selectedIds.includes(club.id);
                 return (
                   <div
@@ -97,9 +91,7 @@ export function ClubSelector({
                     />
                     <div className="flex-1">
                       <div className="font-medium">{club.name}</div>
-                      <div className="text-xs text-muted-foreground">
-                        {club.abbr}
-                      </div>
+                      <div className="text-xs text-muted-foreground">{club.abbr}</div>
                     </div>
                     {isSelected && <Check className="h-4 w-4" />}
                   </div>

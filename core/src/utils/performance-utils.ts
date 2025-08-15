@@ -6,10 +6,7 @@ import type { EventType } from '@/schemas';
  * @param type - The type of performance ('time', 'distance', 'height', 'points')
  * @returns Formatted string representation of the performance
  */
-export function formatPerformance(
-  value: number | undefined | null,
-  type: EventType
-): string {
+export function formatPerformance(value: number | undefined | null, type: EventType): string {
   if (value === undefined || value === null) return '-';
 
   switch (type) {

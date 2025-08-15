@@ -76,15 +76,12 @@ export function EventsTable({ events, isLoading }: EventsTableProps) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {events.map((event) => (
+          {events.map(event => (
             <TableRow key={event.id}>
               <TableCell className="font-medium">{event.name}</TableCell>
               <TableCell>{event.abbr}</TableCell>
               <TableCell>
-                <Badge
-                  className={getGroupColor(event.group)}
-                  variant="secondary"
-                >
+                <Badge className={getGroupColor(event.group)} variant="secondary">
                   {event.group}
                 </Badge>
               </TableCell>
@@ -123,7 +120,7 @@ export function EventsTable({ events, isLoading }: EventsTableProps) {
       {!!editingEvent && (
         <EventFormDialog
           open={!!editingEvent}
-          onOpenChange={(open) => !open && setEditingEvent(null)}
+          onOpenChange={open => !open && setEditingEvent(null)}
           event={editingEvent}
         />
       )}

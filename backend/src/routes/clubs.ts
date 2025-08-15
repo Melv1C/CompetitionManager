@@ -2,19 +2,14 @@ import { prisma } from '@/lib/prisma';
 import { requireAdmin } from '@/middleware/auth';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
-import {
-  Club$,
-  ClubCreate$,
-  ClubUpdate$,
-  ParameterId$,
-} from '@repo/core/schemas';
+import { Club$, ClubCreate$, ClubUpdate$, ParameterId$ } from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod/v4';
 
 const clubsRoutes = new Hono();
 
 // GET /clubs - Get all clubs (public)
-clubsRoutes.get('/', async (c) => {
+clubsRoutes.get('/', async c => {
   try {
     const clubs = await prisma.club.findMany({
       orderBy: { abbr: 'asc' },
@@ -27,42 +22,33 @@ clubsRoutes.get('/', async (c) => {
 });
 
 // GET /clubs/:id - Get club by ID (public)
-clubsRoutes.get(
-  '/:id',
-  zValidator('param', z.object({ id: ParameterId$ })),
-  async (c) => {
-    try {
-      const { id } = c.req.valid('param');
-      const club = await prisma.club.findUnique({
-        where: { id },
-      });
-      if (!club) {
-        return c.json({ error: 'Club not found' }, 404);
-      }
-      return c.json(Club$.parse(club));
-    } catch (error) {
-      logError('Failed to fetch club', error, c);
-      return c.json({ error: 'Failed to fetch club' }, 500);
+clubsRoutes.get('/:id', zValidator('param', z.object({ id: ParameterId$ })), async c => {
+  try {
+    const { id } = c.req.valid('param');
+    const club = await prisma.club.findUnique({
+      where: { id },
+    });
+    if (!club) {
+      return c.json({ error: 'Club not found' }, 404);
     }
+    return c.json(Club$.parse(club));
+  } catch (error) {
+    logError('Failed to fetch club', error, c);
+    return c.json({ error: 'Failed to fetch club' }, 500);
   }
-);
+});
 
 // POST /clubs - Create new club (admin only)
-clubsRoutes.post(
-  '/',
-  requireAdmin,
-  zValidator('json', ClubCreate$),
-  async (c) => {
-    try {
-      const data = c.req.valid('json');
-      const club = await prisma.club.create({ data });
-      return c.json(Club$.parse(club), 201);
-    } catch (error) {
-      logError('Failed to create club', error, c);
-      return c.json({ error: 'Failed to create club' }, 500);
-    }
+clubsRoutes.post('/', requireAdmin, zValidator('json', ClubCreate$), async c => {
+  try {
+    const data = c.req.valid('json');
+    const club = await prisma.club.create({ data });
+    return c.json(Club$.parse(club), 201);
+  } catch (error) {
+    logError('Failed to create club', error, c);
+    return c.json({ error: 'Failed to create club' }, 500);
   }
-);
+});
 
 // PUT /clubs/:id - Update club (admin only)
 clubsRoutes.put(
@@ -70,7 +56,7 @@ clubsRoutes.put(
   requireAdmin,
   zValidator('param', z.object({ id: ParameterId$ })),
   zValidator('json', ClubUpdate$),
-  async (c) => {
+  async c => {
     try {
       const { id } = c.req.valid('param');
       const data = c.req.valid('json');
@@ -86,7 +72,7 @@ clubsRoutes.put(
       logError('Failed to update club', error, c);
       return c.json({ error: 'Failed to update club' }, 500);
     }
-  }
+  },
 );
 
 // DELETE /clubs/:id - Delete club (admin only)
@@ -94,7 +80,7 @@ clubsRoutes.delete(
   '/:id',
   requireAdmin,
   zValidator('param', z.object({ id: ParameterId$ })),
-  async (c) => {
+  async c => {
     try {
       const { id } = c.req.valid('param');
 
@@ -109,11 +95,8 @@ clubsRoutes.delete(
         prisma.competition.count({ where: { allowedClubs: { some: { id } } } }),
       ]);
 
-      if (dependencies.some((count) => count > 0)) {
-        return c.json(
-          { error: 'Cannot delete club with associated records' },
-          400
-        );
+      if (dependencies.some(count => count > 0)) {
+        return c.json({ error: 'Cannot delete club with associated records' }, 400);
       }
 
       await prisma.club.delete({ where: { id } });
@@ -122,7 +105,7 @@ clubsRoutes.delete(
       logError('Failed to delete club', error, c);
       return c.json({ error: 'Failed to delete club' }, 500);
     }
-  }
+  },
 );
 
 export { clubsRoutes };

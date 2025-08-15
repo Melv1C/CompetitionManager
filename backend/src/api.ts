@@ -16,7 +16,7 @@ export function getAPI() {
       exposeHeaders: ['Content-Length'],
       maxAge: 600,
       credentials: true,
-    })
+    }),
   );
 
   // Mount all API routes under /api prefix

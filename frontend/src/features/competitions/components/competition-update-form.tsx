@@ -16,11 +16,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { UnsavedChangesDialog } from '@/components/unsaved-changes-dialog';
 import { useClubs } from '@/features/clubs/hooks/use-clubs';
 import { useUpdateCompetition } from '@/features/competitions/hooks/use-organization-competitions';
@@ -76,7 +72,7 @@ export function CompetitionUpdateForm() {
         bibPermissions: z.array(z.string()),
         freeClubIds: z.array(z.number()),
         allowedClubIds: z.array(z.number()),
-      })
+      }),
     ),
   });
 
@@ -98,8 +94,8 @@ export function CompetitionUpdateForm() {
         isPaidOnline: currentCompetition.isPaidOnline,
         isSelection: currentCompetition.isSelection,
         isInscriptionVisible: currentCompetition.isInscriptionVisible,
-        freeClubIds: currentCompetition.freeClubs.map((c) => c.id),
-        allowedClubIds: currentCompetition.allowedClubs.map((c) => c.id),
+        freeClubIds: currentCompetition.freeClubs.map(c => c.id),
+        allowedClubIds: currentCompetition.allowedClubs.map(c => c.id),
       });
     }
   }, [currentCompetition, form]);
@@ -115,7 +111,7 @@ export function CompetitionUpdateForm() {
         console.error('Failed to update competition:', error);
       }
     },
-    [currentCompetition, updateMutation, form]
+    [currentCompetition, updateMutation, form],
   );
 
   const { isDirty } = form.formState;
@@ -123,8 +119,7 @@ export function CompetitionUpdateForm() {
   // Handle unsaved changes navigation blocking
   const { blocker, proceedNavigation, resetNavigation } = useUnsavedChanges({
     hasUnsavedChanges: isDirty && canEdit,
-    message:
-      'You have unsaved changes to the competition. Are you sure you want to leave?',
+    message: 'You have unsaved changes to the competition. Are you sure you want to leave?',
   });
 
   // Add keyboard shortcut for saving (Ctrl+S or Cmd+S)
@@ -163,9 +158,7 @@ export function CompetitionUpdateForm() {
             </TooltipContent>
           </Tooltip>
           {isDirty && canEdit && (
-            <span className="text-sm text-muted-foreground">
-              Unsaved changes
-            </span>
+            <span className="text-sm text-muted-foreground">Unsaved changes</span>
           )}
         </div>
         {/* Basic Information */}
@@ -179,11 +172,7 @@ export function CompetitionUpdateForm() {
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Competition Name</FormLabel>
                   <FormControl>
-                    <Input
-                      placeholder="Enter competition name"
-                      {...field}
-                      disabled={!canEdit}
-                    />
+                    <Input placeholder="Enter competition name" {...field} disabled={!canEdit} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -198,7 +187,7 @@ export function CompetitionUpdateForm() {
                   <FormControl>
                     <DateTimePicker
                       value={field.value}
-                      onChange={(date) => field.onChange(date)}
+                      onChange={date => field.onChange(date)}
                       placeholder="Select start date and time"
                       allowClear={false}
                       disabled={!canEdit}
@@ -217,7 +206,7 @@ export function CompetitionUpdateForm() {
                   <FormControl>
                     <DateTimePicker
                       value={field.value}
-                      onChange={(date) => field.onChange(date)}
+                      onChange={date => field.onChange(date)}
                       placeholder="Select end date and time"
                       allowClear
                       disabled={!canEdit}
@@ -301,7 +290,7 @@ export function CompetitionUpdateForm() {
                       <FormControl>
                         <DateTimePicker
                           value={field.value}
-                          onChange={(date) => field.onChange(date)}
+                          onChange={date => field.onChange(date)}
                           placeholder="Select registration start date and time"
                           allowClear={false}
                           disabled={!canEdit}
@@ -321,7 +310,7 @@ export function CompetitionUpdateForm() {
                       <FormControl>
                         <DateTimePicker
                           value={field.value}
-                          onChange={(date) => field.onChange(date)}
+                          onChange={date => field.onChange(date)}
                           placeholder="Select registration end date and time"
                           disabled={!canEdit}
                           allowClear={false}
@@ -379,9 +368,7 @@ export function CompetitionUpdateForm() {
           </AccordionItem>
 
           <AccordionItem value="bib-management">
-            <AccordionTrigger className="text-lg font-semibold">
-              Bib Management
-            </AccordionTrigger>
+            <AccordionTrigger className="text-lg font-semibold">Bib Management</AccordionTrigger>
             <AccordionContent className="space-y-4">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <FormField
@@ -394,12 +381,12 @@ export function CompetitionUpdateForm() {
                         <Textarea
                           rows={3}
                           value={(field.value ?? []).join('\n')}
-                          onChange={(e) =>
+                          onChange={e =>
                             field.onChange(
                               e.target.value
                                 .split(/\n+/)
-                                .map((v) => v.trim())
-                                .filter(Boolean)
+                                .map(v => v.trim())
+                                .filter(Boolean),
                             )
                           }
                           disabled={!canEdit}
@@ -420,11 +407,9 @@ export function CompetitionUpdateForm() {
                         <Input
                           type="number"
                           value={field.value ?? ''}
-                          onChange={(e) =>
+                          onChange={e =>
                             field.onChange(
-                              e.target.value === ''
-                                ? undefined
-                                : Number(e.target.value)
+                              e.target.value === '' ? undefined : Number(e.target.value),
                             )
                           }
                           disabled={!canEdit}
@@ -440,9 +425,7 @@ export function CompetitionUpdateForm() {
           </AccordionItem>
 
           <AccordionItem value="club-management">
-            <AccordionTrigger className="text-lg font-semibold">
-              Club Management
-            </AccordionTrigger>
+            <AccordionTrigger className="text-lg font-semibold">Club Management</AccordionTrigger>
             <AccordionContent className="space-y-4">
               <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                 <FormField
@@ -490,12 +473,7 @@ export function CompetitionUpdateForm() {
 
         {/* Mobile sticky save button */}
         <div className="md:hidden sticky bottom-0 bg-background border-t pt-4 mt-8">
-          <Button
-            type="submit"
-            disabled={disabled}
-            className="w-full"
-            size="lg"
-          >
+          <Button type="submit" disabled={disabled} className="w-full" size="lg">
             <Save className="mr-2 h-4 w-4" />
             {updateMutation.isPending ? 'Saving...' : 'Save Changes'}
           </Button>

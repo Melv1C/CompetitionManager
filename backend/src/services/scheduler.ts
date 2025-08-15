@@ -127,9 +127,7 @@ export class TaskScheduler {
     this.timers.set(name, timer);
 
     const nextExecution = new Date(Date.now() + delay);
-    this.prodLogger?.info(
-      `Scheduled task: ${name} will run at ${nextExecution.toISOString()}`
-    );
+    this.prodLogger?.info(`Scheduled task: ${name} will run at ${nextExecution.toISOString()}`);
   }
 }
 

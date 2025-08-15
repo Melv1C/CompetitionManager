@@ -4,15 +4,7 @@ import { Boolean$, Date$, Id$ } from './base';
 /**
  * Log level enum - matches Winston log levels
  */
-export const LogLevel$ = z.enum([
-  'error',
-  'warn',
-  'info',
-  'http',
-  'verbose',
-  'debug',
-  'silly',
-]);
+export const LogLevel$ = z.enum(['error', 'warn', 'info', 'http', 'verbose', 'debug', 'silly']);
 export type LogLevel = z.infer<typeof LogLevel$>;
 
 /**
@@ -31,7 +23,7 @@ export type Log = z.infer<typeof Log$>;
  * Schema for log query filters
  */
 export const LogQuery$ = z.object({
-  levels: z.preprocess((val) => {
+  levels: z.preprocess(val => {
     if (typeof val === 'string') {
       try {
         const parsed = JSON.parse(val);
