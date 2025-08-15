@@ -19,45 +19,15 @@ env:
 jobs:
   # Run quality checks on the tagged version
   quality-gate:
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.inputs.tag || github.ref }}
+    uses: ./.github/workflows/code-quality.yml
+    secrets: inherit
 
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20'
-
-      - name: Install dependencies
-        run: |
-          npm install
-          npm run install:core
-          npm run install:backend
-          npm run install:frontend
-
-      - name: Run linting
-        run: |
-          npm run lint:core
-          npm run lint:backend
-          npm run lint:frontend
-
-      - name: Run type checking
-        run: |
-          npm run typecheck:core
-          npm run typecheck:backend
-          npm run typecheck:frontend
-
-      - name: Build applications
-        run: |
-          npm run build:core
-          npm run build:backend
-          npm run build:frontend
+  e2e-gate:
+    uses: ./.github/workflows/e2e-tests.yml
+    secrets: inherit
 
   build-and-deploy:
-    needs: [quality-gate]
+    needs: [quality-gate, e2e-gate]
     runs-on: ubuntu-latest
     environment: production
 
