@@ -167,7 +167,7 @@ jobs:
           cd backend
           npx prisma validate
         env:
-          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
   build:
     runs-on: ubuntu-latest
