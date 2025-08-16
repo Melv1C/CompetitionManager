@@ -8,6 +8,8 @@ const envSchema = z.object({
   DATABASE_URL: z.url(),
   BETTER_AUTH_SECRET: z.string().min(1),
   BETTER_AUTH_URL: z.url(),
+  DESKTOP_URL: z.url().default('http://localhost:5000'),
+
   // Log cleanup configuration
   LOG_CLEANUP_ENABLED: z.stringbool().default(true),
   LOG_CLEANUP_DAYS_TO_KEEP: z.coerce.number().default(30),

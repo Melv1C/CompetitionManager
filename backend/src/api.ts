@@ -10,7 +10,7 @@ export function getAPI() {
   app.use(
     '/api/*',
     cors({
-      origin: env.BETTER_AUTH_URL,
+      origin: [env.BETTER_AUTH_URL, env.DESKTOP_URL],
       allowHeaders: ['Content-Type', 'Authorization'],
       allowMethods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
       exposeHeaders: ['Content-Length'],
