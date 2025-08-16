@@ -4,29 +4,22 @@ import resourcesToBackend from 'i18next-resources-to-backend';
 import { initReactI18next } from 'react-i18next';
 
 i18n
-  // Language detection
   .use(LanguageDetector)
-  // Load translation files dynamically
   .use(
     resourcesToBackend((language: string, namespace: string) => {
       return import(`../translations/${language}/${namespace}.json`);
     }),
   )
-  // React integration
   .use(initReactI18next)
-  // Initialize
   .init({
     fallbackLng: 'en',
     debug: false,
-
-    // Define namespaces
+    supportedLngs: ['en', 'fr', 'nl'], // Only allow these languages
     ns: ['common', 'auth', 'validation', 'messages'],
     defaultNS: 'common',
-
     interpolation: {
-      escapeValue: false, // React already escapes by default
+      escapeValue: false,
     },
-
     detection: {
       order: ['localStorage', 'navigator', 'htmlTag'],
       caches: ['localStorage'],
