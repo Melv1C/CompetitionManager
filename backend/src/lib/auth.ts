@@ -1,9 +1,8 @@
 import { ac, admin, owner, resultManager } from '@repo/core/utils';
 import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
-import { admin as adminPlugin, organization } from 'better-auth/plugins';
+import { admin as adminPlugin, bearer, organization } from 'better-auth/plugins';
 import { prisma } from './prisma';
-import { env } from './env';
 
 // Add this helper function to fetch the active organization for a user
 async function getActiveOrganization(userId: string) {
@@ -35,6 +34,7 @@ export const auth = betterAuth({
     enabled: true,
   },
   plugins: [
+    bearer(),
     adminPlugin(),
     organization({
       ac,
@@ -62,14 +62,6 @@ export const auth = betterAuth({
           };
         },
       },
-    },
-  },
-
-  advanced: {
-    defaultCookieAttributes: {
-      sameSite: 'none',
-      secure: env.NODE_ENV === 'production',
-      partitioned: true,
     },
   },
 });
