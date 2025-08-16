@@ -69,7 +69,7 @@ class SocketService {
       return this.socket;
     }
 
-    this.socket = io(env.VITE_SOCKET_URL, {
+    this.socket = io(env.VITE_API_URL, {
       autoConnect: true,
       reconnection: true,
       reconnectionAttempts: this.maxReconnectAttempts,

@@ -44,7 +44,6 @@ services:
     environment:
       - VITE_NODE_ENV=production
       - VITE_API_URL=https://competitionmanager.be
-      - VITE_SOCKET_URL=https://competitionmanager.be
     volumes:
       - production_frontend_data:/app/frontend/dist
     networks:

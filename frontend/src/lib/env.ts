@@ -12,12 +12,12 @@ import { z } from 'zod/v4';
 const envSchema = z.object({
   // Mode is provided by Vite automatically
   VITE_NODE_ENV: z.enum(['development', 'production', 'staging']).default('development'),
+  VITE_PORT: z.coerce.number().min(1).default(5173),
 
   // API Configuration
   VITE_API_URL: z.url().default('http://localhost:3000'),
+  VITE_USE_BEARER: z.stringbool().default(false),
 
-  // Socket.IO Configuration
-  VITE_SOCKET_URL: z.url().default('http://localhost:3000'),
   VITE_SHOW_SOCKET_STATUS: z.stringbool().default(false),
 });
 
