@@ -17,7 +17,7 @@ export function createSocketServer(httpServer: ServerType) {
     httpServer,
     {
       cors: {
-        origin: env.BETTER_AUTH_URL,
+        origin: [env.BETTER_AUTH_URL, env.DESKTOP_URL],
         methods: ['GET', 'POST'],
         credentials: true,
       },
