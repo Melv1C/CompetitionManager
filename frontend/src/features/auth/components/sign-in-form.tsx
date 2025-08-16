@@ -148,7 +148,7 @@ export function SignInForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          {t('dontHaveAccount')}
+          {t('dontHaveAccount')}{' '}
           <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth/sign-up')}>
             {t('signUp')}
           </Button>
