@@ -12,8 +12,10 @@ import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy, Suspense } from 'react';
 import { createBrowserRouter, Outlet, RouterProvider, useNavigate } from 'react-router-dom';
+import { SocketStatusViewer } from './components/dev/socket-status-viewer';
 import { useAuth } from './features/auth/hooks/use-auth';
 import { useOrganizations } from './features/organization';
+import { env } from './lib/env';
 import { CompetitionOutlet } from './pages/organization/competition/outlet';
 
 // Static import mapping for Vite's build-time analysis
@@ -410,7 +412,7 @@ function App() {
           <RouterProvider router={router} />
         </Suspense>
         <Toaster />
-        {/* <SocketStatusViewer /> */}
+        {env.VITE_SHOW_SOCKET_STATUS && <SocketStatusViewer />}
       </ThemeProvider>
     </QueryClientProvider>
   );

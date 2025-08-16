@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from 'zod/v4';
 
 /**
  * Environment variables schema for the frontend (Vite)
@@ -14,10 +14,11 @@ const envSchema = z.object({
   VITE_NODE_ENV: z.enum(['development', 'production', 'staging']).default('development'),
 
   // API Configuration
-  VITE_API_URL: z.string().url().default('http://localhost:3000'),
+  VITE_API_URL: z.url().default('http://localhost:3000'),
 
   // Socket.IO Configuration
-  VITE_SOCKET_URL: z.string().url().default('http://localhost:3000'),
+  VITE_SOCKET_URL: z.url().default('http://localhost:3000'),
+  VITE_SHOW_SOCKET_STATUS: z.stringbool().default(false),
 });
 
 /**
