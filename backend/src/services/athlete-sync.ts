@@ -60,7 +60,7 @@ export class AthleteSyncService {
       !this.config.useMock &&
       (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword)
     ) {
-      this.prodLogger?.error(
+      logger.error(
         'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.',
       );
       return null;
