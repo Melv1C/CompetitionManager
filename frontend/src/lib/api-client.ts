@@ -10,14 +10,19 @@ export const apiClient = axios.create({
   withCredentials: true, // Include credentials for CORS requests
 });
 
-// You can add interceptors here for authentication, error handling, etc.
-// apiClient.interceptors.request.use(
-//   (config) => {
-//     // Add auth token, etc.
-//     return config;
-//   },
-//   (error) => Promise.reject(error)
-// );
+if (env.VITE_USE_BEARER) {
+  apiClient.interceptors.request.use(
+    config => {
+      // Retrieve the auth token from localStorage and attach it to the Authorization header
+      const token = localStorage.getItem('bearer_token');
+      if (token && config.headers) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+      return config;
+    },
+    error => Promise.reject(error),
+  );
+}
 
 // apiClient.interceptors.response.use(
 //   (response) => response,

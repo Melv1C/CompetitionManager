@@ -16,4 +16,12 @@ export const authClient = createAuthClient({
       },
     }),
   ],
+  fetchOptions: env.VITE_USE_BEARER
+    ? {
+        auth: {
+          type: 'Bearer',
+          token: () => localStorage.getItem('bearer_token') || '',
+        },
+      }
+    : {},
 });

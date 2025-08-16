@@ -17,6 +17,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { authClient } from '@/lib/auth-client';
+import { env } from '@/lib/env';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
@@ -62,7 +63,12 @@ export function SignInForm() {
           onRequest: () => {
             // Loading state is already handled above
           },
-          onSuccess: () => {
+          onSuccess: ctx => {
+            if (env.VITE_USE_BEARER) {
+              if (ctx.data.token) {
+                localStorage.setItem('bearer_token', ctx.data.token);
+              }
+            }
             toast.success(t('signInSuccess', { ns: 'messages' }));
             navigate('/');
           },
