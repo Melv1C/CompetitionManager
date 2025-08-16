@@ -28,7 +28,6 @@ jobs:
   build-and-deploy:
     needs: [quality-gate, e2e-gate]
     runs-on: ubuntu-latest
-    environment: production
 
     permissions:
       contents: read
@@ -168,8 +167,8 @@ jobs:
             This release has been automatically deployed to production.
 
             ### Docker Images
-            - Backend: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME_BACKEND }}:${{ steps.version.outputs.version }}`
-            - Frontend: `${{ env.REGISTRY }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ steps.version.outputs.version }}`
+            - Backend: `${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME_BACKEND }}:${{ steps.version.outputs.version }}`
+            - Frontend: `${{ secrets.DOCKER_USERNAME }}/${{ env.IMAGE_NAME_FRONTEND }}:${{ steps.version.outputs.version }}`
 
             ### Deployment
             - **Environment**: Production

@@ -18,7 +18,6 @@ jobs:
   build-and-deploy:
     needs: [quality-gate]
     runs-on: ubuntu-latest
-    environment: staging
 
     permissions:
       contents: read
