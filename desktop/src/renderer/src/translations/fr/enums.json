@@ -1,0 +1,49 @@
+{
+  "competitionStatus": {
+    "completed": "Terminé",
+    "ongoing": "En cours",
+    "upcoming": "À venir"
+  },
+  "eventGroup": {
+    "combined": "Épreuves combinées",
+    "hurdles": "Haies",
+    "jump": "Saut",
+    "long": "Longue distance",
+    "middle": "Moyenne distance",
+    "relay": "Relais",
+    "sprint": "Sprint",
+    "throw": "Lancer"
+  },
+  "eventType": {
+    "distance": "Distance",
+    "height": "Hauteur",
+    "points": "Points",
+    "time": "Temps"
+  },
+  "inscriptionStatus": {
+    "CANCELLED": "Annulée",
+    "PENDING_PAYMENT": "En attente de paiement",
+    "REGISTERED": "Inscrit",
+    "REJECTED": "Refusée",
+    "SELECTED": "Sélectionné"
+  },
+  "invitationStatus": {
+    "accepted": "Acceptée",
+    "declined": "Refusée",
+    "pending": "En attente"
+  },
+  "memberRole": {
+    "admin": "Administrateur",
+    "member": "Membre",
+    "owner": "Propriétaire"
+  },
+  "presenceStatus": {
+    "ABSENT": "Absent",
+    "PRESENT": "Présent",
+    "UNKNOWN": "Inconnu"
+  },
+  "userRole": {
+    "admin": "Administrateur",
+    "user": "Utilisateur"
+  }
+}

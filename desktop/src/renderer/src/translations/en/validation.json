@@ -1,0 +1,6 @@
+{
+  "emailInvalid": "Please enter a valid email address.",
+  "nameMinLength": "Name must be at least 2 characters.",
+  "passwordMinLength": "Password must be at least 8 characters.",
+  "passwordsNoMatch": "Passwords don't match"
+}

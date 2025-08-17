@@ -1,0 +1,9 @@
+{
+  "accountCreatedSuccess": "Account succesvol aangemaakt! Welkom!",
+  "signInError": "Inloggen mislukt. Probeer het opnieuw.",
+  "signInSuccess": "Succesvol ingelogd!",
+  "signOutError": "Uitloggen mislukt. Probeer het opnieuw.",
+  "signOutSuccess": "Succesvol uitgelogd!",
+  "signUpError": "Account aanmaken mislukt. Probeer het opnieuw.",
+  "unexpectedError": "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
+}

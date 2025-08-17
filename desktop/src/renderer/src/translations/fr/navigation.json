@@ -1,0 +1,22 @@
+{
+  "adminPanel": "Panneau d'administration",
+  "analytics": "Analyses",
+  "backToSite": "Retour au site",
+  "competitions": "Compétitions",
+  "confirmations": "Confirmations",
+  "database": "Base de données",
+  "home": "Accueil",
+  "inscriptions": "Inscriptions",
+  "logs": "Journaux",
+  "members": "Membres",
+  "organizationPanel": "Panneau de l'organisation",
+  "organizations": "Organisations",
+  "overview": "Aperçu",
+  "participants": "Participants",
+  "registerNow": "S'inscrire maintenant",
+  "results": "Résultats",
+  "schedule": "Programme",
+  "settings": "Paramètres",
+  "signOut": "Se déconnecter",
+  "users": "Utilisateurs"
+}
