@@ -1,0 +1,49 @@
+{
+  "competitionStatus": {
+    "completed": "Completed",
+    "ongoing": "Ongoing",
+    "upcoming": "Upcoming"
+  },
+  "eventGroup": {
+    "combined": "Combined Events",
+    "hurdles": "Hurdles",
+    "jump": "Jump",
+    "long": "Long Distance",
+    "middle": "Middle Distance",
+    "relay": "Relay",
+    "sprint": "Sprint",
+    "throw": "Throw"
+  },
+  "eventType": {
+    "distance": "Distance",
+    "height": "Height",
+    "points": "Points",
+    "time": "Time"
+  },
+  "inscriptionStatus": {
+    "CANCELLED": "Cancelled",
+    "PENDING_PAYMENT": "Pending Payment",
+    "REGISTERED": "Registered",
+    "REJECTED": "Rejected",
+    "SELECTED": "Selected"
+  },
+  "invitationStatus": {
+    "accepted": "Accepted",
+    "declined": "Declined",
+    "pending": "Pending"
+  },
+  "memberRole": {
+    "admin": "Admin",
+    "member": "Member",
+    "owner": "Owner"
+  },
+  "presenceStatus": {
+    "ABSENT": "Absent",
+    "PRESENT": "Present",
+    "UNKNOWN": "Unknown"
+  },
+  "userRole": {
+    "admin": "Admin",
+    "user": "User"
+  }
+}

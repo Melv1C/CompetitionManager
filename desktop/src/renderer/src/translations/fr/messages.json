@@ -1,0 +1,9 @@
+{
+  "accountCreatedSuccess": "Compte créé avec succès ! Bienvenue !",
+  "signInError": "Échec de la connexion. Veuillez réessayer.",
+  "signInSuccess": "Connexion réussie !",
+  "signOutError": "Échec de la déconnexion. Veuillez réessayer.",
+  "signOutSuccess": "Déconnexion réussie !",
+  "signUpError": "Échec de la création du compte. Veuillez réessayer.",
+  "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+}
