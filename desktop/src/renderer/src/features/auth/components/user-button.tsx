@@ -1,5 +1,3 @@
-import { useOrganizations } from '@/features/organization/hooks/use-organizations'
-import { authClient } from '@/lib/auth-client'
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Button } from '@/components/ui/button'
 import {
@@ -10,20 +8,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger
 } from '@/components/ui/dropdown-menu'
+import { authClient } from '@/lib/auth-client'
 import type { User as UserType } from '@repo/core/schemas'
-import { Building2, LogOut, Settings, Shield, User } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import { useTranslation } from 'react-i18next'
-import { Link, useNavigate } from 'react-router-dom'
 import { toast } from 'sonner'
 
 interface UserButtonProps {
   user: UserType
-  onMobileMenuClose?: () => void
 }
 
-export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
-  const { organizations } = useOrganizations()
-  const navigate = useNavigate()
+export function UserButton({ user }: UserButtonProps) {
   const { t } = useTranslation(['auth', 'messages'])
 
   const handleSignOut = async () => {
@@ -32,7 +27,6 @@ export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
         fetchOptions: {
           onSuccess: () => {
             toast.success(t('signOutSuccess', { ns: 'messages' }))
-            navigate('/')
           }
         }
       })
@@ -59,31 +53,6 @@ export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
             <p className="text-xs leading-none text-muted-foreground">{user.email}</p>
           </div>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" />
-          <span>{t('profile')}</span>
-        </DropdownMenuItem>
-        <DropdownMenuItem>
-          <Settings className="mr-2 h-4 w-4" />
-          <span>{t('settings')}</span>
-        </DropdownMenuItem>
-        {organizations.length > 0 && (
-          <DropdownMenuItem asChild>
-            <Link to="/organization" onClick={onMobileMenuClose}>
-              <Building2 className="mr-2 h-4 w-4" />
-              <span>{t('organizationDashboard')}</span>
-            </Link>
-          </DropdownMenuItem>
-        )}
-        {user.role === 'admin' && (
-          <DropdownMenuItem asChild>
-            <Link to="/admin" onClick={onMobileMenuClose}>
-              <Shield className="mr-2 h-4 w-4" />
-              <span>{t('adminDashboard')}</span>
-            </Link>
-          </DropdownMenuItem>
-        )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />

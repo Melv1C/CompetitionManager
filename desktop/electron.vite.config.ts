@@ -1,7 +1,7 @@
-import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
-import path from 'path';
-import tailwindcss from "@tailwindcss/vite"
+import { defineConfig, externalizeDepsPlugin } from 'electron-vite'
+import path from 'path'
 
 export default defineConfig({
   main: {
@@ -17,10 +17,13 @@ export default defineConfig({
       }
     },
     plugins: [react(), tailwindcss()],
+    server: {
+      port: 5000
+    },
     build: {
       rollupOptions: {
-        input: path.resolve(__dirname, "index.html"),
+        input: path.resolve(__dirname, 'index.html')
       }
     }
-  },
+  }
 })
