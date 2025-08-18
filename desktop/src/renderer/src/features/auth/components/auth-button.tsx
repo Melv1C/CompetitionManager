@@ -1,23 +1,17 @@
+import { Skeleton } from '@/components/ui/skeleton'
 import { useAuth } from '@/features/auth/hooks/use-auth'
-import { AuthSkeleton } from './auth-skeleton'
-import { LoginButton } from './login-button'
 import { UserButton } from './user-button'
 
-interface AuthButtonProps {
-  isMobile?: boolean
-  onMobileMenuClose?: () => void
-}
-
-export function AuthButton({ isMobile = false, onMobileMenuClose }: AuthButtonProps) {
+export function AuthButton() {
   const { user, isLoading } = useAuth()
 
   if (isLoading) {
-    return <AuthSkeleton isMobile={isMobile} />
+    return <Skeleton className="h-8 w-8 rounded-full" />
   }
 
   if (!user) {
-    return <LoginButton isMobile={isMobile} onMobileMenuClose={onMobileMenuClose} />
+    return null
   }
 
-  return <UserButton user={user} onMobileMenuClose={onMobileMenuClose} />
+  return <UserButton user={user} />
 }

@@ -3,6 +3,7 @@ import { betterAuth } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin as adminPlugin, bearer, organization } from 'better-auth/plugins';
 import { prisma } from './prisma';
+import { env } from './env';
 
 // Add this helper function to fetch the active organization for a user
 async function getActiveOrganization(userId: string) {
@@ -29,7 +30,7 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
-
+  trustedOrigins: [env.DESKTOP_URL],
   emailAndPassword: {
     enabled: true,
   },
