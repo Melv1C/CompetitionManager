@@ -67,15 +67,6 @@ jobs:
         if: matrix.platform == 'win'
         run: cd desktop && npm run build:win
 
-      - name: List build artifacts
-        run: |
-          echo "Build artifacts:"
-          if [ "${{ runner.os }}" = "Windows" ]; then
-            dir desktop\dist
-          else
-            ls -la desktop/dist/
-          fi
-
       - name: Upload build artifacts (macOS)
         if: matrix.platform == 'mac'
         uses: actions/upload-artifact@v4
