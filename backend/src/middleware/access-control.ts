@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import { logger } from '@/lib/logger';
-import { getUser } from '@/utils/auth-utils';
+import { getRequiredSession, getUser } from '@/utils/auth-utils';
 import { logError } from '@/utils/log-utils';
 import type { PermissionCheck } from '@repo/core/utils';
 import type { Context, Next } from 'hono';
@@ -19,6 +19,15 @@ export function requirePermissions(permissions: PermissionCheck) {
           method: c.req.method,
         });
         return c.json({ error: 'Authentication required' }, 401);
+      }
+
+      const session = await getRequiredSession(c);
+
+      if (!session.activeOrganizationId) {
+        logger.error('No active organization found for user', {
+          session,
+        });
+        return c.json({ error: 'No active organization found' }, 400);
       }
 
       // Check user organization permissions

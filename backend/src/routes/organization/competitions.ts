@@ -28,16 +28,9 @@ organizationCompetitionsRoutes.get(
     try {
       const session = await getRequiredSession(c);
 
-      if (!session.activeOrganizationId) {
-        logger.error('No active organization found for user', {
-          session,
-        });
-        return c.json({ error: 'No active organization found' }, 400);
-      }
-
       const competitions = await getCompetitions({
         where: {
-          organizationId: session.activeOrganizationId,
+          organizationId: session.activeOrganizationId!,
         },
         orderBy: { startDate: 'desc' },
       });

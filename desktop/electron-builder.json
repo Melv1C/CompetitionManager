@@ -1,0 +1,11 @@
+{
+  "appId": "com.competitionmanager.am-integration",
+  "files": ["dist-react", "dist-electron"],
+  "icon": "./icon.png",
+  "mac": {
+    "target": "dmg"
+  },
+  "win": {
+    "target": ["portable", "msi"]
+  }
+}

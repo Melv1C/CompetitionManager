@@ -12,7 +12,7 @@ export interface FormatOptions {
  * Format a date as a readable date string (e.g., "January 15, 2024")
  */
 export const formatDate = (date: Date | string, options: FormatOptions = {}): string => {
-  const { locale = 'en-US' } = options;
+  const { locale = 'fr-FR' } = options;
 
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
@@ -25,7 +25,7 @@ export const formatDate = (date: Date | string, options: FormatOptions = {}): st
  * Format a date as a short date string (e.g., "Jan 15, 2024")
  */
 export const formatDateShort = (date: Date | string, options: FormatOptions = {}): string => {
-  const { locale = 'en-US' } = options;
+  const { locale = 'fr-FR' } = options;
 
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
@@ -38,7 +38,7 @@ export const formatDateShort = (date: Date | string, options: FormatOptions = {}
  * Format a date with time (e.g., "January 15, 2024 at 2:30 PM")
  */
 export const formatDateTime = (date: Date | string, options: FormatOptions = {}): string => {
-  const { locale = 'en-US' } = options;
+  const { locale = 'fr-FR' } = options;
 
   return new Intl.DateTimeFormat(locale, {
     year: 'numeric',
@@ -53,7 +53,7 @@ export const formatDateTime = (date: Date | string, options: FormatOptions = {})
  * Format a date with full details including weekday (e.g., "Monday, January 15, 2024")
  */
 export const formatDateFull = (date: Date | string, options: FormatOptions = {}): string => {
-  const { locale = 'en-US' } = options;
+  const { locale = 'fr-FR' } = options;
 
   return new Intl.DateTimeFormat(locale, {
     weekday: 'long',
@@ -67,7 +67,7 @@ export const formatDateFull = (date: Date | string, options: FormatOptions = {})
  * Format time only (e.g., "2:30 PM")
  */
 export const formatTime = (date: Date | string, options: FormatOptions = {}): string => {
-  const { locale = 'en-US' } = options;
+  const { locale = 'fr-FR' } = options;
 
   return new Intl.DateTimeFormat(locale, {
     hour: 'numeric',
@@ -79,7 +79,7 @@ export const formatTime = (date: Date | string, options: FormatOptions = {}): st
  * Format time with seconds (e.g., "2:30:45 PM")
  */
 export const formatTimeWithSeconds = (date: Date | string, options: FormatOptions = {}): string => {
-  const { locale = 'en-US' } = options;
+  const { locale = 'fr-FR' } = options;
 
   return new Intl.DateTimeFormat(locale, {
     hour: 'numeric',
@@ -118,7 +118,7 @@ export interface CurrencyOptions extends FormatOptions {
  */
 export const formatCurrency = (amount: number, options: CurrencyOptions = {}): string => {
   const {
-    locale = 'en-US',
+    locale = 'fr-FR',
     currency = 'EUR',
     minimumFractionDigits = 2,
     maximumFractionDigits = 2,
@@ -142,7 +142,7 @@ export const formatNumber = (
     maximumFractionDigits?: number;
   } = {},
 ): string => {
-  const { locale = 'en-US', minimumFractionDigits, maximumFractionDigits } = options;
+  const { locale = 'fr-FR', minimumFractionDigits, maximumFractionDigits } = options;
 
   return new Intl.NumberFormat(locale, {
     minimumFractionDigits,
@@ -189,7 +189,7 @@ export const formatPercentage = (
     maximumFractionDigits?: number;
   } = {},
 ): string => {
-  const { locale = 'en-US', minimumFractionDigits = 1, maximumFractionDigits = 1 } = options;
+  const { locale = 'fr-FR', minimumFractionDigits = 1, maximumFractionDigits = 1 } = options;
 
   return new Intl.NumberFormat(locale, {
     style: 'percent',

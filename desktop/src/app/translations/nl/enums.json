@@ -1,0 +1,49 @@
+{
+  "competitionStatus": {
+    "completed": "Voltooid",
+    "ongoing": "Bezig",
+    "upcoming": "Aankomend"
+  },
+  "eventGroup": {
+    "combined": "Meerkamp",
+    "hurdles": "Horden",
+    "jump": "Springen",
+    "long": "Lange afstand",
+    "middle": "Middenafstand",
+    "relay": "Estafette",
+    "sprint": "Sprint",
+    "throw": "Werpen"
+  },
+  "eventType": {
+    "distance": "Afstand",
+    "height": "Hoogte",
+    "points": "Punten",
+    "time": "Tijd"
+  },
+  "inscriptionStatus": {
+    "CANCELLED": "Geannuleerd",
+    "PENDING_PAYMENT": "Wacht op betaling",
+    "REGISTERED": "Geregistreerd",
+    "REJECTED": "Afgewezen",
+    "SELECTED": "Geselecteerd"
+  },
+  "invitationStatus": {
+    "accepted": "Geaccepteerd",
+    "declined": "Geweigerd",
+    "pending": "In afwachting"
+  },
+  "memberRole": {
+    "admin": "Beheerder",
+    "member": "Lid",
+    "owner": "Eigenaar"
+  },
+  "presenceStatus": {
+    "ABSENT": "Afwezig",
+    "PRESENT": "Aanwezig",
+    "UNKNOWN": "Onbekend"
+  },
+  "userRole": {
+    "admin": "Beheerder",
+    "user": "Gebruiker"
+  }
+}
