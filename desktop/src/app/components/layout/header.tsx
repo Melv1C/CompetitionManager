@@ -1,6 +1,8 @@
 import { AuthButton } from '@/features/auth'
 import { getThemeValue, ThemeToggle, useTheme } from '@/features/theme'
 import { LanguageSelector } from './language-selector'
+import LightLogo from '@/assets/logo-white.png'
+import DarkLogo from '@/assets/logo-black.png'
 
 export function Header() {
   const { theme } = useTheme()
@@ -12,7 +14,7 @@ export function Header() {
           {/* Logo */}
           <div className="flex items-center space-x-2">
             <img
-              src={getThemeValue(theme) === 'dark' ? '/logo-white.png' : '/logo-black.png'}
+              src={getThemeValue(theme) === 'dark' ? LightLogo : DarkLogo}
               alt="Competition Manager Logo"
               className="h-8 w-10"
             />

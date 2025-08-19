@@ -3,31 +3,31 @@ import {
   SelectContent,
   SelectItem,
   SelectTrigger,
-  SelectValue
-} from '@/components/ui/select'
-import { useTranslation } from 'react-i18next'
+  SelectValue,
+} from '@/components/ui/select';
+import { useTranslation } from '../../../../node_modules/react-i18next';
 
 interface Language {
-  label: string
-  code: string
+  label: string;
+  code: string;
 }
 
 interface LanguageSelectorProps {
-  isMobile?: boolean
+  isMobile?: boolean;
 }
 
 const languages: Language[] = [
   { label: 'EN', code: 'en' },
   { label: 'FR', code: 'fr' },
-  { label: 'NL', code: 'nl' }
-]
+  { label: 'NL', code: 'nl' },
+];
 
 export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
-  const { i18n } = useTranslation()
+  const { i18n } = useTranslation();
 
   const handleLanguageChange = (value: string) => {
-    i18n.changeLanguage(value)
-  }
+    i18n.changeLanguage(value);
+  };
 
   if (isMobile) {
     return (
@@ -39,7 +39,7 @@ export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
             </div>
           </SelectTrigger>
           <SelectContent>
-            {languages.map((lang) => (
+            {languages.map(lang => (
               <SelectItem key={lang.code} value={lang.code}>
                 <div className="flex items-center gap-2">{lang.label}</div>
               </SelectItem>
@@ -47,7 +47,7 @@ export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
           </SelectContent>
         </Select>
       </div>
-    )
+    );
   }
 
   return (
@@ -58,12 +58,12 @@ export function LanguageSelector({ isMobile = false }: LanguageSelectorProps) {
         </div>
       </SelectTrigger>
       <SelectContent>
-        {languages.map((lang) => (
+        {languages.map(lang => (
           <SelectItem key={lang.code} value={lang.code}>
             <div className="flex items-center gap-2">{lang.label}</div>
           </SelectItem>
         ))}
       </SelectContent>
     </Select>
-  )
+  );
 }
