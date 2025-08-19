@@ -70,7 +70,11 @@ jobs:
       - name: List build artifacts
         run: |
           echo "Build artifacts:"
-          ls -la desktop/dist/
+          if [ "${{ runner.os }}" = "Windows" ]; then
+            dir desktop\dist
+          else
+            ls -la desktop/dist/
+          fi
 
       - name: Upload build artifacts (macOS)
         if: matrix.platform == 'mac'
