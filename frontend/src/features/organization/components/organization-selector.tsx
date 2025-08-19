@@ -7,6 +7,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { SidebarMenuButton } from '@/components/ui/sidebar';
+import { ORGANIZATION_COMPETITIONS_QUERY_KEY } from '@/features/competitions';
+import { useQueryClient } from '@tanstack/react-query';
 import { Building2, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useOrganizations } from '../hooks/use-organizations';
@@ -18,9 +20,11 @@ interface OrganizationSelectorProps {
 export function OrganizationSelector({ className }: OrganizationSelectorProps) {
   const { t } = useTranslation('organization');
   const { organizations, activeOrganization, setActiveOrganization } = useOrganizations();
+  const queryClient = useQueryClient();
 
   const handleOrganizationSelect = (organizationId: string) => {
     setActiveOrganization(organizationId);
+    queryClient.invalidateQueries({ queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY] });
   };
 
   return (
