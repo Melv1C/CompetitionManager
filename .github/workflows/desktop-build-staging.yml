@@ -1,0 +1,106 @@
+name: Desktop App - Staging Build
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'desktop/**'
+      - 'core/**'
+      - '.github/workflows/desktop-build-staging.yml'
+  workflow_dispatch: # Allow manual builds
+
+jobs:
+  # Quality gate - ensure code quality before building
+  quality-gate:
+    uses: ./.github/workflows/code-quality.yml
+    secrets: inherit
+
+  build-desktop:
+    needs: [quality-gate]
+    strategy:
+      matrix:
+        os: [macos-latest, windows-latest]
+        include:
+          - os: macos-latest
+            platform: mac
+            arch: arm64
+            artifact-name: desktop-staging-mac
+          - os: windows-latest
+            platform: win
+            arch: x64
+            artifact-name: desktop-staging-win
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies (root)
+        run: npm install
+
+      - name: Install dependencies (core)
+        run: npm run install:core
+
+      - name: Install dependencies (desktop)
+        run: npm run install:desktop
+
+      - name: Build core package
+        run: cd core && npm run build
+
+      - name: Update version for staging
+        run: |
+          cd desktop
+          npm version prerelease --preid=staging-$(date +%Y%m%d%H%M%S) --no-git-tag-version
+
+      - name: Build Electron app (macOS)
+        if: matrix.platform == 'mac'
+        run: cd desktop && npm run build:mac
+
+      - name: Build Electron app (Windows)
+        if: matrix.platform == 'win'
+        run: cd desktop && npm run build:win
+
+      - name: List build artifacts
+        run: |
+          echo "Build artifacts:"
+          ls -la desktop/dist/
+
+      - name: Upload build artifacts (macOS)
+        if: matrix.platform == 'mac'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: |
+            desktop/dist/*.dmg
+          retention-days: 30
+
+      - name: Upload build artifacts (Windows)
+        if: matrix.platform == 'win'
+        uses: actions/upload-artifact@v4
+        with:
+          name: ${{ matrix.artifact-name }}
+          path: |
+            desktop/dist/*.exe
+            desktop/dist/*.msi
+          retention-days: 30
+
+  notify-completion:
+    needs: [build-desktop]
+    runs-on: ubuntu-latest
+    if: always()
+    steps:
+      - name: Notify build status
+        run: |
+          if [ "${{ needs.build-desktop.result }}" == "success" ]; then
+            echo "✅ Desktop staging builds completed successfully!"
+            echo "Download artifacts from the Actions tab to test the builds."
+          else
+            echo "❌ Desktop staging builds failed!"
+          fi
