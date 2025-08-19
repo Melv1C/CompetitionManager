@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export function CompetitionCardSkeleton() {
   return (
@@ -43,11 +43,11 @@ export function CompetitionCardSkeleton() {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }
 
 interface CompetitionsSkeletonProps {
-  count?: number
+  count?: number;
 }
 
 export function CompetitionsSkeleton({ count = 6 }: CompetitionsSkeletonProps) {
@@ -57,5 +57,5 @@ export function CompetitionsSkeleton({ count = 6 }: CompetitionsSkeletonProps) {
         <CompetitionCardSkeleton key={i} />
       ))}
     </div>
-  )
+  );
 }

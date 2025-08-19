@@ -1,83 +1,83 @@
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
-  FormMessage
-} from '@/components/ui/form'
-import { Input } from '@/components/ui/input'
-import { authClient } from '@/lib/auth-client'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { useState } from 'react'
-import { useForm } from 'react-hook-form'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
-import { z } from 'zod'
+  FormMessage,
+} from '@/components/ui/form';
+import { Input } from '@/components/ui/input';
+import { authClient } from '@/lib/auth-client';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useState } from 'react';
+import { useForm } from 'react-hook-form';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
+import { z } from 'zod';
 
 export function SignInForm() {
-  const [isLoading, setIsLoading] = useState(false)
-  const { t } = useTranslation(['auth', 'validation', 'messages'])
+  const [isLoading, setIsLoading] = useState(false);
+  const { t } = useTranslation(['auth', 'validation', 'messages']);
   // Create schema with translated messages
   const signInSchema = z.object({
     email: z.string().email({
-      message: t('emailInvalid', { ns: 'validation' })
+      message: t('emailInvalid', { ns: 'validation' }),
     }),
     password: z.string().min(8, {
-      message: t('passwordMinLength', { ns: 'validation' })
-    })
-  })
+      message: t('passwordMinLength', { ns: 'validation' }),
+    }),
+  });
 
-  type SignInFormValues = z.infer<typeof signInSchema>
+  type SignInFormValues = z.infer<typeof signInSchema>;
 
   const form = useForm<SignInFormValues>({
     resolver: zodResolver(signInSchema),
     defaultValues: {
       email: '',
-      password: ''
-    }
-  })
+      password: '',
+    },
+  });
 
   const onSubmit = async (values: SignInFormValues) => {
-    setIsLoading(true)
+    setIsLoading(true);
 
     try {
       await authClient.signIn.email(
         {
           email: values.email,
-          password: values.password
+          password: values.password,
         },
         {
           onRequest: () => {
             // Loading state is already handled above
           },
-          onSuccess: (ctx) => {
+          onSuccess: ctx => {
             if (ctx.data.token) {
-              localStorage.setItem('bearer_token', ctx.data.token)
+              localStorage.setItem('bearer_token', ctx.data.token);
             }
-            toast.success(t('signInSuccess', { ns: 'messages' }))
+            toast.success(t('signInSuccess', { ns: 'messages' }));
           },
-          onError: (ctx) => {
-            console.error('Sign in error:', ctx.error)
+          onError: ctx => {
+            console.error('Sign in error:', ctx.error);
             form.setError('root', {
               type: 'manual',
-              message: ctx.error.message || t('signInError', { ns: 'messages' })
-            })
-          }
-        }
-      )
+              message: ctx.error.message || t('signInError', { ns: 'messages' }),
+            });
+          },
+        },
+      );
     } catch (error) {
-      console.error('Sign in error:', error)
+      console.error('Sign in error:', error);
       form.setError('root', {
         type: 'manual',
-        message: t('unexpectedError', { ns: 'messages' })
-      })
+        message: t('unexpectedError', { ns: 'messages' }),
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   return (
     <Card className="w-full max-w-md mx-auto">
@@ -134,5 +134,5 @@ export function SignInForm() {
         </Form>
       </CardContent>
     </Card>
-  )
+  );
 }

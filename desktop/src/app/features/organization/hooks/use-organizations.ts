@@ -1,22 +1,22 @@
-import { authClient } from '@/lib/auth-client'
+import { authClient } from '@/lib/auth-client';
 
 export const useOrganizations = () => {
   const {
     data: organization,
     refetch: refetchOrganizations,
-    isPending: isLoadingOrganizations
-  } = authClient.useListOrganizations()
+    isPending: isLoadingOrganizations,
+  } = authClient.useListOrganizations();
   const {
     data: activeOrganization,
     refetch: refetchActiveOrganization,
-    isPending: isLoadingActiveOrganization
-  } = authClient.useActiveOrganization()
+    isPending: isLoadingActiveOrganization,
+  } = authClient.useActiveOrganization();
 
   const setActiveOrganization = (organizationId: string) => {
     authClient.organization.setActive({
-      organizationId
-    })
-  }
+      organizationId,
+    });
+  };
 
   return {
     organizations: organization || [],
@@ -25,6 +25,6 @@ export const useOrganizations = () => {
     isLoadingActiveOrganization,
     refetchOrganizations,
     refetchActiveOrganization,
-    setActiveOrganization
-  }
-}
+    setActiveOrganization,
+  };
+};

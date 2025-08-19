@@ -10,7 +10,6 @@ export const apiClient = axios.create({
   withCredentials: true, // Include credentials for CORS requests
 });
 
-
 apiClient.interceptors.request.use(
   config => {
     // Retrieve the auth token from localStorage and attach it to the Authorization header

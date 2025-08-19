@@ -1,31 +1,31 @@
-import { Badge } from '@/components/ui/badge'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { useCompetitionStore } from '@/store/competition'
-import type { Competition } from '@repo/core/schemas'
-import { CalendarIcon, MapPinIcon, TrophyIcon } from 'lucide-react'
+import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useCompetitionStore } from '@/store/competition';
+import type { Competition } from '@repo/core/schemas';
+import { CalendarIcon, MapPinIcon, TrophyIcon } from 'lucide-react';
 
 interface CompetitionCardProps {
-  competition: Competition
+  competition: Competition;
 }
 
 export function CompetitionCard({ competition }: CompetitionCardProps) {
-  const setCompetition = useCompetitionStore((state) => state.setCompetition)
+  const setCompetition = useCompetitionStore(state => state.setCompetition);
 
   const formatDate = (date: Date) => {
     return new Intl.DateTimeFormat('en-US', {
       year: 'numeric',
       month: 'short',
-      day: 'numeric'
-    }).format(new Date(date))
-  }
+      day: 'numeric',
+    }).format(new Date(date));
+  };
 
-  const isUpcoming = new Date(competition.startDate) > new Date()
+  const isUpcoming = new Date(competition.startDate) > new Date();
   const isMultiDay =
-    new Date(competition.startDate).toDateString() !== new Date(competition.endDate).toDateString()
+    new Date(competition.startDate).toDateString() !== new Date(competition.endDate).toDateString();
 
   const handleClick = () => {
-    setCompetition(competition)
-  }
+    setCompetition(competition);
+  };
 
   return (
     <Card className="h-full transition-all hover:shadow-md cursor-pointer" onClick={handleClick}>
@@ -78,5 +78,5 @@ export function CompetitionCard({ competition }: CompetitionCardProps) {
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

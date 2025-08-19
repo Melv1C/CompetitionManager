@@ -1,10 +1,10 @@
-﻿import { Skeleton } from '@/components/ui/skeleton'
-import { type PropsWithChildren } from 'react'
-import { useAuth } from '../hooks/use-auth'
-import { SignInForm } from './sign-in-form'
+﻿import { Skeleton } from '@/components/ui/skeleton';
+import { type PropsWithChildren } from 'react';
+import { useAuth } from '../hooks/use-auth';
+import { SignInForm } from './sign-in-form';
 
 export function RequireAuth({ children }: PropsWithChildren) {
-  const { isAuthenticated, isLoading } = useAuth()
+  const { isAuthenticated, isLoading } = useAuth();
 
   // Show loading state while checking authentication
   if (isLoading) {
@@ -20,7 +20,7 @@ export function RequireAuth({ children }: PropsWithChildren) {
           </div>
         </div>
       </div>
-    )
+    );
   }
 
   // Show sign-in form if not authenticated
@@ -29,9 +29,9 @@ export function RequireAuth({ children }: PropsWithChildren) {
       <div className="flex items-center justify-center bg-background m-16">
         <SignInForm />
       </div>
-    )
+    );
   }
 
   // Show children if authenticated
-  return <>{children}</>
+  return <>{children}</>;
 }

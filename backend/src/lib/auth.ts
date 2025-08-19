@@ -6,7 +6,6 @@ import { env } from './env';
 import { prisma } from './prisma';
 import type { AccessControl } from 'better-auth/plugins/access';
 
-
 // Add this helper function to fetch the active organization for a user
 async function getActiveOrganization(userId: string) {
   // Adjust the query as needed for your schema
@@ -42,7 +41,7 @@ export const auth = betterAuth({
     organization({
       ac: ac as AccessControl,
       roles: {
-        owner,     
+        owner,
         admin,
         resultManager,
       },

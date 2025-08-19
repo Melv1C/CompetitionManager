@@ -1,14 +1,14 @@
-import { Button } from '@/components/ui/button'
-import { useTranslation } from 'react-i18next'
-import { Link } from 'react-router-dom'
+import { Button } from '@/components/ui/button';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 interface LoginButtonProps {
-  isMobile?: boolean
-  onMobileMenuClose?: () => void
+  isMobile?: boolean;
+  onMobileMenuClose?: () => void;
 }
 
 export function LoginButton({ isMobile = false, onMobileMenuClose }: LoginButtonProps) {
-  const { t } = useTranslation('auth')
+  const { t } = useTranslation('auth');
 
   if (isMobile) {
     return (
@@ -19,12 +19,12 @@ export function LoginButton({ isMobile = false, onMobileMenuClose }: LoginButton
           </Link>
         </Button>
       </div>
-    )
+    );
   }
 
   return (
     <Button asChild>
       <Link to="/auth/sign-in">{t('signIn')}</Link>
     </Button>
-  )
+  );
 }

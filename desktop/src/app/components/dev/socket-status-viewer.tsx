@@ -1,8 +1,8 @@
-import { Badge } from '@/components/ui/badge'
-import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
-import { Separator } from '@/components/ui/separator'
-import { useSocket, useSocketEvents } from '@/store/socket'
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Separator } from '@/components/ui/separator';
+import { useSocket, useSocketEvents } from '@/store/socket';
 import {
   Activity,
   CheckCircle,
@@ -12,101 +12,101 @@ import {
   RotateCcw,
   Wifi,
   WifiOff,
-  XCircle
-} from 'lucide-react'
-import { useEffect, useState } from 'react'
+  XCircle,
+} from 'lucide-react';
+import { useEffect, useState } from 'react';
 
 interface SocketStatusViewerProps {
-  className?: string
+  className?: string;
 }
 
 export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
-  const { status, isConnected, reconnectAttempts, connect, disconnect, socket } = useSocket()
-  const { onError, onNotification } = useSocketEvents()
+  const { status, isConnected, reconnectAttempts, connect, disconnect, socket } = useSocket();
+  const { onError, onNotification } = useSocketEvents();
   const [logs, setLogs] = useState<
     Array<{
-      timestamp: Date
-      message: string
-      type: 'info' | 'error' | 'success'
+      timestamp: Date;
+      message: string;
+      type: 'info' | 'error' | 'success';
     }>
-  >([])
-  const [isExpanded, setIsExpanded] = useState(false)
+  >([]);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   // Listen to socket events for logging
   useEffect(() => {
-    if (!isConnected) return
+    if (!isConnected) return;
 
-    const unsubscribeError = onError((data) => {
-      setLogs((prev) => [
+    const unsubscribeError = onError(data => {
+      setLogs(prev => [
         ...prev.slice(-9), // Keep only last 10 logs
         {
           timestamp: new Date(),
           message: `Error: ${data.message}`,
-          type: 'error'
-        }
-      ])
-    })
+          type: 'error',
+        },
+      ]);
+    });
 
-    const unsubscribeNotification = onNotification((data) => {
-      setLogs((prev) => [
+    const unsubscribeNotification = onNotification(data => {
+      setLogs(prev => [
         ...prev.slice(-9), // Keep only last 10 logs
         {
           timestamp: new Date(),
           message: `${data.type}: ${data.message}`,
-          type: 'info'
-        }
-      ])
-    })
+          type: 'info',
+        },
+      ]);
+    });
 
     return () => {
-      unsubscribeError()
-      unsubscribeNotification()
-    }
-  }, [onError, onNotification, isConnected])
+      unsubscribeError();
+      unsubscribeNotification();
+    };
+  }, [onError, onNotification, isConnected]);
 
   // Add connection status changes to logs
   useEffect(() => {
-    setLogs((prev) => [
+    setLogs(prev => [
       ...prev.slice(-9),
       {
         timestamp: new Date(),
         message: `Connection status: ${status}`,
-        type: isConnected ? 'success' : 'info'
-      }
-    ])
-  }, [status, isConnected])
+        type: isConnected ? 'success' : 'info',
+      },
+    ]);
+  }, [status, isConnected]);
 
   const getStatusIcon = () => {
     switch (status) {
       case 'connected':
-        return <CheckCircle className="h-4 w-4 text-green-500" />
+        return <CheckCircle className="h-4 w-4 text-green-500" />;
       case 'error':
-        return <XCircle className="h-4 w-4 text-red-500" />
+        return <XCircle className="h-4 w-4 text-red-500" />;
       default:
-        return <WifiOff className="h-4 w-4 text-gray-500" />
+        return <WifiOff className="h-4 w-4 text-gray-500" />;
     }
-  }
+  };
 
   const getStatusColor = () => {
     switch (status) {
       case 'connected':
-        return 'bg-green-500'
+        return 'bg-green-500';
       case 'error':
-        return 'bg-red-500'
+        return 'bg-red-500';
       default:
-        return 'bg-gray-500'
+        return 'bg-gray-500';
     }
-  }
+  };
 
   const testConnection = () => {
     if (socket?.connected) {
-      socket.emit('ping')
-      setLogs((prev) => [
+      socket.emit('ping');
+      setLogs(prev => [
         ...prev.slice(-9),
-        { timestamp: new Date(), message: 'Ping sent', type: 'info' }
-      ])
+        { timestamp: new Date(), message: 'Ping sent', type: 'info' },
+      ]);
     }
-  }
+  };
   return (
     <div className={`fixed bottom-2 right-2 z-50 ${className}`}>
       <Card
@@ -221,5 +221,5 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
         )}
       </Card>
     </div>
-  )
+  );
 }

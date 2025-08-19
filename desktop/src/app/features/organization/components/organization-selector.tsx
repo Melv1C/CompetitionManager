@@ -1,30 +1,30 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { ORGANIZATION_COMPETITIONS_QUERY_KEY } from '@/features/competitions'
-import { useQueryClient } from '@tanstack/react-query'
-import { Building2, ChevronDown } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { useOrganizations } from '../hooks/use-organizations'
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { ORGANIZATION_COMPETITIONS_QUERY_KEY } from '@/features/competitions';
+import { useQueryClient } from '@tanstack/react-query';
+import { Building2, ChevronDown } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useOrganizations } from '../hooks/use-organizations';
 
 interface OrganizationSelectorProps {
-  className?: string
+  className?: string;
 }
 
 export function OrganizationSelector({ className }: OrganizationSelectorProps) {
-  const { t } = useTranslation('organization')
-  const { organizations, activeOrganization, setActiveOrganization } = useOrganizations()
-  const queryClient = useQueryClient()
+  const { t } = useTranslation('organization');
+  const { organizations, activeOrganization, setActiveOrganization } = useOrganizations();
+  const queryClient = useQueryClient();
 
   const handleOrganizationSelect = (organizationId: string) => {
-    setActiveOrganization(organizationId)
-    queryClient.invalidateQueries({ queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY] })
-  }
+    setActiveOrganization(organizationId);
+    queryClient.invalidateQueries({ queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY] });
+  };
 
   return (
     <DropdownMenu>
@@ -69,7 +69,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
         <DropdownMenuLabel className="text-xs text-muted-foreground px-2 py-1.5">
           {t('organizations')}
         </DropdownMenuLabel>
-        {organizations.map((org) => (
+        {organizations.map(org => (
           <DropdownMenuItem
             key={org.id}
             className="flex items-center gap-3 px-2 py-2.5 cursor-pointer"
@@ -92,5 +92,5 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
         ))}
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

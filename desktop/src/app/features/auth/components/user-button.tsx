@@ -1,40 +1,40 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
-import { Button } from '@/components/ui/button'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { authClient } from '@/lib/auth-client'
-import type { User as UserType } from '@repo/core/schemas'
-import { LogOut } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { toast } from 'sonner'
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { authClient } from '@/lib/auth-client';
+import type { User as UserType } from '@repo/core/schemas';
+import { LogOut } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 interface UserButtonProps {
-  user: UserType
+  user: UserType;
 }
 
 export function UserButton({ user }: UserButtonProps) {
-  const { t } = useTranslation(['auth', 'messages'])
+  const { t } = useTranslation(['auth', 'messages']);
 
   const handleSignOut = async () => {
     try {
       await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
-            toast.success(t('signOutSuccess', { ns: 'messages' }))
-          }
-        }
-      })
+            toast.success(t('signOutSuccess', { ns: 'messages' }));
+          },
+        },
+      });
     } catch (error) {
-      console.error('Sign out error:', error)
-      toast.error(t('signOutError', { ns: 'messages' }))
+      console.error('Sign out error:', error);
+      toast.error(t('signOutError', { ns: 'messages' }));
     }
-  }
+  };
 
   return (
     <DropdownMenu>
@@ -60,5 +60,5 @@ export function UserButton({ user }: UserButtonProps) {
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }

@@ -1,13 +1,13 @@
-import { useOrganizations } from '@/features/organization'
-import { OrganizationSelector } from '@/features/organization/components/organization-selector'
-import { useCompetitionStore } from '@/store/competition'
-import { type PropsWithChildren } from 'react'
-import { OrganizationCompetitionsList } from './organization-competitions-list'
+import { useOrganizations } from '@/features/organization';
+import { OrganizationSelector } from '@/features/organization/components/organization-selector';
+import { useCompetitionStore } from '@/store/competition';
+import { type PropsWithChildren } from 'react';
+import { OrganizationCompetitionsList } from './organization-competitions-list';
 
 export function RequireCompetition({ children }: PropsWithChildren) {
-  const { activeOrganization } = useOrganizations()
+  const { activeOrganization } = useOrganizations();
 
-  const competitionEid = useCompetitionStore((state) => state.competitionEid)
+  const competitionEid = useCompetitionStore(state => state.competitionEid);
 
   // Show competition selection if no competition is selected
   if (!competitionEid) {
@@ -28,9 +28,9 @@ export function RequireCompetition({ children }: PropsWithChildren) {
           )}
         </div>
       </div>
-    )
+    );
   }
 
   // Show children if competition is selected
-  return <>{children}</>
+  return <>{children}</>;
 }

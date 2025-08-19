@@ -1,50 +1,50 @@
-import { Switch } from '@/components/ui/switch'
-import { useOrganizations } from '@/features/organization/hooks/use-organizations'
-import type { Competition } from '@repo/core/schemas'
-import { TrophyIcon } from 'lucide-react'
-import { useMemo, useState } from 'react'
-import { useTranslation } from 'react-i18next'
-import { useOrganizationCompetitions } from '../hooks/use-organization-competitions'
-import { CompetitionCard } from './competition-card'
-import { CompetitionsSkeleton } from './competitions-skeleton'
+import { Switch } from '@/components/ui/switch';
+import { useOrganizations } from '@/features/organization/hooks/use-organizations';
+import type { Competition } from '@repo/core/schemas';
+import { TrophyIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { useOrganizationCompetitions } from '../hooks/use-organization-competitions';
+import { CompetitionCard } from './competition-card';
+import { CompetitionsSkeleton } from './competitions-skeleton';
 
 interface OrganizationCompetitionsListProps {
-  className?: string
+  className?: string;
 }
 
 export function OrganizationCompetitionsList({ className }: OrganizationCompetitionsListProps) {
-  const { t } = useTranslation('common')
-  const [showPastCompetitions, setShowPastCompetitions] = useState(false)
-  const { activeOrganization } = useOrganizations()
+  const { t } = useTranslation('common');
+  const [showPastCompetitions, setShowPastCompetitions] = useState(false);
+  const { activeOrganization } = useOrganizations();
 
-  const competitions = useOrganizationCompetitions()
+  const competitions = useOrganizationCompetitions();
 
   const { upcomingCompetitions, pastCompetitions } = useMemo(() => {
     if (!competitions) {
-      return { upcomingCompetitions: [], pastCompetitions: [] }
+      return { upcomingCompetitions: [], pastCompetitions: [] };
     }
 
-    const now = new Date()
-    const upcoming: Competition[] = []
-    const past: Competition[] = []
+    const now = new Date();
+    const upcoming: Competition[] = [];
+    const past: Competition[] = [];
 
-    competitions.data?.forEach((competition) => {
-      const competitionEndDate = new Date(competition.endDate)
+    competitions.data?.forEach(competition => {
+      const competitionEndDate = new Date(competition.endDate);
       if (competitionEndDate >= now) {
-        upcoming.push(competition)
+        upcoming.push(competition);
       } else {
-        past.push(competition)
+        past.push(competition);
       }
-    })
+    });
 
     // Sort upcoming competitions by start date (earliest first)
-    upcoming.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime())
+    upcoming.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
     // Sort past competitions by end date (most recent first)
-    past.sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime())
+    past.sort((a, b) => new Date(b.endDate).getTime() - new Date(a.endDate).getTime());
 
-    return { upcomingCompetitions: upcoming, pastCompetitions: past }
-  }, [competitions])
+    return { upcomingCompetitions: upcoming, pastCompetitions: past };
+  }, [competitions]);
 
   if (competitions.isPending) {
     return (
@@ -61,7 +61,7 @@ export function OrganizationCompetitionsList({ className }: OrganizationCompetit
         </div>
         <CompetitionsSkeleton count={6} />
       </div>
-    )
+    );
   }
 
   if (competitions.isError) {
@@ -74,10 +74,10 @@ export function OrganizationCompetitionsList({ className }: OrganizationCompetit
           </p>
         </div>
       </div>
-    )
+    );
   }
 
-  const displayedCompetitions = showPastCompetitions ? pastCompetitions : upcomingCompetitions
+  const displayedCompetitions = showPastCompetitions ? pastCompetitions : upcomingCompetitions;
 
   return (
     <div className={className}>
@@ -139,12 +139,12 @@ export function OrganizationCompetitionsList({ className }: OrganizationCompetit
             </p>
           </div>
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
-            {displayedCompetitions.map((competition) => (
+            {displayedCompetitions.map(competition => (
               <CompetitionCard key={competition.id} competition={competition} />
             ))}
           </div>
         </div>
       )}
     </div>
-  )
+  );
 }

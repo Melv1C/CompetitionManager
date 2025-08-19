@@ -1,17 +1,17 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import { useAuth } from '@/features/auth/hooks/use-auth'
-import { UserButton } from './user-button'
+import { Skeleton } from '@/components/ui/skeleton';
+import { useAuth } from '@/features/auth/hooks/use-auth';
+import { UserButton } from './user-button';
 
 export function AuthButton() {
-  const { user, isLoading } = useAuth()
+  const { user, isLoading } = useAuth();
 
   if (isLoading) {
-    return <Skeleton className="h-8 w-8 rounded-full" />
+    return <Skeleton className="h-8 w-8 rounded-full" />;
   }
 
   if (!user) {
-    return null
+    return null;
   }
 
-  return <UserButton user={user} />
+  return <UserButton user={user} />;
 }

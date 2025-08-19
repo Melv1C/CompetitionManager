@@ -1,17 +1,17 @@
-import { Button } from '@/components/ui/button'
+import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
-  DropdownMenuTrigger
-} from '@/components/ui/dropdown-menu'
-import { Moon, Sun } from 'lucide-react'
-import { useTranslation } from 'react-i18next'
-import { useTheme } from '../hooks/use-theme'
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
+import { Moon, Sun } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
+import { useTheme } from '../hooks/use-theme';
 
 export function ThemeToggle() {
-  const { setTheme } = useTheme()
-  const { t } = useTranslation('theme')
+  const { setTheme } = useTheme();
+  const { t } = useTranslation('theme');
 
   return (
     <DropdownMenu>
@@ -28,5 +28,5 @@ export function ThemeToggle() {
         <DropdownMenuItem onClick={() => setTheme('system')}>{t('system')}</DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
-  )
+  );
 }
