@@ -1,11 +1,11 @@
-import { AuthButton } from '@/features/auth'
-import { getThemeValue, ThemeToggle, useTheme } from '@/features/theme'
-import { LanguageSelector } from './language-selector'
-import LightLogo from '@/assets/logo-white.png'
-import DarkLogo from '@/assets/logo-black.png'
+import DarkLogo from '@/assets/logo-black.png';
+import LightLogo from '@/assets/logo-white.png';
+import { AuthButton } from '@/features/auth';
+import { getThemeValue, ThemeToggle, useTheme } from '@/features/theme';
+import { LanguageSelector } from './language-selector';
 
 export function Header() {
-  const { theme } = useTheme()
+  const { theme } = useTheme();
 
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
@@ -28,5 +28,5 @@ export function Header() {
         </div>
       </div>
     </header>
-  )
+  );
 }

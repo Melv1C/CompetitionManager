@@ -1,4 +1,4 @@
-import { createAccessControl, type AccessControl } from 'better-auth/plugins/access';
+import { createAccessControl } from 'better-auth/plugins/access';
 import { adminAc, defaultStatements } from 'better-auth/plugins/organization/access';
 
 /**
@@ -14,11 +14,11 @@ export const statement = {
   competitions: ['read', 'create', 'update', 'delete'],
   inscriptions: ['read', 'manage'],
   results: ['read', 'manage'],
-  events: ['manage'],
+  events: ['read', 'manage'],
 } as const;
 
 // Create access control instance
-export const ac = createAccessControl(statement) as AccessControl;
+export const ac = createAccessControl(statement);
 
 /**
  * Type definitions for permission checking
@@ -51,7 +51,7 @@ export const admin = ac.newRole({
   competitions: ['read', 'update'],
   inscriptions: ['read', 'manage'],
   results: ['read', 'manage'],
-  events: ['manage'],
+  events: ['read', 'manage'],
 });
 
 export const resultManager = ac.newRole({
