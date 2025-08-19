@@ -1,22 +1,10 @@
 name: Desktop App - Staging Build
 
 on:
-  push:
-    branches: [main]
-    paths:
-      - 'desktop/**'
-      - 'core/**'
-      - '.github/workflows/desktop-build-staging.yml'
-  workflow_dispatch: # Allow manual builds
+  workflow_dispatch:
 
 jobs:
-  # Quality gate - ensure code quality before building
-  quality-gate:
-    uses: ./.github/workflows/code-quality.yml
-    secrets: inherit
-
   build-desktop:
-    needs: [quality-gate]
     strategy:
       matrix:
         os: [macos-latest, windows-latest]
