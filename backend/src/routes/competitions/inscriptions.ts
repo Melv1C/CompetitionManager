@@ -18,7 +18,7 @@ import {
   InscriptionStatus$,
 } from '@repo/core/schemas';
 import { Hono } from 'hono';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const competitionInscriptionsRoutes = new Hono();
 

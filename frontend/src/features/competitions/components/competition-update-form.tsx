@@ -28,7 +28,7 @@ import { CompetitionUpdate$, type CompetitionUpdate } from '@repo/core/schemas';
 import { Save } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import z from 'zod/v4';
+import z from 'zod';
 import { ClubSelector } from './club-selector';
 import { SwitchField } from './switch-field';
 

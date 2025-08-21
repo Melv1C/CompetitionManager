@@ -13,7 +13,7 @@ import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CompetitionCreate$, type CompetitionCreate } from '@repo/core/schemas';
 import { useForm } from 'react-hook-form';
-import z from 'zod/v4';
+import z from 'zod';
 import { useCreateCompetition } from '../hooks/use-organization-competitions';
 
 interface CreateCompetitionDialogProps {

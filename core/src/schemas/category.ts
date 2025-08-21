@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { Gender$, Id$ } from './base';
 
 // Zod enum for abbreviated base categories

@@ -4,7 +4,7 @@ import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import { Club$, ClubCreate$, ClubUpdate$, ParameterId$ } from '@repo/core/schemas';
 import { Hono } from 'hono';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const clubsRoutes = new Hono();
 

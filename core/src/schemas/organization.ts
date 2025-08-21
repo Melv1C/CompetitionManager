@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { BetterAuthId$, Date$, Email$, Url$ } from './base';
 
 export const Organization$ = z.object({

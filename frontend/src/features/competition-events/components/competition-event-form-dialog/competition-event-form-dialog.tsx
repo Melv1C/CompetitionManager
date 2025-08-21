@@ -33,7 +33,7 @@ import {
 import { getCombinedEventSubEventsCount } from '@repo/core/utils';
 import { useForm, useFieldArray } from 'react-hook-form';
 
-import z from 'zod/v4';
+import z from 'zod';
 import { DateTimePicker } from '@/components/date-time-picker';
 import { useOrganizationCompetition } from '@/features/competitions';
 import { useState, useEffect } from 'react';

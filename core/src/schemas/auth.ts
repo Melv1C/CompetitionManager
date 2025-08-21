@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { BetterAuthId$, Boolean$, Date$, Email$, Url$ } from './base';
 
 export const UserRole$ = z.enum(['admin', 'user']);

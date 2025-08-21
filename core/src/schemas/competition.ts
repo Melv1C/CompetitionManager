@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { BetterAuthId$, Boolean$, Cuid$, Date$, Id$ } from './base';
 import { Club$ } from './club';
 import { CompetitionEvent$, competitionEventInclude } from './competition-event';

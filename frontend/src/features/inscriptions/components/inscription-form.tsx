@@ -17,7 +17,7 @@ import { Id$, Record$ } from '@repo/core/schemas';
 import { ChevronLeft, ChevronRight, Eye, ShoppingCart } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
-import z from 'zod/v4';
+import z from 'zod';
 import { AthleteSelectionStep, EventSelectionStep, RecordsEntryStep } from './steps';
 
 const steps = [

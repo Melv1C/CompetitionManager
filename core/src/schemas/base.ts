@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 export const Id$ = z.number().int().positive();
 export type Id = z.infer<typeof Id$>;

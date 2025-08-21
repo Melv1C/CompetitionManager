@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { Date$, Gender$, Id$ } from './base';
 import { Club$ } from './club';
 

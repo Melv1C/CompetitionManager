@@ -1,6 +1,6 @@
 import { Password$, User$ } from '@repo/core/schemas';
 import 'dotenv/config';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const envSchema = z.object({
   NODE_ENV: z.enum(['development', 'production', 'staging']),

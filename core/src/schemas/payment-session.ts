@@ -1,4 +1,4 @@
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 
 // Payment session status enum

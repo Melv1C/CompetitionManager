@@ -13,7 +13,7 @@ import {
 } from '@repo/core/schemas';
 import { logger } from 'better-auth';
 import { Hono } from 'hono';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 
 const organizationCompetitionEventsRoutes = new Hono();
 

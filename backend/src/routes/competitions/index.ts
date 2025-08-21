@@ -3,7 +3,7 @@ import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import { Competition$, competitionInclude, CompetitionQuery$, Cuid$ } from '@repo/core/schemas';
-import { z } from 'zod/v4';
+import { z } from 'zod';
 import { Hono } from 'hono';
 import { competitionInscriptionsRoutes } from './inscriptions';
 
