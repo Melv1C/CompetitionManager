@@ -97,7 +97,7 @@ export function CompetitionUpdateForm() {
       });
     }
   }, [currentCompetition, form]);
-  
+
   const onSubmit = useCallback(
     async (data: CompetitionUpdate) => {
       if (!currentCompetition) return;
