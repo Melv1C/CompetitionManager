@@ -1,5 +1,4 @@
-import { useOrganizations } from '@/features/organization';
-import { OrganizationSelector } from '@/features/organization/components/organization-selector';
+import { OrganizationSelector, useOrganizations } from '@/features/organization';
 import { useCompetitionStore } from '@/store/competition';
 import { type PropsWithChildren } from 'react';
 import { OrganizationCompetitionsList } from './organization-competitions-list';

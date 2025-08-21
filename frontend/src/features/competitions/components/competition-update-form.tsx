@@ -18,8 +18,8 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { UnsavedChangesDialog } from '@/components/unsaved-changes-dialog';
-import { useClubs } from '@/features/clubs/hooks/use-clubs';
-import { useUpdateCompetition } from '@/features/competitions/hooks/use-organization-competitions';
+import { useClubs } from '@/features/clubs';
+import { useUpdateCompetition } from '@/features/competitions';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { authClient } from '@/lib/auth-client';
 import { useOrganizationCompetitionStore } from '@/store/organization-competition';
@@ -77,9 +77,7 @@ export function CompetitionUpdateForm() {
   });
 
   useEffect(() => {
-    console.log('Current competition:', currentCompetition);
     if (currentCompetition) {
-      console.log('Resetting form with competition data');
       form.reset({
         name: currentCompetition.name,
         startDate: new Date(currentCompetition.startDate),
@@ -99,6 +97,7 @@ export function CompetitionUpdateForm() {
       });
     }
   }, [currentCompetition, form]);
+
   const onSubmit = useCallback(
     async (data: CompetitionUpdate) => {
       if (!currentCompetition) return;

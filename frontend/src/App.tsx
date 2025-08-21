@@ -1,20 +1,15 @@
 import {
   AdminLayout,
-  AdminSkeleton,
   CompetitionLayout,
   MainLayout,
   OrganizationLayout,
-  OrganizationSkeleton,
 } from '@/components/layout';
-import { Skeleton } from '@/components/ui/skeleton';
 import { Toaster } from '@/components/ui/sonner';
 import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { lazy, Suspense } from 'react';
-import { createBrowserRouter, Outlet, RouterProvider, useNavigate } from 'react-router-dom';
+import { lazy } from 'react';
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { SocketStatusViewer } from './components/dev/socket-status-viewer';
-import { useAuth } from './features/auth/hooks/use-auth';
-import { useOrganizations } from './features/organization';
 import { env } from './lib/env';
 import { CompetitionOutlet } from './pages/organization/competition/outlet';
 
@@ -180,66 +175,10 @@ const queryClient = new QueryClient({
   },
 });
 
-// Main App Layout Component
-function MainApp() {
-  return (
-    <MainLayout>
-      <Outlet />
-    </MainLayout>
-  );
-}
-
-// Admin App Layout Component
-function AdminApp() {
-  const { user, isLoading } = useAuth();
-  const navigate = useNavigate();
-
-  if (isLoading) {
-    return <AdminSkeleton />;
-  }
-
-  if (!user) {
-    navigate('/auth/sign-in');
-    return null;
-  }
-
-  if (user.role !== 'admin') {
-    navigate('/');
-    return null;
-  }
-
-  return (
-    <AdminLayout>
-      <Outlet />
-    </AdminLayout>
-  );
-}
-
-// Organization App Layout Component
-function OrganizationApp() {
-  const { organizations, isLoadingOrganizations } = useOrganizations();
-  const navigate = useNavigate();
-
-  if (isLoadingOrganizations) {
-    return <OrganizationSkeleton />;
-  }
-
-  if (organizations.length === 0) {
-    navigate('/');
-    return null;
-  }
-
-  return (
-    <OrganizationLayout>
-      <Outlet />
-    </OrganizationLayout>
-  );
-}
-
 const router = createBrowserRouter([
   {
     path: '/',
-    element: <MainApp />,
+    element: <MainLayout />,
     errorElement: <NotFound />,
     children: [
       {
@@ -251,12 +190,8 @@ const router = createBrowserRouter([
         element: <CompetitionsPage />,
       },
       {
-        path: 'competitions/:eid',
-        element: (
-          <Suspense fallback={<Skeleton className="h-96 w-full" />}>
-            <CompetitionLayout />
-          </Suspense>
-        ),
+        path: 'competitions/:competitionEid',
+        element: <CompetitionLayout />,
         children: [
           {
             index: true,
@@ -296,7 +231,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/organization',
-    element: <OrganizationApp />,
+    element: <OrganizationLayout />,
     errorElement: <NotFound />,
     children: [
       {
@@ -341,7 +276,7 @@ const router = createBrowserRouter([
   },
   {
     path: '/admin',
-    element: <AdminApp />,
+    element: <AdminLayout />,
     errorElement: <NotFound />,
     children: [
       {
@@ -376,41 +311,11 @@ const router = createBrowserRouter([
   },
 ]);
 
-// Loading skeleton component for page transitions
-function PageLoadingSkeleton() {
-  return (
-    <div className="flex flex-col min-h-screen">
-      {/* Header skeleton */}
-      <div className="border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
-        <div className="container flex h-14 items-center">
-          <Skeleton className="h-6 w-32" />
-          <div className="ml-auto flex items-center space-x-4">
-            <Skeleton className="h-8 w-8 rounded-full" />
-            <Skeleton className="h-8 w-20" />
-          </div>
-        </div>
-      </div>
-
-      {/* Main content skeleton */}
-      <div className="flex-1 container mx-auto px-4 py-6">
-        <div className="space-y-4">
-          <Skeleton className="h-8 w-1/3" />
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-48 w-full" />
-          <Skeleton className="h-48 w-full" />
-        </div>
-      </div>
-    </div>
-  );
-}
-
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>
-        <Suspense fallback={<PageLoadingSkeleton />}>
-          <RouterProvider router={router} />
-        </Suspense>
+        <RouterProvider router={router} />
         <Toaster />
         {env.VITE_SHOW_SOCKET_STATUS && <SocketStatusViewer />}
       </ThemeProvider>

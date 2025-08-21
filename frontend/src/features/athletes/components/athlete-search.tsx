@@ -3,7 +3,7 @@ import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/componen
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
-import { AthleteCard } from '@/features/athletes/components/athlete-card';
+import { AthleteCard } from '@/features/athletes';
 import { cn } from '@/lib/utils';
 import { AthleteKey$, type Athlete } from '@repo/core/schemas';
 import { getSeasonBib } from '@repo/core/utils';

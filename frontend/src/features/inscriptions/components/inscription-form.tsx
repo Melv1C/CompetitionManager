@@ -9,7 +9,7 @@ import {
   StepperSeparator,
   StepperTrigger,
 } from '@/components/ui/stepper';
-import { useCompetition } from '@/features/competitions';
+import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks';
 import { useInscriptionFormStore } from '@/store/inscription-form-store';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -41,7 +41,7 @@ const InscriptionForm$ = z.object({
 export function InscriptionForm() {
   const eid = useCompetitionEid();
   const { t } = useTranslation(['inscriptions', 'buttons']);
-  const competition = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
 
   const {
     currentStep,
@@ -73,7 +73,7 @@ export function InscriptionForm() {
       return (
         total +
         registration.inscriptions.reduce((regTotal, inscription) => {
-          const event = competition.data.events.find(e => e.id === inscription.competitionEventId);
+          const event = competition.events.find(e => e.id === inscription.competitionEventId);
           return regTotal + (event?.price || 0);
         }, 0)
       );

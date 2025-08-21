@@ -1,8 +1,8 @@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { CategoriesManagement } from '@/features/categories/components/categories-management';
-import { ClubsManagement } from '@/features/clubs/components/clubs-management';
-import { EventsManagement } from '@/features/events/components/events-management';
+import { CategoriesManagement } from '@/features/categories';
+import { ClubsManagement } from '@/features/clubs';
+import { EventsManagement } from '@/features/events';
 
 export function AdminDatabase() {
   return (

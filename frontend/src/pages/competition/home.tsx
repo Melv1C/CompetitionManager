@@ -1,28 +1,28 @@
-import { useCompetition } from '@/features/competitions';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { useRequiredCompetition } from '@/features/competitions';
+import { useCompetitionEid } from '@/hooks';
 import { formatDate, formatDateTime } from '@/lib/formatters';
 import {
+  AlertCircleIcon,
   CalendarIcon,
+  CheckCircleIcon,
+  ClockIcon,
+  CreditCardIcon,
+  InfoIcon,
   MapPinIcon,
   UsersIcon,
-  InfoIcon,
-  CreditCardIcon,
-  ClockIcon,
-  AlertCircleIcon,
-  CheckCircleIcon,
 } from 'lucide-react';
-import { useCompetitionEid } from '@/hooks';
 
 export function CompetitionHomePage() {
   const eid = useCompetitionEid();
 
-  const competition = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
 
   const getRegistrationStatus = () => {
     const now = new Date();
-    const startDate = new Date(competition.data.inscriptionStartDate);
-    const endDate = new Date(competition.data.inscriptionEndDate);
+    const startDate = new Date(competition.inscriptionStartDate);
+    const endDate = new Date(competition.inscriptionEndDate);
 
     if (now < startDate) return 'upcoming';
     if (now > endDate) return 'closed';
@@ -33,7 +33,7 @@ export function CompetitionHomePage() {
     <div className="space-y-6">
       {/* Competition Header */}
       <div className="space-y-4">
-        {competition.data.description && (
+        {competition.description && (
           <Card>
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
@@ -42,9 +42,7 @@ export function CompetitionHomePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground whitespace-pre-wrap">
-                {competition.data.description}
-              </p>
+              <p className="text-muted-foreground whitespace-pre-wrap">{competition.description}</p>
             </CardContent>
           </Card>
         )}
@@ -58,23 +56,21 @@ export function CompetitionHomePage() {
             <CalendarIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{formatDate(competition.data.startDate)}</div>
-            {competition.data.endDate && (
-              <p className="text-xs text-muted-foreground">
-                to {formatDate(competition.data.endDate)}
-              </p>
+            <div className="text-2xl font-bold">{formatDate(competition.startDate)}</div>
+            {competition.endDate && (
+              <p className="text-xs text-muted-foreground">to {formatDate(competition.endDate)}</p>
             )}
           </CardContent>
         </Card>
 
-        {competition.data.location && (
+        {competition.location && (
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
               <CardTitle className="text-sm font-medium">Location</CardTitle>
               <MapPinIcon className="h-4 w-4 text-muted-foreground" />
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold">{competition.data.location}</div>
+              <div className="text-2xl font-bold">{competition.location}</div>
             </CardContent>
           </Card>
         )}
@@ -85,13 +81,13 @@ export function CompetitionHomePage() {
             <UsersIcon className="h-4 w-4 text-muted-foreground" />
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">{competition.data.organization.name}</div>
+            <div className="text-2xl font-bold">{competition.organization.name}</div>
           </CardContent>
         </Card>
       </div>
 
       {/* Registration Information */}
-      {competition.data.isInscriptionVisible && (
+      {competition.isInscriptionVisible && (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
@@ -124,18 +120,18 @@ export function CompetitionHomePage() {
               <div>
                 <p className="text-sm font-medium">Registration Opens</p>
                 <p className="text-sm text-muted-foreground">
-                  {formatDateTime(competition.data.inscriptionStartDate)}
+                  {formatDateTime(competition.inscriptionStartDate)}
                 </p>
               </div>
               <div>
                 <p className="text-sm font-medium">Registration Closes</p>
                 <p className="text-sm text-muted-foreground">
-                  {formatDateTime(competition.data.inscriptionEndDate)}
+                  {formatDateTime(competition.inscriptionEndDate)}
                 </p>
               </div>
             </div>
 
-            {competition.data.isPaidOnline && (
+            {competition.isPaidOnline && (
               <div className="flex items-center gap-2 text-sm text-muted-foreground">
                 <CreditCardIcon className="h-4 w-4" />
                 Online payment for this competition

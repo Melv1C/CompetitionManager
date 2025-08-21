@@ -1,7 +1,7 @@
 import { Button } from '@/components/ui/button';
 import {
-  CreateCompetitionDialog,
   CompetitionsTable,
+  CreateCompetitionDialog,
   useOrganizationCompetitions,
 } from '@/features/competitions';
 import { useState } from 'react';
@@ -30,7 +30,13 @@ export function OrganizationCompetitions() {
           </p>
         </div>
         <div className="border-t p-4">
-          <CompetitionsTable competitions={competitions.data} />
+          {competitions.isPending ? (
+            <div>Loading competitions...</div>
+          ) : competitions.isError ? (
+            <div>Error loading competitions</div>
+          ) : (
+            <CompetitionsTable competitions={competitions.data} />
+          )}
         </div>
       </div>
 

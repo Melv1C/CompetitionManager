@@ -4,10 +4,10 @@ import { useAuth } from '../hooks/use-auth';
 import { SignInForm } from './sign-in-form';
 
 export function RequireAuth({ children }: PropsWithChildren) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isPending } = useAuth();
 
   // Show loading state while checking authentication
-  if (isLoading) {
+  if (isPending) {
     return (
       <div className="flex items-center justify-center m-16">
         <div className="w-full max-w-md mx-auto space-y-4 p-6">

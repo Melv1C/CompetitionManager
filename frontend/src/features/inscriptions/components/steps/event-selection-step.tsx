@@ -4,24 +4,24 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
-import { useCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
-import { useInscriptionFormStore } from '../../../../store/inscription-form-store';
 import { getAthleteCategory } from '@repo/core/utils';
+import { useInscriptionFormStore } from '../../../../store/inscription-form-store';
+import { useRequiredCompetition } from '@/features/competitions/hooks/use-competitions';
 
 export function EventSelectionStep() {
   const { t } = useTranslation(['inscriptions']);
   const eid = useCompetitionEid();
-  const competition = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
 
   const { currentAthlete, currentEventIds, setCurrentEventIds } = useInscriptionFormStore();
 
   const currentAthleteCategory = currentAthlete
-    ? getAthleteCategory(currentAthlete, competition.data.startDate)
+    ? getAthleteCategory(currentAthlete, competition.startDate)
     : null;
 
   const eligibleEvents = currentAthlete
-    ? competition.data.events.filter(event =>
+    ? competition.events.filter(event =>
         event.categories.some(category => category.abbr === currentAthleteCategory?.abbr),
       )
     : [];

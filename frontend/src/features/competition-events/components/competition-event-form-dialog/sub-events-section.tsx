@@ -1,11 +1,10 @@
+import { DateTimePicker } from '@/components/date-time-picker';
 import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import { EventSelector } from '@/features/events/components/event-selector';
-import { DateTimePicker } from '@/components/date-time-picker';
 import { Separator } from '@/components/ui/separator';
+import { EventSelector, useEvents } from '@/features/events';
+import type { CompetitionEventCreate, CompetitionEventUpdate, Event } from '@repo/core/schemas';
 import type { Control, FieldArrayWithId } from 'react-hook-form';
-import type { Event, CompetitionEventCreate, CompetitionEventUpdate } from '@repo/core/schemas';
-import { useEvents } from '@/features/events/hooks/use-events';
 
 interface SubEventsSectionProps {
   control: Control<CompetitionEventCreate | CompetitionEventUpdate>;
@@ -26,12 +25,6 @@ export function SubEventsSection({
   competitionStartDate,
   competitionEndDate,
 }: SubEventsSectionProps) {
-  console.log('SubEventsSection rendered', {
-    fieldsLength: fields.length,
-    subEventsCount,
-    competitionStartDate,
-    competitionEndDate,
-  });
   return (
     <>
       <Separator />
@@ -101,7 +94,7 @@ function SubEventCard({
           <FormItem>
             <FormControl>
               <EventSelector
-                events={events.data.filter(e => e.group !== 'combined')}
+                events={events.data?.filter(e => e.group !== 'combined')}
                 value={field.value}
                 onValueChange={field.onChange}
                 placeholder="Select event"

@@ -6,6 +6,7 @@ export const useOrganizations = () => {
     refetch: refetchOrganizations,
     isPending: isLoadingOrganizations,
   } = authClient.useListOrganizations();
+
   const {
     data: activeOrganization,
     refetch: refetchActiveOrganization,

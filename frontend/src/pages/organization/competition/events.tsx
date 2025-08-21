@@ -1,6 +1,6 @@
 import { Button } from '@/components/ui/button';
-import { CompetitionEventsTable, CompetitionEventFormDialog } from '@/features/competition-events';
-import { useOrganizationCompetition } from '@/features/competitions';
+import { CompetitionEventFormDialog, CompetitionEventsTable } from '@/features/competition-events';
+import { useRequiredOrganizationCompetition } from '@/features/competitions';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';
@@ -12,7 +12,7 @@ export function CompetitionEvents() {
   if (!competitionEid) {
     throw new Error('Competition EID is required');
   }
-  const competition = useOrganizationCompetition(competitionEid);
+  const competition = useRequiredOrganizationCompetition(competitionEid);
 
   return (
     <div className="space-y-4">
@@ -26,7 +26,7 @@ export function CompetitionEvents() {
 
       <CompetitionEventsTable
         competitionEid={competitionEid}
-        competitionEvents={competition.data.events}
+        competitionEvents={competition.events}
       />
 
       <CompetitionEventFormDialog

@@ -6,13 +6,12 @@ export const useAuth = () => {
 
   const user = session ? User$.parse(session.user) : null;
   const isAuthenticated = !!user;
-  const isLoading = isPending;
 
   return {
     // User state
     user,
     isAuthenticated,
-    isLoading,
+    isPending,
     error,
 
     // Session data

@@ -1,4 +1,4 @@
-import { LogViewer } from '@/features/logs/components/log-viewer';
+import { LogViewer } from '@/features/logs';
 
 export function AdminLogs() {
   return <LogViewer />;

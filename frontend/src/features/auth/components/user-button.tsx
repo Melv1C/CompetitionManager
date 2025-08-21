@@ -8,7 +8,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
-import { useOrganizations } from '@/features/organization/hooks/use-organizations';
+import { useOrganizations } from '@/features/organization';
 import { authClient } from '@/lib/auth-client';
 import type { User as UserType } from '@repo/core/schemas';
 import { Building2, LogOut, Settings, Shield, User } from 'lucide-react';

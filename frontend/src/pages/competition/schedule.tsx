@@ -1,17 +1,17 @@
-import { Link } from 'react-router-dom';
-import { useTranslation } from 'react-i18next';
-import { useState, useMemo } from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
-import { CalendarIcon, ClockIcon, UsersIcon, SearchIcon, XIcon } from 'lucide-react';
-import { useCompetition } from '@/features/competitions';
-import { EventSelector } from '@/features/events/components/event-selector';
-import { CategorySelector } from '@/features/categories/components/category-selector';
-import { formatTime, formatDateFull } from '@/lib/formatters';
-import type { CompetitionEvent } from '@repo/core/schemas';
+import { CategorySelector } from '@/features/categories';
+import { useRequiredCompetition } from '@/features/competitions';
+import { EventSelector } from '@/features/events';
 import { useCompetitionEid } from '@/hooks';
+import { formatDateFull, formatTime } from '@/lib/formatters';
+import type { CompetitionEvent } from '@repo/core/schemas';
+import { CalendarIcon, ClockIcon, SearchIcon, UsersIcon, XIcon } from 'lucide-react';
+import { useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 
 export function CompetitionSchedulePage() {
   const eid = useCompetitionEid();
@@ -22,7 +22,7 @@ export function CompetitionSchedulePage() {
   const [selectedEventId, setSelectedEventId] = useState<number | undefined>();
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
 
-  const { data: competition } = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
 
   // Get unique events from competition events for filtering
   const competitionEvents = useMemo(() => {

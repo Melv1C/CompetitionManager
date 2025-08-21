@@ -79,14 +79,22 @@ export function CategorySelector({
   disabled = false,
   placeholder = 'Select categories...',
 }: CategorySelectorProps) {
-  const { data: categories } = useCategories(); // Assuming useCategories is a hook that fetches categories
+  const categories = useCategories(); // Assuming useCategories is a hook that fetches categories
   const isMobile = useIsMobile();
   const [open, setOpen] = useState(false);
 
-  const selectedCategories = categories.filter(cat => selectedIds.includes(cat.id));
+  if (categories.isPending) {
+    return <div className="text-center py-4">Loading categories...</div>;
+  }
+
+  if (categories.isError) {
+    return <div className="text-center py-4">Failed to load categories</div>;
+  }
+
+  const selectedCategories = categories.data.filter(cat => selectedIds.includes(cat.id));
 
   // Group categories by different criteria
-  const categoriesByGender = categories.reduce(
+  const categoriesByGender = categories.data.reduce(
     (acc, cat) => {
       if (!acc[cat.gender]) acc[cat.gender] = [];
       acc[cat.gender].push(cat);
@@ -105,7 +113,7 @@ export function CategorySelector({
   };
 
   const handleQuickSelection = (selection: QuickSelection) => {
-    const matchingCategories = categories.filter(selection.filter);
+    const matchingCategories = categories.data.filter(selection.filter);
     const matchingIds = matchingCategories.map(cat => cat.id);
 
     // If all matching categories are already selected, deselect them
@@ -166,7 +174,7 @@ export function CategorySelector({
           <h4 className={cn('font-medium', isMobile ? 'text-base' : 'text-sm')}>Quick Selection</h4>
           <div className={cn('flex flex-wrap gap-1', isMobile ? 'gap-2' : '')}>
             {QUICK_SELECTIONS.map(selection => {
-              const matchingCategories = categories.filter(selection.filter);
+              const matchingCategories = categories.data.filter(selection.filter);
               const matchingIds = matchingCategories.map(cat => cat.id);
               const allSelected = matchingIds.every(id => selectedIds.includes(id));
 

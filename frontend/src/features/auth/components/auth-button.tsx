@@ -1,4 +1,4 @@
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuth } from '@/features/auth';
 import { AuthSkeleton } from './auth-skeleton';
 import { LoginButton } from './login-button';
 import { UserButton } from './user-button';
@@ -9,9 +9,9 @@ interface AuthButtonProps {
 }
 
 export function AuthButton({ isMobile = false, onMobileMenuClose }: AuthButtonProps) {
-  const { user, isLoading } = useAuth();
+  const { user, isPending } = useAuth();
 
-  if (isLoading) {
+  if (isPending) {
     return <AuthSkeleton isMobile={isMobile} />;
   }
 

@@ -1,19 +1,35 @@
-import type { CompetitionQuery } from '@repo/core/schemas';
+import { type CompetitionQuery, type Cuid } from '@repo/core/schemas';
+import { useQuery } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { CompetitionsService } from '../services/competitions-service';
-import { useSuspenseQuery } from '@tanstack/react-query';
 
 export const COMPETITIONS_QUERY_KEY = 'competitions';
 
 export function useCompetitions(query?: Partial<CompetitionQuery>) {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: [COMPETITIONS_QUERY_KEY, query],
     queryFn: () => CompetitionsService.getCompetitions(query),
   });
 }
 
-export function useCompetition(eid: string) {
-  return useSuspenseQuery({
+export function useCompetition(eid: Cuid) {
+  return useQuery({
     queryKey: [COMPETITIONS_QUERY_KEY, 'detail', eid],
     queryFn: () => CompetitionsService.getCompetition(eid),
   });
+}
+
+export function useRequiredCompetition(eid: Cuid) {
+  const { t } = useTranslation();
+  const competition = useCompetition(eid);
+
+  if (competition.isPending) {
+    throw new Error(t('loading.competition'));
+  }
+
+  if (competition.isError) {
+    throw new Error(t('error.competition'));
+  }
+
+  return competition.data;
 }

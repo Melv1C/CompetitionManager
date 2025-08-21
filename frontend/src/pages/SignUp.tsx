@@ -1,5 +1,4 @@
-import { SignUpForm } from '@/features/auth';
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { SignUpForm, useAuth } from '@/features/auth';
 import { useNavigate } from 'react-router-dom';
 
 export function SignUpPage() {

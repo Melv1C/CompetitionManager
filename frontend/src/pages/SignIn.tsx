@@ -1,5 +1,4 @@
-import { SignInForm } from '@/features/auth';
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { SignInForm, useAuth } from '@/features/auth';
 import { useNavigate } from 'react-router-dom';
 
 export function SignInPage() {

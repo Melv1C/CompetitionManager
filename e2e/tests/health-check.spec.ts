@@ -28,7 +28,7 @@ test.describe('Health Check Tests', () => {
         // Don't fail the test if there's no health endpoint
         expect(response.status()).toBeGreaterThanOrEqual(200);
       }
-    } catch (error) {
+    } catch {
       console.log('⚠️  API health endpoint not available (this is ok for basic setup)');
       // Don't fail the test if there's no health endpoint
     }

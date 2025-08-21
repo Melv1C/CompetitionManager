@@ -16,9 +16,8 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
-import { EventSelector } from '@/features/events/components/event-selector';
 import { CategorySelector } from '@/features/categories';
-import { useEvents } from '@/features/events/hooks/use-events';
+import { EventSelector, useEvents } from '@/features/events';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
   CompetitionEventCreate$,
@@ -31,12 +30,12 @@ import {
   type Event,
 } from '@repo/core/schemas';
 import { getCombinedEventSubEventsCount } from '@repo/core/utils';
-import { useForm, useFieldArray } from 'react-hook-form';
+import { useFieldArray, useForm } from 'react-hook-form';
 
-import z from 'zod';
 import { DateTimePicker } from '@/components/date-time-picker';
-import { useOrganizationCompetition } from '@/features/competitions';
-import { useState, useEffect } from 'react';
+import { useRequiredOrganizationCompetition } from '@/features/competitions';
+import { useEffect, useState } from 'react';
+import z from 'zod';
 import {
   useCreateCompetitionEvent,
   useUpdateCompetitionEvent,
@@ -56,7 +55,7 @@ export function CompetitionEventFormDialog({
   onOpenChange,
   competitionEvent,
 }: CompetitionEventFormDialogProps) {
-  const competition = useOrganizationCompetition(competitionEid);
+  const competition = useRequiredOrganizationCompetition(competitionEid);
 
   const isEditing = !!competitionEvent;
   const createMutation = useCreateCompetitionEvent(competitionEid);
@@ -99,8 +98,8 @@ export function CompetitionEventFormDialog({
       price: competitionEvent?.price ?? 0,
       categoryIds: competitionEvent?.categories?.map(cat => cat.id) ?? [],
       subEvents: competitionEvent
-        ? (competition.data?.events
-            ?.filter(event => event.parentId === competitionEvent?.id)
+        ? (competition.events
+            .filter(event => event.parentId === competitionEvent?.id)
             .map(event => ({
               id: event.id,
               name: event.name,
@@ -121,7 +120,7 @@ export function CompetitionEventFormDialog({
 
   useEffect(() => {
     if (watchedEventId) {
-      const event = events.data.find(e => e.id === watchedEventId);
+      const event = events.data?.find(e => e.id === watchedEventId);
       setSelectedEvent(event);
 
       // If it's a combined event, auto-generate sub-events
@@ -169,15 +168,9 @@ export function CompetitionEventFormDialog({
 
   const isLoading = createMutation.isPending || updateMutation.isPending;
 
-  console.log('CompetitionEventFormDialog rendered', {
-    isEditing,
-    competitionEid,
-    open,
-    competitionEvent,
-    isLoading,
-    selectedEvent,
-    subEventsCount,
-  });
+  if (events.isPending) {
+    return <div>Loading events...</div>;
+  }
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -261,8 +254,8 @@ export function CompetitionEventFormDialog({
                             onChange={date => field.onChange(date)}
                             placeholder="Select start time"
                             disabled={isLoading}
-                            minDate={competition.data.startDate}
-                            maxDate={competition.data.endDate}
+                            minDate={competition.startDate}
+                            maxDate={competition.endDate}
                           />
                         </FormControl>
                         <FormMessage />
@@ -326,8 +319,8 @@ export function CompetitionEventFormDialog({
                   isLoading={isLoading}
                   selectedEvent={selectedEvent}
                   subEventsCount={subEventsCount}
-                  competitionStartDate={competition.data?.startDate}
-                  competitionEndDate={competition.data?.endDate}
+                  competitionStartDate={competition.startDate}
+                  competitionEndDate={competition.endDate}
                   mainEventStartTime={form.watch('eventStartTime')}
                 />
               )}

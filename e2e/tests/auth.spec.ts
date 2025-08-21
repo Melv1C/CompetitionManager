@@ -1,5 +1,6 @@
 import { expect, test } from '@playwright/test';
 import { MainLayoutPage } from './pages/main-layout';
+import { SignInPage } from './pages/signin-page';
 import { SignUpPage } from './pages/signup-page';
 import { TestUtils } from './utils/test-utils';
 
@@ -15,6 +16,17 @@ test.describe('User Authentication', () => {
     await expect(page.locator(signUpPage.passwordInput)).toBeVisible();
     await expect(page.locator(signUpPage.confirmPasswordInput)).toBeVisible();
     await expect(page.locator(signUpPage.submitButton)).toBeVisible();
+  });
+
+  test('Sign In - should display sign in form', async ({ page }) => {
+    const signInPage = new SignInPage(page);
+
+    await signInPage.goto();
+
+    // Verify form elements are present
+    await expect(page.locator(signInPage.emailInput)).toBeVisible();
+    await expect(page.locator(signInPage.passwordInput)).toBeVisible();
+    await expect(page.locator(signInPage.submitButton)).toBeVisible();
   });
 
   test('Sign Up - should sign up with valid credentials', async ({ page }) => {
@@ -38,17 +50,38 @@ test.describe('User Authentication', () => {
     await expect(avatarButton).toBeVisible();
   });
 
-  test('Sign Up/Sign In form is not accessible when already authenticated', async ({ page }) => {
-    const signUpPage = new SignUpPage(page);
-    const utils = new TestUtils(page);
-    const { name, email, password } = utils.generateTestData();
+  test('Sign In - should sign in with valid credentials', async ({ page }) => {
+    const signInPage = new SignInPage(page);
+    const mainLayout = new MainLayoutPage(page);
 
-    // Sign up and authenticate
-    await signUpPage.goto();
-    await signUpPage.signUp(name, email, password);
+    await signInPage.goto();
+    await signInPage.signIn('user@example.com', 'user-password');
+
+    // Verify successful sign in
+    await page.waitForURL('/'); // Assuming redirect to home page on success
+
+    // Wait for layout to load
+    await mainLayout.waitForLoad();
+
+    // Try to find user avatar with first letter of name
+    const avatarButton = mainLayout.getUserAvatarButton('U');
+    await expect(avatarButton).toBeVisible();
+  });
+
+  test('Sign Up/Sign In form is not accessible when already authenticated', async ({ page }) => {
+    const signInPage = new SignInPage(page);
+    const signUpPage = new SignUpPage(page);
+
+    // Sign in and authenticate
+    await signInPage.goto();
+    await signInPage.signIn('user@example.com', 'user-password');
+
     await page.waitForURL('/');
 
-    // Try to access signup page again
+    await signInPage.goto();
+    // Expect the url to be the home page
+    await expect(page).toHaveURL('/');
+
     await signUpPage.goto();
     // Expect the url to be the home page
     await expect(page).toHaveURL('/');

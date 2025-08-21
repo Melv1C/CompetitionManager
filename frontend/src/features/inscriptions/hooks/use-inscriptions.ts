@@ -1,11 +1,11 @@
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
-import { InscriptionsService } from '../services/inscriptions-service';
 import type { Cuid, UpsertInscriptions } from '@repo/core/schemas';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { InscriptionsService } from '../services/inscriptions-service';
 
 export const INSCRIPTIONS_QUERY_KEY = 'inscriptions';
 
 export function useCompetitionInscriptions(competitionEid: Cuid) {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: [INSCRIPTIONS_QUERY_KEY, competitionEid],
     queryFn: () => InscriptionsService.getCompetitionInscriptions(competitionEid),
   });

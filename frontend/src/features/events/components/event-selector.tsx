@@ -11,7 +11,7 @@ import { ScrollArea } from '@/components/ui/scroll-area';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface EventSelectorProps {
-  events?: Event[]; // Made optional - will use hook data if not provided
+  events?: Event[];
   value?: number;
   onValueChange: (value: number | undefined) => void;
   placeholder?: string;
@@ -31,7 +31,7 @@ export function EventSelector({
   const isMobile = useIsMobile();
 
   // Use external events if provided, otherwise use hook data
-  const events = externalEvents || eventsFromHook.data;
+  const events = externalEvents || eventsFromHook.data || [];
 
   const [open, setOpen] = useState(false);
   const [activeTab, setActiveTab] = useState<string>('');
