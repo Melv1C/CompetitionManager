@@ -8,7 +8,6 @@ test.describe('User Authentication', () => {
     const signUpPage = new SignUpPage(page);
 
     await signUpPage.goto();
-    await signUpPage.verifyPageLoaded();
 
     // Verify form elements are present
     await expect(page.locator(signUpPage.nameInput)).toBeVisible();
@@ -37,5 +36,21 @@ test.describe('User Authentication', () => {
     const firstLetter = name.charAt(0).toUpperCase();
     const avatarButton = mainLayout.getUserAvatarButton(firstLetter);
     await expect(avatarButton).toBeVisible();
+  });
+
+  test('Sign Up/Sign In form is not accessible when already authenticated', async ({ page }) => {
+    const signUpPage = new SignUpPage(page);
+    const utils = new TestUtils(page);
+    const { name, email, password } = utils.generateTestData();
+
+    // Sign up and authenticate
+    await signUpPage.goto();
+    await signUpPage.signUp(name, email, password);
+    await page.waitForURL('/');
+
+    // Try to access signup page again
+    await signUpPage.goto();
+    // Expect the url to be the home page
+    await expect(page).toHaveURL('/');
   });
 });

@@ -1,4 +1,4 @@
-import { Page, expect } from '@playwright/test';
+import { Page } from '@playwright/test';
 import { TestUtils } from '../utils/test-utils';
 
 /**
@@ -18,7 +18,7 @@ export class SignUpPage {
   }
 
   async goto() {
-    await this.page.goto('/auth/sign-up');
+    await this.page.goto('/auth/sign-up', { waitUntil: 'networkidle' });
   }
 
   async fillName(name: string) {
@@ -51,14 +51,5 @@ export class SignUpPage {
 
   async clickSignInLink() {
     await this.page.click(this.signInLink);
-  }
-
-  async verifyPageLoaded() {
-    await expect(this.page.locator('form')).toBeVisible();
-    await expect(this.page.locator(this.nameInput)).toBeVisible();
-    await expect(this.page.locator(this.emailInput)).toBeVisible();
-    await expect(this.page.locator(this.passwordInput)).toBeVisible();
-    await expect(this.page.locator(this.confirmPasswordInput)).toBeVisible();
-    await expect(this.page.locator(this.submitButton)).toBeVisible();
   }
 }

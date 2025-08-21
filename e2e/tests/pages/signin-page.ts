@@ -16,7 +16,7 @@ export class SignInPage {
   }
 
   async goto() {
-    await this.page.goto('/auth/sign-in');
+    await this.page.goto('/auth/sign-in', { waitUntil: 'networkidle' });
   }
 
   async fillEmail(email: string) {

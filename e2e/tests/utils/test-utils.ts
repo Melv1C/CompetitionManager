@@ -7,13 +7,6 @@ export class TestUtils {
   constructor(private page: Page) {}
 
   /**
-   * Wait for the page to be fully loaded
-   */
-  async waitForPageLoad() {
-    await this.page.waitForLoadState('networkidle');
-  }
-
-  /**
    * Take a screenshot with a descriptive name
    */
   async takeScreenshot(name: string) {
