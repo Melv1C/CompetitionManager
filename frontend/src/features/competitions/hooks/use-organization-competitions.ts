@@ -1,5 +1,6 @@
-import type { Competition, CompetitionCreate, CompetitionUpdate, Cuid } from '@repo/core/schemas';
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import type { CompetitionCreate, CompetitionUpdate, Cuid } from '@repo/core/schemas';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 import { CompetitionsService } from '../services/competitions-service';
 import { COMPETITIONS_QUERY_KEY } from './use-competitions';
@@ -7,17 +8,31 @@ import { COMPETITIONS_QUERY_KEY } from './use-competitions';
 export const ORGANIZATION_COMPETITIONS_QUERY_KEY = 'organizationCompetitions';
 
 export function useOrganizationCompetitions() {
-  return useSuspenseQuery<Competition[]>({
+  return useQuery({
     queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY],
     queryFn: CompetitionsService.getOrganizationCompetitions,
   });
 }
 
 export function useOrganizationCompetition(eid: Cuid) {
-  return useSuspenseQuery<Competition>({
+  return useQuery({
     queryKey: [ORGANIZATION_COMPETITIONS_QUERY_KEY, eid],
     queryFn: () => CompetitionsService.getOrganizationCompetition(eid),
   });
+}
+
+export function useRequiredOrganizationCompetition(eid: Cuid) {
+  const { t } = useTranslation();
+  const competition = useOrganizationCompetition(eid);
+  if (competition.isPending) {
+    throw new Error(t('loading.competition'));
+  }
+
+  if (competition.isError) {
+    throw new Error(t('error.competition'));
+  }
+
+  return competition.data;
 }
 
 export function useCreateCompetition() {

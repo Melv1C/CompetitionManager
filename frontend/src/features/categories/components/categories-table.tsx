@@ -22,10 +22,9 @@ import { CategoryFormDialog } from './category-form-dialog';
 
 interface CategoriesTableProps {
   categories: FullCategory[];
-  isLoading: boolean;
 }
 
-export function CategoriesTable({ categories, isLoading }: CategoriesTableProps) {
+export function CategoriesTable({ categories }: CategoriesTableProps) {
   const [editingCategory, setEditingCategory] = useState<FullCategory | null>(null);
   const deleteMutation = useDeleteCategory();
 
@@ -59,10 +58,6 @@ export function CategoriesTable({ categories, isLoading }: CategoriesTableProps)
     };
     return colors[baseCategory] || 'bg-gray-100 text-gray-800';
   };
-
-  if (isLoading) {
-    return <div className="text-center py-4">Loading categories...</div>;
-  }
 
   return (
     <>

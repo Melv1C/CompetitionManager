@@ -22,7 +22,7 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuth } from '@/features/auth';
 import { authClient } from '@/lib/auth-client';
 import {
   ArrowLeft,
@@ -36,17 +36,12 @@ import {
   Trophy,
   Users,
 } from 'lucide-react';
-import { type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 
-interface AdminLayoutProps {
-  children: ReactNode;
-}
-
-export function AdminLayout({ children }: AdminLayoutProps) {
-  const { user } = useAuth();
+export function AdminLayout() {
+  const { user, isPending } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('navigation');
@@ -102,6 +97,16 @@ export function AdminLayout({ children }: AdminLayoutProps) {
       toast.error('Sign out failed');
     }
   };
+
+  if (isPending) {
+    return <div className="flex items-center justify-center">Loading...</div>;
+  }
+
+  if (!user || user.role !== 'admin') {
+    navigate('/');
+    return null;
+  }
+
   return (
     <SidebarProvider>
       <Sidebar collapsible="icon">
@@ -201,7 +206,9 @@ export function AdminLayout({ children }: AdminLayoutProps) {
             {/* Button removed and placed in sidebar */}
           </div>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <Outlet />
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

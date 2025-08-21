@@ -1,5 +1,5 @@
 import { Skeleton } from '@/components/ui/skeleton';
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuth } from '@/features/auth';
 import { UserButton } from './user-button';
 
 export function AuthButton() {

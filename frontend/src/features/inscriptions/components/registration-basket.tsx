@@ -4,7 +4,7 @@ import { Separator } from '@/components/ui/separator';
 import { CreditCard, Plus, ShoppingCart, Trash2, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { useCompetition } from '@/features/competitions';
+import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import { formatTime } from '@/lib/formatters';
 import { useInscriptionFormStore } from '@/store/inscription-form-store';
@@ -16,7 +16,7 @@ export function RegistrationBasket() {
   const { t } = useTranslation(['inscriptions']);
   const eid = useCompetitionEid();
   const navigate = useNavigate();
-  const competition = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
   const createInscriptions = useCreateInscriptions(eid);
 
   const { registrations, removeRegistration, goToForm, hasRegistrations } =
@@ -37,7 +37,7 @@ export function RegistrationBasket() {
 
   const calculateRegistrationTotal = (registration: (typeof registrations)[0]) => {
     return registration.inscriptions.reduce((total, inscription) => {
-      const event = competition.data.events.find(e => e.id === inscription.competitionEventId);
+      const event = competition.events.find(e => e.id === inscription.competitionEventId);
       return total + (event?.price || 0);
     }, 0);
   };
@@ -112,7 +112,7 @@ export function RegistrationBasket() {
               {/* Events */}
               <div className="space-y-1">
                 {registration.inscriptions.map((inscription, idx) => {
-                  const event = competition.data.events.find(
+                  const event = competition.events.find(
                     e => e.id === inscription.competitionEventId,
                   );
                   return (

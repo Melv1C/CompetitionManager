@@ -1,19 +1,19 @@
 import type { EventCreate, EventUpdate } from '@repo/core/schemas';
-import { useMutation, useQueryClient, useSuspenseQuery } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
 import { EventsService } from '../services/events-service';
 
 export const EVENTS_QUERY_KEY = 'events';
 
 export function useEvents() {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: [EVENTS_QUERY_KEY],
     queryFn: EventsService.getEvents,
   });
 }
 
 export function useEvent(id: number) {
-  return useSuspenseQuery({
+  return useQuery({
     queryKey: [EVENTS_QUERY_KEY, id],
     queryFn: () => EventsService.getEvent(id),
   });

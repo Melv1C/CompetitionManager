@@ -3,4 +3,3 @@ export { AdminSkeleton } from './admin-skeleton';
 export { CompetitionLayout } from './competition-layout';
 export { MainLayout } from './main-layout';
 export { OrganizationLayout } from './organization-layout';
-export { OrganizationSkeleton } from './organization-skeleton';

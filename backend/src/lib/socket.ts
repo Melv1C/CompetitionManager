@@ -27,18 +27,14 @@ export function createSocketServer(httpServer: ServerType) {
 
   // Connection handler
   io.on('connection', socket => {
-    console.log(`User connected: ${socket.id}`);
-
     // Handle joining competition
     socket.on('joinCompetition', async (data: JoinCompetitionData) => {
       try {
-        const { competitionId, userId } = data;
+        const { competitionId } = data;
 
         // Join competition room
         const competitionRoom = getRoomName.competition(competitionId);
         await socket.join(competitionRoom);
-
-        console.log(`User ${userId} joined competition ${competitionId}`);
 
         // Notify the user that they successfully joined
         socket.emit('notification', {
@@ -57,13 +53,11 @@ export function createSocketServer(httpServer: ServerType) {
     // Handle leaving competition
     socket.on('leaveCompetition', async (data: LeaveCompetitionData) => {
       try {
-        const { competitionId, userId } = data;
+        const { competitionId } = data;
 
         // Leave competition room
         const competitionRoom = getRoomName.competition(competitionId);
         await socket.leave(competitionRoom);
-
-        console.log(`User ${userId} left competition ${competitionId}`);
       } catch (error) {
         console.error('Error leaving competition:', error);
         socket.emit('error', {
@@ -79,11 +73,6 @@ export function createSocketServer(httpServer: ServerType) {
         message: 'pong',
         type: 'info',
       });
-    });
-
-    // Handle disconnection
-    socket.on('disconnect', async reason => {
-      console.log(`User disconnected: ${socket.id}, reason: ${reason}`);
     });
   });
 

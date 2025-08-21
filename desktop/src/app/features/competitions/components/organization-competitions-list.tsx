@@ -1,5 +1,5 @@
 import { Switch } from '@/components/ui/switch';
-import { useOrganizations } from '@/features/organization/hooks/use-organizations';
+import { useOrganizations } from '@/features/organization';
 import type { Competition } from '@repo/core/schemas';
 import { TrophyIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
@@ -20,10 +20,6 @@ export function OrganizationCompetitionsList({ className }: OrganizationCompetit
   const competitions = useOrganizationCompetitions();
 
   const { upcomingCompetitions, pastCompetitions } = useMemo(() => {
-    if (!competitions) {
-      return { upcomingCompetitions: [], pastCompetitions: [] };
-    }
-
     const now = new Date();
     const upcoming: Competition[] = [];
     const past: Competition[] = [];

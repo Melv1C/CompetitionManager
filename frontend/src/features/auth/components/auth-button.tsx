@@ -1,4 +1,4 @@
-import { useAuth } from '@/features/auth/hooks/use-auth';
+import { useAuth } from '@/features/auth';
 import { AuthSkeleton } from './auth-skeleton';
 import { LoginButton } from './login-button';
 import { UserButton } from './user-button';

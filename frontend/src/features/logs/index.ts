@@ -1,3 +1,2 @@
-export { LogViewer } from './components/log-viewer';
-export { useLogCleanup, useLogs } from './hooks/use-logs';
-export { LogService } from './services/log-service';
+export * from './components/log-viewer';
+export * from './hooks/use-logs';

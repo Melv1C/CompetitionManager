@@ -4,19 +4,19 @@ import { Separator } from '@/components/ui/separator';
 import { CheckCircle2, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 
-import { useCompetition } from '@/features/competitions';
+import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
-import { useInscriptionFormStore } from '../../../../store/inscription-form-store';
+import { useInscriptionFormStore } from '@/store/inscription-form-store';
 
 export function SummaryStep() {
   const { t } = useTranslation(['inscriptions', 'common']);
   const eid = useCompetitionEid();
-  const competition = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
 
   const { currentAthlete, currentEventIds, registrations, removeRegistration } =
     useInscriptionFormStore();
 
-  const selectedEvents = competition.data.events.filter(e => currentEventIds.includes(e.id));
+  const selectedEvents = competition.events.filter(e => currentEventIds.includes(e.id));
 
   const calculateCurrentTotal = () => {
     return selectedEvents.reduce((total, event) => total + event.price, 0);
@@ -24,7 +24,7 @@ export function SummaryStep() {
 
   const calculateRegistrationTotal = (registration: (typeof registrations)[0]) => {
     return registration.inscriptions.reduce((total, inscription) => {
-      const event = competition.data.events.find(e => e.id === inscription.competitionEventId);
+      const event = competition.events.find(e => e.id === inscription.competitionEventId);
       return total + (event?.price || 0);
     }, 0);
   };
@@ -103,7 +103,7 @@ export function SummaryStep() {
 
                 <div className="space-y-1 text-sm">
                   {registration.inscriptions.map((inscription, idx) => {
-                    const event = competition.data.events.find(
+                    const event = competition.events.find(
                       e => e.id === inscription.competitionEventId,
                     );
                     return (

@@ -23,8 +23,8 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/sidebar';
-import { useAuth } from '@/features/auth/hooks/use-auth';
-import { OrganizationSelector } from '@/features/organization';
+import { useAuth } from '@/features/auth';
+import { OrganizationSelector, useOrganizations } from '@/features/organization';
 import { authClient } from '@/lib/auth-client';
 import { useOrganizationCompetitionStore } from '@/store/organization-competition';
 import {
@@ -40,21 +40,18 @@ import {
   UserCheck2,
   Users,
 } from 'lucide-react';
-import { useMemo, type ReactNode } from 'react';
+import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
 import { ScrollArea } from '../ui/scroll-area';
 
-interface OrganizationLayoutProps {
-  children: ReactNode;
-}
-
-export function OrganizationLayout({ children }: OrganizationLayoutProps) {
+export function OrganizationLayout() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
   const { t } = useTranslation('navigation');
+  const { activeOrganization } = useOrganizations();
   const { currentCompetition } = useOrganizationCompetitionStore();
   const navItems = [
     {
@@ -83,6 +80,7 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
       icon: Settings,
     },
   ];
+
   const competitionNavItems = useMemo(() => {
     return currentCompetition
       ? [
@@ -146,32 +144,15 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
             </SidebarMenuItem>
           </SidebarMenu>
         </SidebarHeader>
-        <ScrollArea className="flex-1 overflow-hidden">
-          <SidebarContent>
-            <SidebarGroup>
-              <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  {navItems.map(item => (
-                    <SidebarMenuItem key={item.title}>
-                      <SidebarMenuButton asChild isActive={location.pathname === item.url}>
-                        <Link to={item.url}>
-                          <item.icon />
-                          <span>{item.title}</span>
-                        </Link>
-                      </SidebarMenuButton>
-                    </SidebarMenuItem>
-                  ))}
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
 
-            {currentCompetition && (
-              <SidebarGroup className="mt-4">
-                <SidebarGroupLabel>{currentCompetition.name}</SidebarGroupLabel>
+        <ScrollArea className="flex-1 overflow-hidden">
+          {activeOrganization && (
+            <SidebarContent>
+              <SidebarGroup>
+                <SidebarGroupLabel>{t('organizationPanel')}</SidebarGroupLabel>
                 <SidebarGroupContent>
                   <SidebarMenu>
-                    {competitionNavItems.map(item => (
+                    {navItems.map(item => (
                       <SidebarMenuItem key={item.title}>
                         <SidebarMenuButton asChild isActive={location.pathname === item.url}>
                           <Link to={item.url}>
@@ -184,24 +165,45 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
                   </SidebarMenu>
                 </SidebarGroupContent>
               </SidebarGroup>
-            )}
 
-            <SidebarGroup className="mt-4">
-              <SidebarGroupContent>
-                <SidebarMenu>
-                  <SidebarMenuItem>
-                    <SidebarMenuButton asChild>
-                      <Link to="/" className="flex items-center gap-2">
-                        <ArrowLeft className="size-4" />
-                        <span>{t('backToSite')}</span>
-                      </Link>
-                    </SidebarMenuButton>
-                  </SidebarMenuItem>
-                </SidebarMenu>
-              </SidebarGroupContent>
-            </SidebarGroup>
-          </SidebarContent>
+              {currentCompetition && (
+                <SidebarGroup className="mt-4">
+                  <SidebarGroupLabel>{currentCompetition.name}</SidebarGroupLabel>
+                  <SidebarGroupContent>
+                    <SidebarMenu>
+                      {competitionNavItems.map(item => (
+                        <SidebarMenuItem key={item.title}>
+                          <SidebarMenuButton asChild isActive={location.pathname === item.url}>
+                            <Link to={item.url}>
+                              <item.icon />
+                              <span>{item.title}</span>
+                            </Link>
+                          </SidebarMenuButton>
+                        </SidebarMenuItem>
+                      ))}
+                    </SidebarMenu>
+                  </SidebarGroupContent>
+                </SidebarGroup>
+              )}
+
+              <SidebarGroup className="mt-4">
+                <SidebarGroupContent>
+                  <SidebarMenu>
+                    <SidebarMenuItem>
+                      <SidebarMenuButton asChild>
+                        <Link to="/" className="flex items-center gap-2">
+                          <ArrowLeft className="size-4" />
+                          <span>{t('backToSite')}</span>
+                        </Link>
+                      </SidebarMenuButton>
+                    </SidebarMenuItem>
+                  </SidebarMenu>
+                </SidebarGroupContent>
+              </SidebarGroup>
+            </SidebarContent>
+          )}
         </ScrollArea>
+
         <SidebarFooter>
           <SidebarMenu>
             <SidebarMenuItem>
@@ -266,7 +268,9 @@ export function OrganizationLayout({ children }: OrganizationLayoutProps) {
               : 'Organization'}
           </h1>
         </header>
-        <div className="flex flex-1 flex-col gap-4 p-4">{children}</div>
+        <div className="flex flex-1 flex-col gap-4 p-4">
+          <Outlet />
+        </div>
       </SidebarInset>
     </SidebarProvider>
   );

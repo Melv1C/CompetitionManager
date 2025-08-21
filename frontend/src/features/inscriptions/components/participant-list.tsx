@@ -9,13 +9,13 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table';
-import { useCompetition } from '@/features/competitions';
+import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks';
 import type { InscriptionPublic } from '@repo/core/schemas';
 import { formatPerformance, getSeasonBib } from '@repo/core/utils';
 import { UsersIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
-import { useCompetitionInscriptions } from '../hooks';
+import { useCompetitionInscriptions } from '../hooks/use-inscriptions';
 
 function getStatusBadgeVariant(status: InscriptionPublic['status']) {
   switch (status) {
@@ -113,8 +113,16 @@ export function ParticipantListSkeleton() {
 export function ParticipantList() {
   const { t } = useTranslation(['inscriptions', 'common', 'enums']);
   const eid = useCompetitionEid();
-  const competition = useCompetition(eid);
+  const competition = useRequiredCompetition(eid);
   const inscriptions = useCompetitionInscriptions(eid);
+
+  if (inscriptions.isPending) {
+    return <ParticipantListSkeleton />;
+  }
+
+  if (inscriptions.isError) {
+    return <div className="text-center py-4">Failed to load inscriptions</div>;
+  }
 
   if (inscriptions.data.length === 0) {
     return (
@@ -158,7 +166,7 @@ export function ParticipantList() {
           </TableHeader>
           <TableBody>
             {inscriptions.data.map(inscription => {
-              const bib = getSeasonBib(inscription.athlete, competition.data.startDate);
+              const bib = getSeasonBib(inscription.athlete, competition.startDate);
               return (
                 <TableRow key={`${inscription.athlete.id}-${inscription.competitionEvent.id}`}>
                   <TableCell className="font-medium">{bib ?? '-'}</TableCell>

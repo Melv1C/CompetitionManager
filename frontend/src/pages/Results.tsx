@@ -6,6 +6,14 @@ export function ResultsPage() {
     past: true,
   });
 
+  if (competitions.isPending) {
+    return <div className="text-center py-4">Loading competitions...</div>;
+  }
+
+  if (competitions.isError) {
+    return <div className="text-center py-4">Failed to load competitions</div>;
+  }
+
   return (
     <div className="space-y-6">
       <div>
