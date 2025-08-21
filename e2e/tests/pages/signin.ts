@@ -1,30 +1,29 @@
 import { Page, expect } from '@playwright/test';
-import { TestUtils } from '../utils/test-utils';
+import { MainLayoutPage } from './main-layout';
 
 /**
  * Page Object Model for the Sign In page
  */
-export class SignInPage {
-  private utils: TestUtils;
+export class SignInPage extends MainLayoutPage {
   public readonly emailInput = 'input[type="email"]';
   public readonly passwordInput = 'input[type="password"]';
   public readonly submitButton = 'button[type="submit"]';
   public readonly signUpLink = 'a[href*="sign-up"]';
 
-  constructor(private page: Page) {
-    this.utils = new TestUtils(page);
+  constructor(page: Page) {
+    super(page);
   }
 
   async goto() {
-    await this.page.goto('/auth/sign-in', { waitUntil: 'networkidle' });
+    await super.goto('/auth/sign-in');
   }
 
   async fillEmail(email: string) {
-    await this.utils.fillField(this.emailInput, email);
+    await this.fillField(this.emailInput, email);
   }
 
   async fillPassword(password: string) {
-    await this.utils.fillField(this.passwordInput, password);
+    await this.fillField(this.passwordInput, password);
   }
 
   async clickSubmit() {

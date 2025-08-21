@@ -3,8 +3,15 @@ import { Page, expect } from '@playwright/test';
 /**
  * Test utilities for common actions across tests
  */
-export class TestUtils {
-  constructor(private page: Page) {}
+export class BasePage {
+  constructor(protected page: Page) {}
+
+  /**
+   * Navigate to a specific URL
+   */
+  async goto(url: string) {
+    await this.page.goto(url, { waitUntil: 'networkidle' });
+  }
 
   /**
    * Take a screenshot with a descriptive name
@@ -95,14 +102,5 @@ export class TestUtils {
    */
   async scrollToElement(selector: string) {
     await this.page.locator(selector).scrollIntoViewIfNeeded();
-  }
-
-  /**
-   * Wait for API response
-   */
-  async waitForApiResponse(urlPattern: string) {
-    return this.page.waitForResponse(
-      response => response.url().includes(urlPattern) && response.status() === 200,
-    );
   }
 }

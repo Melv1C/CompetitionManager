@@ -1,11 +1,10 @@
 import { Page } from '@playwright/test';
-import { TestUtils } from '../utils/test-utils';
+import { MainLayoutPage } from './main-layout';
 
 /**
  * Page Object Model for the Sign Up page
  */
-export class SignUpPage {
-  private utils: TestUtils;
+export class SignUpPage extends MainLayoutPage {
   public readonly nameInput = 'input[name="name"]';
   public readonly emailInput = 'input[type="email"]';
   public readonly passwordInput = 'input[name="password"]';
@@ -13,28 +12,28 @@ export class SignUpPage {
   public readonly submitButton = 'button[type="submit"]';
   public readonly signInLink = 'a[href*="sign-in"]';
 
-  constructor(private page: Page) {
-    this.utils = new TestUtils(page);
+  constructor(page: Page) {
+    super(page);
   }
 
   async goto() {
-    await this.page.goto('/auth/sign-up', { waitUntil: 'networkidle' });
+    await super.goto('/auth/sign-up');
   }
 
   async fillName(name: string) {
-    await this.utils.fillField(this.nameInput, name);
+    await this.fillField(this.nameInput, name);
   }
 
   async fillEmail(email: string) {
-    await this.utils.fillField(this.emailInput, email);
+    await this.fillField(this.emailInput, email);
   }
 
   async fillPassword(password: string) {
-    await this.utils.fillField(this.passwordInput, password);
+    await this.fillField(this.passwordInput, password);
   }
 
   async fillConfirmPassword(confirmPassword: string) {
-    await this.utils.fillField(this.confirmPasswordInput, confirmPassword);
+    await this.fillField(this.confirmPasswordInput, confirmPassword);
   }
 
   async clickSubmit() {

@@ -1,8 +1,6 @@
 import { expect, test } from '@playwright/test';
-import { MainLayoutPage } from './pages/main-layout';
-import { SignInPage } from './pages/signin-page';
-import { SignUpPage } from './pages/signup-page';
-import { TestUtils } from './utils/test-utils';
+import { SignInPage } from './pages/signin';
+import { SignUpPage } from './pages/signup';
 
 test.describe('User Authentication', () => {
   test('Sign Up - should display sign up form', async ({ page }) => {
@@ -31,9 +29,7 @@ test.describe('User Authentication', () => {
 
   test('Sign Up - should sign up with valid credentials', async ({ page }) => {
     const signUpPage = new SignUpPage(page);
-    const mainLayout = new MainLayoutPage(page);
-    const utils = new TestUtils(page);
-    const { name, email, password } = utils.generateTestData();
+    const { name, email, password } = signUpPage.generateTestData();
 
     await signUpPage.goto();
     await signUpPage.signUp(name, email, password);
@@ -41,18 +37,11 @@ test.describe('User Authentication', () => {
     // Verify successful sign up
     await page.waitForURL('/'); // Assuming redirect to home page on success
 
-    // Wait for layout to load
-    await mainLayout.waitForLoad();
-
-    // Try to find user avatar with first letter of name
-    const firstLetter = name.charAt(0).toUpperCase();
-    const avatarButton = mainLayout.getUserAvatarButton(firstLetter);
-    await expect(avatarButton).toBeVisible();
+    await expect(signUpPage.getAvatarButton(name.charAt(0).toUpperCase())).toBeVisible();
   });
 
   test('Sign In - should sign in with valid credentials', async ({ page }) => {
     const signInPage = new SignInPage(page);
-    const mainLayout = new MainLayoutPage(page);
 
     await signInPage.goto();
     await signInPage.signIn('user@example.com', 'user-password');
@@ -60,12 +49,7 @@ test.describe('User Authentication', () => {
     // Verify successful sign in
     await page.waitForURL('/'); // Assuming redirect to home page on success
 
-    // Wait for layout to load
-    await mainLayout.waitForLoad();
-
-    // Try to find user avatar with first letter of name
-    const avatarButton = mainLayout.getUserAvatarButton('U');
-    await expect(avatarButton).toBeVisible();
+    await expect(signInPage.getAvatarButton('U')).toBeVisible();
   });
 
   test('Sign Up/Sign In form is not accessible when already authenticated', async ({ page }) => {

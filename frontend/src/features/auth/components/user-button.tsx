@@ -45,7 +45,7 @@ export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button variant="ghost" className="relative h-8 w-8 rounded-full">
+        <Button variant="ghost" className="relative h-8 w-8 rounded-full" data-testid="user-avatar">
           <Avatar className="h-8 w-8">
             <AvatarImage src={user.image || ''} alt={user.name || ''} />
             <AvatarFallback>{user.name?.charAt(0) || user.email?.charAt(0) || 'U'}</AvatarFallback>
