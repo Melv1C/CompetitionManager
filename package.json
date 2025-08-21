@@ -36,11 +36,11 @@
     "i18n:fix": "node scripts/i18n/validate-all.mjs --fix"
   },
   "devDependencies": {
-    "@eslint/js": "^9.25.0",
-    "eslint": "^9.25.0",
+    "@eslint/js": "^9.33.0",
+    "eslint": "^9.33.0",
     "npm-run-all": "^4.1.5",
-    "prettier": "^3.4.2",
-    "typescript-eslint": "^8.30.1"
+    "prettier": "^3.6.2",
+    "typescript-eslint": "^8.40.0"
   },
   "dependencies": {
     "glob": "^11.0.3"

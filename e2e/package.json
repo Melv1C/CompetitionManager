@@ -17,9 +17,9 @@
     "services:stop": "cleanup-services.bat"
   },
   "devDependencies": {
-    "@playwright/test": "^1.53.1",
-    "@types/node": "^20.19.1",
-    "dotenv": "^16.5.0"
+    "@playwright/test": "^1.55.0",
+    "@types/node": "^24.3.0",
+    "dotenv": "^17.2.1"
   },
   "keywords": [
     "playwright",
