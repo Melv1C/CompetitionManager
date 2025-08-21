@@ -7,12 +7,8 @@ jobs:
   build-desktop:
     strategy:
       matrix:
-        os: [macos-latest, windows-latest]
+        os: [windows-latest]
         include:
-          - os: macos-latest
-            platform: mac
-            arch: arm64
-            artifact-name: desktop-staging-mac
           - os: windows-latest
             platform: win
             arch: x64
@@ -47,22 +43,9 @@ jobs:
           cd desktop
           npm version prerelease --preid=staging-$(date +%Y%m%d%H%M%S) --no-git-tag-version
 
-      - name: Build Electron app (macOS)
-        if: matrix.platform == 'mac'
-        run: cd desktop && npm run build:mac
-
       - name: Build Electron app (Windows)
         if: matrix.platform == 'win'
         run: cd desktop && npm run build:win
-
-      - name: Upload build artifacts (macOS)
-        if: matrix.platform == 'mac'
-        uses: actions/upload-artifact@v4
-        with:
-          name: ${{ matrix.artifact-name }}
-          path: |
-            desktop/dist/*.dmg
-          retention-days: 30
 
       - name: Upload build artifacts (Windows)
         if: matrix.platform == 'win'
