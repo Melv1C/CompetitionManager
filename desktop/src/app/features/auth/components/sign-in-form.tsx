@@ -22,7 +22,7 @@ export function SignInForm() {
   const { t } = useTranslation(['auth', 'validation', 'messages']);
   // Create schema with translated messages
   const signInSchema = z.object({
-    email: z.string().email({
+    email: z.email({
       message: t('emailInvalid', { ns: 'validation' }),
     }),
     password: z.string().min(8, {

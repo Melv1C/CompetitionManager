@@ -38,7 +38,7 @@ const createFormSchema = (t: (key: string) => string) =>
       .string()
       .regex(/^[a-z0-9-]*$/, t('slugInvalidFormat'))
       .optional(),
-    logo: z.string().url(t('logoInvalidUrl')).optional().or(z.literal('')),
+    logo: z.url(t('logoInvalidUrl')).optional().or(z.literal('')),
   });
 
 type FormData = z.infer<ReturnType<typeof createFormSchema>>;

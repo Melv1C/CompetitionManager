@@ -35,7 +35,7 @@ export function SignUpForm() {
       name: z.string().min(2, {
         message: t('nameMinLength', { ns: 'validation' }),
       }),
-      email: z.string().email({
+      email: z.email({
         message: t('emailInvalid', { ns: 'validation' }),
       }),
       password: z.string().min(8, {
