@@ -3,9 +3,9 @@ import { useAuth } from '@/features/auth';
 import { UserButton } from './user-button';
 
 export function AuthButton() {
-  const { user, isLoading } = useAuth();
+  const { user, isPending } = useAuth();
 
-  if (isLoading) {
+  if (isPending) {
     return <Skeleton className="h-8 w-8 rounded-full" />;
   }
 

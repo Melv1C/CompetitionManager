@@ -47,7 +47,7 @@ services:
   nginx:
     image: nginx:alpine
     volumes:
-      - frontend-dist:/usr/share/nginx/html:ro
+      - frontend-dist:/var/www/competitionmanager
       - ./nginx.conf:/etc/nginx/conf.d/default.conf:ro
     ports:
       - '8080:80'
