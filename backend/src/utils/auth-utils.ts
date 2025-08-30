@@ -1,4 +1,5 @@
 import { auth } from '@/lib/auth';
+import { User$ } from '@repo/core/schemas';
 import type { Context } from 'hono';
 
 export async function getSession(c: Context) {
@@ -30,7 +31,7 @@ export async function getUser(c: Context) {
     return null;
   }
 
-  return sessionData.user;
+  return User$.parse(sessionData.user);
 }
 
 export async function getRequiredUser(c: Context) {

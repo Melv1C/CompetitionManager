@@ -30,6 +30,8 @@ model User {
   banReason  String?
   banExpires DateTime?
 
+  stripeCustomerId String?
+
   members        Member[]
   invitations    Invitation[]
   inscriptions   Inscription[]
