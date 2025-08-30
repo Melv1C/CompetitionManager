@@ -52,8 +52,3 @@ tests/        – end-to-end tests
 - **Shared schemas** in `core/schemas/`.
 - **Shared types** in `core/types/`.
 - **Shared utils** in `core/utils/`.
-
-## 4. Testing & CI
-
-- e2e resides in `tests/`.
-- GitHub Actions pipeline: `code-quality.yml` and `e2e-tests.yml`.

@@ -37,7 +37,7 @@ nvm use
    npm run install:core
    npm run install:backend
    npm run install:frontend
-   npm run install:e2e
+   npm run install:desktop
    ```
 
 2. **Environment Variables**
@@ -89,46 +89,12 @@ All commands can be run from the project root:
 - `npm run install:core` - Install core package dependencies
 - `npm run install:backend` - Install backend dependencies
 - `npm run install:frontend` - Install frontend dependencies
-- `npm run install:e2e` - Install e2e test dependencies
+- `npm run install:desktop` - Install desktop app dependencies
 
 ### Database
 
 - `npm run db:migrate` - Run Prisma database migrations
 - `npm run docker:db` - Start PostgreSQL database with Docker
-
-### Testing
-
-- `npm run test` - Run end-to-end tests
-
-## Testing
-
-### End-to-End Tests
-
-The project uses Playwright for comprehensive end-to-end testing.
-
-```bash
-# Run all E2E tests
-npm run test
-```
-
-or run specific tests:
-
-```bash
-cd e2e
-
-# Run tests in headed mode (with browser UI)
-npm run test:headed
-
-# Run tests in debug mode
-npm run test:debug
-
-# Generate test report
-npm run test:report
-```
-
-### Running Tests in CI/CD
-
-Tests are automatically run in GitHub Actions via the `e2e-tests.yml` workflow. The tests run against a containerized environment to ensure consistency.
 
 ## 🏗️ Architecture
 
@@ -139,7 +105,6 @@ Tests are automatically run in GitHub Actions via the `e2e-tests.yml` workflow. 
 - **Shared**: Zod validation, TypeScript, i18next (EN/FR/NL)
 - **Real-time**: Socket.IO
 - **Auth**: Better Auth
-- **Testing**: Playwright E2E
 
 ### Project Structure
 
@@ -147,6 +112,6 @@ Tests are automatically run in GitHub Actions via the `e2e-tests.yml` workflow. 
 ├── backend/            # API server and business logic
 ├── frontend/           # React SPA application
 ├── core/               # Shared types, schemas, and utilities
-├── e2e/                # End-to-end tests with Playwright
+├── desktop/            # Desktop application
 └── docker-compose.yml  # Container orchestration
 ```
