@@ -17,10 +17,15 @@ export function useCreateInscriptions(competitionEid: Cuid) {
   return useMutation({
     mutationFn: ({ inscriptions }: { inscriptions: UpsertInscriptions }) =>
       InscriptionsService.createInscriptions(competitionEid, inscriptions),
-    onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: [INSCRIPTIONS_QUERY_KEY, competitionEid],
-      });
+    onSuccess: result => {
+      if (result.type === 'payment') {
+        window.location.href = result.url;
+      }
+      if (result.type === 'inscription') {
+        queryClient.invalidateQueries({
+          queryKey: [INSCRIPTIONS_QUERY_KEY, competitionEid],
+        });
+      }
     },
   });
 }

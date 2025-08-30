@@ -1,5 +1,7 @@
+import { env } from '@/lib/env';
 import { prisma } from '@/lib/prisma';
-import { getRequiredSession } from '@/utils/auth-utils';
+import { getRequiredSession, getRequiredUser } from '@/utils/auth-utils';
+import { createCheckoutSession, createCustomer } from '@/utils/checkout-session-utils';
 import {
   calculateAlreadyPaidAmount,
   calculateTotalEventCost,
@@ -9,13 +11,13 @@ import {
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
+  Competition$,
   Cuid$,
   InscriptionPublic$,
-  inscriptionInclude,
+  InscriptionStatus$,
   UpsertInscriptions$,
   competitionInclude,
-  Competition$,
-  InscriptionStatus$,
+  inscriptionInclude,
 } from '@repo/core/schemas';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -68,6 +70,7 @@ competitionInscriptionsRoutes.post(
   async c => {
     try {
       const session = await getRequiredSession(c);
+      const user = await getRequiredUser(c);
       const { eid } = c.req.valid('param');
       const inscriptions = c.req.valid('json');
 
@@ -94,12 +97,48 @@ competitionInscriptionsRoutes.post(
       const totalEventCost = calculateTotalEventCost(competition, inscriptions);
 
       if (totalEventCost > alreadyPaid) {
-        return c.json({ error: 'Additional payment required for these inscriptions' }, 400);
+        // return c.json({ error: 'Additional payment required for these inscriptions' }, 400);
+
+        // check if the user has already a customer ID
+        if (!user.stripeCustomerId) {
+          const customer = await createCustomer(user);
+          await prisma.user.update({
+            where: { id: user.id },
+            data: { stripeCustomerId: customer.id },
+          });
+          user.stripeCustomerId = customer.id;
+        }
+
+        const session = await createCheckoutSession(
+          user.stripeCustomerId,
+          [
+            {
+              price_data: {
+                currency: 'eur',
+                product_data: {
+                  name: 'Competition Inscription',
+                },
+                unit_amount: totalEventCost * 100, // Convert to cents
+              },
+              quantity: 1,
+            },
+          ],
+          `${env.BETTER_AUTH_URL}`,
+          `${env.BETTER_AUTH_URL}`,
+          'fr', // TODO: Implement locale handling
+        );
+
+        if (!session.url) {
+          return c.json({ error: 'Failed to create checkout session' }, 500);
+        }
+
+        // Redirect the user to the Stripe checkout page
+        return c.json({ url: session.url }, 303);
       }
 
       await upsertInscriptionsInDB(competition, inscriptions, session.userId, alreadyPaid);
 
-      return c.json({ success: true }, 200);
+      return c.status(200);
     } catch (error) {
       logError('Failed to create inscriptions', error, c);
       return c.json(

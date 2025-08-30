@@ -29,6 +29,8 @@ services:
       BETTER_AUTH_URL: http://localhost:8080
       DB_SEED_USERS_ENABLED: 'true'
       ATHLETE_SYNC_USE_MOCK: 'true'
+      STRIPE_SECRET_KEY: sk_test_xxx
+      STRIPE_WEBHOOK_SECRET: whsec_xxx
     depends_on:
       db:
         condition: service_healthy

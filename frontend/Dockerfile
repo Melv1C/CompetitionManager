@@ -20,7 +20,7 @@ COPY frontend/ /app/frontend/
 
 # Install frontend dependencies
 WORKDIR /app/frontend
-RUN npm ci
+RUN npm i
 
 # Build the frontend application
 CMD [ "npm", "run", "build" ]

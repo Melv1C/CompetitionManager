@@ -7,7 +7,7 @@ import { Hono } from 'hono';
 const userInscriptionsRoutes = new Hono();
 
 // GET /users/me/inscriptions - Get all inscriptions for the current user
-userInscriptionsRoutes.get('/me/inscriptions', async c => {
+userInscriptionsRoutes.get('/', async c => {
   try {
     const session = await getRequiredSession(c);
 
