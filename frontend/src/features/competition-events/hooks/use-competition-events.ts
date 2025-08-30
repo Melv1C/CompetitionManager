@@ -1,11 +1,11 @@
-import type { CompetitionEventCreate, CompetitionEventUpdate, Cuid } from '@repo/core/schemas';
-import { useMutation, useQueryClient } from '@tanstack/react-query';
-import { toast } from 'sonner';
-import { CompetitionEventsService } from '../services/competition-events-service';
 import {
   COMPETITIONS_QUERY_KEY,
   ORGANIZATION_COMPETITIONS_QUERY_KEY,
 } from '@/features/competitions';
+import { CompetitionEventsService } from '@/services';
+import type { CompetitionEventCreate, CompetitionEventUpdate, Cuid } from '@repo/core/schemas';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { toast } from 'sonner';
 
 export function useCreateCompetitionEvent(competitionEid: Cuid) {
   const queryClient = useQueryClient();

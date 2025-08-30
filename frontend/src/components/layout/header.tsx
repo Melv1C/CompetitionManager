@@ -5,7 +5,7 @@ import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { LanguageSelector } from './language-selector';
+import { LanguageSelector } from '../language-selector';
 import { MobileMenu } from './mobile-menu';
 import { Navigation } from './navigation';
 

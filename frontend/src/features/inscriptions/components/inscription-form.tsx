@@ -11,13 +11,13 @@ import {
 } from '@/components/ui/stepper';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks';
-import { useInscriptionFormStore } from '@/store/inscription-form-store';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Id$, Record$ } from '@repo/core/schemas';
 import { ChevronLeft, ChevronRight, Eye, ShoppingCart } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';
 import z from 'zod';
+import { useInscriptionFormStore } from '../store/inscription-form-store';
 import { AthleteSelectionStep, EventSelectionStep, RecordsEntryStep } from './steps';
 
 const steps = [

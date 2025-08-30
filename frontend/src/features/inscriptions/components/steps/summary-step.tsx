@@ -6,7 +6,7 @@ import { useTranslation } from 'react-i18next';
 
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
-import { useInscriptionFormStore } from '@/store/inscription-form-store';
+import { useInscriptionFormStore } from '../../store/inscription-form-store';
 
 export function SummaryStep() {
   const { t } = useTranslation(['inscriptions', 'common']);

@@ -3,10 +3,7 @@ import { PaginatedLogsResponse$, type LogQuery } from '@repo/core/schemas';
 import { type AxiosRequestConfig } from 'axios';
 
 export class LogService {
-  private static async request<T>(
-    endpoint: string,
-    config?: AxiosRequestConfig
-  ): Promise<T> {
+  private static async request<T>(endpoint: string, config?: AxiosRequestConfig): Promise<T> {
     const response = await apiClient.request<T>({
       url: endpoint,
       ...config,
@@ -36,9 +33,7 @@ export class LogService {
   }
 
   static async cleanupLogs() {
-    console.warn(
-      'LogService.cleanupLogs is deprecated. Use useLogCleanup hook instead.'
-    );
+    console.warn('LogService.cleanupLogs is deprecated. Use useLogCleanup hook instead.');
 
     return await this.request('/api/logs/cleanup', {
       method: 'POST',

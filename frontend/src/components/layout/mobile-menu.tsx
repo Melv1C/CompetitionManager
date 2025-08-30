@@ -1,4 +1,4 @@
-import { LanguageSelector } from './language-selector';
+import { LanguageSelector } from '../language-selector';
 import { Navigation } from './navigation';
 
 interface NavItem {

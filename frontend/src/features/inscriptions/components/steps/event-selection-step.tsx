@@ -4,10 +4,10 @@ import { useTranslation } from 'react-i18next';
 import { Badge } from '@/components/ui/badge';
 import { Checkbox } from '@/components/ui/checkbox';
 
+import { useRequiredCompetition } from '@/features/competitions/hooks/use-competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import { getAthleteCategory } from '@repo/core/utils';
-import { useInscriptionFormStore } from '../../../../store/inscription-form-store';
-import { useRequiredCompetition } from '@/features/competitions/hooks/use-competitions';
+import { useInscriptionFormStore } from '../../store/inscription-form-store';
 
 export function EventSelectionStep() {
   const { t } = useTranslation(['inscriptions']);

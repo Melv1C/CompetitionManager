@@ -18,18 +18,17 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { UnsavedChangesDialog } from '@/components/unsaved-changes-dialog';
-import { useClubs } from '@/features/clubs';
+import { ClubSelector, useClubs } from '@/features/clubs';
 import { useUpdateCompetition } from '@/features/competitions';
+import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
 import { authClient } from '@/lib/auth-client';
-import { useOrganizationCompetitionStore } from '@/store/organization-competition';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CompetitionUpdate$, type CompetitionUpdate } from '@repo/core/schemas';
 import { Save } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
-import { ClubSelector } from './club-selector';
 import { SwitchField } from './switch-field';
 
 export function CompetitionUpdateForm() {

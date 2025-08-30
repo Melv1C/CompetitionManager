@@ -1,8 +1,8 @@
+import { CompetitionsService } from '@/services';
 import type { CompetitionCreate, CompetitionUpdate, Cuid } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
-import { CompetitionsService } from '../services/competitions-service';
 import { COMPETITIONS_QUERY_KEY } from './use-competitions';
 
 export const ORGANIZATION_COMPETITIONS_QUERY_KEY = 'organizationCompetitions';

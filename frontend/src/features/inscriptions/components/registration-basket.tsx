@@ -7,10 +7,10 @@ import { useTranslation } from 'react-i18next';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import { formatTime } from '@/lib/formatters';
-import { useInscriptionFormStore } from '@/store/inscription-form-store';
 import { formatPerformance } from '@repo/core/utils';
 import { useNavigate } from 'react-router-dom';
 import { useCreateInscriptions } from '../hooks/use-inscriptions';
+import { useInscriptionFormStore } from '../store/inscription-form-store';
 
 export function RegistrationBasket() {
   const { t } = useTranslation(['inscriptions']);

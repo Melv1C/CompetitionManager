@@ -1,10 +1,10 @@
 import { useOrganizationCompetition } from '@/features/competitions';
+import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
 import { useCompetitionEid } from '@/hooks';
-import { useOrganizationCompetitionStore } from '@/store/organization-competition';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
 
-export function CompetitionOutlet() {
+export function OrganizationCompetitionOutlet() {
   const competitionEid = useCompetitionEid();
   const { currentCompetition, setCompetition } = useOrganizationCompetitionStore();
 

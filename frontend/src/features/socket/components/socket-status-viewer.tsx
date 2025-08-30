@@ -2,7 +2,6 @@ import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
-import { useSocket, useSocketEvents } from '@/store/socket';
 import {
   Activity,
   CheckCircle,
@@ -15,6 +14,7 @@ import {
   XCircle,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useSocket, useSocketEvents } from '../store/socket-store';
 
 interface SocketStatusViewerProps {
   className?: string;

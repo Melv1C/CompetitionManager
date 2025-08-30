@@ -1,7 +1,7 @@
+import { LogService } from '@/services';
 import { type LogQuery } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { LogService } from '../services/log-service';
 
 export const LOG_QUERY_KEY = 'logs';
 

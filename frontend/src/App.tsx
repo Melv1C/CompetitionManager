@@ -5,13 +5,13 @@ import {
   OrganizationLayout,
 } from '@/components/layout';
 import { Toaster } from '@/components/ui/sonner';
+import { SocketStatusViewer } from '@/features/socket';
 import { ThemeProvider } from '@/features/theme';
+import { env } from '@/lib/env';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
-import { SocketStatusViewer } from './components/dev/socket-status-viewer';
-import { env } from './lib/env';
-import { CompetitionOutlet } from './pages/organization/competition/outlet';
+import { OrganizationCompetitionOutlet } from './features/organization-competitions';
 
 // Static import mapping for Vite's build-time analysis
 const pageImports = {
@@ -244,7 +244,7 @@ const router = createBrowserRouter([
       },
       {
         path: 'competitions/:competitionEid',
-        element: <CompetitionOutlet />,
+        element: <OrganizationCompetitionOutlet />,
         children: [
           { index: true, element: <OrganizationCompetitionOverview /> },
           {
