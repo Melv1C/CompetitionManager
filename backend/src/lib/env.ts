@@ -39,7 +39,7 @@ const envSchema = z.object({
   LBFA_PASSWORD: z.string().optional(),
 
   STRIPE_API_KEY: z.string().startsWith('sk_'),
-  STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_')
+  STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
 });
 
 export const env = envSchema.parse(process.env);

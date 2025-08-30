@@ -21,7 +21,7 @@ export const createCheckoutSession = async (
   items: Stripe.Checkout.SessionCreateParams.LineItem[],
   successUrl: string,
   cancelUrl: string,
-  locale: Stripe.Checkout.SessionCreateParams.Locale
+  locale: Stripe.Checkout.SessionCreateParams.Locale,
 ) => {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
