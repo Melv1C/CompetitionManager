@@ -111,7 +111,11 @@ export function CompetitionLayout() {
 
       {/* Page Content */}
       <div className="min-h-[400px]">
-        <Outlet />
+        {competition.isPending ? (
+          <Skeleton className="h-96 w-full" />
+        ) : (
+          <Outlet context={{ competition }} />
+        )}
       </div>
     </div>
   );
