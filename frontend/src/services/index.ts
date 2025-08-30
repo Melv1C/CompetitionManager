@@ -1,0 +1,8 @@
+export { AthletesService } from './athletes-service';
+export { CategoriesService } from './categories-service';
+export { ClubsService } from './clubs-service';
+export { CompetitionEventsService } from './competition-events-service';
+export { CompetitionsService } from './competitions-service';
+export { EventsService } from './events-service';
+export { InscriptionsService } from './inscriptions-service';
+export { LogService } from './log-service';

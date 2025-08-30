@@ -1,7 +1,7 @@
+import { ClubsService } from '@/services';
 import type { ClubCreate, ClubUpdate } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { ClubsService } from '../services/clubs-service';
 
 export const CLUBS_QUERY_KEY = 'clubs';
 

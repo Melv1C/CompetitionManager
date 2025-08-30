@@ -1,7 +1,7 @@
+import { EventsService } from '@/services';
 import type { EventCreate, EventUpdate } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { toast } from 'sonner';
-import { EventsService } from '../services/events-service';
 
 export const EVENTS_QUERY_KEY = 'events';
 

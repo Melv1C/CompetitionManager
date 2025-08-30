@@ -25,8 +25,8 @@ import {
 } from '@/components/ui/sidebar';
 import { useAuth } from '@/features/auth';
 import { OrganizationSelector, useOrganizations } from '@/features/organization';
+import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
 import { authClient } from '@/lib/auth-client';
-import { useOrganizationCompetitionStore } from '@/store/organization-competition';
 import {
   ArrowLeft,
   CalendarClock,

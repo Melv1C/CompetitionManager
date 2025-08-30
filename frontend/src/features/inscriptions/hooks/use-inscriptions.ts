@@ -1,6 +1,6 @@
+import { InscriptionsService } from '@/services';
 import type { Cuid, UpsertInscriptions } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { InscriptionsService } from '../services/inscriptions-service';
 
 export const INSCRIPTIONS_QUERY_KEY = 'inscriptions';
 

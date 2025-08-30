@@ -1,7 +1,7 @@
+import { CompetitionsService } from '@/services';
 import { type CompetitionQuery, type Cuid } from '@repo/core/schemas';
 import { useQuery } from '@tanstack/react-query';
 import { useTranslation } from 'react-i18next';
-import { CompetitionsService } from '../services/competitions-service';
 
 export const COMPETITIONS_QUERY_KEY = 'competitions';
 
