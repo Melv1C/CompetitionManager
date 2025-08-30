@@ -12,14 +12,14 @@ COPY core/ /app/core/
 
 # Install dependencies and build core package
 WORKDIR /app/core
-RUN npm ci && npm run build
+RUN npm i && npm run build
 
 # Copy backend source
 COPY backend/ /app/backend/
 
 # Install backend dependencies
 WORKDIR /app/backend
-RUN npm ci
+RUN npm i
 
 # Generate Prisma client
 RUN npx prisma generate
