@@ -32,6 +32,8 @@ services:
       - LBFA_URL=${LBFA_URL}
       - LBFA_USERNAME=${LBFA_USERNAME}
       - LBFA_PASSWORD=${LBFA_PASSWORD}
+      - STRIPE_SECRET_KEY=${PROD_STRIPE_SECRET_KEY}
+      - STRIPE_WEBHOOK_SECRET=${PROD_STRIPE_WEBHOOK_SECRET}
     depends_on:
       postgres:
         condition: service_healthy
