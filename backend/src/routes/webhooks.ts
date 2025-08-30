@@ -1,26 +1,34 @@
+import { env } from '@/lib/env';
 import { logError } from '@/utils/log-utils';
 import { Hono } from 'hono';
+import Stripe from 'stripe';
 
 const webhooksRoutes = new Hono();
 
 // POST /webhooks/stripe - Handle Stripe webhook events
 webhooksRoutes.post('/stripe', async c => {
   try {
+    const stripe = new Stripe(env.STRIPE_API_KEY);
     const sig = c.req.header('stripe-signature');
 
     if (!sig) {
       return c.json({ error: 'Missing stripe signature' }, 400);
     }
 
-    // TODO: Verify the webhook signature with Stripe
-    // const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-    // const event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    const body = await c.req.text();
+    const event = stripe.webhooks.constructEvent(body, sig, env.STRIPE_WEBHOOK_SECRET);
 
-    // For now, we'll parse the body directly (should be replaced with proper signature verification)
-    const event = await c.req.json();
-
-    if (event.type === 'payment_intent.succeeded') {
-      // TODO
+    switch (event.type) {
+      case 'checkout.session.completed':
+        console.log('Checkout session completed:', event.data);
+        // TODO
+        break;
+      case 'checkout.session.expired':
+        console.log('Checkout session expired:', event.data);
+        // TODO
+        break;
+      default:
+        console.warn(`Unhandled event type: ${event.type}`);
     }
 
     return c.json({ received: true });
