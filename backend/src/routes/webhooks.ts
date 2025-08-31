@@ -8,7 +8,7 @@ const webhooksRoutes = new Hono();
 // POST /webhooks/stripe - Handle Stripe webhook events
 webhooksRoutes.post('/stripe', async c => {
   try {
-    const stripe = new Stripe(env.STRIPE_API_KEY);
+    const stripe = new Stripe(env.STRIPE_SECRET_KEY);
     const sig = c.req.header('stripe-signature');
 
     if (!sig) {

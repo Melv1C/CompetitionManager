@@ -38,7 +38,7 @@ const envSchema = z.object({
   LBFA_USERNAME: z.string().optional(),
   LBFA_PASSWORD: z.string().optional(),
 
-  STRIPE_API_KEY: z.string().startsWith('sk_'),
+  STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
 });
 

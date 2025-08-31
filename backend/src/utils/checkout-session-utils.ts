@@ -2,7 +2,7 @@ import { env } from '@/lib/env';
 import { Language, User } from '@repo/core/schemas';
 import Stripe from 'stripe';
 
-const stripe = new Stripe(env.STRIPE_API_KEY);
+const stripe = new Stripe(env.STRIPE_SECRET_KEY);
 
 export const createCustomer = async (user: User) => {
   const customer = await stripe.customers.create({
