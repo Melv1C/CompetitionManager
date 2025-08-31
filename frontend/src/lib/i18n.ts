@@ -1,3 +1,4 @@
+import { FallBackLanguage, SupportedLanguages } from '@repo/core/schemas';
 import i18n from 'i18next';
 import LanguageDetector from 'i18next-browser-languagedetector';
 import resourcesToBackend from 'i18next-resources-to-backend';
@@ -12,10 +13,9 @@ i18n
   )
   .use(initReactI18next)
   .init({
-    fallbackLng: 'en',
+    fallbackLng: FallBackLanguage,
     debug: false,
-    supportedLngs: ['en', 'fr', 'nl'], // Only allow these languages
-    ns: ['common', 'auth', 'validation', 'messages'],
+    supportedLngs: SupportedLanguages,
     defaultNS: 'common',
     interpolation: {
       escapeValue: false,
