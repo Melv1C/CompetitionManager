@@ -15,6 +15,7 @@ import {
   Cuid$,
   InscriptionPublic$,
   InscriptionStatus$,
+  Language$,
   UpsertInscriptions$,
   competitionInclude,
   inscriptionInclude,
@@ -125,7 +126,7 @@ competitionInscriptionsRoutes.post(
           ],
           `${env.BETTER_AUTH_URL}`,
           `${env.BETTER_AUTH_URL}`,
-          'fr', // TODO: Implement locale handling
+          Language$.parse(c.get('language')),
         );
 
         if (!session.url) {

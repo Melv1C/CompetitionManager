@@ -1,5 +1,5 @@
 import { env } from '@/lib/env';
-import { User } from '@repo/core/schemas';
+import { Language, User } from '@repo/core/schemas';
 import Stripe from 'stripe';
 
 const stripe = new Stripe(env.STRIPE_API_KEY);
@@ -21,7 +21,7 @@ export const createCheckoutSession = async (
   items: Stripe.Checkout.SessionCreateParams.LineItem[],
   successUrl: string,
   cancelUrl: string,
-  locale: Stripe.Checkout.SessionCreateParams.Locale,
+  locale: Language,
 ) => {
   const session = await stripe.checkout.sessions.create({
     customer: customerId,
