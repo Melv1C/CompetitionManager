@@ -12,6 +12,7 @@ import { logsRoutes } from './logs';
 import { organizationRoutes } from './organization';
 import { usersRoutes } from './users';
 import { webhooksRoutes } from './webhooks';
+import { studioRoutes } from './studio';
 
 /**
  * Creates and configures all API routes
@@ -47,6 +48,7 @@ export function createApiRoutes() {
   api.route('/organization', organizationRoutes);
   api.route('/users', usersRoutes);
   api.route('/webhooks', webhooksRoutes);
+  api.route('/studio', studioRoutes);
 
   return api;
 }
