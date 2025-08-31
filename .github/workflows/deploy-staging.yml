@@ -101,6 +101,8 @@ jobs:
             LBFA_URL=${{ secrets.LBFA_URL }}
             LBFA_USERNAME=${{ secrets.LBFA_USERNAME }}
             LBFA_PASSWORD=${{ secrets.LBFA_PASSWORD }}
+            STAGING_STRIPE_SECRET_KEY=${{ secrets.STAGING_STRIPE_SECRET_KEY }}
+            STAGING_STRIPE_WEBHOOK_SECRET=${{ secrets.STAGING_STRIPE_WEBHOOK_SECRET }}
             EOF
 
             # Login to container registry
