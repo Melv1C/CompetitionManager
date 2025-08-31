@@ -164,7 +164,7 @@ competitionInscriptionsRoutes.post(
             ),
           },
         });
-        
+
         if (!stripeSession.url) {
           return c.json({ error: 'Failed to create checkout session' }, 500);
         }
