@@ -189,12 +189,10 @@ export function calculateTotalEventCost(
  */
 export async function calculateAlreadyPaidAmount(
   competition: Competition,
-  inscriptions: UpsertInscriptions,
+  athleteIds: Id[],
   userId: BetterAuthId,
 ) {
-  const athleteIds = inscriptions.map(inscription => inscription.athleteId);
-
-  const paidAmountResult = await prisma.inscription.aggregate({
+  const paidAmountResult = await prisma.transaction.aggregate({
     _sum: {
       amountPaid: true,
     },
@@ -215,8 +213,15 @@ export async function upsertInscriptionsInDB(
   competition: Competition,
   inscriptions: UpsertInscriptions,
   userId: BetterAuthId,
-  totalPaid: number,
+  status:
+    | typeof InscriptionStatus$.enum.REGISTERED
+    | typeof InscriptionStatus$.enum.PENDING_PAYMENT,
+  stripeSessionId?: string,
 ) {
+  if (status === InscriptionStatus$.enum.PENDING_PAYMENT && !stripeSessionId) {
+    throw new Error('Stripe session ID is required for pending payment inscriptions');
+  }
+
   // Group inscriptions by athlete to process them together
   const athleteGroupedInscriptions = new Map<Id, UpsertInscriptions>();
 
@@ -225,8 +230,6 @@ export async function upsertInscriptionsInDB(
     existing.push(inscription);
     athleteGroupedInscriptions.set(inscription.athleteId, existing);
   }
-
-  let remainingPaid = totalPaid;
 
   for (const [athleteId, athleteInscriptions] of athleteGroupedInscriptions) {
     // Get all existing inscriptions for this athlete in this competition
@@ -272,24 +275,19 @@ export async function upsertInscriptionsInDB(
       );
       if (!event) throw new Error('Event not found');
 
-      const paidAmount = Math.min(remainingPaid, event.price);
-      remainingPaid -= paidAmount;
-
-      const updateData = {
-        amountPaid: paidAmount,
-        updatedBy: userId,
-      };
-
       await prisma.inscription.update({
         where: { id: existingInscription.id },
         data: {
-          ...updateData,
-          record: existingInscription.record
+          updatedBy: userId,
+          record: matchingNewInscription.record
             ? {
-                update: RecordPrisma$.parse(matchingNewInscription.record),
+                upsert: {
+                  update: RecordPrisma$.parse(matchingNewInscription.record),
+                  create: RecordPrisma$.parse(matchingNewInscription.record),
+                },
               }
             : {
-                create: RecordPrisma$.parse(matchingNewInscription.record),
+                delete: existingInscription.record ? true : false,
               },
         },
       });
@@ -300,16 +298,13 @@ export async function upsertInscriptionsInDB(
       const event = competition.events.find(e => e.id === newInscription.competitionEventId);
       if (!event) throw new Error('Event not found');
 
-      const paidAmount = Math.min(remainingPaid, event.price);
-      remainingPaid -= paidAmount;
-
       await prisma.inscription.create({
         data: {
           ...newInscription,
           userId,
           competitionId: competition.id,
-          status: InscriptionStatus$.enum.REGISTERED,
-          amountPaid: paidAmount,
+          status: status,
+          stripeSessionId: stripeSessionId,
           presenceStatus: PresenceStatus$.enum.UNKNOWN,
           inscriptionDate: new Date(),
           createdBy: userId,
@@ -328,14 +323,10 @@ export async function upsertInscriptionsInDB(
       const event = competition.events.find(e => e.id === inscriptionToDelete.competitionEventId);
       if (!event) throw new Error('Event not found');
 
-      const paidAmount = Math.min(remainingPaid, event.price);
-      remainingPaid -= paidAmount;
-
       await prisma.inscription.update({
         where: { id: inscriptionToDelete.id },
         data: {
           status: InscriptionStatus$.enum.CANCELLED,
-          amountPaid: paidAmount,
           updatedBy: userId,
         },
       });

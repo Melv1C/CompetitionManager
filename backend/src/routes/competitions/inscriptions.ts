@@ -1,7 +1,11 @@
 import { env } from '@/lib/env';
 import { prisma } from '@/lib/prisma';
 import { getRequiredSession, getRequiredUser } from '@/utils/auth-utils';
-import { createCheckoutSession, createCustomer } from '@/utils/checkout-session-utils';
+import {
+  createCheckoutSession,
+  createCustomer,
+  getOpenCheckoutSessionsByCustomerId,
+} from '@/utils/checkout-session-utils';
 import {
   calculateAlreadyPaidAmount,
   calculateTotalEventCost,
@@ -23,7 +27,7 @@ import {
 import { Hono } from 'hono';
 import { z } from 'zod';
 
-const competitionInscriptionsRoutes = new Hono();
+export const competitionInscriptionsRoutes = new Hono();
 
 // GET /competitions/:eid/inscriptions - Get public inscriptions for a competition
 competitionInscriptionsRoutes.get(
@@ -72,6 +76,20 @@ competitionInscriptionsRoutes.post(
     try {
       const session = await getRequiredSession(c);
       const user = await getRequiredUser(c);
+
+      if (user.stripeCustomerId) {
+        const sessions = await getOpenCheckoutSessionsByCustomerId(user.stripeCustomerId);
+        if (sessions.length > 0) {
+          return c.json(
+            {
+              error:
+                'You have an active checkout session. Please complete it before creating new inscriptions.', // TODO: Translate this message
+            },
+            400,
+          );
+        }
+      }
+
       const { eid } = c.req.valid('param');
       const inscriptions = c.req.valid('json');
 
@@ -91,7 +109,7 @@ competitionInscriptionsRoutes.post(
 
       const alreadyPaid = await calculateAlreadyPaidAmount(
         competition,
-        inscriptions,
+        inscriptions.map(i => i.athleteId),
         session.userId,
       );
 
@@ -110,34 +128,67 @@ competitionInscriptionsRoutes.post(
           user.stripeCustomerId = customer.id;
         }
 
-        const session = await createCheckoutSession(
-          user.stripeCustomerId,
-          [
-            {
-              price_data: {
-                currency: 'eur',
-                product_data: {
-                  name: 'Competition Inscription',
-                },
-                unit_amount: totalEventCost * 100, // Convert to cents
-              },
-              quantity: 1,
-            },
-          ],
-          `${env.BETTER_AUTH_URL}`,
-          `${env.BETTER_AUTH_URL}`,
-          Language$.parse(c.get('language')),
+        const events = competition.events.filter(event =>
+          inscriptions.some(i => i.competitionEventId === event.id),
         );
 
-        if (!session.url) {
+        const stripeSession = await createCheckoutSession({
+          customerId: user.stripeCustomerId,
+          items: events.map(event => ({
+            price_data: {
+              currency: 'eur',
+              product_data: {
+                name: event.name,
+              },
+              unit_amount: event.price * 100, // Convert to cents
+            },
+            quantity: inscriptions.filter(i => i.competitionEventId === event.id).length,
+          })),
+          successUrl: `${env.BETTER_AUTH_URL}`,
+          cancelUrl: `${env.BETTER_AUTH_URL}`,
+          locale: Language$.parse(c.get('language')),
+          metadata: {
+            userId: session.userId,
+            competitionId: competition.id.toString(),
+            athletes: JSON.stringify(
+              inscriptions.map(i => {
+                return {
+                  id: i.athleteId,
+                  amountPaid: calculateAlreadyPaidAmount(
+                    competition,
+                    [i.athleteId],
+                    session.userId,
+                  ),
+                };
+              }),
+            ),
+          },
+        });
+        
+        if (!stripeSession.url) {
           return c.json({ error: 'Failed to create checkout session' }, 500);
         }
 
+        await upsertInscriptionsInDB(
+          competition,
+          inscriptions,
+          session.userId,
+          InscriptionStatus$.enum.PENDING_PAYMENT,
+          stripeSession.id,
+        );
+
+        console.log('Pending inscriptions:', inscriptions);
+
         // Redirect the user to the Stripe checkout page
-        return c.json({ url: session.url }, 303);
+        return c.json({ url: stripeSession.url }, 303);
       }
 
-      await upsertInscriptionsInDB(competition, inscriptions, session.userId, alreadyPaid);
+      await upsertInscriptionsInDB(
+        competition,
+        inscriptions,
+        session.userId,
+        InscriptionStatus$.enum.REGISTERED,
+      );
 
       return c.status(200);
     } catch (error) {
@@ -151,5 +202,3 @@ competitionInscriptionsRoutes.post(
     }
   },
 );
-
-export { competitionInscriptionsRoutes };

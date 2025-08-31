@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { requirePermissions } from '@/middleware/access-control';
 import { getRequiredSession } from '@/utils/auth-utils';
-import { calculateAlreadyPaidAmount, upsertInscriptionsInDB } from '@/utils/inscription-utils';
+import { upsertInscriptionsInDB } from '@/utils/inscription-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
@@ -11,6 +11,7 @@ import {
   Id,
   Inscription$,
   inscriptionInclude,
+  InscriptionStatus$,
   ParameterId$,
   UpsertInscriptions,
   UpsertInscriptions$,
@@ -131,13 +132,12 @@ organizationInscriptionsRoutes.post(
 
         const userId = existingInscription?.userId || session.userId;
 
-        const alreadyPaid = await calculateAlreadyPaidAmount(
+        await upsertInscriptionsInDB(
           competition,
           athleteInscriptions,
           userId,
+          InscriptionStatus$.enum.REGISTERED,
         );
-
-        await upsertInscriptionsInDB(competition, athleteInscriptions, userId, alreadyPaid);
       }
 
       return c.json({ success: true }, 200);
