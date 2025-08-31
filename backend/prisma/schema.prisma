@@ -35,7 +35,7 @@ model User {
   members        Member[]
   invitations    Invitation[]
   inscriptions   Inscription[]
-  paymentSessions PaymentSession[]
+  transactions    Transaction[]
 
   @@unique([email])
   @@map("user")
@@ -174,6 +174,7 @@ model Athlete {
 
   inscriptions Inscription[]
   results      Result[]
+  transactions Transaction[]
 
   @@unique([license, competitionId])
   @@map("athlete")
@@ -323,37 +324,9 @@ model Competition {
 
   inscriptions    Inscription[]
   results         Result[]
-  paymentSessions PaymentSession[]
+  transactions    Transaction[]
 
   @@map("competitions")
-}
-
-////////////////////////////////////////////////////////////
-// Payment Session
-// This model is used to store payment session information for inscriptions.
-////////////////////////////////////////////////////////////
-model PaymentSession {
-  id               Int      @id @default(autoincrement())
-  eid              String   @unique @default(cuid())
-
-  userId           String   @map("user_id")
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-
-  competitionId    Int      @map("competition_id")
-  competition      Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
-
-  paymentIntentId  String?  @map("payment_intent_id")
-  status           String   // 'pending', 'paid', 'cancelled', 'expired'
-  amountTotal      Float    @map("amount_total")
-  metadata         Json?    // To keep track of initial inscriptions info
-  
-  createdAt        DateTime @default(now()) @map("created_at")
-  expiresAt        DateTime @map("expires_at")
-  paidAt           DateTime? @map("paid_at")
-
-  inscriptions     Inscription[]
-
-  @@map("payment_sessions")
 }
 
 ////////////////////////////////////////////////////////////
@@ -373,12 +346,9 @@ model Inscription {
   competitionId      Int              @map("competition_id")
   competition        Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
 
-  paymentSessionId   Int?             @map("payment_session_id")
-  paymentSession     PaymentSession?  @relation(fields: [paymentSessionId], references: [id], onDelete: SetNull)
-
   record             Record?
   status             String
-  amountPaid         Float            @map("amount_paid")
+  stripeSessionId    String?          @map("stripe_session_id")
   inscriptionDate    DateTime         @map("inscription_date")
   presenceStatus     String           @map("presence_status")       
   
@@ -391,6 +361,28 @@ model Inscription {
 
   @@map("inscriptions")
 }
+
+
+////////////////////////////////////////////////////////////
+// Transaction
+// This model is used to store payment transaction information.
+////////////////////////////////////////////////////////////
+model Transaction {
+  id                Int      @id @default(autoincrement())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  athleteId         Int
+  athlete           Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  competitionId     Int
+  competition       Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  amountPaid        Float
+  paidAt            DateTime
+  stripeSessionId   String
+  createdAt         DateTime @default(now())
+
+  @@map("transactions")
+}
+
 
 ////////////////////////////////////////////////////////////
 // Record
