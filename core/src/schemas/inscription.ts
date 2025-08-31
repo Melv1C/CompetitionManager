@@ -47,7 +47,6 @@ export const Inscription$ = z.object({
 
   record: Record$.nullish(),
   status: InscriptionStatus$,
-  amountPaid: z.number().min(0),
   inscriptionDate: Date$,
   presenceStatus: PresenceStatus$.default('UNKNOWN'),
 
