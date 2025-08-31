@@ -24,8 +24,8 @@ userCheckoutSessionRoutes.get('/', async c => {
   }
 });
 
-// PUT /users/me/checkout-sessions/:id/expire
-userCheckoutSessionRoutes.put('/:id/expire', async c => {
+// DELETE /users/me/checkout-sessions/:id
+userCheckoutSessionRoutes.delete('/:id', async c => {
   try {
     const user = await getRequiredUser(c);
     if (!user.stripeCustomerId) {
@@ -34,7 +34,7 @@ userCheckoutSessionRoutes.put('/:id/expire', async c => {
     const sessionId = c.req.param('id');
     // Check if the session belongs to the user
     const checkoutSession = await getCheckoutSessionById(sessionId);
-    if (!checkoutSession || checkoutSession.customer !== user.stripeCustomerId) {
+    if (!checkoutSession || checkoutSession.customerId !== user.stripeCustomerId) {
       return c.json({ error: 'Unauthorized' }, 403);
     }
 
