@@ -25,8 +25,8 @@ export function createApiRoutes() {
     languageDetector({
       supportedLanguages: SupportedLanguages,
       fallbackLanguage: FallBackLanguage,
-      order: ['querystring', 'header', 'cookie'],
-      caches: ['cookie'],
+      order: ['querystring', 'header'],
+      caches: false,
     }),
   );
 
