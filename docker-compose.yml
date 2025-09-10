@@ -25,8 +25,8 @@ services:
       NODE_ENV: development
       PORT: 3000
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres?schema=public
+      FRONTEND_URL: http://localhost:8080
       BETTER_AUTH_SECRET: change-me
-      BETTER_AUTH_URL: http://localhost:8080
       DB_SEED_USERS_ENABLED: 'true'
       ATHLETE_SYNC_USE_MOCK: 'true'
       STRIPE_SECRET_KEY: sk_test_xxx

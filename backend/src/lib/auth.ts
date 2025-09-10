@@ -28,6 +28,7 @@ async function isAdmin(userId: string) {
 }
 
 export const auth = betterAuth({
+  baseURL: env.FRONTEND_URL,
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),

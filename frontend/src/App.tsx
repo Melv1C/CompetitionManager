@@ -47,6 +47,10 @@ const pageImports = {
     import('./pages/competition/register').then(m => ({
       default: m.CompetitionRegisterPage,
     })),
+  CompetitionRegisterSuccess: () =>
+    import('./pages/competition/register-success').then(m => ({
+      default: m.CompetitionRegisterSuccessPage,
+    })),
 
   // Admin pages
   AdminDashboard: () =>
@@ -141,6 +145,7 @@ const CompetitionSchedulePage = createLazyComponent('CompetitionSchedule');
 const CompetitionParticipantsPage = createLazyComponent('CompetitionParticipants');
 const CompetitionResultsPageSub = createLazyComponent('CompetitionResults');
 const CompetitionRegisterPage = createLazyComponent('CompetitionRegister');
+const CompetitionRegisterSuccessPage = createLazyComponent('CompetitionRegisterSuccess');
 
 const AdminDashboard = createLazyComponent('AdminDashboard');
 const AdminUsers = createLazyComponent('AdminUsers');
@@ -212,6 +217,10 @@ const router = createBrowserRouter([
           {
             path: 'register',
             element: <CompetitionRegisterPage />,
+          },
+          {
+            path: 'register/success',
+            element: <CompetitionRegisterSuccessPage />,
           },
         ],
       },

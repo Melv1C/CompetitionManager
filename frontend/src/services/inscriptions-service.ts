@@ -1,6 +1,6 @@
 import { apiClient } from '@/lib/api-client';
-import type { Cuid, UpsertInscriptions } from '@repo/core/schemas';
-import { InscriptionPublic$ } from '@repo/core/schemas';
+import type { Cuid, Id, UpsertInscriptions } from '@repo/core/schemas';
+import { AlreadyPaidResponse$, Inscription$, InscriptionPublic$ } from '@repo/core/schemas';
 
 type CreateInscriptionsResponse =
   | {
@@ -37,5 +37,23 @@ export class InscriptionsService {
     }
 
     throw new Error('Unexpected response from server');
+  }
+
+  static async getUserInscriptions() {
+    const response = await apiClient.get(`/api/users/me/inscriptions`);
+    return Inscription$.array().parse(response.data);
+  }
+
+  static async getAlreadyPaidAmounts(competitionId: Id, athleteIds: Id[]) {
+    if (athleteIds.length === 0) {
+      return AlreadyPaidResponse$.parse({ perAthlete: {}, total: 0 });
+    }
+    const response = await apiClient.get(`/api/users/me/already-paid`, {
+      params: {
+        competitionId,
+        athleteIds: athleteIds.map(id => id.toString()).join(','),
+      },
+    });
+    return AlreadyPaidResponse$.parse(response.data);
   }
 }

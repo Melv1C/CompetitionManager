@@ -8,20 +8,26 @@ export function OrganizationCompetitionOutlet() {
   const competitionEid = useCompetitionEid();
   const { currentCompetition, setCompetition } = useOrganizationCompetitionStore();
 
-  const { data } = useOrganizationCompetition(competitionEid);
+  const organizationCompetition = useOrganizationCompetition(competitionEid);
 
-  // If the competitionEid is not in the URL, clear the current competition
+  if (organizationCompetition.isError) {
+    throw new Error('Failed to load organization competition');
+  }
 
   useEffect(() => {
     if (
-      data &&
+      organizationCompetition.data &&
       (!currentCompetition ||
-        currentCompetition.id !== data.id ||
-        currentCompetition.updatedAt !== data.updatedAt)
+        currentCompetition.id !== organizationCompetition.data.id ||
+        currentCompetition.updatedAt !== organizationCompetition.data.updatedAt)
     ) {
-      setCompetition(data);
+      setCompetition(organizationCompetition.data);
     }
-  }, [data, currentCompetition, setCompetition]);
+  }, [organizationCompetition, currentCompetition, setCompetition]);
+
+  if (organizationCompetition.isPending) {
+    return <div>Loading...</div>;
+  }
 
   return <Outlet />;
 }

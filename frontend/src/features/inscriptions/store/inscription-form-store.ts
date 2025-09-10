@@ -1,9 +1,4 @@
-import type {
-  Athlete,
-  Id,
-  Record as InscriptionRecord,
-  UpsertInscription,
-} from '@repo/core/schemas';
+import type { Athlete, Id, UpsertInscription, UpsertRecord } from '@repo/core/schemas';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -17,7 +12,7 @@ export interface InscriptionFormStore {
   currentStep: number;
   currentAthlete: Athlete | undefined;
   currentEventIds: Id[];
-  currentRecords: Record<Id, InscriptionRecord>;
+  currentRecords: Record<Id, UpsertRecord>;
 
   // Basket/registrations state
   registrations: AthleteRegistration[];
@@ -33,11 +28,12 @@ export interface InscriptionFormStore {
   // Actions for current athlete
   setCurrentAthlete: (athlete?: Athlete) => void;
   setCurrentEventIds: (eventIds: Id[]) => void;
-  setCurrentRecord: (eventId: Id, record: InscriptionRecord | null) => void;
+  setCurrentRecord: (eventId: Id, record: UpsertRecord | null) => void;
 
   // Actions for managing registrations/basket
   addCurrentRegistration: () => void;
   removeRegistration: (athleteId: Id) => void;
+  modifyRegistration: (athleteId: Id) => void;
   clearBasket: () => void;
 
   // View navigation
@@ -123,9 +119,43 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
           registrations: state.registrations.filter(reg => reg.athlete.id !== athleteId),
         })),
 
+      modifyRegistration: athleteId => {
+        const { registrations } = get();
+        const registration = registrations.find(reg => reg.athlete.id === athleteId);
+
+        if (registration) {
+          // Extract records from inscriptions
+          const records = registration.inscriptions.reduce(
+            (acc, inscription) => {
+              if (inscription.record) {
+                acc[inscription.competitionEventId] = inscription.record;
+              }
+              return acc;
+            },
+            {} as Record<Id, UpsertRecord>,
+          );
+
+          set({
+            // Populate form with registration data
+            currentAthlete: registration.athlete,
+            currentEventIds: registration.inscriptions.map(ins => ins.competitionEventId),
+            currentRecords: records,
+            currentStep: 1,
+            isInBasketView: false,
+            // Remove from registrations
+            registrations: registrations.filter(reg => reg.athlete.id !== athleteId),
+          });
+        }
+      },
+
       clearBasket: () =>
         set({
+          currentStep: 1,
+          isInBasketView: false,
           registrations: [],
+          currentAthlete: undefined,
+          currentEventIds: [],
+          currentRecords: {},
         }),
 
       // View navigation

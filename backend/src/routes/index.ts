@@ -1,7 +1,5 @@
 import { loggerMiddleware } from '@/middleware/logger';
-import { FallBackLanguage, SupportedLanguages } from '@repo/core/schemas';
 import { Hono } from 'hono';
-import { languageDetector } from 'hono/language';
 import { athletesRoutes } from './athletes';
 import { authRoutes } from './auth';
 import { categoriesRoutes } from './categories';
@@ -14,21 +12,8 @@ import { usersRoutes } from './users';
 import { webhooksRoutes } from './webhooks';
 import { studioRoutes } from './studio';
 
-/**
- * Creates and configures all API routes
- * Following the pattern: /api/{resource}/{action?}
- */
 export function createApiRoutes() {
-  const api = new Hono(); // Mount route modules
-
-  api.use(
-    languageDetector({
-      supportedLanguages: SupportedLanguages,
-      fallbackLanguage: FallBackLanguage,
-      order: ['querystring', 'header'],
-      caches: false,
-    }),
-  );
+  const api = new Hono();
 
   api.get('/health', c => {
     return c.json({ status: 'ok' });

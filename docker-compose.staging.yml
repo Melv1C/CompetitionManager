@@ -27,8 +27,8 @@ services:
       - NODE_ENV=staging
       - PORT=3000
       - DATABASE_URL=postgres://postgres:${STAGING_POSTGRES_PASSWORD}@postgres:5432/competitionmanager
+      - FRONTEND_URL=https://competitionmanager.be:18080
       - BETTER_AUTH_SECRET=${STAGING_AUTH_SECRET}
-      - BETTER_AUTH_URL=http://competitionmanager.be:18080
       - LBFA_URL=${LBFA_URL}
       - LBFA_USERNAME=${LBFA_USERNAME}
       - LBFA_PASSWORD=${LBFA_PASSWORD}
