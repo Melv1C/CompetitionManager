@@ -1,5 +1,3 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { ScrollArea } from '@/components/ui/scroll-area';
 import { Skeleton } from '@/components/ui/skeleton';
@@ -7,10 +5,10 @@ import { cn } from '@/lib/utils';
 import { AthleteKey$, type Athlete } from '@repo/core/schemas';
 import { getSeasonBib } from '@repo/core/utils';
 import { debounce } from 'lodash';
-import { Edit2, Search } from 'lucide-react';
+import { Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useSearchAthletes } from '../../hooks/use-athletes';
+import { useSearchAthletes } from '../hooks/use-athletes';
 import { AthleteCard } from './athlete-card';
 
 interface AthleteSearchProps {
@@ -114,13 +112,6 @@ export function AthleteSearch({
     inputRef.current?.blur();
   };
 
-  const handleChangeAthlete = () => {
-    setSearchTerm('');
-    setShowResults(true);
-    onChange(undefined);
-    inputRef.current?.focus();
-  };
-
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
     setSearchTerm(newValue);
@@ -130,6 +121,10 @@ export function AthleteSearch({
     } else {
       setShowResults(false);
     }
+
+    if (value && newValue != getAthleteDisplayName(value)) {
+      onChange(undefined);
+    }
   };
 
   const getAthleteDisplayName = (athlete: Athlete) => {
@@ -137,33 +132,6 @@ export function AthleteSearch({
   };
 
   const shouldShowResults = showResults && searchTerm.trim().length > 0 && !disabled;
-
-  if (value) {
-    return (
-      <div className={cn('w-full', className)}>
-        <Card>
-          <CardHeader>
-            <CardTitle>{t('athleteSelected')}</CardTitle>
-          </CardHeader>
-          <CardContent>
-            <AthleteCard athlete={value} referenceDate={referenceDate} isClickable={false} />
-            <CardAction>
-              <Button
-                variant="outline"
-                size="sm"
-                onClick={handleChangeAthlete}
-                disabled={disabled}
-                className="gap-2"
-              >
-                <Edit2 className="h-3 w-3" />
-                {t('changeAthlete')}
-              </Button>
-            </CardAction>
-          </CardContent>
-        </Card>
-      </div>
-    );
-  }
 
   return (
     <div className={cn('relative w-full', className)}>

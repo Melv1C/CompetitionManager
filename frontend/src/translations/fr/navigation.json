@@ -2,6 +2,7 @@
   "adminPanel": "Panneau d'administration",
   "analytics": "Analyses",
   "backToSite": "Retour au site",
+  "competitionLoadError": "Erreur lors du chargement des données de la compétition",
   "competitions": "Compétitions",
   "confirmations": "Confirmations",
   "database": "Base de données",

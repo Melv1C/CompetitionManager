@@ -1,5 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import {
+  Athlete$,
+  athleteInclude,
   BetterAuthId,
   Competition,
   Id,
@@ -11,6 +13,7 @@ import {
   RecordPrisma$,
   UpsertInscriptions,
 } from '@repo/core/schemas';
+import { getSeasonBib, getSeasonClub } from 'node_modules/@repo/core/dist/utils/athlete-utils';
 
 export interface CreateInscriptionsResult {
   freeInscriptions: Inscription[];
@@ -166,6 +169,36 @@ export async function validateInscriptions(
       'Duplicate inscriptions detected in the request. An athlete cannot be registered multiple times for the same event.',
     );
   }
+
+  // 7. Check if the athlete has a bib for the season
+  // 8. Check if competition is open for athlete's club
+  for (const athleteId of uniqueAthleteIds) {
+    const athlete = Athlete$.parse(
+      await prisma.athlete.findUnique({
+        where: { id: athleteId },
+        include: athleteInclude,
+      }),
+    );
+    if (!athlete) continue; // Already checked existence above
+    const hasBibForSeason = !!getSeasonBib(athlete, competition.startDate);
+    if (!hasBibForSeason) {
+      throw new Error(
+        `Athlete ${athlete.firstName} ${athlete.lastName} does not have a valid bib for the season.`,
+      );
+    }
+
+    const isCompetitionOpenForAthleteClub =
+      competition.allowedClubs.length > 0
+        ? competition.allowedClubs
+            .map(c => c.id)
+            .includes(getSeasonClub(athlete, competition.startDate)?.id ?? -1)
+        : true; // If no clubs are specified, competition is open to all clubs
+    if (!isCompetitionOpenForAthleteClub) {
+      throw new Error(
+        `Competition is not open for the club of athlete ${athlete.firstName} ${athlete.lastName}.`,
+      );
+    }
+  }
 }
 
 /**
@@ -185,25 +218,46 @@ export function calculateTotalEventCost(
 }
 
 /**
- * Calculates the total amount already paid by athletes for this competition
+ * Calculates the total amount already paid by athletes for this competition,
+ * and returns both a per-athlete breakdown and the total.
  */
 export async function calculateAlreadyPaidAmount(
   competition: Competition,
   athleteIds: Id[],
   userId: BetterAuthId,
-) {
-  const paidAmountResult = await prisma.transaction.aggregate({
+): Promise<{ perAthlete: Record<Id, number>; total: number }> {
+  // Ensure unique athlete ids to avoid duplicated work
+  const uniqueAthleteIds = Array.from(new Set(athleteIds));
+
+  // Group transactions by athleteId and sum amountPaid
+  const grouped = await prisma.transaction.groupBy({
+    by: ['athleteId'],
+    where: {
+      competitionId: competition.id,
+      athleteId: { in: uniqueAthleteIds },
+      userId,
+    },
     _sum: {
       amountPaid: true,
     },
-    where: {
-      competitionId: competition.id,
-      athleteId: { in: athleteIds },
-      userId,
-    },
   });
 
-  return paidAmountResult._sum.amountPaid || 0;
+  // Initialize per-athlete map with zeros for all requested athletes
+  const perAthlete: Record<Id, number> = {};
+  for (const id of uniqueAthleteIds) {
+    perAthlete[id] = 0;
+  }
+
+  // Fill in the sums returned by Prisma
+  for (const g of grouped) {
+    // g.athleteId is typed as number/Id; g._sum.amountPaid can be null
+    perAthlete[g.athleteId as Id] = g._sum?.amountPaid ?? 0;
+  }
+
+  // Compute total
+  const total = Object.values(perAthlete).reduce((sum, v) => sum + v, 0);
+
+  return { perAthlete, total };
 }
 
 /**
@@ -278,7 +332,15 @@ export async function upsertInscriptionsInDB(
       await prisma.inscription.update({
         where: { id: existingInscription.id },
         data: {
+          status:
+            existingInscription.status === InscriptionStatus$.enum.CANCELLED
+              ? status
+              : existingInscription.status,
           updatedBy: userId,
+          stripeSessionId:
+            existingInscription.status === InscriptionStatus$.enum.CANCELLED && stripeSessionId
+              ? stripeSessionId
+              : null,
           record: matchingNewInscription.record
             ? {
                 upsert: {

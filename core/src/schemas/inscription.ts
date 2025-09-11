@@ -12,6 +12,11 @@ export const Record$ = z.object({
 });
 export type Record = z.infer<typeof Record$>;
 
+export const UpsertRecord$ = Record$.extend({
+  id: Id$.nullish(),
+});
+export type UpsertRecord = z.infer<typeof UpsertRecord$>;
+
 export const RecordPrisma$ = Record$.omit({
   id: true,
 });
@@ -40,6 +45,7 @@ export const Inscription$ = z.object({
   userId: BetterAuthId$,
   athleteId: Id$,
   athlete: Athlete$,
+  competitionId: Id$,
   competitionEventId: Id$,
   competitionEvent: CompetitionEvent$,
 
@@ -67,9 +73,7 @@ export const UpsertInscription$ = Inscription$.pick({
   athleteId: true,
   competitionEventId: true,
 }).extend({
-  record: Record$.extend({
-    id: Id$.nullish(),
-  }).optional(),
+  record: UpsertRecord$.optional(),
 });
 export type UpsertInscription = z.infer<typeof UpsertInscription$>;
 

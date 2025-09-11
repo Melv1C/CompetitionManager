@@ -4,6 +4,7 @@ import {
   getCheckoutSessionById,
   getOpenCheckoutSessionsByCustomerId,
 } from '@/utils/checkout-session-utils';
+import { cancelInscriptions } from '@/utils/inscriptions';
 import { logError } from '@/utils/log-utils';
 import { Hono } from 'hono';
 
@@ -14,7 +15,7 @@ userCheckoutSessionRoutes.get('/', async c => {
   try {
     const user = await getRequiredUser(c);
     if (!user.stripeCustomerId) {
-      return c.json({ error: 'User does not have a Stripe customer ID' }, 400);
+      return c.json([]);
     }
     const checkoutSessions = await getOpenCheckoutSessionsByCustomerId(user.stripeCustomerId);
     return c.json(checkoutSessions);
@@ -42,6 +43,11 @@ userCheckoutSessionRoutes.delete('/:id', async c => {
     if (!result) {
       return c.json({ error: 'Failed to expire checkout session' }, 500);
     }
+
+    // Same logic as in the webhook handler for 'checkout.session.expired'
+    // But we do it here synchronously for this case to avoid potential race conditions
+    await cancelInscriptions(sessionId);
+
     return c.json({ success: true });
   } catch (error) {
     logError('Failed to expire checkout session', error, c);

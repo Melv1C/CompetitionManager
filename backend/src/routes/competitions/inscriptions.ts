@@ -8,7 +8,6 @@ import {
 } from '@/utils/checkout-session-utils';
 import {
   calculateAlreadyPaidAmount,
-  calculateTotalEventCost,
   upsertInscriptionsInDB,
   validateInscriptions,
 } from '@/utils/inscription-utils';
@@ -16,15 +15,20 @@ import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
   Competition$,
+  CompetitionEvent,
   Cuid$,
+  Id,
   InscriptionPublic$,
   InscriptionStatus$,
   Language$,
   UpsertInscriptions$,
+  athleteInclude,
   competitionInclude,
   inscriptionInclude,
 } from '@repo/core/schemas';
+import { getSeasonClub } from '@repo/core/utils';
 import { Hono } from 'hono';
+import { getFees } from 'node_modules/@repo/core/dist/utils/fees';
 import { z } from 'zod';
 
 export const competitionInscriptionsRoutes = new Hono();
@@ -105,6 +109,10 @@ competitionInscriptionsRoutes.post(
         return c.json({ error: 'Competition not found' }, 404);
       }
 
+      const events = competition.events.filter(event =>
+        inscriptions.some(i => i.competitionEventId === event.id),
+      );
+
       await validateInscriptions(competition, inscriptions, session.userId);
 
       const alreadyPaid = await calculateAlreadyPaidAmount(
@@ -113,11 +121,68 @@ competitionInscriptionsRoutes.post(
         session.userId,
       );
 
-      const totalEventCost = calculateTotalEventCost(competition, inscriptions);
+      const inscriptionGroupedByAthlete = inscriptions.reduce(
+        (acc, curr) => {
+          const existing = acc.find(a => a.athleteId === curr.athleteId);
+          if (existing) {
+            existing.inscriptions.push(curr);
+          } else {
+            acc.push({ athleteId: curr.athleteId, inscriptions: [curr] });
+          }
+          return acc;
+        },
+        [] as { athleteId: number; inscriptions: (typeof inscriptions)[number][] }[],
+      );
 
-      if (totalEventCost > alreadyPaid) {
-        // return c.json({ error: 'Additional payment required for these inscriptions' }, 400);
+      const getAthlete = async (athleteId: Id) => {
+        const athlete = await prisma.athlete.findUnique({
+          where: { id: athleteId },
+          include: athleteInclude,
+        });
+        return athlete;
+      };
 
+      const athletesMap = await Promise.all(
+        inscriptionGroupedByAthlete.map(async group => ({
+          athleteId: group.athleteId,
+          athlete: await getAthlete(group.athleteId),
+        })),
+      );
+
+      // Helper to compute an athlete's already paid amount, total cost for requested inscriptions and net cost
+      const computeAthleteNetCost = (
+        athleteId: Id,
+        inscriptionsForAthlete: (typeof inscriptions)[number][],
+        eventsSource: CompetitionEvent[],
+        alreadyPaidMap: Record<number, number>,
+      ) => {
+        const athlete = athletesMap.find(a => a.athleteId === athleteId)?.athlete;
+        const isFree = competition.freeClubs
+          .map(c => c.id)
+          .includes(getSeasonClub(athlete)?.id || -1);
+        if (isFree) {
+          return { athleteAlreadyPaid: 0, athleteCost: 0, netCost: 0 };
+        }
+        const athleteAlreadyPaid = alreadyPaidMap[athleteId] || 0;
+        const athleteCost = inscriptionsForAthlete.reduce((sum, inscription) => {
+          const event = eventsSource.find(e => e.id === inscription.competitionEventId);
+          return event ? sum + event.price : sum;
+        }, 0);
+        const netCost = athleteCost - athleteAlreadyPaid;
+        return { athleteAlreadyPaid, athleteCost, netCost };
+      };
+
+      const totalCost = inscriptionGroupedByAthlete.reduce((total, athleteGroup) => {
+        const { netCost } = computeAthleteNetCost(
+          athleteGroup.athleteId,
+          athleteGroup.inscriptions,
+          events,
+          alreadyPaid.perAthlete,
+        );
+        return total + (netCost > 0 ? netCost : 0);
+      }, 0);
+
+      if (totalCost > 0) {
         // check if the user has already a customer ID
         if (!user.stripeCustomerId) {
           const customer = await createCustomer(user);
@@ -134,33 +199,67 @@ competitionInscriptionsRoutes.post(
 
         const stripeSession = await createCheckoutSession({
           customerId: user.stripeCustomerId,
-          items: events.map(event => ({
-            price_data: {
-              currency: 'eur',
-              product_data: {
-                name: event.name,
+          items: [
+            ...(
+              await Promise.all(
+                inscriptionGroupedByAthlete.map(async athleteGroup => {
+                  const athlete = await getAthlete(athleteGroup.athleteId);
+                  const { netCost } = computeAthleteNetCost(
+                    athleteGroup.athleteId,
+                    athleteGroup.inscriptions,
+                    events,
+                    alreadyPaid.perAthlete,
+                  );
+                  if (netCost <= 0) return null;
+                  return {
+                    price_data: {
+                      currency: 'eur',
+                      product_data: {
+                        name: `${athlete ? `${athlete.firstName} ${athlete.lastName}` : 'Athlete'} - ${
+                          athleteGroup.inscriptions.length
+                        } event${athleteGroup.inscriptions.length > 1 ? 's' : ''}`,
+                      },
+                      unit_amount: netCost > 0 ? netCost * 100 : 0, // Convert to cents
+                    },
+                    quantity: 1,
+                  };
+                }),
+              )
+            ).filter(element => element !== null),
+            {
+              // Add a separate item for the processing fee
+              price_data: {
+                currency: 'eur',
+                product_data: {
+                  name: c.var.t('checkout.fee_name'),
+                },
+                unit_amount: Math.round(getFees(totalCost) * 100), // Convert to cents
               },
-              unit_amount: event.price * 100, // Convert to cents
+              quantity: 1,
             },
-            quantity: inscriptions.filter(i => i.competitionEventId === event.id).length,
-          })),
-          successUrl: `${env.BETTER_AUTH_URL}`,
-          cancelUrl: `${env.BETTER_AUTH_URL}`,
+          ],
+          successUrl: `${env.FRONTEND_URL}/competitions/${competition.eid}/register/success`,
+          cancelUrl: `${env.FRONTEND_URL}/competitions/${competition.eid}/register`,
           locale: Language$.parse(c.get('language')),
           metadata: {
             userId: session.userId,
             competitionId: competition.id.toString(),
             athletes: JSON.stringify(
-              inscriptions.map(i => {
-                return {
-                  id: i.athleteId,
-                  amountPaid: calculateAlreadyPaidAmount(
-                    competition,
-                    [i.athleteId],
-                    session.userId,
-                  ),
-                };
-              }),
+              inscriptionGroupedByAthlete
+                .map(athleteGroup => {
+                  const { netCost } = computeAthleteNetCost(
+                    athleteGroup.athleteId,
+                    athleteGroup.inscriptions,
+                    events,
+                    alreadyPaid.perAthlete,
+                  );
+                  if (netCost <= 0) return null;
+                  return {
+                    athleteId: athleteGroup.athleteId,
+                    amountToPay: netCost > 0 ? netCost : 0,
+                  };
+                })
+                .filter(element => element !== null),
             ),
           },
         });
@@ -177,8 +276,6 @@ competitionInscriptionsRoutes.post(
           stripeSession.id,
         );
 
-        console.log('Pending inscriptions:', inscriptions);
-
         // Redirect the user to the Stripe checkout page
         return c.json({ url: stripeSession.url }, 303);
       }
@@ -190,7 +287,9 @@ competitionInscriptionsRoutes.post(
         InscriptionStatus$.enum.REGISTERED,
       );
 
-      return c.status(200);
+      // TODO: Send confirmation email
+
+      return c.json({ success: true }, 201);
     } catch (error) {
       logError('Failed to create inscriptions', error, c);
       return c.json(

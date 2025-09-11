@@ -1,25 +1,13 @@
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCompetition } from '@/features/competitions';
+import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useCompetitionEid } from '@/hooks';
 import { formatDate } from '@/lib/formatters';
 import { CalendarIcon, UsersIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Skeleton } from '../ui/skeleton';
-
-function CompetitionError({ message }: { message: string }) {
-  const { t } = useTranslation('navigation');
-  return (
-    <div className="flex flex-col items-center justify-center min-h-[400px] space-y-4">
-      <div className="text-destructive text-lg font-semibold">{t('competitionLoadError')}</div>
-      <div className="text-muted-foreground">{message}</div>
-      <Button variant="outline" onClick={() => window.location.reload()}>
-        {t('retry')}
-      </Button>
-    </div>
-  );
-}
 
 export function CompetitionLayout() {
   const eid = useCompetitionEid();
@@ -28,9 +16,17 @@ export function CompetitionLayout() {
   const { t } = useTranslation('navigation');
 
   const competition = useCompetition(eid);
+  const inscription = useCompetitionInscriptions(eid);
 
-  const isRegistrationOpen = () => {
+  const isPending = competition.isPending || inscription.isPending;
+  const isError = competition.isError || inscription.isError;
+  const error = competition.error || inscription.error;
+
+  const isRegistrationVisible = () => {
     if (competition.isPending || competition.isError) return false;
+
+    if (location.pathname.includes('register')) return false;
+
     const now = new Date();
     const startDate = new Date(competition.data.inscriptionStartDate);
     const endDate = new Date(competition.data.inscriptionEndDate);
@@ -51,9 +47,7 @@ export function CompetitionLayout() {
     }
   };
 
-  if (competition.isError) {
-    return <CompetitionError message={competition.error?.message || t('unknownError')} />;
-  }
+  if (isError) throw new Error(error?.message || 'Error loading competition data');
 
   return (
     <div className="container mx-auto px-4 py-8 space-y-6">
@@ -87,7 +81,7 @@ export function CompetitionLayout() {
           </div>
 
           {/* Registration CTA */}
-          {isRegistrationOpen() && (
+          {isRegistrationVisible() && (
             <Button
               size="lg"
               className="w-full md:w-auto"
@@ -111,11 +105,7 @@ export function CompetitionLayout() {
 
       {/* Page Content */}
       <div className="min-h-[400px]">
-        {competition.isPending ? (
-          <Skeleton className="h-96 w-full" />
-        ) : (
-          <Outlet context={{ competition }} />
-        )}
+        {isPending ? <Skeleton className="h-96 w-full" /> : <Outlet />}
       </div>
     </div>
   );

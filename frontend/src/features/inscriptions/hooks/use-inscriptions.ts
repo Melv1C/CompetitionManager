@@ -1,14 +1,34 @@
+import {
+  ACTIVE_USER_QUERY_KEY,
+  ALREADY_PAID_QUERY_KEY,
+  INSCRIPTIONS_QUERY_KEY,
+} from '@/lib/query-keys';
 import { InscriptionsService } from '@/services';
-import type { Cuid, UpsertInscriptions } from '@repo/core/schemas';
+import type { Cuid, Id, UpsertInscriptions } from '@repo/core/schemas';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-
-export const INSCRIPTIONS_QUERY_KEY = 'inscriptions';
+import { useTranslation } from 'react-i18next';
+import { toast } from 'sonner';
 
 export function useCompetitionInscriptions(competitionEid: Cuid) {
   return useQuery({
     queryKey: [INSCRIPTIONS_QUERY_KEY, competitionEid],
     queryFn: () => InscriptionsService.getCompetitionInscriptions(competitionEid),
   });
+}
+
+export function useRequiredCompetitionInscriptions(eid: Cuid) {
+  const { t } = useTranslation();
+  const inscriptions = useCompetitionInscriptions(eid);
+
+  if (inscriptions.isPending) {
+    throw new Error(t('loading.competition'));
+  }
+
+  if (inscriptions.isError) {
+    throw new Error(t('error.competition'));
+  }
+
+  return inscriptions.data;
 }
 
 export function useCreateInscriptions(competitionEid: Cuid) {
@@ -18,14 +38,32 @@ export function useCreateInscriptions(competitionEid: Cuid) {
     mutationFn: ({ inscriptions }: { inscriptions: UpsertInscriptions }) =>
       InscriptionsService.createInscriptions(competitionEid, inscriptions),
     onSuccess: result => {
-      if (result.type === 'payment') {
-        window.location.href = result.url;
-      }
       if (result.type === 'inscription') {
         queryClient.invalidateQueries({
           queryKey: [INSCRIPTIONS_QUERY_KEY, competitionEid],
         });
+        queryClient.invalidateQueries({
+          queryKey: [INSCRIPTIONS_QUERY_KEY, ACTIVE_USER_QUERY_KEY],
+        });
       }
     },
+    onError: error => {
+      console.error('Error creating inscriptions:', error);
+      toast.error(error.message);
+    },
+  });
+}
+
+export function useUserInscriptions() {
+  return useQuery({
+    queryKey: [INSCRIPTIONS_QUERY_KEY, ACTIVE_USER_QUERY_KEY],
+    queryFn: InscriptionsService.getUserInscriptions,
+  });
+}
+
+export function useAlreadyPaidAmounts(competitionId: Id, athleteIds: Id[]) {
+  return useQuery({
+    queryKey: [ALREADY_PAID_QUERY_KEY, competitionId, athleteIds],
+    queryFn: () => InscriptionsService.getAlreadyPaidAmounts(competitionId, athleteIds),
   });
 }

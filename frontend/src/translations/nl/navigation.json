@@ -2,6 +2,7 @@
   "adminPanel": "Beheerderspaneel",
   "analytics": "Statistieken",
   "backToSite": "Terug naar site",
+  "competitionLoadError": "Fout bij het laden van wedstrijdgegevens",
   "competitions": "Wedstrijden",
   "confirmations": "Bevestigingen",
   "database": "Database",
