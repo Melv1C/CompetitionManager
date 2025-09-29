@@ -281,6 +281,7 @@ model CompetitionEvent {
 
   inscriptions Inscription[]
   results      Result[]
+  @@map("competition_events")
 }
 
 ////////////////////////////////////////////////////////////
