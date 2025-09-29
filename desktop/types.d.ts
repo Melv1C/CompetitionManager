@@ -1,11 +1,17 @@
-interface Window {
+import type { Competition } from '@repo/core/schemas';
+
+declare global {
+  interface Window {
     electron: {
-        getResults: () => Promise<any>;
-        subscribeToResults: (callback: (result: number) => void) => void;
+      importCompetition: (competition: Competition) => void;
+      exportCompetition: () => Promise<Competition>;
     };
+  }
+
+  type EventPayloadMapping = {
+    importCompetition: void;
+    exportCompetition: Promise<Competition>;
+  };
 }
 
-type EventPayloadMapping = {
-    getResults: Promise<string[]>;
-    result: number;
-};
+export {};

@@ -1,6 +1,6 @@
 import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { lazy, useEffect } from 'react';
+import { lazy } from 'react';
 import { Toaster } from 'sonner';
 import { SocketStatusViewer } from './components/dev/socket-status-viewer';
 import { MainLayout } from './components/layout';
@@ -31,12 +31,6 @@ const queryClient = new QueryClient({
 });
 
 function App() {
-  useEffect(() => {
-    console.log('Setting up result subscription');
-    window.electron.subscribeToResults((result) => {
-      console.log('Received result update:', result);
-    });
-  }, []);
   return (
     <QueryClientProvider client={queryClient}>
       <ThemeProvider>

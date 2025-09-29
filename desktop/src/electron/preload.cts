@@ -1,16 +1,15 @@
 const electron = require('electron')
 
 electron.contextBridge.exposeInMainWorld('electron', {
-    getResults: () => ipcInvoke('getResults'),
-    subscribeToResults: (callback) => {
-        ipcOn('result', (result) => callback(result))
-    },
+    importCompetition: (competition) => ipcInvoke('importCompetition', competition),
+    exportCompetition: async () => await ipcInvoke('exportCompetition'),
 } satisfies Window['electron'])
 
 function ipcInvoke<Key extends keyof EventPayloadMapping>(
     key: Key,
+    ...args: any[]
 ): Promise<EventPayloadMapping[Key]> {
-    return electron.ipcRenderer.invoke(key);
+    return electron.ipcRenderer.invoke(key, ...args);
 }
 
 function ipcOn<Key extends keyof EventPayloadMapping>(

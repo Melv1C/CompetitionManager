@@ -1,9 +1,9 @@
-import { app, BrowserWindow, ipcMain } from 'electron';
+import { app, BrowserWindow } from 'electron';
 import path from 'path';
 import { connectAmDb } from './connect-am.js';
 import { getPrealoadPath } from './pathResolver.js';
 import { ipcHandler } from './utils.js';
-import { getResults, listenToResultsChanges } from './utils/exportCompetition.js';
+import { exportCompetition, importCompetition } from './utils/exportCompetition.js';
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
@@ -21,9 +21,7 @@ app.on('ready', () => {
   }
   connectAmDb();
 
-  ipcHandler('getResults', async () => {
-    return getResults();
-  });
+  ipcHandler('importCompetition', importCompetition);
 
-  listenToResultsChanges(mainWindow);
+  ipcHandler('exportCompetition', exportCompetition);
 });
