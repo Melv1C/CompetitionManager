@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "dev": "npm-run-all --parallel dev:core dev:backend dev:frontend",
-    "dev:desktop-app": "npm-run-all --parallel dev:backend dev:desktop",
+    "dev:desktop-app": "npm-run-all --parallel dev:core dev:backend dev:desktop",
     "dev:core": "cd core && npm run dev",
     "dev:backend": "npm run docker:db && cd backend && npm run dev",
     "dev:frontend": "cd frontend && npm run dev",
@@ -15,6 +15,7 @@
     "install:backend": "cd backend && npm install",
     "install:frontend": "cd frontend && npm install",
     "install:desktop": "cd desktop && npm install",
+    "install:all": "npm install && npm run install:core && npm run install:backend && npm run install:frontend && npm run install:desktop",
     "db:migrate": "cd backend && npx prisma migrate dev",
     "docker:db": "docker-compose -f docker-compose.db.yml up -d",
     "lint": "npm run lint:core && npm run lint:backend && npm run lint:frontend && npm run lint:desktop",
