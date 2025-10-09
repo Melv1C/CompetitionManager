@@ -16,6 +16,7 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
+import { GoogleIcon } from '@/components/icons/google-icon';
 import { authClient } from '@/lib/auth-client';
 import { env } from '@/lib/env';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -142,6 +143,29 @@ export function SignInForm() {
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
               {isLoading ? t('signingIn') : t('signIn')}
+            </Button>
+
+            <div className="relative">
+              <div className="absolute inset-0 flex items-center">
+                <span className="w-full border-t" />
+              </div>
+              <div className="relative flex justify-center text-xs uppercase">
+                <span className="bg-card px-2 text-muted-foreground">{t('or')}</span>
+              </div>
+            </div>
+
+            <Button
+              type="button"
+              variant="outline"
+              className="w-full"
+              onClick={async () => {
+                const data = await authClient.signIn.social({ provider: 'google' });
+                console.log(data);
+              }}
+              disabled={isLoading}
+            >
+              <GoogleIcon className="mr-2 h-5 w-5" />
+              {t('signInWithGoogle', { ns: 'auth' })}
             </Button>
           </form>
         </Form>
