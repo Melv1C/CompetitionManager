@@ -207,7 +207,6 @@ export function SignUpForm() {
               className="w-full"
               onClick={async () => {
                 const data = await authClient.signIn.social({ provider: 'google' });
-                console.log(data);
               }}
               disabled={isLoading}
             >
