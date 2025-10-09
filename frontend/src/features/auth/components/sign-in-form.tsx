@@ -159,8 +159,7 @@ export function SignInForm() {
               variant="outline"
               className="w-full"
               onClick={async () => {
-                const data = await authClient.signIn.social({ provider: 'google' });
-                console.log(data);
+                await authClient.signIn.social({ provider: 'google' });
               }}
               disabled={isLoading}
             >
