@@ -32,6 +32,7 @@ export const auth = betterAuth({
   database: prismaAdapter(prisma, {
     provider: 'postgresql',
   }),
+  trustedOrigins: [env.DESKTOP_URL],
   user: {
     additionalFields: {
       stripeCustomerId: {
@@ -40,9 +41,46 @@ export const auth = betterAuth({
       },
     },
   },
-  trustedOrigins: [env.DESKTOP_URL],
   emailAndPassword: {
     enabled: true,
+  },
+  socialProviders: {
+    google:
+      !!env.GOOGLE_CLIENT_ID && !!env.GOOGLE_CLIENT_SECRET
+        ? {
+            clientId: env.GOOGLE_CLIENT_ID,
+            clientSecret: env.GOOGLE_CLIENT_SECRET,
+            redirectURI: `${env.BACKEND_URL}/api/auth/callback/google`,
+
+            mapProfileToUser: async profile => {
+              const user = await prisma.user.findUnique({
+                where: { email: profile.email },
+              });
+
+              return {
+                email: profile.email,
+                name: profile.name,
+                avatar: profile.picture,
+                // If a user exists:
+                //   - If their email is verified, use the profile's email_verified value (may reflect latest status).
+                //   - If not verified, set to false.
+                // If no user exists, use the profile's email_verified value directly.
+                // If the emailVerified is false and the user already exists, the process will fail later
+                emailVerified: user
+                  ? user.emailVerified
+                    ? profile.email_verified
+                    : false
+                  : profile.email_verified,
+              };
+            },
+          }
+        : undefined,
+  },
+  account: {
+    accountLinking: {
+      enabled: true,
+      trustedProviders: [],
+    },
   },
   plugins: [
     bearer(),
