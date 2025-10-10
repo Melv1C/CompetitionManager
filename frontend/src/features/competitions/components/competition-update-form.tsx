@@ -37,7 +37,7 @@ import { AlertCircle, Flag, Globe, Info, Save, UserCheck } from 'lucide-react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useSearchParams } from 'react-router-dom';
-import z from 'zod';
+import { z } from 'zod';
 import {
   getFieldEditability,
   getFieldRuleStyle,
