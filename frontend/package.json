@@ -78,6 +78,7 @@
     "@types/react-dom": "^19.2.1",
     "@types/react-i18next": "^8.1.0",
     "@types/react-router-dom": "^5.3.3",
+    "@types/sanitize-html": "^2.16.0",
     "@vitejs/plugin-react": "^5.0.4",
     "eslint": "^9.37.0",
     "eslint-plugin-react-hooks": "^6.0.0",
