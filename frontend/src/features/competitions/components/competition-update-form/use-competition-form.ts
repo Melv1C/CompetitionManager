@@ -3,7 +3,7 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { CompetitionUpdate$, type Competition, type CompetitionUpdate } from '@repo/core/schemas';
 import { useCallback, useEffect, useState } from 'react';
 import { useForm } from 'react-hook-form';
-import z from 'zod';
+import { z } from 'zod';
 import { useUpdateCompetition } from '../../hooks/use-organization-competitions';
 import { getFieldEditability } from '../../utils/field-editability';
 
