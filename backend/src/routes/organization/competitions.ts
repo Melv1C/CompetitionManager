@@ -12,6 +12,7 @@ import {
   Cuid$,
   competitionInclude,
 } from '@repo/core/schemas';
+import { checkLockedFields, getFieldEditability } from '@repo/core/utils';
 import { logger } from 'better-auth';
 import { Hono } from 'hono';
 import { z } from 'zod';
@@ -152,9 +153,52 @@ organizationCompetitionsRoutes.put(
 
       const competition = await prisma.competition.findFirst({
         where: { eid, organizationId: session.activeOrganizationId },
+        include: competitionInclude,
       });
       if (!competition) {
         return c.json({ error: 'Competition not found' }, 404);
+      }
+
+      // Parse competition to match the expected type
+      const parsedCompetition = Competition$.parse(competition);
+
+      // Get all field names being updated (including club IDs)
+      const updateFields = Object.keys(updateData);
+      if (freeClubIds !== undefined) {
+        updateFields.push('freeClubIds');
+      }
+      if (allowedClubIds !== undefined) {
+        updateFields.push('allowedClubIds');
+      }
+
+      // Check if any of the fields being updated are locked
+      const { hasErrors, lockedFields } = checkLockedFields(updateFields, parsedCompetition);
+
+      if (hasErrors) {
+        // Get detailed reasons for each locked field
+        const fieldErrors = lockedFields.map(fieldName => {
+          const info = getFieldEditability(fieldName, parsedCompetition);
+          return {
+            field: fieldName,
+            reason: info.reason,
+            rule: info.rule,
+          };
+        });
+
+        logger.warn('Attempt to update locked fields', {
+          competitionEid: eid,
+          userId: session.userId,
+          lockedFields,
+          fieldErrors,
+        });
+
+        return c.json(
+          {
+            error: 'Cannot update locked fields',
+            lockedFields: fieldErrors,
+          },
+          400,
+        );
       }
 
       const data = CompetitionPrisma$.partial().parse({
