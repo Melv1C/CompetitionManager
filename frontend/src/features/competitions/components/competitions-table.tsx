@@ -207,9 +207,7 @@ export function CompetitionsTable({ competitions, isLoading }: CompetitionsTable
                         <Tooltip>
                           <TooltipTrigger asChild>
                             <Button size="icon" variant="ghost" className="size-8" asChild>
-                              <Link
-                                to={`/organization/competitions/${comp.eid}/settings`}
-                              >
+                              <Link to={`/organization/competitions/${comp.eid}/settings`}>
                                 <Settings className="size-4" />
                                 <span className="sr-only">Edit competition settings</span>
                               </Link>
