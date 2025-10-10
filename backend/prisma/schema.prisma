@@ -298,6 +298,9 @@ model Competition {
   description String    @db.Text
   location    String
 
+  contactPhone String
+  contactEmail String
+
   bibPermissions String[]
   bibStartNumber Int?
 
@@ -307,6 +310,10 @@ model Competition {
 
   inscriptionStartDate DateTime
   inscriptionEndDate   DateTime
+
+  maxEventPerAthlete         Int?
+  hasConfirmation            Boolean  @default(false)
+  confirmationDeadlineMinutes Int?
 
   createdAt DateTime @default(now())
   createdBy String
