@@ -1,4 +1,5 @@
 import { DateTimePicker } from '@/components/date-time-picker';
+import { RichTextEditor, RichTextViewer } from '@/components/rich-text';
 import {
   Accordion,
   AccordionContent,
@@ -239,12 +240,15 @@ export function CompetitionUpdateForm() {
                 <FormItem className="sm:col-span-2">
                   <FormLabel>Description</FormLabel>
                   <FormControl>
-                    <Textarea
-                      rows={4}
-                      placeholder="Enter competition description..."
-                      {...field}
-                      disabled={!canEdit}
-                    />
+                    {canEdit ? (
+                      <RichTextEditor
+                        content={field.value}
+                        onChange={field.onChange}
+                        placeholder="Enter competition description..."
+                      />
+                    ) : (
+                      <RichTextViewer content={field.value} />
+                    )}
                   </FormControl>
                   <FormMessage />
                 </FormItem>
