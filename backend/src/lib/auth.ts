@@ -8,13 +8,13 @@ import { prisma } from './prisma';
 
 // Add this helper function to fetch the active organization for a user
 async function getActiveOrganization(userId: string) {
-  // Adjust the query as needed for your schema
   return await prisma.organization.findFirst({
     where: {
       members: {
-        some: { id: userId },
+        some: { userId },
       },
     },
+    select: { id: true },
   });
 }
 
