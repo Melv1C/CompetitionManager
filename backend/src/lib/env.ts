@@ -7,6 +7,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
 
   DATABASE_URL: z.url(),
+  BACKEND_URL: z.url().default('http://localhost:3000'),
   FRONTEND_URL: z.url().default('http://localhost:5173'),
   DESKTOP_URL: z.url().default('http://localhost:5000'),
 
@@ -42,6 +43,9 @@ const envSchema = z.object({
 
   STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
+
+  GOOGLE_CLIENT_ID: z.string().optional(),
+  GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
 });
 
 export const env = envSchema.parse(process.env);

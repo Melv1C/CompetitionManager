@@ -27,6 +27,7 @@ services:
       - NODE_ENV=production
       - PORT=3000
       - DATABASE_URL=postgres://postgres:${PROD_POSTGRES_PASSWORD}@postgres:5432/competitionmanager
+      - BACKEND_URL=https://competitionmanager.be
       - FRONTEND_URL=https://competitionmanager.be
       - BETTER_AUTH_SECRET=${PROD_AUTH_SECRET}
       - LBFA_URL=${LBFA_URL}
