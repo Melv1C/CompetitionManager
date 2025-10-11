@@ -11,25 +11,25 @@ export const Competition$ = z.object({
   name: z.string(),
   startDate: Date$,
   endDate: Date$,
-  isPublished: Boolean$.default(false),
-  description: z.string().default(''),
-  location: z.string().default(''),
+  isPublished: Boolean$,
+  description: z.string(),
+  location: z.string(),
 
-  contactPhone: z.string().default(''),
-  contactEmail: z.string().default(''),
+  contactPhone: z.string(),
+  contactEmail: z.string(),
 
-  bibPermissions: z.array(z.string()).default([]),
-  bibStartNumber: z.number().nullish(),
+  bibPermissions: z.array(z.string()),
+  bibStartNumber: z.number().int().positive().nullish(),
 
-  isPaidOnline: Boolean$.default(true),
-  isSelection: Boolean$.default(false),
-  isInscriptionVisible: Boolean$.default(true),
+  isPaidOnline: Boolean$,
+  isSelection: Boolean$,
+  isInscriptionVisible: Boolean$,
 
   inscriptionStartDate: Date$,
   inscriptionEndDate: Date$,
 
   maxEventPerAthlete: z.number().int().positive().nullish(),
-  hasConfirmation: Boolean$.default(false),
+  hasConfirmation: Boolean$,
   confirmationDeadlineMinutes: z.number().int().positive().nullish(),
 
   createdAt: Date$,
@@ -66,6 +66,19 @@ export const CompetitionPrisma$ = Competition$.omit({
   events: true,
   organization: true,
 })
+  .extend({
+    isPublished: Boolean$.default(false),
+    description: z.string().default(''),
+    location: z.string().default(''),
+    contactPhone: z.string().default(''),
+    contactEmail: z.string().default(''),
+    bibPermissions: z.array(z.string()).default([]),
+    bibStartNumber: z.number().default(9000),
+    isPaidOnline: Boolean$.default(true),
+    isSelection: Boolean$.default(false),
+    isInscriptionVisible: Boolean$.default(true),
+    hasConfirmation: Boolean$.default(false),
+  })
   .refine(
     data => {
       // End date should be after start date
@@ -98,20 +111,28 @@ export const CompetitionPrisma$ = Competition$.omit({
   );
 export type CompetitionPrisma = z.infer<typeof CompetitionPrisma$>;
 
-export const CompetitionCreate$ = CompetitionPrisma$.pick({
+export const CompetitionCreate$ = Competition$.pick({
   name: true,
   startDate: true,
 });
 export type CompetitionCreate = z.infer<typeof CompetitionCreate$>;
 
 // Update schema for competitions, extending the create schema
-export const CompetitionUpdate$ = CompetitionPrisma$.omit({
+export const CompetitionUpdate$ = Competition$.omit({
+  id: true,
+  eid: true,
+  createdAt: true,
+  updatedAt: true,
+  freeClubs: true,
+  allowedClubs: true,
+  events: true,
+  organization: true,
   organizationId: true,
   createdBy: true,
   updatedBy: true,
 }).extend({
-  freeClubIds: z.array(Id$).default([]),
-  allowedClubIds: z.array(Id$).default([]),
+  freeClubIds: z.array(Id$),
+  allowedClubIds: z.array(Id$),
 });
 export type CompetitionUpdate = z.infer<typeof CompetitionUpdate$>;
 

@@ -137,7 +137,7 @@ organizationCompetitionsRoutes.put(
     competitions: ['update'],
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
-  zValidator('json', CompetitionUpdate$),
+  zValidator('json', CompetitionUpdate$.partial()),
   async c => {
     try {
       const { eid } = c.req.valid('param');
