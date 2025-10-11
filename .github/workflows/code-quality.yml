@@ -144,7 +144,7 @@ jobs:
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
       - name: Validate i18n translations
-        run: npm run i18n:validate-ci
+        run: npm run i18n:ci
 
   database-check:
     runs-on: ubuntu-latest
