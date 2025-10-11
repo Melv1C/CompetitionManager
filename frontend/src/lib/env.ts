@@ -19,6 +19,9 @@ const envSchema = z.object({
   VITE_USE_BEARER: z.stringbool().default(false),
 
   VITE_SHOW_SOCKET_STATUS: z.stringbool().default(false),
+
+  // Google OAuth Configuration
+  VITE_HAS_GOOGLE_AUTH: z.stringbool().default(false),
 });
 
 /**
