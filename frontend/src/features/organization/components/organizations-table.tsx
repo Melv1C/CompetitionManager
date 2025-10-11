@@ -72,7 +72,9 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <Building2 className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-lg font-medium text-muted-foreground">{t('organization:noOrganizations')}</p>
+        <p className="text-lg font-medium text-muted-foreground">
+          {t('organization:noOrganizations')}
+        </p>
       </div>
     );
   }

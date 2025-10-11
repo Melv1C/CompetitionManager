@@ -31,7 +31,9 @@ export function InscriptionSuccess() {
         <h1 className="text-3xl font-bold text-green-600 dark:text-green-400">
           {t('inscriptions:success.title')}
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">{t('inscriptions:success.subtitle')}</p>
+        <p className="text-lg text-gray-600 dark:text-gray-300">
+          {t('inscriptions:success.subtitle')}
+        </p>
       </div>
 
       {/* Action Buttons */}

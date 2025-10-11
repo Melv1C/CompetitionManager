@@ -26,7 +26,9 @@ function RegistrationBasketSkeleton() {
           <ShoppingCart className="w-6 h-6" />
           <span>{t('inscriptions:registrationBasket')}</span>
         </h1>
-        <p className="text-sm text-muted-foreground">{t('inscriptions:reviewRegistrationsAndProceed')}</p>
+        <p className="text-sm text-muted-foreground">
+          {t('inscriptions:reviewRegistrationsAndProceed')}
+        </p>
       </div>
 
       {/* Skeleton for Registration List */}
@@ -220,7 +222,9 @@ export function RegistrationBasket() {
           <ShoppingCart className="w-6 h-6" />
           <span>{t('inscriptions:registrationBasket')}</span>
         </h1>
-        <p className="text-sm text-muted-foreground">{t('inscriptions:reviewRegistrationsAndProceed')}</p>
+        <p className="text-sm text-muted-foreground">
+          {t('inscriptions:reviewRegistrationsAndProceed')}
+        </p>
       </div>
 
       {/* Ticket-style Registration List */}
