@@ -201,15 +201,11 @@ organizationCompetitionsRoutes.put(
         );
       }
 
-      const data = CompetitionPrisma$.partial().parse({
-        ...updateData,
-        updatedBy: session.userId,
-      });
-
       const updatedCompetition = await prisma.competition.update({
         where: { eid },
         data: {
-          ...data,
+          ...updateData,
+          updatedBy: session.userId,
           freeClubs: { set: freeClubIds?.map(id => ({ id })) },
           allowedClubs: { set: allowedClubIds?.map(id => ({ id })) },
         },
