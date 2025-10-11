@@ -10,14 +10,14 @@ import { MobileMenu } from './mobile-menu';
 import { Navigation } from './navigation';
 
 export function Header() {
+  const { t } = useTranslation();
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
-  const { t } = useTranslation('navigation');
 
   const navItems = [
-    { href: '/', label: t('home') },
-    { href: '/competitions', label: t('competitions') },
-    { href: '/results', label: t('results') },
+    { href: '/', label: t('navigation:home') },
+    { href: '/competitions', label: t('competitions.title') },
+    { href: '/results', label: t('results.title') },
   ];
 
   const handleMobileMenuClose = () => setIsOpen(false);

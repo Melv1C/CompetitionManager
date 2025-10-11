@@ -50,32 +50,32 @@ export function OrganizationLayout() {
   const { user } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation('navigation');
+  const { t } = useTranslation();
   const { activeOrganization } = useOrganizations();
   const { currentCompetition } = useOrganizationCompetitionStore();
   const navItems = [
     {
-      title: t('overview'),
+      title: t('navigation:overview'),
       url: '/organization',
       icon: Home,
     },
     {
-      title: t('competitions'),
+      title: t('competitions.title'),
       url: '/organization/competitions',
       icon: CalendarDays,
     },
     {
-      title: t('members'),
+      title: t('navigation:members'),
       url: '/organization/members',
       icon: Users,
     },
     {
-      title: t('analytics'),
+      title: t('navigation:analytics'),
       url: '/organization/analytics',
       icon: TrendingUp,
     },
     {
-      title: t('settings'),
+      title: t('navigation:settings'),
       url: '/organization/settings',
       icon: Settings,
     },
@@ -85,32 +85,32 @@ export function OrganizationLayout() {
     return currentCompetition
       ? [
           {
-            title: t('overview'),
+            title: t('navigation:overview'),
             url: `/organization/competitions/${currentCompetition.eid}`,
             icon: Home,
           },
           {
-            title: t('inscriptions'),
+            title: t('inscriptions.title'),
             url: `/organization/competitions/${currentCompetition.eid}/inscriptions`,
             icon: Users,
           },
           {
-            title: t('confirmations'),
+            title: t('confirmations.title'),
             url: `/organization/competitions/${currentCompetition.eid}/confirmations`,
             icon: UserCheck2,
           },
           {
-            title: t('events'),
+            title: t('events.title'),
             url: `/organization/competitions/${currentCompetition.eid}/events`,
             icon: CalendarClock,
           },
           {
-            title: t('results'),
+            title: t('results.title'),
             url: `/organization/competitions/${currentCompetition.eid}/results`,
             icon: Trophy,
           },
           {
-            title: t('settings'),
+            title: t('navigation:settings'),
             url: `/organization/competitions/${currentCompetition.eid}/settings`,
             icon: Settings,
           },
@@ -193,7 +193,7 @@ export function OrganizationLayout() {
                       <SidebarMenuButton asChild>
                         <Link to="/" className="flex items-center gap-2">
                           <ArrowLeft className="size-4" />
-                          <span>{t('backToSite')}</span>
+                          <span>{t('navigation:backToSite')}</span>
                         </Link>
                       </SidebarMenuButton>
                     </SidebarMenuItem>
@@ -249,7 +249,7 @@ export function OrganizationLayout() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut />
-                    {t('signOut')}
+                    {t('auth:signOut')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

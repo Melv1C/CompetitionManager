@@ -18,7 +18,7 @@ interface OrganizationSelectorProps {
 }
 
 export function OrganizationSelector({ className }: OrganizationSelectorProps) {
-  const { t } = useTranslation('organization');
+  const { t } = useTranslation();
   const { organizations, activeOrganization, setActiveOrganization } = useOrganizations();
   const queryClient = useQueryClient();
 
@@ -48,9 +48,9 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
           )}
           <div className="grid flex-1 text-left text-sm leading-tight">
             <span className="truncate font-semibold">
-              {activeOrganization?.name || t('noOrganization')}
+              {activeOrganization?.name || t('organization:noOrganization')}
             </span>
-            <span className="truncate text-xs">{t('currentOrganization')}</span>
+            <span className="truncate text-xs">{t('organization:currentOrganization')}</span>
           </div>
           <ChevronDown className="ml-auto" />
         </SidebarMenuButton>
@@ -62,7 +62,7 @@ export function OrganizationSelector({ className }: OrganizationSelectorProps) {
         sideOffset={4}
       >
         <DropdownMenuLabel className="text-xs text-muted-foreground">
-          {t('organizations')}
+          {t('organizations.title')}
         </DropdownMenuLabel>
         {organizations.map(org => (
           <DropdownMenuItem

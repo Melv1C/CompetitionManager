@@ -24,11 +24,11 @@ export function useRequiredCompetition(eid: Cuid) {
   const competition = useCompetition(eid);
 
   if (competition.isPending) {
-    throw new Error(t('loading.competition'));
+    throw new Error(t('messages:loading.competition'));
   }
 
   if (competition.isError) {
-    throw new Error(t('error.competition'));
+    throw new Error(t('messages:error.competition'));
   }
 
   return competition.data;

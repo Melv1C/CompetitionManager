@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
 
 export function InscriptionSuccess() {
-  const { t } = useTranslation(['inscriptions', 'buttons']);
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const eid = useCompetitionEid();
 
@@ -29,9 +29,9 @@ export function InscriptionSuccess() {
           <CheckCircle className="w-16 h-16 text-green-500" />
         </div>
         <h1 className="text-3xl font-bold text-green-600 dark:text-green-400">
-          {t('success.title')}
+          {t('inscriptions:success.title')}
         </h1>
-        <p className="text-lg text-gray-600 dark:text-gray-300">{t('success.subtitle')}</p>
+        <p className="text-lg text-gray-600 dark:text-gray-300">{t('inscriptions:success.subtitle')}</p>
       </div>
 
       {/* Action Buttons */}
@@ -39,18 +39,18 @@ export function InscriptionSuccess() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           <Button onClick={handleNavigateToParticipants} variant="outline" className="h-12">
             <Users className="w-4 h-4 mr-2" />
-            {t('success.viewParticipants')}
+            {t('inscriptions:success.viewParticipants')}
           </Button>
 
           <Button onClick={handleNavigateToSchedule} variant="outline" className="h-12">
             <Calendar className="w-4 h-4 mr-2" />
-            {t('success.viewSchedule')}
+            {t('inscriptions:success.viewSchedule')}
           </Button>
         </div>
 
         <Button onClick={handleNewInscription} className="w-full h-12">
           <Plus className="w-4 h-4 mr-2" />
-          {t('success.newInscription')}
+          {t('inscriptions:success.newInscription')}
         </Button>
       </div>
     </div>

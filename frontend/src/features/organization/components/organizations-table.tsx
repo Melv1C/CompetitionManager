@@ -40,7 +40,7 @@ interface OrganizationsTableProps {
 }
 
 export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
-  const { t } = useTranslation('organization');
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const handleOpenOrganization = async (organizationId: string) => {
     try {
@@ -72,7 +72,7 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
     return (
       <div className="flex flex-col items-center justify-center py-8 text-center">
         <Building2 className="h-12 w-12 text-muted-foreground mb-4" />
-        <p className="text-lg font-medium text-muted-foreground">{t('noOrganizations')}</p>
+        <p className="text-lg font-medium text-muted-foreground">{t('organization:noOrganizations')}</p>
       </div>
     );
   }
@@ -83,8 +83,8 @@ export function OrganizationsTable({ organizations }: OrganizationsTableProps) {
         <TableHeader>
           <TableRow>
             <TableHead className="w-12"></TableHead>
-            <TableHead>{t('organizationName')}</TableHead>
-            <TableHead>{t('organizationSlug')}</TableHead>
+            <TableHead>{t('organization:name')}</TableHead>
+            <TableHead>{t('organization:slug')}</TableHead>
             <TableHead>Created</TableHead>
             <TableHead className="w-32">Actions</TableHead>
           </TableRow>

@@ -23,7 +23,7 @@ export function AthleteTicket({
   onModify,
   getAlreadyPaid,
 }: AthleteTicketProps) {
-  const { t } = useTranslation(['inscriptions']);
+  const { t } = useTranslation();
 
   const athleteClub = getSeasonClub(registration.athlete, competition.startDate);
   const isFree = competition.freeClubs.map(c => c.id).includes(athleteClub?.id || -1);
@@ -65,7 +65,7 @@ export function AthleteTicket({
               size="sm"
               onClick={() => onModify(registration.athlete.id)}
               className="h-8 w-8 p-0"
-              title={t('modifyRegistration')}
+              title={t('inscriptions:modifyRegistration')}
             >
               <Edit className="w-4 h-4" />
             </Button>
@@ -74,7 +74,7 @@ export function AthleteTicket({
               size="sm"
               onClick={() => onRemove(registration.athlete.id)}
               className="h-8 w-8 p-0"
-              title={t('removeRegistration')}
+              title={t('inscriptions:removeRegistration')}
             >
               <Trash2 className="w-4 h-4" />
             </Button>
@@ -119,21 +119,21 @@ export function AthleteTicket({
               {alreadyPaid > 0 ? (
                 <>
                   <div className="flex justify-between text-sm">
-                    <span>{t('subtotal')}</span>
+                    <span>{t('inscriptions:subtotal')}</span>
                     <span>€{subtotal.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between text-sm text-muted-foreground">
-                    <span>{t('alreadyPaid')}</span>
+                    <span>{t('inscriptions:alreadyPaid')}</span>
                     <span>-€{alreadyPaid.toFixed(2)}</span>
                   </div>
                   <div className="flex justify-between font-medium">
-                    <span>{t('amountToPay')}</span>
+                    <span>{t('inscriptions:amountToPay')}</span>
                     <span className="text-primary">€{amountToPay.toFixed(2)}</span>
                   </div>
                 </>
               ) : (
                 <div className="flex justify-between font-medium">
-                  <span>{t('amountToPay')}</span>
+                  <span>{t('inscriptions:amountToPay')}</span>
                   <span className="text-primary">€{amountToPay.toFixed(2)}</span>
                 </div>
               )}

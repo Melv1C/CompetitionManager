@@ -111,7 +111,7 @@ export function ParticipantListSkeleton() {
 }
 
 export function ParticipantList() {
-  const { t } = useTranslation(['inscriptions', 'common', 'enums']);
+  const { t } = useTranslation();
   const eid = useCompetitionEid();
   const competition = useRequiredCompetition(eid);
   const inscriptions = useCompetitionInscriptions(eid);
@@ -130,14 +130,18 @@ export function ParticipantList() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <UsersIcon className="h-5 w-5" />
-            {t('participants')}
+            {t('inscriptions:participants')}
           </CardTitle>
         </CardHeader>
         <CardContent>
           <div className="text-center py-8">
             <UsersIcon className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
-            <h3 className="text-lg font-medium text-muted-foreground">{t('noParticipantsYet')}</h3>
-            <p className="text-sm text-muted-foreground mt-2">{t('noParticipantsDescription')}</p>
+            <h3 className="text-lg font-medium text-muted-foreground">
+              {t('inscriptions:noParticipantsYet')}
+            </h3>
+            <p className="text-sm text-muted-foreground mt-2">
+              {t('inscriptions:noParticipantsDescription')}
+            </p>
           </div>
         </CardContent>
       </Card>
@@ -149,19 +153,19 @@ export function ParticipantList() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <UsersIcon className="h-5 w-5" />
-          {t('participants')} ({inscriptions.data.length})
+          {t('inscriptions:participants')} ({inscriptions.data.length})
         </CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
             <TableRow>
-              <TableHead>{t('bib', { ns: 'common' })}</TableHead>
-              <TableHead>{t('athlete', { ns: 'common' })}</TableHead>
-              <TableHead>{t('event', { ns: 'common' })}</TableHead>
-              <TableHead>{t('record', { ns: 'common' })}</TableHead>
-              <TableHead>{t('status')}</TableHead>
-              <TableHead>{t('presenceStatus')}</TableHead>
+              <TableHead>{t('bib.title')}</TableHead>
+              <TableHead>{t('athlete.title')}</TableHead>
+              <TableHead>{t('event.title')}</TableHead>
+              <TableHead>{t('record.title')}</TableHead>
+              <TableHead>{t('status.title')}</TableHead>
+              <TableHead>{t('inscriptions:presenceStatus')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -184,12 +188,12 @@ export function ParticipantList() {
                   </TableCell>
                   <TableCell>
                     <Badge variant={getStatusBadgeVariant(inscription.status)}>
-                      {t(`inscriptionStatus.${inscription.status.toLowerCase()}`, { ns: 'enums' })}
+                      {t(`enums:inscriptionStatus.${inscription.status.toLowerCase()}`)}
                     </Badge>
                   </TableCell>
                   <TableCell>
                     <Badge variant={getPresenceStatusBadgeVariant(inscription.presenceStatus)}>
-                      {t(`presenceStatus.${inscription.presenceStatus.toLowerCase()}`)}
+                      {t(`enums:presenceStatus.${inscription.presenceStatus.toLowerCase()}`)}
                     </Badge>
                   </TableCell>
                 </TableRow>
