@@ -137,7 +137,7 @@ organizationCompetitionsRoutes.put(
     competitions: ['update'],
   }),
   zValidator('param', z.object({ eid: Cuid$ })),
-  zValidator('json', CompetitionUpdate$),
+  zValidator('json', CompetitionUpdate$.partial()),
   async c => {
     try {
       const { eid } = c.req.valid('param');
@@ -201,15 +201,11 @@ organizationCompetitionsRoutes.put(
         );
       }
 
-      const data = CompetitionPrisma$.partial().parse({
-        ...updateData,
-        updatedBy: session.userId,
-      });
-
       const updatedCompetition = await prisma.competition.update({
         where: { eid },
         data: {
-          ...data,
+          ...updateData,
+          updatedBy: session.userId,
           freeClubs: { set: freeClubIds?.map(id => ({ id })) },
           allowedClubs: { set: allowedClubIds?.map(id => ({ id })) },
         },

@@ -35,7 +35,7 @@ export class CompetitionsService {
     return Competition$.parse(response.data);
   }
 
-  static async updateOrganizationCompetition(eid: Cuid, data: CompetitionUpdate) {
+  static async updateOrganizationCompetition(eid: Cuid, data: Partial<CompetitionUpdate>) {
     const response = await apiClient.put(`/api/organization/competitions/${eid}`, data);
     return Competition$.parse(response.data);
   }

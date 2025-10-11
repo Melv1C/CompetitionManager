@@ -7,11 +7,85 @@ import { z } from 'zod';
 import { useUpdateCompetition } from '../../hooks/use-organization-competitions';
 import { getFieldEditability } from '../../utils/field-editability';
 
+/**
+ * Helper function to compute only the changed fields between original and current data.
+ * This ensures we only send modified fields to the backend, preventing validation errors
+ * on locked fields that haven't actually changed.
+ */
+function getChangedFields(
+  original: CompetitionUpdate,
+  current: CompetitionUpdate,
+): Partial<CompetitionUpdate> {
+  const changes: Partial<CompetitionUpdate> = {};
+
+  // Only check fields that exist in the original data
+  (Object.keys(original) as Array<keyof CompetitionUpdate>).forEach(key => {
+    const originalValue = original[key];
+    const currentValue = current[key];
+
+    // Skip if both are undefined/null
+    if (
+      (originalValue === undefined || originalValue === null) &&
+      (currentValue === undefined || currentValue === null)
+    ) {
+      return;
+    }
+
+    // Handle Date comparison
+    if (originalValue instanceof Date && currentValue instanceof Date) {
+      if (originalValue.getTime() !== currentValue.getTime()) {
+        console.log(`Date changed for ${key}:`, {
+          original: originalValue.toISOString(),
+          current: currentValue.toISOString(),
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        changes[key] = currentValue as any;
+      }
+      return;
+    }
+
+    // Handle array comparison (for bibPermissions, freeClubIds, allowedClubIds)
+    if (Array.isArray(originalValue) && Array.isArray(currentValue)) {
+      // Sort arrays before comparison to handle order differences
+      const sortedOriginal = [...originalValue].sort();
+      const sortedCurrent = [...currentValue].sort();
+      const originalStr = JSON.stringify(sortedOriginal);
+      const currentStr = JSON.stringify(sortedCurrent);
+      if (originalStr !== currentStr) {
+        console.log(`Array changed for ${key}:`, {
+          original: originalValue,
+          current: currentValue,
+          sortedOriginal,
+          sortedCurrent,
+        });
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        changes[key] = currentValue as any;
+      }
+      return;
+    }
+
+    // Handle primitive values (including undefined/null changes)
+    if (originalValue !== currentValue) {
+      console.log(`Value changed for ${key}:`, {
+        original: originalValue,
+        current: currentValue,
+        originalType: typeof originalValue,
+        currentType: typeof currentValue,
+      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      changes[key] = currentValue as any;
+    }
+  });
+
+  return changes;
+}
+
 export function useCompetitionForm(currentCompetition: Competition | null) {
   const updateMutation = useUpdateCompetition();
   const [canEdit, setCanEdit] = useState(false);
   const [showPublishDialog, setShowPublishDialog] = useState(false);
   const [pendingPublishValue, setPendingPublishValue] = useState(false);
+  const [originalData, setOriginalData] = useState<CompetitionUpdate | null>(null);
 
   // Check edit permissions
   useEffect(() => {
@@ -59,7 +133,7 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
   // Reset form when competition changes
   useEffect(() => {
     if (currentCompetition) {
-      form.reset({
+      const orig = {
         name: currentCompetition.name,
         startDate: new Date(currentCompetition.startDate),
         endDate: new Date(currentCompetition.endDate),
@@ -80,22 +154,40 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
         confirmationDeadlineMinutes: currentCompetition.confirmationDeadlineMinutes,
         freeClubIds: currentCompetition.freeClubs.map(c => c.id),
         allowedClubIds: currentCompetition.allowedClubs.map(c => c.id),
-      });
+      };
+      form.reset(orig);
+      setOriginalData(orig);
     }
   }, [currentCompetition, form]);
 
-  // Submit handler
+  // Submit handler - only sends changed fields to prevent validation errors on locked fields
   const onSubmit = useCallback(
     async (data: CompetitionUpdate) => {
-      if (!currentCompetition) return;
+      if (!currentCompetition || !originalData) return;
+
+      // Compute only the changed fields
+      const changedFields = getChangedFields(originalData, data);
+
+      // If no fields changed, don't send anything
+      if (Object.keys(changedFields).length === 0) {
+        console.warn('No changes detected, skipping update');
+        return;
+      }
+
       try {
-        await updateMutation.mutateAsync({ eid: currentCompetition.eid, data });
-        form.reset(form.getValues());
+        await updateMutation.mutateAsync({
+          eid: currentCompetition.eid,
+          data: changedFields,
+        });
+        // Update originalData with the new values after successful save
+        const newValues = form.getValues();
+        form.reset(newValues);
+        setOriginalData(newValues);
       } catch (error) {
         console.error('Failed to update competition:', error);
       }
     },
-    [currentCompetition, updateMutation, form],
+    [currentCompetition, originalData, updateMutation, form],
   );
 
   // Publish toggle handler
@@ -111,14 +203,14 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
         try {
           await updateMutation.mutateAsync({
             eid: currentCompetition.eid,
-            data: { ...form.getValues(), isPublished: checked },
+            data: { isPublished: checked },
           });
         } catch (error) {
           console.error('Failed to update publish status:', error);
         }
       }
     },
-    [currentCompetition, canEdit, updateMutation, form],
+    [currentCompetition, canEdit, updateMutation],
   );
 
   // Confirm publish handler
@@ -128,13 +220,13 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
     try {
       await updateMutation.mutateAsync({
         eid: currentCompetition.eid,
-        data: { ...form.getValues(), isPublished: pendingPublishValue },
+        data: { isPublished: pendingPublishValue },
       });
       setShowPublishDialog(false);
     } catch (error) {
       console.error('Failed to publish competition:', error);
     }
-  }, [currentCompetition, updateMutation, form, pendingPublishValue]);
+  }, [currentCompetition, updateMutation, pendingPublishValue]);
 
   // Check if field is editable
   const isFieldEditable = useCallback(

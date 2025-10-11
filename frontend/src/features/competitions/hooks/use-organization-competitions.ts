@@ -60,7 +60,7 @@ export function useUpdateCompetition() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ eid, data }: { eid: Cuid; data: CompetitionUpdate }) =>
+    mutationFn: ({ eid, data }: { eid: Cuid; data: Partial<CompetitionUpdate> }) =>
       CompetitionsService.updateOrganizationCompetition(eid, data),
     onSuccess: () => {
       toast.success('Competition updated successfully');
