@@ -15,6 +15,9 @@ export const Competition$ = z.object({
   description: z.string().default(''),
   location: z.string().default(''),
 
+  contactPhone: z.string().default(''),
+  contactEmail: z.string().default(''),
+
   bibPermissions: z.array(z.string()).default([]),
   bibStartNumber: z.number().nullish(),
 
@@ -24,6 +27,10 @@ export const Competition$ = z.object({
 
   inscriptionStartDate: Date$,
   inscriptionEndDate: Date$,
+
+  maxEventPerAthlete: z.number().int().positive().nullish(),
+  hasConfirmation: Boolean$.default(false),
+  confirmationDeadlineMinutes: z.number().int().positive().nullish(),
 
   createdAt: Date$,
   createdBy: BetterAuthId$,

@@ -12,6 +12,7 @@ import {
 import { Input } from '@/components/ui/input';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CompetitionCreate$, type CompetitionCreate } from '@repo/core/schemas';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';
 import { useCreateCompetition } from '../hooks/use-organization-competitions';
@@ -25,9 +26,15 @@ export function CreateCompetitionDialog({ open, onOpenChange }: CreateCompetitio
   const createMutation = useCreateCompetition();
 
   const getDefaultStartDate = () => {
-    const date = new Date();
-    date.setHours(10, 0, 0, 0);
-    return date;
+    const now = new Date();
+    const currentDay = now.getDay(); // 0 = Sunday, 6 = Saturday
+    const daysUntilNextSaturday = currentDay === 6 ? 7 : (6 - currentDay + 7) % 7;
+
+    const nextSaturday = new Date(now);
+    nextSaturday.setDate(now.getDate() + daysUntilNextSaturday);
+    nextSaturday.setHours(10, 0, 0, 0);
+
+    return nextSaturday;
   };
 
   const form = useForm<CompetitionCreate>({
@@ -49,6 +56,13 @@ export function CreateCompetitionDialog({ open, onOpenChange }: CreateCompetitio
   };
 
   const isLoading = createMutation.isPending;
+
+  const tomorrow = useMemo(() => {
+    const date = new Date();
+    date.setDate(date.getDate() + 1);
+    date.setHours(0, 0, 0, 0);
+    return date;
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -83,7 +97,7 @@ export function CreateCompetitionDialog({ open, onOpenChange }: CreateCompetitio
                       onChange={date => date && field.onChange(date)}
                       placeholder="Select date and time"
                       allowClear={false}
-                      minDate={new Date()}
+                      minDate={tomorrow}
                     />
                   </FormControl>
                   <FormMessage />
