@@ -1,0 +1,23 @@
+{
+  "title": "Krachtig Competitiebeheer",
+  "subtitle": "Beheer en Volg Atletiekwedstrijden met Gemak!",
+  "description": "Registreer, wedijver en bekijk resultaten op één plek. Vereenvoudiging van competitiebeheer voor atleten, organisatoren en toeschouwers.",
+  "features": {
+    "schedule": {
+      "title": "Competities Plannen",
+      "description": "Beheer en bekijk eenvoudig aankomende atletiekevenementen en competities."
+    },
+    "registration": {
+      "title": "Eenvoudige Registratie",
+      "description": "Een gestroomlijnd proces voor atleten om zich te registreren voor evenementen."
+    },
+    "results": {
+      "title": "Live Resultaten",
+      "description": "Real-time competitieresultaten beschikbaar voor deelnemers en toeschouwers."
+    }
+  },
+  "cta": {
+    "calendar": "BEKIJK KALENDER",
+    "results": "BEKIJK RESULTATEN"
+  }
+}
