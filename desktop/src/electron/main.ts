@@ -5,6 +5,9 @@ app.on('ready', () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      preload: getPrealoadPath(),
+    },
   });
 
   if (process.env.NODE_ENV === 'development') {

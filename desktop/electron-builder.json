@@ -2,6 +2,7 @@
   "appId": "com.competitionmanager.am-integration",
   "files": ["dist-react", "dist-electron"],
   "icon": "./icon.png",
+  "extraResources": ["dist-electron/preload.cjs"],
   "mac": {
     "target": "dmg"
   },
