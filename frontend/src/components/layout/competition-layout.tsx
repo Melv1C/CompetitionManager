@@ -13,7 +13,7 @@ export function CompetitionLayout() {
   const eid = useCompetitionEid();
   const location = useLocation();
   const navigate = useNavigate();
-  const { t } = useTranslation('navigation');
+  const { t } = useTranslation();
 
   const competition = useCompetition(eid);
   const inscription = useCompetitionInscriptions(eid);
@@ -87,7 +87,7 @@ export function CompetitionLayout() {
               className="w-full md:w-auto"
               onClick={() => navigate(`/competitions/${eid}/register`)}
             >
-              {t('registerNow')}
+              {t('inscriptions:registerNow')}
             </Button>
           )}
         </div>
@@ -96,10 +96,10 @@ export function CompetitionLayout() {
       {/* Navigation Tabs */}
       <Tabs value={getCurrentTab()} onValueChange={handleTabChange}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="home">{t('home')}</TabsTrigger>
-          <TabsTrigger value="schedule">{t('schedule')}</TabsTrigger>
-          <TabsTrigger value="participants">{t('participants')}</TabsTrigger>
-          <TabsTrigger value="results">{t('results')}</TabsTrigger>
+          <TabsTrigger value="home">{t('navigation.home')}</TabsTrigger>
+          <TabsTrigger value="schedule">{t('schedule.title')}</TabsTrigger>
+          <TabsTrigger value="participants">{t('participants.title')}</TabsTrigger>
+          <TabsTrigger value="results">{t('results.title')}</TabsTrigger>
         </TabsList>
       </Tabs>
 

@@ -1,49 +1,33 @@
 {
-  "competitionStatus": {
-    "completed": "Completed",
-    "ongoing": "Ongoing",
-    "upcoming": "Upcoming"
-  },
-  "eventGroup": {
-    "combined": "Combined Events",
-    "hurdles": "Hurdles",
-    "jump": "Jump",
-    "long": "Long Distance",
-    "middle": "Middle Distance",
-    "relay": "Relay",
-    "sprint": "Sprint",
-    "throw": "Throw"
-  },
-  "eventType": {
-    "distance": "Distance",
-    "height": "Height",
-    "points": "Points",
-    "time": "Time"
-  },
-  "inscriptionStatus": {
-    "CANCELLED": "Cancelled",
-    "PENDING_PAYMENT": "Pending Payment",
-    "REGISTERED": "Registered",
-    "REJECTED": "Rejected",
-    "SELECTED": "Selected"
-  },
-  "invitationStatus": {
-    "accepted": "Accepted",
-    "declined": "Declined",
-    "pending": "Pending"
-  },
-  "memberRole": {
-    "admin": "Admin",
-    "member": "Member",
-    "owner": "Owner"
-  },
-  "presenceStatus": {
-    "ABSENT": "Absent",
-    "PRESENT": "Present",
-    "UNKNOWN": "Unknown"
-  },
-  "userRole": {
-    "admin": "Admin",
-    "user": "User"
-  }
+  "competitionStatus.completed": "Completed",
+  "competitionStatus.ongoing": "Ongoing",
+  "competitionStatus.upcoming": "Upcoming",
+  "eventGroup.combined": "Combined Events",
+  "eventGroup.hurdles": "Hurdles",
+  "eventGroup.jump": "Jump",
+  "eventGroup.long": "Long Distance",
+  "eventGroup.middle": "Middle Distance",
+  "eventGroup.relay": "Relay",
+  "eventGroup.sprint": "Sprint",
+  "eventGroup.throw": "Throw",
+  "eventType.distance": "Distance",
+  "eventType.height": "Height",
+  "eventType.points": "Points",
+  "eventType.time": "Time",
+  "inscriptionStatus.CANCELLED": "Cancelled",
+  "inscriptionStatus.PENDING_PAYMENT": "Pending Payment",
+  "inscriptionStatus.REGISTERED": "Registered",
+  "inscriptionStatus.REJECTED": "Rejected",
+  "inscriptionStatus.SELECTED": "Selected",
+  "invitationStatus.accepted": "Accepted",
+  "invitationStatus.declined": "Declined",
+  "invitationStatus.pending": "Pending",
+  "memberRole.admin": "Admin",
+  "memberRole.member": "Member",
+  "memberRole.owner": "Owner",
+  "presenceStatus.ABSENT": "Absent",
+  "presenceStatus.PRESENT": "Present",
+  "presenceStatus.UNKNOWN": "Unknown",
+  "userRole.admin": "Admin",
+  "userRole.user": "User"
 }

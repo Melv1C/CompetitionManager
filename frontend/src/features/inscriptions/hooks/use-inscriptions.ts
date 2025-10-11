@@ -21,11 +21,11 @@ export function useRequiredCompetitionInscriptions(eid: Cuid) {
   const inscriptions = useCompetitionInscriptions(eid);
 
   if (inscriptions.isPending) {
-    throw new Error(t('loading.competition'));
+    throw new Error(t('messages:loading.inscriptions'));
   }
 
   if (inscriptions.isError) {
-    throw new Error(t('error.competition'));
+    throw new Error(t('messages:error.inscriptions'));
   }
 
   return inscriptions.data;

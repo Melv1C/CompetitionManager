@@ -15,7 +15,7 @@ import { Link } from 'react-router-dom';
 
 export function CompetitionSchedulePage() {
   const eid = useCompetitionEid();
-  const { t } = useTranslation('common');
+  const { t } = useTranslation();
 
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');

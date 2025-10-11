@@ -1,49 +1,33 @@
 {
-  "competitionStatus": {
-    "completed": "Terminé",
-    "ongoing": "En cours",
-    "upcoming": "À venir"
-  },
-  "eventGroup": {
-    "combined": "Épreuves combinées",
-    "hurdles": "Haies",
-    "jump": "Saut",
-    "long": "Longue distance",
-    "middle": "Moyenne distance",
-    "relay": "Relais",
-    "sprint": "Sprint",
-    "throw": "Lancer"
-  },
-  "eventType": {
-    "distance": "Distance",
-    "height": "Hauteur",
-    "points": "Points",
-    "time": "Temps"
-  },
-  "inscriptionStatus": {
-    "CANCELLED": "Annulée",
-    "PENDING_PAYMENT": "En attente de paiement",
-    "REGISTERED": "Inscrit",
-    "REJECTED": "Refusée",
-    "SELECTED": "Sélectionné"
-  },
-  "invitationStatus": {
-    "accepted": "Acceptée",
-    "declined": "Refusée",
-    "pending": "En attente"
-  },
-  "memberRole": {
-    "admin": "Administrateur",
-    "member": "Membre",
-    "owner": "Propriétaire"
-  },
-  "presenceStatus": {
-    "ABSENT": "Absent",
-    "PRESENT": "Présent",
-    "UNKNOWN": "Inconnu"
-  },
-  "userRole": {
-    "admin": "Administrateur",
-    "user": "Utilisateur"
-  }
+  "competitionStatus.completed": "Terminé",
+  "competitionStatus.ongoing": "En cours",
+  "competitionStatus.upcoming": "À venir",
+  "eventGroup.combined": "Épreuves combinées",
+  "eventGroup.hurdles": "Haies",
+  "eventGroup.jump": "Saut",
+  "eventGroup.long": "Longue distance",
+  "eventGroup.middle": "Moyenne distance",
+  "eventGroup.relay": "Relais",
+  "eventGroup.sprint": "Sprint",
+  "eventGroup.throw": "Lancer",
+  "eventType.distance": "Distance",
+  "eventType.height": "Hauteur",
+  "eventType.points": "Points",
+  "eventType.time": "Temps",
+  "inscriptionStatus.CANCELLED": "Annulée",
+  "inscriptionStatus.PENDING_PAYMENT": "En attente de paiement",
+  "inscriptionStatus.REGISTERED": "Inscrit",
+  "inscriptionStatus.REJECTED": "Refusée",
+  "inscriptionStatus.SELECTED": "Sélectionné",
+  "invitationStatus.accepted": "Acceptée",
+  "invitationStatus.declined": "Refusée",
+  "invitationStatus.pending": "En attente",
+  "memberRole.admin": "Administrateur",
+  "memberRole.member": "Membre",
+  "memberRole.owner": "Propriétaire",
+  "presenceStatus.ABSENT": "Absent",
+  "presenceStatus.PRESENT": "Présent",
+  "presenceStatus.UNKNOWN": "Inconnu",
+  "userRole.admin": "Administrateur",
+  "userRole.user": "Utilisateur"
 }

@@ -44,10 +44,10 @@ export function AdminLayout() {
   const { user, isPending } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
-  const { t } = useTranslation('navigation');
+  const { t } = useTranslation();
   const navItems = [
     {
-      title: t('overview'),
+      title: t('navigation:overview'),
       url: '/admin',
       icon: Home,
     },
@@ -62,22 +62,22 @@ export function AdminLayout() {
       icon: Trophy,
     },
     {
-      title: t('database'),
+      title: t('navigation:database'),
       url: '/admin/database',
       icon: Database,
     },
     {
-      title: t('logs'),
+      title: t('navigation:logs'),
       url: '/admin/logs',
       icon: FileText,
     },
     {
-      title: t('analytics'),
+      title: t('navigation:analytics'),
       url: '/admin/analytics',
       icon: BarChart3,
     },
     {
-      title: t('settings'),
+      title: t('navigation:settings'),
       url: '/admin/settings',
       icon: Settings,
     },
@@ -112,7 +112,7 @@ export function AdminLayout() {
       <Sidebar collapsible="icon">
         <SidebarContent>
           <SidebarGroup>
-            <SidebarGroupLabel>{t('adminPanel')}</SidebarGroupLabel>
+            <SidebarGroupLabel>{t('navigation:adminPanel')}</SidebarGroupLabel>
             <SidebarGroupContent>
               <SidebarMenu>
                 {navItems.map(item => (
@@ -136,7 +136,7 @@ export function AdminLayout() {
                   <SidebarMenuButton asChild>
                     <Link to="/" className="flex items-center gap-2">
                       <ArrowLeft className="size-4" />
-                      <span>{t('backToSite')}</span>
+                      <span>{t('navigation:backToSite')}</span>
                     </Link>
                   </SidebarMenuButton>
                 </SidebarMenuItem>
@@ -189,7 +189,7 @@ export function AdminLayout() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={handleSignOut}>
                     <LogOut />
-                    {t('signOut')}
+                    {t('auth:signOut')}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>

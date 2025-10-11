@@ -1,23 +1,14 @@
 {
+  "adminDashboard": "Tableau de bord administrateur",
   "adminPanel": "Panneau d'administration",
   "analytics": "Analyses",
   "backToSite": "Retour au site",
-  "competitionLoadError": "Erreur lors du chargement des données de la compétition",
-  "competitions": "Compétitions",
-  "confirmations": "Confirmations",
   "database": "Base de données",
   "home": "Accueil",
-  "inscriptions": "Inscriptions",
   "logs": "Journaux",
   "members": "Membres",
-  "organizationPanel": "Panneau de l'organisation",
-  "organizations": "Organisations",
+  "organizationDashboard": "Tableau de bord organisation",
   "overview": "Aperçu",
-  "participants": "Participants",
-  "registerNow": "S'inscrire maintenant",
-  "results": "Résultats",
-  "schedule": "Programme",
-  "settings": "Paramètres",
-  "signOut": "Se déconnecter",
-  "users": "Utilisateurs"
+  "profile": "Profil",
+  "settings": "Paramètres"
 }

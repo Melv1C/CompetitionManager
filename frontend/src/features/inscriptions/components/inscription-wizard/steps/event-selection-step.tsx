@@ -12,7 +12,7 @@ import { useTranslation } from 'react-i18next';
 import { useInscriptionFormStore } from '../../../store/inscription-form-store';
 
 export function EventSelectionStep() {
-  const { t } = useTranslation(['inscriptions']);
+  const { t } = useTranslation();
   const eid = useCompetitionEid();
   const competition = useRequiredCompetition(eid);
 
@@ -43,7 +43,7 @@ export function EventSelectionStep() {
       <div className="max-w-2xl mx-auto">
         {eligibleEvents.length === 0 ? (
           <div className="text-center py-8">
-            <p className="text-muted-foreground">{t('noEventsAvailable')}</p>
+            <p className="text-muted-foreground">{t('inscriptions:noEventsAvailable')}</p>
           </div>
         ) : (
           <div className="space-y-4">

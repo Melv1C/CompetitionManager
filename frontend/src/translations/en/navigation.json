@@ -1,23 +1,14 @@
 {
+  "adminDashboard": "Admin Dashboard",
   "adminPanel": "Admin Panel",
   "analytics": "Analytics",
   "backToSite": "Back to Site",
-  "competitionLoadError": "Error loading competition data",
-  "competitions": "Competitions",
-  "confirmations": "Confirmations",
   "database": "Database",
   "home": "Home",
-  "inscriptions": "Inscriptions",
   "logs": "Logs",
   "members": "Members",
-  "organizationPanel": "Organization Panel",
-  "organizations": "Organizations",
+  "organizationDashboard": "Organization Dashboard",
   "overview": "Overview",
-  "participants": "Participants",
-  "registerNow": "Register Now",
-  "results": "Results",
-  "schedule": "Schedule",
-  "settings": "Settings",
-  "signOut": "Sign Out",
-  "users": "Users"
+  "profile": "Profile",
+  "settings": "Settings"
 }

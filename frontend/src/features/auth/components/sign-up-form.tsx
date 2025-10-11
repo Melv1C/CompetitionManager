@@ -30,22 +30,22 @@ import { z } from 'zod';
 export function SignUpForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation(['auth', 'validation', 'messages']);
+  const { t } = useTranslation();
   const signUpSchema = z
     .object({
       name: z.string().min(2, {
-        message: t('nameMinLength', { ns: 'validation' }),
+        message: t('validation:nameMinLength'),
       }),
       email: z.email({
-        message: t('emailInvalid', { ns: 'validation' }),
+        message: t('validation:emailInvalid'),
       }),
       password: z.string().min(8, {
-        message: t('passwordMinLength', { ns: 'validation' }),
+        message: t('validation:passwordMinLength'),
       }),
       confirmPassword: z.string(),
     })
     .refine(data => data.password === data.confirmPassword, {
-      message: t('passwordsNoMatch', { ns: 'validation' }),
+      message: t('validation:passwordsNoMatch'),
       path: ['confirmPassword'],
     });
 
@@ -81,14 +81,14 @@ export function SignUpForm() {
                 localStorage.setItem('bearer_token', ctx.data.token);
               }
             }
-            toast.success(t('accountCreatedSuccess', { ns: 'messages' }));
+            toast.success(t('messages:accountCreatedSuccess'));
             navigate('/');
           },
           onError: ctx => {
             console.error('Sign up error:', ctx.error);
             form.setError('root', {
               type: 'manual',
-              message: ctx.error.message || t('signUpError', { ns: 'messages' }),
+              message: ctx.error.message || t('messages:signUpError'),
             });
           },
         },
@@ -97,7 +97,7 @@ export function SignUpForm() {
       console.error('Sign up error:', error);
       form.setError('root', {
         type: 'manual',
-        message: t('unexpectedError', { ns: 'messages' }),
+        message: t('messages:unexpectedError'),
       });
     } finally {
       setIsLoading(false);
@@ -107,8 +107,8 @@ export function SignUpForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>{t('signUpTitle')}</CardTitle>
-        <CardDescription>{t('signUpDescription')}</CardDescription>
+        <CardTitle>{t('auth:signUpTitle')}</CardTitle>
+        <CardDescription>{t('auth:signUpDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -118,11 +118,11 @@ export function SignUpForm() {
               name="name"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('name')}</FormLabel>
+                  <FormLabel>{t('auth:name')}</FormLabel>
                   <FormControl>
                     <Input
                       type="text"
-                      placeholder={t('enterFullName')}
+                      placeholder={t('auth:enterFullName')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -136,11 +136,11 @@ export function SignUpForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('email')}</FormLabel>
+                  <FormLabel>{t('auth:email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder={t('enterEmail')}
+                      placeholder={t('auth:enterEmail')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -154,11 +154,11 @@ export function SignUpForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('password')}</FormLabel>
+                  <FormLabel>{t('auth:password')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t('enterPassword')}
+                      placeholder={t('auth:enterPassword')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -172,11 +172,11 @@ export function SignUpForm() {
               name="confirmPassword"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('confirmPassword')}</FormLabel>
+                  <FormLabel>{t('auth:confirmPassword')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t('confirmYourPassword')}
+                      placeholder={t('auth:confirmYourPassword')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -189,7 +189,7 @@ export function SignUpForm() {
               <div className="text-sm text-destructive">{form.formState.errors.root.message}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? t('creatingAccount') : t('signUp')}
+              {isLoading ? t('auth:creatingAccount') : t('auth:signUp')}
             </Button>
 
             {env.VITE_HAS_GOOGLE_AUTH && (
@@ -213,7 +213,7 @@ export function SignUpForm() {
                   disabled={isLoading}
                 >
                   <GoogleIcon className="mr-2 h-5 w-5" />
-                  {t('signInWithGoogle', { ns: 'auth' })}
+                  {t('auth:signInWithGoogle')}
                 </Button>
               </>
             )}
@@ -222,9 +222,9 @@ export function SignUpForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          {t('alreadyHaveAccount')}{' '}
+          {t('auth:alreadyHaveAccount')}{' '}
           <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth/sign-in')}>
-            {t('signIn')}
+            {t('auth:signIn')}
           </Button>
         </p>
       </CardFooter>

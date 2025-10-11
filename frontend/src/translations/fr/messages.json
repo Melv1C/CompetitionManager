@@ -1,9 +1,16 @@
 {
   "accountCreatedSuccess": "Compte créé avec succès ! Bienvenue !",
+  "comingSoon": "Bientôt disponible",
+  "contactAdminIfNeeded": "Contacter l'admin si nécessaire",
+  "error.competition": "Erreur de compétition",
+  "error.inscriptions": "Erreur d'inscriptions",
+  "loading.competition": "Chargement de la compétition",
+  "loading.inscriptions": "Chargement des inscriptions",
   "signInError": "Échec de la connexion. Veuillez réessayer.",
   "signInSuccess": "Connexion réussie !",
   "signOutError": "Échec de la déconnexion. Veuillez réessayer.",
   "signOutSuccess": "Déconnexion réussie !",
   "signUpError": "Échec de la création du compte. Veuillez réessayer.",
+  "thisFeatureWillBeImplemented": "Cette fonctionnalité sera implémentée",
   "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
 }

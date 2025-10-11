@@ -15,7 +15,7 @@ import { AthleteTicket } from './athlete-ticket';
 import { getFees, BASE_FEE, VARIABLE_FEE_RATE, getSeasonClub } from '@repo/core/utils';
 
 function RegistrationBasketSkeleton() {
-  const { t } = useTranslation(['inscriptions']);
+  const { t } = useTranslation();
   const { registrations } = useInscriptionFormStore();
 
   return (
@@ -24,9 +24,11 @@ function RegistrationBasketSkeleton() {
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold flex items-center justify-center gap-2">
           <ShoppingCart className="w-6 h-6" />
-          <span>{t('registrationBasket')}</span>
+          <span>{t('inscriptions:registrationBasket')}</span>
         </h1>
-        <p className="text-sm text-muted-foreground">{t('reviewRegistrationsAndProceed')}</p>
+        <p className="text-sm text-muted-foreground">
+          {t('inscriptions:reviewRegistrationsAndProceed')}
+        </p>
       </div>
 
       {/* Skeleton for Registration List */}
@@ -70,7 +72,7 @@ function RegistrationBasketSkeleton() {
       {/* Skeleton for Final Summary */}
       <Card className="border-2">
         <CardHeader className="pb-1 px-3 pt-3">
-          <CardTitle className="text-lg">{t('orderSummary')}</CardTitle>
+          <CardTitle className="text-lg">{t('inscriptions:orderSummary')}</CardTitle>
         </CardHeader>
         <CardContent className="px-3 pb-3 pt-1">
           <div className="space-y-2 mb-3">
@@ -114,7 +116,7 @@ function RegistrationBasketSkeleton() {
 }
 
 export function RegistrationBasket() {
-  const { t } = useTranslation(['inscriptions']);
+  const { t } = useTranslation();
   const eid = useCompetitionEid();
   const navigate = useNavigate();
   const competition = useRequiredCompetition(eid);
@@ -200,12 +202,12 @@ export function RegistrationBasket() {
             <ShoppingCart className="w-8 h-8 text-muted-foreground" />
           </div>
           <div>
-            <h1 className="text-2xl font-bold mb-2">{t('registrationBasket')}</h1>
-            <p className="text-muted-foreground">{t('noRegistrationsInBasket')}</p>
+            <h1 className="text-2xl font-bold mb-2">{t('inscriptions:registrationBasket')}</h1>
+            <p className="text-muted-foreground">{t('inscriptions:noRegistrationsInBasket')}</p>
           </div>
           <Button onClick={goToForm} size="lg">
             <UserPlus className="w-4 h-4 mr-2" />
-            {t('registerFirstAthlete')}
+            {t('inscriptions:registerFirstAthlete')}
           </Button>
         </div>
       </div>
@@ -218,9 +220,11 @@ export function RegistrationBasket() {
       <div className="text-center space-y-2">
         <h1 className="text-2xl font-bold flex items-center justify-center gap-2">
           <ShoppingCart className="w-6 h-6" />
-          <span>{t('registrationBasket')}</span>
+          <span>{t('inscriptions:registrationBasket')}</span>
         </h1>
-        <p className="text-sm text-muted-foreground">{t('reviewRegistrationsAndProceed')}</p>
+        <p className="text-sm text-muted-foreground">
+          {t('inscriptions:reviewRegistrationsAndProceed')}
+        </p>
       </div>
 
       {/* Ticket-style Registration List */}
@@ -240,7 +244,7 @@ export function RegistrationBasket() {
       {/* Final Summary */}
       <Card className="border-2">
         <CardHeader className="pb-1 px-3 pt-3">
-          <CardTitle className="text-lg">{t('orderSummary')}</CardTitle>
+          <CardTitle className="text-lg">{t('inscriptions:orderSummary')}</CardTitle>
         </CardHeader>
         <CardContent className="px-3 pb-3 pt-1">
           {totalAmountToPay > 0 ? (
@@ -255,7 +259,7 @@ export function RegistrationBasket() {
                       <span>
                         {registration.athlete.firstName} {registration.athlete.lastName}{' '}
                         <span className="text-muted-foreground">
-                          ({eventCount} {eventCount === 1 ? t('basket.event') : t('basket.events')})
+                          ({eventCount} {eventCount === 1 ? t('event') : t('events')})
                         </span>
                       </span>
                       <span>€{athleteAmountToPay.toFixed(2)}</span>
@@ -273,14 +277,14 @@ export function RegistrationBasket() {
                 </div>
                 <div className="flex justify-between text-sm">
                   <div className="flex items-center gap-1">
-                    <span>{t('processingFee')}</span>
+                    <span>{t('inscriptions:processingFee')}</span>
                     <Tooltip>
                       <TooltipTrigger asChild>
                         <HelpCircle className="w-3 h-3 text-muted-foreground cursor-help" />
                       </TooltipTrigger>
                       <TooltipContent className="max-w-xs">
                         <p>
-                          {t('processingFeeTooltip', {
+                          {t('inscriptions:processingFeeTooltip', {
                             baseFee: BASE_FEE.toFixed(2),
                             variableFeeRate: (VARIABLE_FEE_RATE * 100).toFixed(0),
                           })}
@@ -310,7 +314,7 @@ export function RegistrationBasket() {
                       <span>
                         {registration.athlete.firstName} {registration.athlete.lastName}{' '}
                         <span className="text-muted-foreground">
-                          ({eventCount} {eventCount === 1 ? t('basket.event') : t('basket.events')})
+                          ({eventCount} {eventCount === 1 ? t('event') : t('events')})
                         </span>
                       </span>
                       <span>€0.00</span>
@@ -334,7 +338,7 @@ export function RegistrationBasket() {
       <div className="space-y-2">
         <Button onClick={goToForm} variant="outline" className="w-full">
           <Plus className="w-4 h-4 mr-2" />
-          {t('addAnotherAthlete')}
+          {t('inscriptions:addAnotherAthlete')}
         </Button>
 
         <Button
@@ -345,10 +349,10 @@ export function RegistrationBasket() {
         >
           {finalTotal > 0 && <CreditCard className="w-4 h-4 mr-2" />}
           {createInscriptions.isPending
-            ? t('processing')
+            ? t('inscriptions:processing')
             : finalTotal > 0
-              ? t('proceedToPayment')
-              : t('confirmRegistration')}
+              ? t('inscriptions:proceedToPayment')
+              : t('inscriptions:confirmRegistration')}
         </Button>
       </div>
     </div>

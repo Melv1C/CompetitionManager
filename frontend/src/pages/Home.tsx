@@ -5,7 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export default function Home() {
-  const { t } = useTranslation(['home']);
+  const { t } = useTranslation();
 
   const features = [
     {

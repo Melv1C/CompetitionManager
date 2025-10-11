@@ -24,21 +24,21 @@ interface UserButtonProps {
 export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
   const { organizations } = useOrganizations();
   const navigate = useNavigate();
-  const { t } = useTranslation(['auth', 'messages']);
+  const { t } = useTranslation();
 
   const handleSignOut = async () => {
     try {
       await authClient.signOut({
         fetchOptions: {
           onSuccess: () => {
-            toast.success(t('signOutSuccess', { ns: 'messages' }));
+            toast.success(t('messages:signOutSuccess'));
             navigate('/');
           },
         },
       });
     } catch (error) {
       console.error('Sign out error:', error);
-      toast.error(t('signOutError', { ns: 'messages' }));
+      toast.error(t('messages:signOutError'));
     }
   };
 
@@ -62,17 +62,17 @@ export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
         <DropdownMenuSeparator />
         <DropdownMenuItem>
           <User className="mr-2 h-4 w-4" />
-          <span>{t('profile')}</span>
+          <span>{t('navigation:profile')}</span>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
-          <span>{t('settings')}</span>
+          <span>{t('navigation:settings')}</span>
         </DropdownMenuItem>
         {organizations.length > 0 && (
           <DropdownMenuItem asChild>
             <Link to="/organization" onClick={onMobileMenuClose}>
               <Building2 className="mr-2 h-4 w-4" />
-              <span>{t('organizationDashboard')}</span>
+              <span>{t('navigation:organizationDashboard')}</span>
             </Link>
           </DropdownMenuItem>
         )}
@@ -80,14 +80,14 @@ export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
           <DropdownMenuItem asChild>
             <Link to="/admin" onClick={onMobileMenuClose}>
               <Shield className="mr-2 h-4 w-4" />
-              <span>{t('adminDashboard')}</span>
+              <span>{t('navigation:adminDashboard')}</span>
             </Link>
           </DropdownMenuItem>
         )}
         <DropdownMenuSeparator />
         <DropdownMenuItem onClick={handleSignOut}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>{t('signOut')}</span>
+          <span>{t('auth:signOut')}</span>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

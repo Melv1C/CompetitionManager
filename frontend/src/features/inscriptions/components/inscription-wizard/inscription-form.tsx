@@ -9,9 +9,9 @@ import {
 } from '@/components/ui/stepper';
 import { ChevronLeft, ChevronRight, Eye, ShoppingCart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { useAthleteBlockStatus } from '../../hooks/use-athlete-registration-status';
 import { useInscriptionFormStore } from '../../store/inscription-form-store';
 import { AthleteSelectionStep, EventSelectionStep, RecordsEntryStep } from './steps';
-import { useAthleteBlockStatus } from '../../hooks/use-athlete-registration-status';
 
 const steps = [
   { id: 1, title: 'Athlete' },
@@ -20,7 +20,7 @@ const steps = [
 ];
 
 export function InscriptionForm() {
-  const { t } = useTranslation('inscriptions');
+  const { t } = useTranslation();
 
   const { currentStep } = useInscriptionFormStore();
 
@@ -43,7 +43,7 @@ export function InscriptionForm() {
 
       {/* Title */}
       <div className="text-center space-y-2">
-        <h1 className="text-3xl font-bold">{t('athleteRegistration')}</h1>
+        <h1 className="text-3xl font-bold">{t('inscriptions:athleteRegistration')}</h1>
         <p className="text-muted-foreground">
           {t('step')} {currentStep} {t('of')} {steps.length}
         </p>
@@ -78,7 +78,7 @@ export function InscriptionForm() {
 }
 
 function InscriptionBasketHeader() {
-  const { t } = useTranslation('inscriptions');
+  const { t } = useTranslation();
   const { goToBasket, hasRegistrations, registrations } = useInscriptionFormStore();
 
   if (!hasRegistrations()) return null;
@@ -89,12 +89,12 @@ function InscriptionBasketHeader() {
         <PopoverTrigger asChild>
           <Button variant="outline" size="sm">
             <ShoppingCart className="w-4 h-4 mr-2" />
-            {registrations.length} {t('athletes')}
+            {registrations.length} {t('inscriptions:athletes')}
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-80">
           <div className="space-y-3">
-            <h4 className="font-medium">{t('registrationBasket')}</h4>
+            <h4 className="font-medium">{t('inscriptions:registrationBasket')}</h4>
             <div className="space-y-2 max-h-40 overflow-y-auto">
               {registrations.map((registration, index) => (
                 <div key={index} className="text-sm">
@@ -109,7 +109,7 @@ function InscriptionBasketHeader() {
             </div>
             <Button onClick={goToBasket} className="w-full" size="sm">
               <Eye className="w-4 h-4 mr-2" />
-              {t('viewBasket')}
+              {t('inscriptions:viewBasket')}
             </Button>
           </div>
         </PopoverContent>
@@ -119,7 +119,7 @@ function InscriptionBasketHeader() {
 }
 
 function InscriptionFormNavigation() {
-  const { t } = useTranslation(['buttons', 'inscriptions']);
+  const { t } = useTranslation();
   const { currentStep, currentAthlete, nextStep, previousStep, canProceedToNextStep } =
     useInscriptionFormStore();
   const { isBlocked } = useAthleteBlockStatus(currentAthlete);
@@ -137,11 +137,11 @@ function InscriptionFormNavigation() {
     <div className="flex justify-between">
       <Button variant="outline" onClick={previousStep} disabled={currentStep === 1}>
         <ChevronLeft className="w-4 h-4 mr-1" />
-        {t('back')}
+        {t('buttons:back')}
       </Button>
 
       <Button onClick={handleNext} disabled={!canProceed}>
-        {currentStep === 3 ? t('addToBasket', { ns: 'inscriptions' }) : t('next')}
+        {currentStep === 3 ? t('inscriptions:addToBasket') : t('buttons:next')}
         <ChevronRight className="w-4 h-4 ml-1" />
       </Button>
     </div>

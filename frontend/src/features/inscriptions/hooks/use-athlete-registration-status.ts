@@ -20,7 +20,7 @@ type AthleteBlockStatus =
  * Hook to check if an athlete is blocked from registration and get the translated reason
  */
 export function useAthleteBlockStatus(athlete?: Athlete): AthleteBlockStatus {
-  const { t } = useTranslation('inscriptions');
+  const { t } = useTranslation();
   const eid = useCompetitionEid();
   const competition = useRequiredCompetition(eid);
   const inscriptions = useCompetitionInscriptions(eid);
@@ -51,7 +51,7 @@ export function useAthleteBlockStatus(athlete?: Athlete): AthleteBlockStatus {
   if (isBlocked) {
     return {
       isBlocked: true,
-      reason: t('athleteAlreadyRegistered'),
+      reason: t('inscriptions:athleteAlreadyRegistered'),
     };
   }
 
@@ -61,7 +61,7 @@ export function useAthleteBlockStatus(athlete?: Athlete): AthleteBlockStatus {
   if (isAthleteInCurrentRegistrations) {
     return {
       isBlocked: true,
-      reason: t('athleteInCurrentRegistrations'),
+      reason: t('inscriptions:athleteInCurrentRegistrations'),
     };
   }
 
@@ -71,7 +71,7 @@ export function useAthleteBlockStatus(athlete?: Athlete): AthleteBlockStatus {
   if (!hasBibForSeason) {
     return {
       isBlocked: true,
-      reason: t('athleteNoBibForSeason'),
+      reason: t('inscriptions:athleteNoBibForSeason'),
     };
   }
 
@@ -86,7 +86,7 @@ export function useAthleteBlockStatus(athlete?: Athlete): AthleteBlockStatus {
   if (!isCompetitionOpenForAthleteClub) {
     return {
       isBlocked: true,
-      reason: t('competitionNotOpenForAthleteClubs', {
+      reason: t('inscriptions:competitionNotOpenForAthleteClubs', {
         clubs: competition.allowedClubs.map(c => c.name).join(', '),
       }),
     };

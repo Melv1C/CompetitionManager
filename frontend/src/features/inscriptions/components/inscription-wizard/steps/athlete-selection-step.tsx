@@ -51,7 +51,7 @@ export function AthleteSelectionStep() {
 }
 
 function AthleteDisplay() {
-  const { t } = useTranslation('inscriptions');
+  const { t } = useTranslation();
   const { currentAthlete, setCurrentAthlete } = useInscriptionFormStore();
   const eid = useCompetitionEid();
   const competition = useRequiredCompetition(eid);
@@ -63,7 +63,7 @@ function AthleteDisplay() {
     <div className={'w-full'}>
       <Card>
         <CardHeader>
-          <CardTitle>{t('athleteSelected')}</CardTitle>
+          <CardTitle>{t('inscriptions:athleteSelected')}</CardTitle>
         </CardHeader>
         <CardContent>
           <AthleteCard
@@ -75,7 +75,7 @@ function AthleteDisplay() {
             <Alert variant="destructive">
               <AlertTriangle className="h-4 w-4" />
               <AlertTitle>{reason}</AlertTitle>
-              <AlertDescription>{t('contactAdminIfNeeded')}</AlertDescription>
+              <AlertDescription>{t('messages:contactAdminIfNeeded')}</AlertDescription>
             </Alert>
           )}
           <CardAction>
@@ -86,7 +86,7 @@ function AthleteDisplay() {
               className="gap-2"
             >
               <Edit2 className="h-3 w-3" />
-              {t('changeAthlete')}
+              {t('inscriptions:changeAthlete')}
             </Button>
           </CardAction>
         </CardContent>

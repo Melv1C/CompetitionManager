@@ -30,14 +30,14 @@ import { z } from 'zod';
 export function SignInForm() {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
-  const { t } = useTranslation(['auth', 'validation', 'messages']);
+  const { t } = useTranslation();
   // Create schema with translated messages
   const signInSchema = z.object({
     email: z.email({
-      message: t('emailInvalid', { ns: 'validation' }),
+      message: t('validation:emailInvalid'),
     }),
     password: z.string().min(8, {
-      message: t('passwordMinLength', { ns: 'validation' }),
+      message: t('validation:passwordMinLength'),
     }),
   });
 
@@ -70,14 +70,14 @@ export function SignInForm() {
                 localStorage.setItem('bearer_token', ctx.data.token);
               }
             }
-            toast.success(t('signInSuccess', { ns: 'messages' }));
+            toast.success(t('messages:signInSuccess'));
             navigate('/');
           },
           onError: ctx => {
             console.error('Sign in error:', ctx.error);
             form.setError('root', {
               type: 'manual',
-              message: ctx.error.message || t('signInError', { ns: 'messages' }),
+              message: ctx.error.message || t('messages:signInError'),
             });
           },
         },
@@ -86,7 +86,7 @@ export function SignInForm() {
       console.error('Sign in error:', error);
       form.setError('root', {
         type: 'manual',
-        message: t('unexpectedError', { ns: 'messages' }),
+        message: t('messages:unexpectedError'),
       });
     } finally {
       setIsLoading(false);
@@ -96,8 +96,8 @@ export function SignInForm() {
   return (
     <Card className="w-full max-w-md mx-auto">
       <CardHeader>
-        <CardTitle>{t('signInTitle')}</CardTitle>
-        <CardDescription>{t('signInDescription')}</CardDescription>
+        <CardTitle>{t('auth:signInTitle')}</CardTitle>
+        <CardDescription>{t('auth:signInDescription')}</CardDescription>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -107,11 +107,11 @@ export function SignInForm() {
               name="email"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('email')}</FormLabel>
+                  <FormLabel>{t('auth:email')}</FormLabel>
                   <FormControl>
                     <Input
                       type="email"
-                      placeholder={t('enterEmail')}
+                      placeholder={t('auth:enterEmail')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -125,11 +125,11 @@ export function SignInForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('password')}</FormLabel>
+                  <FormLabel>{t('auth:password')}</FormLabel>
                   <FormControl>
                     <Input
                       type="password"
-                      placeholder={t('enterPassword')}
+                      placeholder={t('auth:enterPassword')}
                       {...field}
                       disabled={isLoading}
                     />
@@ -142,7 +142,7 @@ export function SignInForm() {
               <div className="text-sm text-destructive">{form.formState.errors.root.message}</div>
             )}
             <Button type="submit" className="w-full" disabled={isLoading}>
-              {isLoading ? t('signingIn') : t('signIn')}
+              {isLoading ? t('auth:signingIn') : t('auth:signIn')}
             </Button>
 
             {env.VITE_HAS_GOOGLE_AUTH && (
@@ -166,7 +166,7 @@ export function SignInForm() {
                   disabled={isLoading}
                 >
                   <GoogleIcon className="mr-2 h-5 w-5" />
-                  {t('signInWithGoogle', { ns: 'auth' })}
+                  {t('auth:signInWithGoogle')}
                 </Button>
               </>
             )}
@@ -175,9 +175,9 @@ export function SignInForm() {
       </CardContent>
       <CardFooter className="flex justify-center">
         <p className="text-sm text-muted-foreground">
-          {t('dontHaveAccount')}{' '}
+          {t('auth:dontHaveAccount')}{' '}
           <Button variant="link" className="p-0 h-auto" onClick={() => navigate('/auth/sign-up')}>
-            {t('signUp')}
+            {t('auth:signUp')}
           </Button>
         </p>
       </CardFooter>

@@ -39,7 +39,7 @@ export function AthleteSearch({
   className,
   referenceDate,
 }: AthleteSearchProps) {
-  const { t } = useTranslation('athletes');
+  const { t } = useTranslation();
   const [searchTerm, setSearchTerm] = useState('');
   const [debouncedSearchTerm, setDebouncedSearchTerm] = useState('');
   const [showResults, setShowResults] = useState(false);
@@ -141,7 +141,7 @@ export function AthleteSearch({
         <Input
           ref={inputRef}
           type="text"
-          placeholder={t('searchAthletes')}
+          placeholder={t('athletes:searchAthletes')}
           value={searchTerm}
           onChange={handleInputChange}
           disabled={disabled}
@@ -175,14 +175,14 @@ export function AthleteSearch({
               {/* Error State */}
               {error && (
                 <div className="p-6 text-center text-sm text-muted-foreground">
-                  {t('errorSearchingAthletes')}
+                  {t('athletes:errorSearchingAthletes')}
                 </div>
               )}
 
               {/* No Results */}
               {!isLoading && !error && athletes.length === 0 && (
                 <div className="p-6 text-center text-sm text-muted-foreground">
-                  {t('noAthletesFound')}
+                  {t('athletes:noAthletesFound')}
                 </div>
               )}
 
