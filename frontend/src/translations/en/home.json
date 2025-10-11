@@ -1,23 +1,23 @@
 {
-  "title": "Powerful Competition Management",
-  "subtitle": "Manage and Track Athletic Competitions with Ease!",
-  "description": "Register, compete, and view results all in one place. Simplifying competition management for athletes, organizers, and spectators.",
-  "features": {
-    "schedule": {
-      "title": "Schedule Competitions",
-      "description": "Easily manage and view upcoming athletic events and competitions."
-    },
-    "registration": {
-      "title": "Simple Registration",
-      "description": "A streamlined process for athletes to register for events."
-    },
-    "results": {
-      "title": "Live Results",
-      "description": "Real-time competition results available to participants and spectators."
-    }
-  },
   "cta": {
     "calendar": "VIEW CALENDAR",
     "results": "VIEW RESULTS"
-  }
+  },
+  "description": "Register, compete, and view results all in one place. Simplifying competition management for athletes, organizers, and spectators.",
+  "features": {
+    "registration": {
+      "description": "A streamlined process for athletes to register for events.",
+      "title": "Simple Registration"
+    },
+    "results": {
+      "description": "Real-time competition results available to participants and spectators.",
+      "title": "Live Results"
+    },
+    "schedule": {
+      "description": "Easily manage and view upcoming athletic events and competitions.",
+      "title": "Schedule Competitions"
+    }
+  },
+  "subtitle": "Manage and Track Athletic Competitions with Ease!",
+  "title": "Powerful Competition Management"
 }

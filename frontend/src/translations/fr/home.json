@@ -1,23 +1,23 @@
 {
-  "title": "Gestion Puissante des Compétitions",
-  "subtitle": "Gérez et Suivez les Compétitions Athlétiques en Toute Simplicité !",
-  "description": "Inscrivez-vous, participez et consultez les résultats en un seul endroit. Simplification de la gestion des compétitions pour les athlètes, les organisateurs et les spectateurs.",
-  "features": {
-    "schedule": {
-      "title": "Planifier les Compétitions",
-      "description": "Gérez et consultez facilement les événements et compétitions sportives à venir."
-    },
-    "registration": {
-      "title": "Inscription Simple",
-      "description": "Un processus simplifié permettant aux athlètes de s'inscrire aux événements."
-    },
-    "results": {
-      "title": "Résultats en Direct",
-      "description": "Résultats des compétitions en temps réel disponibles pour les participants et les spectateurs."
-    }
-  },
   "cta": {
     "calendar": "VOIR LE CALENDRIER",
     "results": "VOIR LES RÉSULTATS"
-  }
+  },
+  "description": "Inscrivez-vous, participez et consultez les résultats en un seul endroit. Simplification de la gestion des compétitions pour les athlètes, les organisateurs et les spectateurs.",
+  "features": {
+    "registration": {
+      "description": "Un processus simplifié permettant aux athlètes de s'inscrire aux événements.",
+      "title": "Inscription Simple"
+    },
+    "results": {
+      "description": "Résultats des compétitions en temps réel disponibles pour les participants et les spectateurs.",
+      "title": "Résultats en Direct"
+    },
+    "schedule": {
+      "description": "Gérez et consultez facilement les événements et compétitions sportives à venir.",
+      "title": "Planifier les Compétitions"
+    }
+  },
+  "subtitle": "Gérez et Suivez les Compétitions Athlétiques en Toute Simplicité !",
+  "title": "Gestion Puissante des Compétitions"
 }
