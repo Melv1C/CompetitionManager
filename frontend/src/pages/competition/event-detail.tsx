@@ -63,7 +63,8 @@ export function CompetitionEventDetailPage() {
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{competitionEvent.name}</h1>
             <p className="text-muted-foreground">
-              {participantCount} {participantCount === 1 ? t('participants.title') : t('participants.title.plural')}
+              {participantCount}{' '}
+              {participantCount === 1 ? t('participants.title') : t('participants.title.plural')}
             </p>
           </div>
         </div>
@@ -72,14 +73,16 @@ export function CompetitionEventDetailPage() {
       {/* Tabs */}
       <Tabs defaultValue="registrations" className="w-full">
         <TabsList className="grid w-full grid-cols-2">
-          <TabsTrigger value="registrations">
-            {t('registrations.text').toUpperCase()}
-          </TabsTrigger>
+          <TabsTrigger value="registrations">{t('registrations.text').toUpperCase()}</TabsTrigger>
           <TabsTrigger value="results">{t('results.text').toUpperCase()}</TabsTrigger>
         </TabsList>
 
         <TabsContent value="registrations" className="mt-6">
-          <ParticipantsTable inscriptions={eventInscriptions} competitionEvent={competitionEvent} referenceDate={competition.startDate} />
+          <ParticipantsTable
+            inscriptions={eventInscriptions}
+            competitionEvent={competitionEvent}
+            referenceDate={competition.startDate}
+          />
         </TabsContent>
 
         <TabsContent value="results" className="mt-6">
@@ -98,7 +101,11 @@ interface ParticipantsTableProps {
   referenceDate: Date;
 }
 
-function ParticipantsTable({ inscriptions, competitionEvent, referenceDate }: ParticipantsTableProps) {
+function ParticipantsTable({
+  inscriptions,
+  competitionEvent,
+  referenceDate,
+}: ParticipantsTableProps) {
   const { t } = useTranslation();
 
   if (inscriptions.length === 0) {
