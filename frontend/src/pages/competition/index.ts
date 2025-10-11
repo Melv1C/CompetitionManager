@@ -1,4 +1,5 @@
+export { CompetitionEventDetailPage } from './event-detail';
 export { CompetitionHomePage } from './home';
-export { CompetitionSchedulePage } from './schedule';
 export { CompetitionParticipantsPage } from './participants';
 export { CompetitionResultsPage } from './results';
+export { CompetitionSchedulePage } from './schedule';
