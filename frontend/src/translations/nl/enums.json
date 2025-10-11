@@ -1,49 +1,33 @@
 {
-  "competitionStatus": {
-    "completed": "Voltooid",
-    "ongoing": "Bezig",
-    "upcoming": "Aankomend"
-  },
-  "eventGroup": {
-    "combined": "Meerkamp",
-    "hurdles": "Horden",
-    "jump": "Springen",
-    "long": "Lange afstand",
-    "middle": "Middenafstand",
-    "relay": "Estafette",
-    "sprint": "Sprint",
-    "throw": "Werpen"
-  },
-  "eventType": {
-    "distance": "Afstand",
-    "height": "Hoogte",
-    "points": "Punten",
-    "time": "Tijd"
-  },
-  "inscriptionStatus": {
-    "CANCELLED": "Geannuleerd",
-    "PENDING_PAYMENT": "Wacht op betaling",
-    "REGISTERED": "Geregistreerd",
-    "REJECTED": "Afgewezen",
-    "SELECTED": "Geselecteerd"
-  },
-  "invitationStatus": {
-    "accepted": "Geaccepteerd",
-    "declined": "Geweigerd",
-    "pending": "In afwachting"
-  },
-  "memberRole": {
-    "admin": "Beheerder",
-    "member": "Lid",
-    "owner": "Eigenaar"
-  },
-  "presenceStatus": {
-    "ABSENT": "Afwezig",
-    "PRESENT": "Aanwezig",
-    "UNKNOWN": "Onbekend"
-  },
-  "userRole": {
-    "admin": "Beheerder",
-    "user": "Gebruiker"
-  }
+  "competitionStatus.completed": "Voltooid",
+  "competitionStatus.ongoing": "Bezig",
+  "competitionStatus.upcoming": "Aankomend",
+  "eventGroup.combined": "Meerkamp",
+  "eventGroup.hurdles": "Horden",
+  "eventGroup.jump": "Springen",
+  "eventGroup.long": "Lange afstand",
+  "eventGroup.middle": "Middenafstand",
+  "eventGroup.relay": "Estafette",
+  "eventGroup.sprint": "Sprint",
+  "eventGroup.throw": "Werpen",
+  "eventType.distance": "Afstand",
+  "eventType.height": "Hoogte",
+  "eventType.points": "Punten",
+  "eventType.time": "Tijd",
+  "inscriptionStatus.CANCELLED": "Geannuleerd",
+  "inscriptionStatus.PENDING_PAYMENT": "Wacht op betaling",
+  "inscriptionStatus.REGISTERED": "Geregistreerd",
+  "inscriptionStatus.REJECTED": "Afgewezen",
+  "inscriptionStatus.SELECTED": "Geselecteerd",
+  "invitationStatus.accepted": "Geaccepteerd",
+  "invitationStatus.declined": "Geweigerd",
+  "invitationStatus.pending": "In afwachting",
+  "memberRole.admin": "Beheerder",
+  "memberRole.member": "Lid",
+  "memberRole.owner": "Eigenaar",
+  "presenceStatus.ABSENT": "Afwezig",
+  "presenceStatus.PRESENT": "Aanwezig",
+  "presenceStatus.UNKNOWN": "Onbekend",
+  "userRole.admin": "Beheerder",
+  "userRole.user": "Gebruiker"
 }

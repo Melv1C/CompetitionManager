@@ -1,9 +1,16 @@
 {
   "accountCreatedSuccess": "Account succesvol aangemaakt! Welkom!",
+  "comingSoon": "Binnenkort beschikbaar",
+  "contactAdminIfNeeded": "Neem contact op met admin indien nodig",
+  "error.competition": "Fout bij wedstrijd",
+  "error.inscriptions": "Fout bij inschrijvingen",
+  "loading.competition": "Wedstrijd laden",
+  "loading.inscriptions": "Inschrijvingen laden",
   "signInError": "Inloggen mislukt. Probeer het opnieuw.",
   "signInSuccess": "Succesvol ingelogd!",
   "signOutError": "Uitloggen mislukt. Probeer het opnieuw.",
   "signOutSuccess": "Succesvol uitgelogd!",
   "signUpError": "Account aanmaken mislukt. Probeer het opnieuw.",
+  "thisFeatureWillBeImplemented": "Deze functie wordt geïmplementeerd",
   "unexpectedError": "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
 }

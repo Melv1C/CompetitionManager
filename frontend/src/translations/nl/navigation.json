@@ -1,23 +1,14 @@
 {
+  "adminDashboard": "Beheerdersdashboard",
   "adminPanel": "Beheerderspaneel",
   "analytics": "Statistieken",
   "backToSite": "Terug naar site",
-  "competitionLoadError": "Fout bij het laden van wedstrijdgegevens",
-  "competitions": "Wedstrijden",
-  "confirmations": "Bevestigingen",
   "database": "Database",
   "home": "Home",
-  "inscriptions": "Inschrijvingen",
   "logs": "Logs",
   "members": "Leden",
-  "organizationPanel": "Organisatiepaneel",
-  "organizations": "Organisaties",
+  "organizationDashboard": "Organisatiedashboard",
   "overview": "Overzicht",
-  "participants": "Deelnemers",
-  "registerNow": "Schrijf je nu in",
-  "results": "Uitslagen",
-  "schedule": "Programma",
-  "settings": "Instellingen",
-  "signOut": "Uitloggen",
-  "users": "Gebruikers"
+  "profile": "Profiel",
+  "settings": "Instellingen"
 }
