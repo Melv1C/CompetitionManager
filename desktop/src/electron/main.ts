@@ -1,5 +1,10 @@
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import { connectAmDb } from './connect-am.js';
+import { getPrealoadPath } from './pathResolver.js';
+import { ipcHandler } from './utils.js';
+import { exportCompetition } from './functions/export.js';
+import { importCompetition } from './functions/import.js';
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
@@ -15,4 +20,9 @@ app.on('ready', () => {
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'));
   }
+  connectAmDb();
+
+  ipcHandler('importCompetition', importCompetition);
+
+  ipcHandler('exportCompetition', exportCompetition);
 });
