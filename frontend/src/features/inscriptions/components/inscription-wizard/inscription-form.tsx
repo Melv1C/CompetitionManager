@@ -102,7 +102,7 @@ function InscriptionBasketHeader() {
                     {registration.athlete.firstName} {registration.athlete.lastName}
                   </div>
                   <div className="text-muted-foreground">
-                    {registration.inscriptions.length} {t('events')}
+                    {registration.inscriptions.length} {t('events.text')}
                   </div>
                 </div>
               ))}

@@ -180,11 +180,6 @@ export function CompetitionsTable({ competitions, isLoading }: CompetitionsTable
                       >
                         {comp.name}
                       </Link>
-                      {comp.description && (
-                        <p className="line-clamp-1 text-xs text-muted-foreground">
-                          {comp.description}
-                        </p>
-                      )}
                     </div>
                   </TableCell>
                   <TableCell className="w-[160px]">

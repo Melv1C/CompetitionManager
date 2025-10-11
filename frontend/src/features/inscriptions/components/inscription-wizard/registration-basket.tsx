@@ -259,7 +259,7 @@ export function RegistrationBasket() {
                       <span>
                         {registration.athlete.firstName} {registration.athlete.lastName}{' '}
                         <span className="text-muted-foreground">
-                          ({eventCount} {eventCount === 1 ? t('event') : t('events')})
+                          ({eventCount} {eventCount === 1 ? t('event.text') : t('events.text')})
                         </span>
                       </span>
                       <span>€{athleteAmountToPay.toFixed(2)}</span>
@@ -314,7 +314,7 @@ export function RegistrationBasket() {
                       <span>
                         {registration.athlete.firstName} {registration.athlete.lastName}{' '}
                         <span className="text-muted-foreground">
-                          ({eventCount} {eventCount === 1 ? t('event') : t('events')})
+                          ({eventCount} {eventCount === 1 ? t('event.text') : t('events.text')})
                         </span>
                       </span>
                       <span>€0.00</span>

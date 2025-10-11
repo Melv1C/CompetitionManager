@@ -96,7 +96,7 @@ export function CompetitionLayout() {
       {/* Navigation Tabs */}
       <Tabs value={getCurrentTab()} onValueChange={handleTabChange}>
         <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="home">{t('navigation.home')}</TabsTrigger>
+          <TabsTrigger value="home">{t('navigation:home')}</TabsTrigger>
           <TabsTrigger value="schedule">{t('schedule.title')}</TabsTrigger>
           <TabsTrigger value="participants">{t('participants.title')}</TabsTrigger>
           <TabsTrigger value="results">{t('results.title')}</TabsTrigger>
