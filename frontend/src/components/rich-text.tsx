@@ -190,3 +190,12 @@ export const RichTextViewer = ({ content }: { content: string }) => {
     </div>
   );
 };
+
+export const BasicRichTextViewer = ({ content }: { content: string }) => {
+  return (
+    <div
+      className={cn(`rich-text focus:outline-none`)}
+      dangerouslySetInnerHTML={{ __html: sanitizeHtml(content) }}
+    />
+  );
+};
