@@ -34,19 +34,6 @@ function getStatusBadgeVariant(status: InscriptionPublic['status']) {
   }
 }
 
-function getPresenceStatusBadgeVariant(status: InscriptionPublic['presenceStatus']) {
-  switch (status) {
-    case 'PRESENT':
-      return 'default';
-    case 'ABSENT':
-      return 'destructive';
-    case 'UNKNOWN':
-      return 'outline';
-    default:
-      return 'outline';
-  }
-}
-
 export function ParticipantListSkeleton() {
   return (
     <Card>
@@ -165,7 +152,6 @@ export function ParticipantList() {
               <TableHead>{t('event.title')}</TableHead>
               <TableHead>{t('record.title')}</TableHead>
               <TableHead>{t('status.title')}</TableHead>
-              <TableHead>{t('inscriptions:presenceStatus')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
@@ -189,11 +175,6 @@ export function ParticipantList() {
                   <TableCell>
                     <Badge variant={getStatusBadgeVariant(inscription.status)}>
                       {t(`enums:inscriptionStatus.${inscription.status.toLowerCase()}`)}
-                    </Badge>
-                  </TableCell>
-                  <TableCell>
-                    <Badge variant={getPresenceStatusBadgeVariant(inscription.presenceStatus)}>
-                      {t(`enums:presenceStatus.${inscription.presenceStatus.toLowerCase()}`)}
                     </Badge>
                   </TableCell>
                 </TableRow>
