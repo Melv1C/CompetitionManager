@@ -12,7 +12,6 @@
   "changeAthlete": "Change Athlete",
   "competitionNotOpenForAthleteClubs": "This competition is not open for the athlete's club. Allowed clubs: {{clubs}}.",
   "confirmRegistration": "Confirm Registration",
-  "emailVerificationExpired": "If the link has expired, you can always request a new verification email from your profile.",
   "emailVerificationMessage": "To make a registration, you need an account with a verified email address.",
   "emailVerificationRequired": "Email Verification Required",
   "emailVerificationSent": "You should have received an email to verify your account when you signed up.",

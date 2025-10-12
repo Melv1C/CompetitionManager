@@ -1,0 +1,11 @@
+{
+  "errorDescription": "Une erreur s'est produite lors de la vérification de votre email. Veuillez réessayer.",
+  "errorTitle": "Échec de la vérification",
+  "goHome": "Aller à l'accueil",
+  "goToProfile": "Aller au profil",
+  "invalidToken": "Le lien de vérification est invalide ou a expiré. Veuillez demander un nouvel email de vérification depuis votre profil.",
+  "pleaseWait": "Veuillez patienter pendant que nous vérifions votre email...",
+  "successDescription": "Votre email a été vérifié avec succès. Vous avez maintenant accès à toutes les fonctionnalités.",
+  "successTitle": "Email vérifié !",
+  "verifying": "Vérification de l'email..."
+}
