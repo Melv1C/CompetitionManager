@@ -32,6 +32,8 @@ services:
       ATHLETE_SYNC_USE_MOCK: 'true'
       STRIPE_SECRET_KEY: sk_test_xxx
       STRIPE_WEBHOOK_SECRET: whsec_xxx
+      EMAIL_USER: your.email@gmail.com
+      EMAIL_PASS: your-email-password
     depends_on:
       db:
         condition: service_healthy
