@@ -60,9 +60,11 @@ export function UserButton({ user, onMobileMenuClose }: UserButtonProps) {
           </div>
         </DropdownMenuLabel>
         <DropdownMenuSeparator />
-        <DropdownMenuItem>
-          <User className="mr-2 h-4 w-4" />
-          <span>{t('navigation:profile')}</span>
+        <DropdownMenuItem asChild>
+          <Link to="/profile" onClick={onMobileMenuClose}>
+            <User className="mr-2 h-4 w-4" />
+            <span>{t('navigation:profile')}</span>
+          </Link>
         </DropdownMenuItem>
         <DropdownMenuItem>
           <Settings className="mr-2 h-4 w-4" />
