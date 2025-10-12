@@ -74,10 +74,7 @@ export function ProfilePage() {
   };
 
   const handleSendVerificationEmail = async () => {
-    if (!user?.email) {
-      toast.error(t('profile:noEmail'));
-      return;
-    }
+    if (!user) return;
     setIsSendingVerification(true);
     try {
       await authClient.sendVerificationEmail({
