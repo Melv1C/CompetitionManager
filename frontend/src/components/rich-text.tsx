@@ -52,7 +52,7 @@ export const RichTextEditor = ({
   }
 
   return (
-    <div className="relative border border-input rounded-md bg-background shadow-xs">
+    <div className="border border-input rounded-md bg-background shadow-xs">
       <div className="border-b border-input p-2 flex gap-2 flex-wrap">
         <ButtonGroup>
           <Button
@@ -173,12 +173,14 @@ export const RichTextEditor = ({
           </Button>
         </ButtonGroup>
       </div>
-      <EditorContent editor={editor} />
-      {editor.isEmpty && (
-        <div className="pointer-events-none absolute top-16 left-4 text-muted-foreground">
-          {placeholder}
-        </div>
-      )}
+      <div className="relative">
+        <EditorContent editor={editor} />
+        {editor.isEmpty && (
+          <div className="pointer-events-none absolute top-4 left-4 text-muted-foreground">
+            {placeholder}
+          </div>
+        )}
+      </div>
     </div>
   );
 };
