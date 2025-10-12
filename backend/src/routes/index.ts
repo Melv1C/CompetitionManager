@@ -8,9 +8,9 @@ import { competitionsRoutes } from './competitions';
 import { eventsRoutes } from './events';
 import { logsRoutes } from './logs';
 import { organizationRoutes } from './organization';
+import { studioRoutes } from './studio';
 import { usersRoutes } from './users';
 import { webhooksRoutes } from './webhooks';
-import { studioRoutes } from './studio';
 
 export function createApiRoutes() {
   const api = new Hono();
@@ -20,6 +20,7 @@ export function createApiRoutes() {
   });
 
   api.route('/logs', logsRoutes);
+  api.route('/studio', studioRoutes);
 
   // Global logging middleware for all API routes
   api.use('/*', loggerMiddleware);
@@ -33,7 +34,6 @@ export function createApiRoutes() {
   api.route('/organization', organizationRoutes);
   api.route('/users', usersRoutes);
   api.route('/webhooks', webhooksRoutes);
-  api.route('/studio', studioRoutes);
 
   return api;
 }
