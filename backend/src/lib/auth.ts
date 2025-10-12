@@ -1,9 +1,13 @@
+import { render } from '@react-email/components';
 import { ac, admin, owner, resultManager } from '@repo/core/utils';
-import { betterAuth } from 'better-auth';
+import { betterAuth, logger } from 'better-auth';
 import { prismaAdapter } from 'better-auth/adapters/prisma';
 import { admin as adminPlugin, bearer, organization } from 'better-auth/plugins';
 import type { AccessControl } from 'better-auth/plugins/access';
+import ResetPasswordEmail from 'emails/reset-password-email';
+import VerifyEmail from 'emails/verify-email';
 import { env } from './env';
+import { nodemailer } from './nodemailer';
 import { prisma } from './prisma';
 
 // Add this helper function to fetch the active organization for a user
@@ -43,6 +47,21 @@ export const auth = betterAuth({
   },
   emailAndPassword: {
     enabled: true,
+    sendResetPassword: async ({ user, token }) => {
+      const html = await render(
+        ResetPasswordEmail({
+          url: `${env.BACKEND_URL}/api/auth/reset-password/${token}?callbackURL=${env.FRONTEND_URL}/reset-password`,
+        }),
+      );
+      await nodemailer.sendMail({
+        to: user.email,
+        subject: 'Reset your password',
+        html,
+      });
+    },
+    onPasswordReset: async ({ user }) => {
+      logger.info(`User with email ${user.email} has requested a password reset.`);
+    },
   },
   socialProviders: {
     google:
@@ -80,6 +99,25 @@ export const auth = betterAuth({
     accountLinking: {
       enabled: true,
       trustedProviders: [],
+    },
+  },
+  emailVerification: {
+    sendOnSignUp: true,
+    autoSignInAfterVerification: true,
+    sendVerificationEmail: async ({ user, token }) => {
+      const html = await render(
+        VerifyEmail({
+          url: `${env.BACKEND_URL}/api/auth/verify-email?token=${token}&callbackURL=${env.FRONTEND_URL}`,
+        }),
+      );
+      await nodemailer.sendMail({
+        to: user.email,
+        subject: 'Verify your email address',
+        html,
+      });
+    },
+    async afterEmailVerification(user) {
+      logger.info(`User with email ${user.email} has verified their email address.`);
     },
   },
   plugins: [
