@@ -4,7 +4,7 @@ import { connectAmDb } from './connect-am.js';
 import { getPrealoadPath } from './pathResolver.js';
 import { ipcHandler } from './utils.js';
 import { exportCompetition } from './functions/export.js';
-import { importCompetition } from './functions/import.js';
+import { importAthletes, importCompetition } from './functions/import.js';
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
@@ -23,6 +23,8 @@ app.on('ready', () => {
   connectAmDb();
 
   ipcHandler('importCompetition', importCompetition);
+
+  ipcHandler('importAthletes', importAthletes);
 
   ipcHandler('exportCompetition', exportCompetition);
 });

@@ -1,6 +1,7 @@
 import { z } from 'zod';
 
 export const AMCompetitionSchema = z.object({
+  id: z.number().int(),
   federation: z.number().int().default(10),
   nationalcode: z.string().max(16).default('F4507'),
   name: z.string().max(256),

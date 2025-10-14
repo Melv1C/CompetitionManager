@@ -16,14 +16,15 @@ model actionsrequired {
 }
 
 model athletes {
-  id          Int      @id @default(autoincrement())
-  since       DateTime @default(now()) @db.Timestamptz(6)
-  firstname   String   @db.VarChar(128)
-  lastname    String   @db.VarChar(128)
-  middlename  String?  @db.VarChar(128)
-  gender      String   @db.Char(1)
-  birthdate   DateTime @db.Date
-  nationality Int      @db.SmallInt
+  id          Int        @id @default(autoincrement())
+  since       DateTime   @default(now()) @db.Timestamptz(6)
+  firstname   String     @db.VarChar(128)
+  lastname    String     @db.VarChar(128)
+  middlename  String?    @db.VarChar(128)
+  gender      String     @db.Char(1)
+  birthdate   DateTime   @db.Date
+  nationality Int        @db.SmallInt
+  license    licenses[]
 
   @@index([firstname], map: "firstname")
   @@index([lastname], map: "lastname")
@@ -339,6 +340,7 @@ model licenses {
   id                Int       @id @default(autoincrement())
   since             DateTime  @default(now()) @db.Timestamptz(6)
   athlete           Int
+  athleteData       athletes? @relation(fields: [athlete], references: [id])
   startdate         DateTime? @db.Timestamptz(6)
   enddate           DateTime? @db.Timestamptz(6)
   team              Int

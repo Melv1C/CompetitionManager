@@ -1,17 +1,18 @@
 import { Competition } from '@repo/core/schemas';
 
-import { PrismaClient } from '../generated/prisma/index.js';
+import { prisma } from '../lib/prisma.js';
 import { AMCompetitionSchema } from '../schemas/AMCompetition.js';
-const prisma = new PrismaClient();
 
 export const createCompetition = async (competition: Competition) => {
   const amCompetition = AMCompetitionSchema.parse({
+    id: competition.id,
     name: competition.name,
     location: competition.location,
     startdate: competition.startDate,
     enddate: competition.endDate,
     referencedate: competition.startDate, // TODO check if correct
   });
+
   const createdCompetition = await prisma.competitions.create({
     data: amCompetition,
   });

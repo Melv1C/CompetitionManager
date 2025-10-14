@@ -1,9 +1,8 @@
 import { CompetitionEvent } from '@repo/core/schemas';
 
-import { PrismaClient } from '../generated/prisma/index.js';
+import { prisma } from '../lib/prisma.js';
 import { AMEventCategories, AMEventsSchema, AMRoundSchema } from '../schemas/index.js';
 import { getNextSeqno } from './utils/getNextSeqno.js';
-const prisma = new PrismaClient();
 
 export const createEvent = async (event: CompetitionEvent, competitionId: number) => {
   const amEvent = AMEventsSchema.parse({
