@@ -32,6 +32,10 @@ const importEvents = async (competition: Competition, recreate: boolean = false)
   }
 }
 
-export const importAthletes = async (inscriptions: Inscription[]) => {
-  await createAthlete(inscriptions);
+export const importAthletes = async (inscriptions: Inscription[], competitionId: number) => {
+  console.log(`Importing ${inscriptions.length} athletes for competition ID ${competitionId}`);
+  for (const inscription of inscriptions) {
+    console.log(`Importing athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName}`);
+    await createAthlete(inscription, competitionId)
+  }
 }

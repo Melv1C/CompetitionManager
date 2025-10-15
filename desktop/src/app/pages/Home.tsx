@@ -15,10 +15,10 @@ export default function Home() {
   }, [competitionQuery.data]);
 
   useEffect(() => {
-    if (inscriptionsQuery.data) {
-      window.electron.importAthletes(inscriptionsQuery.data);
+    if (inscriptionsQuery.data && competitionQuery.data) {
+      window.electron.importAthletes(inscriptionsQuery.data, competitionQuery.data.id);
     }
-  }, [inscriptionsQuery.data]);
+  }, [inscriptionsQuery.data, competitionQuery.data]);
 
   useEffect(() => {
     window.electron.exportCompetition().then(competition => {

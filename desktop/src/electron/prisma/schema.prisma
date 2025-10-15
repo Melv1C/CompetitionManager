@@ -251,6 +251,7 @@ model events {
   seqno        Int      @default(1) @db.SmallInt
   medals       String   @default("C") @db.Char(1)
   status       Int?     @default(0)
+  rounds       rounds[]
 
   @@index([info], map: "info")
   @@index([type], map: "type")
@@ -585,6 +586,7 @@ model rounds {
   id                        Int       @id @default(autoincrement())
   since                     DateTime? @default(now()) @db.Timetz(6)
   event                     Int?
+  events                    events?   @relation(fields: [event], references: [id])
   combinedeventtype         Int?
   seqno                     Int?      @db.SmallInt
   session                   Int?

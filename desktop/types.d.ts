@@ -4,7 +4,7 @@ declare global {
   interface Window {
     electron: {
       importCompetition: (competition: Competition) => void;
-      importAthletes: (inscriptions: Inscription[]) => void;
+      importAthletes: (inscriptions: Inscription[], competitionId: number) => void;
       exportCompetition: () => Promise<Competition>;
     };
   }

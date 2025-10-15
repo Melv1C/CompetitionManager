@@ -1,22 +1,45 @@
-import { Athlete, Inscription } from '@repo/core/schemas';
-import { getSeasonBib } from '@repo/core/utils/athlete-utils.js';
+import { Athlete, CompetitionEvent, Inscription } from '@repo/core/schemas';
+import { getAthleteCategory, getSeasonBib } from '@repo/core/utils/athlete-utils.js';
 import { prisma } from '../lib/prisma.js';
-import { AMCompetitorSchema } from '../schemas/AMCompetitior.js';
+import { AMCompetitorSchema, AMParticipantSchema, AMParticipationSchema } from '../schemas/index.js';
+import { findIdCompetitor } from './findId.js';
 
-export const createAthlete = async (inscriptions: Inscription[]) => {
-  for (const inscription of inscriptions) {
-    const { licenseId, athleteId } = await getAthleteAmIds(inscription.athlete);
-    if (athleteId && licenseId) {
-      await createCompetitor(
-        inscription.athlete,
-        licenseId,
-        athleteId,
-        1,
-      );
-    }else {
-      throw new Error(`Athlete or License not found for athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName} with license ${inscription.athlete.license}`);
-    }
+export const createAthlete = async (inscription: Inscription, competitionId: number) => {
+  console.log(`Creating athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName}`);
+  const { licenseId, athleteId } = await getAthleteAmIds(inscription.athlete);
+  if (!athleteId || !licenseId) {
+    throw new Error(
+      `Athlete or License not found for athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName} with license ${inscription.athlete.license}`,
+    );
   }
+  let competitorId = await findIdCompetitor(athleteId, licenseId);
+  if (!competitorId) {
+    competitorId = await createCompetitor(inscription.athlete, licenseId, athleteId, competitionId);
+  }
+  console.log(`Createing participation with roundId ${await getAMRoundId(inscription.competitionEvent, competitionId)} and categoryId ${getAthleteCategory(inscription.athlete).amId}`);
+  console.log(getAthleteCategory(inscription.athlete))
+  const participationId = await createParticipation(
+    await getAMRoundId(inscription.competitionEvent, competitionId),
+    getAthleteCategory(inscription.athlete).amId,
+  );
+  await createParticipant(competitorId, participationId);
+};
+
+const getAMRoundId = async (event: CompetitionEvent, competitionId: number) => {
+  const amRound = await prisma.rounds.findFirst({
+    where: {
+      events: {
+        name: event.name,
+        competition: competitionId,
+      },
+    },
+    include: {
+      events: true,
+    },
+  });
+  if (!amRound)
+    throw new Error(`Round not found for event ${event.name} in competition ID ${competitionId}`);
+  return amRound.id;
 };
 
 const getAthleteAmIds = async (athlete: Athlete) => {
@@ -49,7 +72,31 @@ const createCompetitor = async (
     displayname: `${athlete.lastName}, ${athlete.firstName}`,
   });
 
-  await prisma.competitors.create({
+  const newCompetitor = await prisma.competitors.create({
     data: competitor,
+  });
+  return newCompetitor.id;
+};
+
+export const createParticipation = async (roundId: number, categoryId: number) => {
+  const participation = AMParticipationSchema.parse({
+    round: roundId,
+    category: categoryId,
+  });
+
+  const newParticipation = await prisma.participations.create({
+    data: participation,
+  });
+  return newParticipation.id;
+};
+
+export const createParticipant = async (competitorId: number, participationId: number) => {
+  const participant = AMParticipantSchema.parse({
+    competitor: competitorId,
+    participation: participationId,
+  });
+
+  await prisma.participants.create({
+    data: participant,
   });
 };

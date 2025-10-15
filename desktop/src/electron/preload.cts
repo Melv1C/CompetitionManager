@@ -2,7 +2,7 @@ const electron = require('electron')
 
 electron.contextBridge.exposeInMainWorld('electron', {
     importCompetition: (competition) => ipcInvoke('importCompetition', competition),
-    importAthletes: (inscriptions) => ipcInvoke('importAthletes', inscriptions),
+    importAthletes: (inscriptions, competitionId) => ipcInvoke('importAthletes', inscriptions, competitionId),
     exportCompetition: async () => await ipcInvoke('exportCompetition'),
 } satisfies Window['electron'])
 
