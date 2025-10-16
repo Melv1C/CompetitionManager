@@ -43,6 +43,7 @@ const getAMRoundId = async (event: CompetitionEvent, competitionId: number) => {
 };
 
 const getAthleteAmIds = async (athlete: Athlete) => {
+  console.log(`Fetching AM IDs for athlete ${athlete.firstName} ${athlete.lastName} with license ${athlete.license}`);
   const license = await prisma.licenses.findFirst({
     where: {
       licensenumber: athlete.license,

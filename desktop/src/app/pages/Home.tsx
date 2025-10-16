@@ -16,7 +16,7 @@ export default function Home() {
 
   useEffect(() => {
     if (inscriptionsQuery.data && competitionQuery.data) {
-      window.electron.importAthletes(inscriptionsQuery.data, competitionQuery.data.id);
+      //window.electron.importAthletes(inscriptionsQuery.data, competitionQuery.data.id);
     }
   }, [inscriptionsQuery.data, competitionQuery.data]);
 
