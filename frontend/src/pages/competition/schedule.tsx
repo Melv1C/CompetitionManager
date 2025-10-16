@@ -5,6 +5,7 @@ import { Input } from '@/components/ui/input';
 import { CategorySelector } from '@/features/categories';
 import { useRequiredCompetition } from '@/features/competitions';
 import { EventSelector } from '@/features/events';
+import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useCompetitionEid } from '@/hooks';
 import { formatDateFull, formatTime } from '@/lib/formatters';
 import type { CompetitionEvent } from '@repo/core/schemas';
@@ -14,8 +15,9 @@ import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 
 export function CompetitionSchedulePage() {
-  const eid = useCompetitionEid();
   const { t } = useTranslation();
+  const eid = useCompetitionEid();
+  const inscriptions = useCompetitionInscriptions(eid);
 
   // Filter state
   const [searchQuery, setSearchQuery] = useState('');
@@ -114,6 +116,18 @@ export function CompetitionSchedulePage() {
   // Check if any filters are active
   const hasActiveFilters = searchQuery || selectedEventId || selectedCategoryIds.length > 0;
 
+  // Calculate participant counts per event
+  const participantCounts = useMemo(() => {
+    if (!inscriptions.data) return new Map<number, number>();
+
+    const counts = new Map<number, number>();
+    inscriptions.data.forEach(inscription => {
+      const eventId = inscription.competitionEvent.id;
+      counts.set(eventId, (counts.get(eventId) || 0) + 1);
+    });
+    return counts;
+  }, [inscriptions.data]);
+
   if (competition.events.length === 0) {
     return (
       <div className="space-y-6">
@@ -121,7 +135,7 @@ export function CompetitionSchedulePage() {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5" />
-              {t('schedule')}
+              {t('schedule.title')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -307,7 +321,7 @@ export function CompetitionSchedulePage() {
                         <div className="flex items-center gap-2">
                           <UsersIcon className="h-4 w-4 text-muted-foreground" />
                           <Badge variant="secondary" className="gap-1">
-                            <span>0</span>
+                            <span>{participantCounts.get(event.id) || 0}</span>
                             {event.maxParticipants && (
                               <>
                                 <span>/</span>
@@ -331,7 +345,7 @@ export function CompetitionSchedulePage() {
                           <div className="flex items-center gap-2">
                             <UsersIcon className="h-4 w-4 text-muted-foreground" />
                             <Badge variant="secondary" className="gap-1">
-                              <span>0</span>
+                              <span>{participantCounts.get(event.id) || 0}</span>
                               {event.maxParticipants && (
                                 <>
                                   <span>/</span>

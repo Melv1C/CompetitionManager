@@ -1,3 +1,4 @@
+import { BasicRichTextViewer } from '@/components/rich-text';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRequiredCompetition } from '@/features/competitions';
@@ -42,7 +43,7 @@ export function CompetitionHomePage() {
               </CardTitle>
             </CardHeader>
             <CardContent>
-              <p className="text-muted-foreground whitespace-pre-wrap">{competition.description}</p>
+              <BasicRichTextViewer content={competition.description} />
             </CardContent>
           </Card>
         )}

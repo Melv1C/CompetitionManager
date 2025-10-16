@@ -1,0 +1,678 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DB_LOCAL_URL")
+}
+
+model actionsrequired {
+  id        Int      @id @default(autoincrement())
+  action    String?
+  data      Int?
+  submitted DateTime @default(now()) @db.Timestamptz(6)
+}
+
+model athletes {
+  id          Int        @id @default(autoincrement())
+  since       DateTime   @default(now()) @db.Timestamptz(6)
+  firstname   String     @db.VarChar(128)
+  lastname    String     @db.VarChar(128)
+  middlename  String?    @db.VarChar(128)
+  gender      String     @db.Char(1)
+  birthdate   DateTime   @db.Date
+  nationality Int        @db.SmallInt
+  license    licenses[]
+
+  @@index([firstname], map: "firstname")
+  @@index([lastname], map: "lastname")
+  @@index([nationality], map: "nationality")
+}
+
+model barheights {
+  id          Int      @id @default(autoincrement())
+  since       DateTime @default(now()) @db.Timestamptz(6)
+  round       Int
+  startheight Decimal? @db.Decimal(6, 3)
+  interval    Decimal? @db.Decimal(6, 3)
+  attempts    Int?     @default(3) @db.SmallInt
+
+  @@index([round], map: "round")
+}
+
+model callrooms {
+  id          Int      @id @default(autoincrement())
+  since       DateTime @default(now()) @db.Timestamptz(6)
+  competition Int      @db.SmallInt
+  seqno       Int      @db.SmallInt
+  name        String   @db.VarChar(64)
+
+  @@index([competition], map: "competition")
+}
+
+model categories {
+  id           Int      @id @default(autoincrement())
+  since        DateTime @default(now()) @db.Timestamptz(6)
+  federation   Int?     @db.SmallInt
+  name         String?  @db.VarChar(64)
+  abbreviation String?  @db.VarChar(16)
+  minimumtype  String   @default("N") @db.Char(1)
+  minimumage   Int?     @db.SmallInt
+  maximumtype  String   @default("N") @db.Char(1)
+  maximumage   Int?     @db.SmallInt
+  gender       String   @db.Char(1)
+  class        String?  @db.VarChar(16)
+  needslicense String   @db.VarChar(1)
+  nationalcode String?  @db.VarChar(16)
+  sortorder    Int?     @default(0)
+
+  @@index([abbreviation], map: "abbreviation")
+  @@index([class], map: "class")
+  @@index([federation], map: "federation")
+}
+
+model classes {
+  id         Int      @id @default(autoincrement())
+  since      DateTime @default(now()) @db.Timestamptz(6)
+  athlete    Int
+  federation Int      @db.SmallInt
+  class      String   @db.VarChar(16)
+
+  @@index([athlete], map: "athlete")
+}
+
+model competitionfederationfriends {
+  id          Int      @id @default(autoincrement())
+  since       DateTime @default(now()) @db.Timestamptz(6)
+  competition Int
+  federation  Int
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model competitions {
+  id                                       Int      @id @default(autoincrement())
+  since                                    DateTime @default(now()) @db.Timestamptz(6)
+  federation                               Int?     @db.SmallInt
+  nationalcode                             String   @db.VarChar(16)
+  name                                     String   @db.VarChar(256)
+  country                                  Int?     @db.SmallInt
+  location                                 String   @db.VarChar(256)
+  info                                     String   @db.VarChar(256)
+  startdate                                DateTime @db.Timestamptz(6)
+  enddate                                  DateTime @db.Timestamptz(6)
+  referencedate                            DateTime @db.Timestamptz(6)
+  outdoor                                  Int      @default(1) @db.SmallInt
+  indoor                                   Int      @default(1) @db.SmallInt
+  nonstadium                               Int      @default(1) @db.SmallInt
+  teampolicy                               String   @db.Char(1)
+  paralympic                               Int      @default(0) @db.SmallInt
+  language                                 String?  @db.VarChar(2)
+  pointcalculationrace_default             Int?
+  pointcalculationhorfe_default            Int?
+  pointcalculationvertfe_default           Int?
+  categoriesrecalculateresultforpoints     String?  @db.VarChar
+  seedingmethod_default                    Int?
+  seedingmethodparameter_default           String?  @db.VarChar
+  placesinheatsprintstraight_default       Int?     @default(8)
+  placesinheatlongdistance_default         Int?
+  placesingroupfield_default               Int?
+  maxparticipationsperteamincompetition    Int?
+  maxparticipationsperteaminevent_default  Int?
+  maxeventspercompetitor                   Int?
+  pointcalculationteam_default             Int?
+  numberofcompetitorsforteampoints_default Int?
+  placesinheatsprintround_default          Int?     @default(8)
+  attempts_default                         Int?
+  startheight_default                      Decimal? @db.Decimal(4, 2)
+  intervalheight_default                   Int?
+  lanes_array_sprintstraight_default       String?  @db.VarChar(256)
+  lanes_array_sprintround_default          String?  @db.VarChar(256)
+  displayname_default                      String?  @db.VarChar(256)
+  image_header                             Bytes?
+  image_footer                             Bytes?
+  displayname_round_default                String?  @db.VarChar(256)
+  photofinishimage_maxheight               Int?
+  heatduration_default                     Float?   @default(10)
+  athlete_team_default                     Int?
+  contact_name                             String?  @db.VarChar(256)
+  contact_info                             String?  @db.VarChar(256)
+  referee_name                             String?  @db.VarChar(256)
+  referee_info                             String?  @db.VarChar(256)
+
+  @@index([country], map: "country")
+  @@index([language], map: "language")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model competitionteamgroups {
+  id                Int       @id @default(autoincrement())
+  name              String?   @db.VarChar(64)
+  competition       Int?
+  since             DateTime? @default(now()) @db.Timestamptz(6)
+  teampointslist    String?   @db.VarChar(128)
+  teampoints_ondraw Int?      @default(0) @db.SmallInt
+  order_ondraw      Int?      @default(0) @db.SmallInt
+}
+
+model competitionteams {
+  id                      Int       @id @default(autoincrement())
+  since                   DateTime? @default(now()) @db.Timestamptz(6)
+  name                    String?   @db.VarChar(64)
+  abbreviation            String?   @db.VarChar(8)
+  info                    String?   @db.VarChar(256)
+  competition             Int?
+  code                    String?   @db.VarChar(4)
+  teamlink                Int?
+  teamgroup               Int?
+  teampoints_total        Decimal?  @db.Decimal(14, 6)
+  teampoints_medals_total String?   @db.VarChar(16)
+  currentorder            Int?
+  currentorder_manual     Int?
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model competitionteamscategories {
+  team     Int
+  category Int
+
+  @@ignore
+}
+
+model competitors {
+  id                     Int      @id @default(autoincrement())
+  since                  DateTime @default(now()) @db.Timestamptz(6)
+  athlete                Int
+  license                Int?
+  competition            Int      @db.SmallInt
+  bib                    String?  @db.VarChar(6)
+  displayname            String?  @db.VarChar(256)
+  present_at_competition Int?     @default(0) @db.SmallInt
+
+  @@unique([athlete, competition], map: "competitor")
+  @@index([license], map: "license")
+}
+
+model competitorsinteams {
+  id         Int  @id @default(autoincrement())
+  competitor Int?
+  team       Int?
+}
+
+model countries {
+  id                Int      @id @default(autoincrement())
+  since             DateTime @default(now()) @db.Timestamptz(6)
+  iso               String   @unique(map: "iso") @db.Char(2)
+  name              String   @db.VarChar(80)
+  iso3              String?  @db.Char(3)
+  numcode           Int?     @db.SmallInt
+  area              String?  @db.VarChar(4)
+  iaafcode          String?  @db.VarChar(3)
+  flag              Bytes?
+  id_for_federation String?  @db.VarChar(64)
+
+  @@index([iaafcode], map: "iaafcode")
+}
+
+model disqualificationrules {
+  id       Int    @id @default(autoincrement())
+  type     Int?   @db.SmallInt
+  rule     String @db.VarChar(256)
+  language String @db.VarChar(2)
+}
+
+model eventcategories {
+  id       Int      @id @default(autoincrement())
+  since    DateTime @default(now()) @db.Timestamptz(6)
+  event    Int
+  category Int
+
+  @@unique([event, category], map: "event_2")
+  @@index([event], map: "event")
+}
+
+model eventcodes {
+  id        Int      @id @default(autoincrement())
+  since     DateTime @default(now()) @db.Timestamptz(6)
+  eventtype Int      @db.SmallInt
+  category  Int
+  code      String   @db.VarChar(64)
+}
+
+model events {
+  id           Int      @id @default(autoincrement())
+  since        DateTime @default(now()) @db.Timestamptz(6)
+  competition  Int      @db.SmallInt
+  name         String?  @db.VarChar(64)
+  abbreviation String?  @db.VarChar(16)
+  info         String?  @db.VarChar(128)
+  type         Int      @db.SmallInt
+  seqno        Int      @default(1) @db.SmallInt
+  medals       String   @default("C") @db.Char(1)
+  status       Int?     @default(0)
+  rounds       rounds[]
+
+  @@index([info], map: "info")
+  @@index([type], map: "type")
+}
+
+model eventtypes {
+  id                     Int       @id @default(autoincrement())
+  since                  DateTime? @default(now()) @db.Timestamptz(6)
+  name                   Int?
+  abbreviation           Int?
+  venue                  String?   @db.Char(1)
+  distance               Float?
+  windmode               String?   @db.Char(1)
+  windtime               String?
+  precision              Int?      @db.SmallInt
+  fieldtype              String?   @db.Char(1)
+  handtimedifference     Float?
+  athletesquantity       Int?      @db.SmallInt
+  implement              Float?
+  numberhurdles          Int?
+  firsthurdle            Float?
+  intervalhurdles        Float?
+  arcradius              Float?
+  combinedeventsquantity Int?
+  combinedevents         String?   @db.VarChar(256)
+  standardname           String?   @db.VarChar(64)
+  standardabbreviation   String?   @db.VarChar(64)
+  lowtohigh              Int?      @db.SmallInt
+  nationalcode           String?   @db.VarChar(16)
+  sortorder              Int?      @default(0)
+  isdummy                Int?      @default(0)
+  hurdleheight           Float?
+}
+
+model federations {
+  id                         Int       @id @default(autoincrement())
+  since                      DateTime  @default(now()) @db.Timestamptz(6)
+  code                       String    @unique(map: "code") @db.VarChar(16)
+  abbreviation               String    @default("") @db.VarChar(8)
+  country                    Int?      @db.SmallInt
+  name                       String    @db.VarChar(256)
+  language                   String    @db.VarChar(2)
+  seasonstart                DateTime? @default(dbgenerated("'2000-11-01'::date")) @db.Date
+  referencedate_default      DateTime? @default(dbgenerated("'2001-12-31'::date")) @db.Date
+  athletes_link              String?   @db.VarChar(256)
+  athletes_current_version   Int?
+  teams_link                 String?   @db.VarChar(256)
+  teams_current_version      Int?
+  eventtypes_link            String?   @db.VarChar(256)
+  eventtypes_current_version Int?
+  records_link               String?   @db.VarChar(256)
+  records_current_version    Int?
+}
+
+model heats {
+  id            Int       @id @default(autoincrement())
+  since         DateTime  @default(now()) @db.Timestamptz(6)
+  round         Int
+  seqno         Int       @db.SmallInt
+  info          Int?
+  timescheduled DateTime? @db.Timetz(6)
+  timestarted   DateTime? @db.Timetz(6)
+  timefinished  DateTime? @db.Timetz(6)
+  timeofficial  DateTime? @db.Timetz(6)
+  status        Int?      @default(0)
+
+  @@unique([round, seqno], map: "index")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model importdata {
+  id   Int     @default(autoincrement())
+  file String? @db.VarChar(128)
+  hash String? @db.VarChar(32)
+
+  @@ignore
+}
+
+model languages {
+  id       Int       @id @default(autoincrement())
+  since    DateTime? @default(now()) @db.Timetz(6)
+  code     String?   @db.VarChar(2)
+  language String?   @db.VarChar(64)
+}
+
+model licenses {
+  id                Int       @id @default(autoincrement())
+  since             DateTime  @default(now()) @db.Timestamptz(6)
+  athlete           Int
+  athleteData       athletes? @relation(fields: [athlete], references: [id])
+  startdate         DateTime? @db.Timestamptz(6)
+  enddate           DateTime? @db.Timestamptz(6)
+  team              Int
+  licensenumber     String    @db.VarChar(128)
+  bib               String?   @db.VarChar(6)
+  ipcclass_track    String?   @db.VarChar(16)
+  ipcclass_field    String?   @db.VarChar(16)
+  id_for_federation String?   @db.VarChar(64)
+
+  @@index([team], map: "team")
+}
+
+/// The underlying table does not contain a valid unique identifier and can therefore currently not be handled by Prisma Client.
+model log {
+  id             Int       @default(autoincrement())
+  table          String?   @db.VarChar(64)
+  table_id       Int?
+  host           String?   @db.VarChar(16)
+  userprofile_id Int?
+  timestamp      DateTime? @db.Timestamptz(6)
+  type           String?   @db.VarChar(16)
+  parent_id      Int?
+  deleted        Int?      @default(0) @db.SmallInt
+
+  @@ignore
+}
+
+model macfinishlog {
+  id         Int       @id @default(autoincrement())
+  since      DateTime? @default(now()) @db.Timestamptz(6)
+  camera     String?   @db.VarChar(16)
+  heat       Int
+  status     Int?      @default(0) @db.SmallInt
+  result_ids String?   @db.VarChar(512)
+}
+
+model participants {
+  id                      Int             @id @default(autoincrement())
+  since                   DateTime?       @default(now()) @db.Timetz(6)
+  competitor              Int?
+  participation           Int?
+  participationData       participations? @relation(fields: [participation], references: [id])
+  seqno                   Int?            @db.SmallInt
+  participation_confirmed Int?            @default(0) @db.SmallInt
+}
+
+model participations {
+  id                        Int            @id @default(autoincrement())
+  since                     DateTime       @default(now()) @db.Timestamptz(6)
+  teamname                  String?        @db.VarChar(128)
+  round                     Int?
+  heat                      Int?
+  initialorder              Int?           @db.SmallInt
+  currentorder              Int?           @db.SmallInt
+  laneorder                 Int?           @db.SmallInt
+  transponder               String?        @db.VarChar(128)
+  bestresult                Int?
+  validresult               Int?
+  status                    String         @default("0") @db.VarChar(2)
+  rank                      Int?           @db.SmallInt
+  startheight               Decimal?       @db.Decimal(5, 3)
+  distance                  Decimal?       @db.Decimal(5, 3)
+  abandoned                 Int?           @db.SmallInt
+  outofcompetition          Int?           @db.SmallInt
+  qualified                 String?        @db.Char(1)
+  info                      String?        @db.VarChar(64)
+  category                  BigInt
+  points                    Int?           @default(0)
+  teampoints                Decimal?       @default(0) @db.Decimal(14, 6)
+  currentorder_round        Int?           @default(0) @db.SmallInt
+  currentorder_manual       Int?           @default(0)
+  currentorder_round_manual Int?           @default(0)
+  points_manual             Int?           @default(0)
+  teampoints_manual         Decimal?       @default(0) @db.Decimal(14, 6)
+  currentorder_combined     Int?           @default(0) @db.SmallInt
+  teampoints_medals         String?        @db.Char(1)
+  participants              participants[]
+
+  @@index([bestresult], map: "bestResult")
+  @@index([heat], map: "section")
+  @@index([validresult], map: "validResult")
+}
+
+model penalties {
+  id            Int      @id @default(autoincrement())
+  since         DateTime @default(now()) @db.Timestamptz(6)
+  participation Int
+  seqno         Int
+  code          String   @db.VarChar(30)
+  info          String?  @db.VarChar(256)
+  round_name    String?  @db.VarChar(64)
+  event         Int?
+  round         Int?
+
+  @@index([participation], map: "participationpenalty")
+}
+
+model photofinishimages {
+  id        Int       @id @default(autoincrement())
+  imagedata Bytes?
+  heat      Int?      @default(0)
+  info      String?   @db.VarChar(256)
+  camera    String?   @db.VarChar(64)
+  type      String?   @db.VarChar(64)
+  since     DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model pointcalculationalgorithms {
+  id        Int       @id @default(autoincrement())
+  name      String    @db.VarChar(64)
+  algorithm String?
+  info      String?   @db.VarChar(256)
+  since     DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model pointcalculationlookup {
+  id        Int       @id @default(autoincrement())
+  algorithm Int?      @default(0)
+  eventtype Int?      @default(0)
+  category  Int?      @default(0)
+  value     Decimal?  @db.Decimal(9, 3)
+  points    Int?      @default(0)
+  since     DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model pointcalculationparameters {
+  id              Int       @id @default(autoincrement())
+  since           DateTime? @default(now()) @db.Timestamptz(6)
+  eventtype       Int
+  category        Int
+  parameter_seqno Decimal?  @db.Decimal
+  value           Decimal?  @db.Decimal(14, 6)
+  algorithm       Int
+}
+
+model presences {
+  id            Int      @id @default(autoincrement())
+  since         DateTime @default(now()) @db.Timestamptz(6)
+  callroom      Int
+  participation Int
+  present       Int      @default(0) @db.SmallInt
+  time          DateTime @db.Timestamptz(6)
+
+  @@unique([callroom, participation], map: "callroom")
+  @@index([participation], map: "participation")
+}
+
+model printtemplates {
+  id    Int       @id @default(autoincrement())
+  type  Int?
+  name  String?   @db.VarChar(128)
+  odt   Bytes?
+  since DateTime? @default(now()) @db.Timestamptz(6)
+}
+
+model qualifyingalgorithms {
+  id        Int     @id @default(autoincrement())
+  name      String? @db.VarChar(64)
+  algorithm String
+}
+
+model rankings {
+  id               Int      @id @default(autoincrement())
+  since            DateTime @default(now()) @db.Timestamptz(6)
+  scoring          BigInt
+  country          Int?     @db.SmallInt
+  team             Int?
+  competitor       Int?
+  preliminaryrank  Int?     @db.SmallInt
+  officialrank     Int?     @db.SmallInt
+  preliminarytotal Decimal? @db.Decimal(9, 3)
+  officialtotal    Decimal? @db.Decimal(9, 3)
+
+  @@unique([scoring, team, competitor], map: "scoring")
+}
+
+model recalculateresultcategories {
+  id       Int       @id @default(autoincrement())
+  since    DateTime? @default(now()) @db.Timestamptz(6)
+  round    Int
+  category Int
+}
+
+model recalculateresultparameters {
+  id        Int       @id @default(autoincrement())
+  since     DateTime? @default(now()) @db.Timestamptz(6)
+  eventtype Int?
+  category  Int?
+  value     Decimal?  @db.Decimal(9, 6)
+}
+
+model records {
+  id                Int      @id @default(autoincrement())
+  since             DateTime @default(now()) @db.Timestamptz(6)
+  athlete           Int
+  eventtype         Int      @db.SmallInt
+  date              DateTime @db.Timestamptz(6)
+  value             Decimal  @db.Decimal(8, 3)
+  wind              Decimal? @db.Decimal(4, 2)
+  seasonflag        String?  @db.Char(1)
+  alltimeflag       String?  @db.Char(1)
+  competitionrecord Int?     @db.SmallInt
+  stadionrecord     Int?     @db.SmallInt
+
+  @@index([competitionrecord], map: "competitionrecord")
+  @@index([athlete, eventtype], map: "record")
+  @@index([stadionrecord], map: "stadionrecord")
+}
+
+model results {
+  id            Int       @id @default(autoincrement())
+  since         DateTime  @default(now()) @db.Timestamptz(6)
+  participation Int
+  value         Decimal?  @db.Decimal(9, 3)
+  wind          Decimal?  @db.Decimal(4, 2)
+  seqno         Int
+  metavalue     Decimal   @default(0.000) @db.Decimal(9, 3)
+  type          String    @db.VarChar(3)
+  info          String?   @db.VarChar(64)
+  timeperformed DateTime? @db.Timetz(6)
+  official      Int       @db.SmallInt
+
+  @@index([participation], map: "participant")
+}
+
+model results1 {
+  id            Int       @id @default(autoincrement())
+  since         DateTime? @db.Timestamptz(6)
+  participation Int       @default(0)
+  value         Decimal?  @db.Decimal(24, 6)
+  wind          Decimal?  @db.Decimal(24, 6)
+  seqno         Int       @default(0)
+  metavalue     Decimal   @default(0) @db.Decimal(24, 6)
+  type          String    @default("") @db.VarChar(3)
+  info          String?   @db.VarChar(64)
+  timeperformed DateTime? @db.Timetz(6)
+  official      Int       @default(0) @db.SmallInt
+  display_value String?   @default("") @db.VarChar(50)
+
+  @@index([participation], map: "wdidx15232952230")
+}
+
+model rounds {
+  id                        Int       @id @default(autoincrement())
+  since                     DateTime? @default(now()) @db.Timetz(6)
+  event                     Int?
+  events                    events?   @relation(fields: [event], references: [id])
+  combinedeventtype         Int?
+  seqno                     Int?      @db.SmallInt
+  session                   Int?
+  name                      String?   @db.VarChar(64)
+  abbreviation              String?   @db.VarChar(16)
+  info                      String?   @db.VarChar(128)
+  timescheduled             DateTime? @db.Timetz(6)
+  heatduration              Float?
+  timeofficial              DateTime? @db.Timetz(6)
+  nextround                 Int?
+  lanesavailable            Int?      @db.SmallInt
+  customdistance            Float?
+  jumpoffpossible           Int?      @db.SmallInt
+  seedingmethod             Int?
+  qualifyingmethod          Int?
+  qualificationparameters   String?   @db.VarChar(256)
+  participantsperteam       Int?      @default(0)
+  participantsforteampoints Int?      @default(0)
+  teampointsalgorithm       Int?
+  seedingparameters         String?   @db.VarChar(256)
+  pointcalculationalgorithm Int?
+  attempts                  Int?
+  startheight               Decimal?  @db.Decimal(4, 2)
+  intervalheight            Int?
+  status                    Int?      @default(0)
+  lanes_array               String?   @db.VarChar(892)
+  datescheduled             DateTime? @db.Date
+}
+
+model seedingalgorithms {
+  id              Int     @id @default(autoincrement())
+  name            String? @db.VarChar(64)
+  algorithm       String
+  hash            String? @db.Char(32)
+  translatednames String?
+}
+
+model sessions {
+  id          Int      @id @default(autoincrement())
+  since       DateTime @default(now()) @db.Timestamptz(6)
+  competition Int      @db.SmallInt
+  name        String?  @db.VarChar(40)
+  date        DateTime @db.Timestamptz(6)
+  seqno       Int?     @default(1) @db.SmallInt
+}
+
+model teampointcalculationalgorithms {
+  id        Int     @id @default(autoincrement())
+  name      String  @db.VarChar(64)
+  algorithm String?
+}
+
+model teams {
+  id               Int      @id @default(autoincrement())
+  since            DateTime @default(now()) @db.Timestamptz(6)
+  federation       Int      @db.SmallInt
+  abbreviation     String?  @db.VarChar(64)
+  name             String   @db.VarChar(256)
+  federationnumber String   @db.VarChar(16)
+  place            String   @db.VarChar(64)
+  province         String?  @default("") @db.VarChar(64)
+}
+
+model translations {
+  id       BigInt   @id @default(autoincrement())
+  tid      Int
+  since    DateTime @default(now()) @db.Timestamptz(6)
+  language String   @default("en") @db.VarChar(2)
+  value    String
+
+  @@unique([tid, language], map: "tid")
+  @@index([tid], map: "tid_2")
+}
+
+model userprofiles {
+  id   Int     @id @default(autoincrement())
+  name String  @db.VarChar(128)
+  pass String  @db.VarChar(64)
+  file String?
+}
+
+model whatishappening {
+  id    Int      @id @default(autoincrement())
+  type  String   @db.VarChar(128)
+  data  String?  @db.VarChar(128)
+  since DateTime @default(now()) @db.Timestamptz(6)
+}

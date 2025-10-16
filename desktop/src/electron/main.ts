@@ -1,10 +1,20 @@
+import dotenv from 'dotenv';
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import { exportCompetition } from './functions/export.js';
+import { getStatus } from './functions/getStatus.js';
+import { importAthletes, importCompetition } from './functions/import.js';
+import { getPrealoadPath } from './pathResolver.js';
+import { ipcHandler } from './utils.js';
+dotenv.config();
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({
     width: 800,
     height: 600,
+    webPreferences: {
+      preload: getPrealoadPath(),
+    },
   });
 
   if (process.env.NODE_ENV === 'development') {
@@ -12,4 +22,12 @@ app.on('ready', () => {
   } else {
     mainWindow.loadFile(path.join(app.getAppPath(), '/dist-react/index.html'));
   }
+
+  ipcHandler('importCompetition', importCompetition);
+
+  ipcHandler('importAthletes', importAthletes);
+
+  ipcHandler('getStatus', getStatus);
+
+  ipcHandler('exportCompetition', exportCompetition);
 });

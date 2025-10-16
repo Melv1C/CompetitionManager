@@ -51,6 +51,10 @@ const pageImports = {
     import('./pages/competition/register-success').then(m => ({
       default: m.CompetitionRegisterSuccessPage,
     })),
+  CompetitionEventDetail: () =>
+    import('./pages/competition/event-detail').then(m => ({
+      default: m.CompetitionEventDetailPage,
+    })),
 
   // Admin pages
   AdminDashboard: () =>
@@ -146,6 +150,7 @@ const CompetitionParticipantsPage = createLazyComponent('CompetitionParticipants
 const CompetitionResultsPageSub = createLazyComponent('CompetitionResults');
 const CompetitionRegisterPage = createLazyComponent('CompetitionRegister');
 const CompetitionRegisterSuccessPage = createLazyComponent('CompetitionRegisterSuccess');
+const CompetitionEventDetailPage = createLazyComponent('CompetitionEventDetail');
 
 const AdminDashboard = createLazyComponent('AdminDashboard');
 const AdminUsers = createLazyComponent('AdminUsers');
@@ -205,6 +210,10 @@ const router = createBrowserRouter([
           {
             path: 'schedule',
             element: <CompetitionSchedulePage />,
+          },
+          {
+            path: 'events/:eventEid',
+            element: <CompetitionEventDetailPage />,
           },
           {
             path: 'participants',
