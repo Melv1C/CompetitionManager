@@ -20,6 +20,7 @@
     "build:ui": "cd ui && npm run build",
     "storybook": "cd ui && npm run storybook",
     "build-storybook": "cd ui && npm run build-storybook",
+    "install:all": "npm install && npm run install:core && npm run install:backend && npm run install:frontend && npm run install:desktop",
     "db:migrate": "cd backend && npx prisma migrate dev",
     "docker:db": "docker-compose -f docker-compose.db.yml up -d",
     "lint": "npm run lint:core && npm run lint:ui && npm run lint:backend && npm run lint:frontend && npm run lint:desktop",
