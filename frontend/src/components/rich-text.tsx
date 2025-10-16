@@ -1,7 +1,8 @@
 import { Button } from '@/components/ui/button';
 import { ButtonGroup } from '@/components/ui/button-group';
 import { cn } from '@/lib/utils';
-import { EditorContent, useEditor } from '@tiptap/react';
+import Link from '@tiptap/extension-link';
+import { EditorContent, useEditor, useEditorState } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import {
   Bold,
@@ -10,13 +11,16 @@ import {
   Heading2,
   Heading3,
   Italic,
+  Link as LinkIcon,
   List,
   ListOrdered,
   Quote,
   Redo,
   Strikethrough,
   Undo,
+  Unlink,
 } from 'lucide-react';
+import { useCallback } from 'react';
 import sanitizeHtml from 'sanitize-html';
 
 const CLASSNAMES = 'rich-text prose prose-sm max-w-none focus:outline-none min-h-[100px] p-4';
@@ -33,7 +37,12 @@ export const RichTextEditor = ({
   placeholder = 'Start typing...',
 }: RichTextEditorProps) => {
   const editor = useEditor({
-    extensions: [StarterKit],
+    extensions: [
+      StarterKit,
+      Link.configure({
+        openOnClick: false,
+      }),
+    ],
     content,
     onUpdate: ({ editor }) => {
       if (editor.isEmpty) return onChange?.('');
@@ -45,6 +54,42 @@ export const RichTextEditor = ({
       },
     },
     immediatelyRender: false, // Prevent SSR issues
+    injectCSS: false, // We'll handle styling via Tailwind
+  });
+
+  const setLink = useCallback(() => {
+    const previousUrl = editor?.getAttributes('link').href;
+    const url = window.prompt('Enter the URL', previousUrl);
+    // cancelled
+    if (url === null) {
+      return;
+    }
+    // empty
+    if (url === '') {
+      editor?.chain().focus().extendMarkRange('link').unsetLink().run();
+      return;
+    }
+    // update link
+    try {
+      editor?.chain().focus().extendMarkRange('link').setLink({ href: url }).run();
+    } catch (e) {
+      if (e instanceof Error) {
+        alert(e.message);
+      } else {
+        alert('An unknown error occurred.');
+      }
+    }
+  }, [editor]);
+
+  const unsetLink = useCallback(() => {
+    editor?.chain().focus().unsetLink().run();
+  }, [editor]);
+
+  const editorState = useEditorState({
+    editor,
+    selector: ctx => ({
+      isLink: ctx.editor ? ctx.editor.isActive('link') : false,
+    }),
   });
 
   if (!editor) {
@@ -52,7 +97,7 @@ export const RichTextEditor = ({
   }
 
   return (
-    <div className="relative border border-input rounded-md bg-background shadow-xs">
+    <div className="border border-input rounded-md bg-background shadow-xs">
       <div className="border-b border-input p-2 flex gap-2 flex-wrap">
         <ButtonGroup>
           <Button
@@ -172,13 +217,36 @@ export const RichTextEditor = ({
             <Quote />
           </Button>
         </ButtonGroup>
+        <ButtonGroup>
+          <Button
+            type="button"
+            variant={editorState?.isLink ? 'default' : 'outline'}
+            size="icon-sm"
+            onClick={setLink}
+            title="Add or Edit Link"
+          >
+            <LinkIcon />
+          </Button>
+          <Button
+            type="button"
+            variant="outline"
+            size="icon-sm"
+            onClick={unsetLink}
+            disabled={!editorState?.isLink}
+            title="Remove Link"
+          >
+            <Unlink />
+          </Button>
+        </ButtonGroup>
       </div>
-      <EditorContent editor={editor} />
-      {editor.isEmpty && (
-        <div className="pointer-events-none absolute top-16 left-4 text-muted-foreground">
-          {placeholder}
-        </div>
-      )}
+      <div className="relative">
+        <EditorContent editor={editor} />
+        {editor.isEmpty && (
+          <div className="pointer-events-none absolute top-4 left-4 text-muted-foreground">
+            {placeholder}
+          </div>
+        )}
+      </div>
     </div>
   );
 };

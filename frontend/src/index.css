@@ -212,3 +212,7 @@
 .rich-text blockquote {
   @apply border-l-4 border-muted pl-4 italic text-muted-foreground;
 }
+
+.rich-text a {
+  @apply text-primary underline cursor-pointer;
+}
