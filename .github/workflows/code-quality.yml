@@ -60,9 +60,16 @@ jobs:
       - name: Install dependencies (desktop)
         run: npm run install:desktop
 
-      - name: Generate Prisma client
+      - name: Generate Prisma client (backend)
         run: |
           cd backend
+          npx prisma generate
+        env:
+          PRISMA_DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+      
+      - name: Generate Prisma client (desktop)
+        run: |
+          cd desktop
           npx prisma generate
         env:
           PRISMA_DATABASE_URL: postgresql://user:password@localhost:5432/mydb
