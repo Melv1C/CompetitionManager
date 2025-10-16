@@ -46,6 +46,9 @@ const envSchema = z.object({
 
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
+
+  EMAIL_USER: z.email(),
+  EMAIL_PASS: z.string().min(1),
 });
 
 export const env = envSchema.parse(process.env);

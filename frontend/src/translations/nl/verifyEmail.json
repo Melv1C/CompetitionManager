@@ -1,0 +1,11 @@
+{
+  "errorDescription": "Er is iets misgegaan bij het verifiëren van uw e-mail. Probeer het opnieuw.",
+  "errorTitle": "Verificatie mislukt",
+  "goHome": "Ga naar home",
+  "goToProfile": "Ga naar profiel",
+  "invalidToken": "De verificatielink is ongeldig of verlopen. Vraag een nieuwe verificatie-e-mail aan vanaf uw profiel.",
+  "pleaseWait": "Even geduld terwijl we uw e-mail verifiëren...",
+  "successDescription": "Uw e-mailadres is succesvol geverifieerd. U heeft nu volledige toegang tot alle functies.",
+  "successTitle": "E-mail geverifieerd!",
+  "verifying": "E-mail verifiëren..."
+}

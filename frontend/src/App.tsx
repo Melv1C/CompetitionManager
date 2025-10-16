@@ -26,6 +26,16 @@ const pageImports = {
     })),
   Results: () => import('./pages/Results').then(m => ({ default: m.ResultsPage })),
 
+  // Profile page
+  Profile: () => import('./pages/Profile').then(m => ({ default: m.ProfilePage })),
+
+  // Password reset pages
+  ResetPassword: () =>
+    import('./pages/ResetPassword').then(m => ({ default: m.ResetPasswordPage })),
+  ForgotPassword: () =>
+    import('./pages/ForgotPassword').then(m => ({ default: m.ForgotPasswordPage })),
+  VerifyEmail: () => import('./pages/VerifyEmail').then(m => ({ default: m.VerifyEmailPage })),
+
   // Competition sub-pages
   CompetitionHome: () =>
     import('./pages/competition/home').then(m => ({
@@ -142,6 +152,10 @@ const SignInPage = createLazyComponent('SignIn');
 const SignUpPage = createLazyComponent('SignUp');
 const CompetitionsPage = createLazyComponent('Competitions');
 const ResultsPage = createLazyComponent('Results');
+const ProfilePage = createLazyComponent('Profile');
+const ResetPasswordPage = createLazyComponent('ResetPassword');
+const ForgotPasswordPage = createLazyComponent('ForgotPassword');
+const VerifyEmailPage = createLazyComponent('VerifyEmail');
 
 // Competition sub-pages
 const CompetitionHomePage = createLazyComponent('CompetitionHome');
@@ -244,6 +258,22 @@ const router = createBrowserRouter([
       {
         path: 'auth/sign-up',
         element: <SignUpPage />,
+      },
+      {
+        path: 'profile',
+        element: <ProfilePage />,
+      },
+      {
+        path: 'reset-password',
+        element: <ResetPasswordPage />,
+      },
+      {
+        path: 'forgot-password',
+        element: <ForgotPasswordPage />,
+      },
+      {
+        path: 'verify-email',
+        element: <VerifyEmailPage />,
       },
     ],
   },

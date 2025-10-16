@@ -125,7 +125,17 @@ export function SignInForm() {
               name="password"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>{t('auth:password')}</FormLabel>
+                  <div className="flex items-center justify-between">
+                    <FormLabel>{t('auth:password')}</FormLabel>
+                    <Button
+                      type="button"
+                      variant="link"
+                      className="p-0 h-auto text-xs"
+                      onClick={() => navigate('/forgot-password')}
+                    >
+                      {t('auth:forgotPassword')}
+                    </Button>
+                  </div>
                   <FormControl>
                     <Input
                       type="password"
