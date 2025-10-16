@@ -1,10 +1,11 @@
+import dotenv from 'dotenv';
 import { app, BrowserWindow } from 'electron';
 import path from 'path';
+import { exportCompetition } from './functions/export.js';
+import { getStatus } from './functions/getStatus.js';
+import { importAthletes, importCompetition } from './functions/import.js';
 import { getPrealoadPath } from './pathResolver.js';
 import { ipcHandler } from './utils.js';
-import { exportCompetition } from './functions/export.js';
-import { importAthletes, importCompetition } from './functions/import.js';
-import dotenv from 'dotenv';
 dotenv.config();
 
 app.on('ready', () => {
@@ -25,6 +26,8 @@ app.on('ready', () => {
   ipcHandler('importCompetition', importCompetition);
 
   ipcHandler('importAthletes', importAthletes);
+
+  ipcHandler('getStatus', getStatus);
 
   ipcHandler('exportCompetition', exportCompetition);
 });
