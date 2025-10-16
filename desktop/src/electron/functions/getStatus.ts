@@ -7,10 +7,4 @@ export const getSatus = (competition: Competition) => {
   //get all events already existing 
   //TODO continue
 
-
-
-
-
-
-
 }

@@ -27,7 +27,7 @@ export const createAthlete = async (
   }
   const roundId = await getAMRoundId(inscription.competitionEvent, competitionId);
   if (!await participantExists(competitorId, roundId)) {
-    // The getAthleteCategory create the categorie on itself based on age we need to find the amId with the coategories of the event
+    // The getAthleteCategory create the categorie on itself based on agec so we need to find the amId with the coategories of the event
     const possibleCategories = inscription.competitionEvent.categories;
     const calculatedCat = getAthleteCategory(inscription.athlete, competitionStartDate);
     for (const cat of possibleCategories) {
