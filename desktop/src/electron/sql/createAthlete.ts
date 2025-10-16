@@ -16,11 +16,19 @@ export const createAthlete = async (inscription: Inscription, competitionId: num
   if (!competitorId) {
     competitorId = await createCompetitor(inscription.athlete, licenseId, athleteId, competitionId);
   }
-  console.log(`Createing participation with roundId ${await getAMRoundId(inscription.competitionEvent, competitionId)} and categoryId ${getAthleteCategory(inscription.athlete).amId}`);
-  console.log(getAthleteCategory(inscription.athlete))
+  //TODO using the competition date add it to calculate the categorie
+  // The getAthleteCategory create the categorie on itself based on age we need to find the amId with the coategories of the event
+  const possibleCategories = inscription.competitionEvent.categories;
+  const calculatedCat = getAthleteCategory(inscription.athlete);
+  for (const cat of possibleCategories) {
+    if (cat.abbr === calculatedCat.abbr) {
+      calculatedCat.amId = cat.amId;
+      break;
+    }
+  }
   const participationId = await createParticipation(
     await getAMRoundId(inscription.competitionEvent, competitionId),
-    getAthleteCategory(inscription.athlete).amId,
+    calculatedCat.amId,
   );
   await createParticipant(competitorId, participationId);
 };
@@ -43,7 +51,6 @@ const getAMRoundId = async (event: CompetitionEvent, competitionId: number) => {
 };
 
 const getAthleteAmIds = async (athlete: Athlete) => {
-  console.log(`Fetching AM IDs for athlete ${athlete.firstName} ${athlete.lastName} with license ${athlete.license}`);
   const license = await prisma.licenses.findFirst({
     where: {
       licensenumber: athlete.license,

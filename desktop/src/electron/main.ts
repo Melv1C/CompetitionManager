@@ -4,6 +4,8 @@ import { getPrealoadPath } from './pathResolver.js';
 import { ipcHandler } from './utils.js';
 import { exportCompetition } from './functions/export.js';
 import { importAthletes, importCompetition } from './functions/import.js';
+import dotenv from 'dotenv';
+dotenv.config();
 
 app.on('ready', () => {
   const mainWindow = new BrowserWindow({

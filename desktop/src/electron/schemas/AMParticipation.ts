@@ -19,7 +19,7 @@ export const AMParticipationSchema = z.object({
   outofcompetition: z.number().int().nullable().default(null),
   qualified: z.string().length(1).nullable().default(null),
   info: z.string().max(64).nullable().default(null),
-  category: z.bigint(),
+  category: z.number(),
   points: z.number().int().nullable().default(0),
   teampoints: z.coerce.number().nullable().default(0),
   currentorder_round: z.number().int().nullable().default(0),
