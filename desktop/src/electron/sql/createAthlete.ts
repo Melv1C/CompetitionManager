@@ -1,10 +1,19 @@
 import { Athlete, CompetitionEvent, Inscription } from '@repo/core/schemas';
 import { getAthleteCategory, getSeasonBib } from '@repo/core/utils/athlete-utils.js';
 import { prisma } from '../lib/prisma.js';
-import { AMCompetitorSchema, AMParticipantSchema, AMParticipationSchema } from '../schemas/index.js';
+import {
+  AMCompetitorSchema,
+  AMParticipantSchema,
+  AMParticipationSchema,
+} from '../schemas/index.js';
+import { participantExists } from './exist.js';
 import { findIdCompetitor } from './findId.js';
 
-export const createAthlete = async (inscription: Inscription, competitionId: number) => {
+export const createAthlete = async (
+  inscription: Inscription,
+  competitionId: number,
+  competitionStartDate: Date,
+) => {
   console.log(`Creating athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName}`);
   const { licenseId, athleteId } = await getAthleteAmIds(inscription.athlete);
   if (!athleteId || !licenseId) {
@@ -16,21 +25,20 @@ export const createAthlete = async (inscription: Inscription, competitionId: num
   if (!competitorId) {
     competitorId = await createCompetitor(inscription.athlete, licenseId, athleteId, competitionId);
   }
-  //TODO using the competition date add it to calculate the categorie
-  // The getAthleteCategory create the categorie on itself based on age we need to find the amId with the coategories of the event
-  const possibleCategories = inscription.competitionEvent.categories;
-  const calculatedCat = getAthleteCategory(inscription.athlete);
-  for (const cat of possibleCategories) {
-    if (cat.abbr === calculatedCat.abbr) {
-      calculatedCat.amId = cat.amId;
-      break;
+  const roundId = await getAMRoundId(inscription.competitionEvent, competitionId);
+  if (!await participantExists(competitorId, roundId)) {
+    // The getAthleteCategory create the categorie on itself based on age we need to find the amId with the coategories of the event
+    const possibleCategories = inscription.competitionEvent.categories;
+    const calculatedCat = getAthleteCategory(inscription.athlete, competitionStartDate);
+    for (const cat of possibleCategories) {
+      if (cat.abbr === calculatedCat.abbr) {
+        calculatedCat.amId = cat.amId;
+        break;
+      }
     }
+    const participationId = await createParticipation(roundId, calculatedCat.amId);
+    await createParticipant(competitorId, participationId);
   }
-  const participationId = await createParticipation(
-    await getAMRoundId(inscription.competitionEvent, competitionId),
-    calculatedCat.amId,
-  );
-  await createParticipant(competitorId, participationId);
 };
 
 const getAMRoundId = async (event: CompetitionEvent, competitionId: number) => {

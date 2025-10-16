@@ -13,3 +13,18 @@ export const eventExists = async (eventName: string, competitionId: number) => {
   });
   return !!existingEvent;
 };
+
+export const participantExists = async (competitorId: number, roundId: number) => {
+  const existingParticipation = await prisma.participants.findFirst({
+    where: { 
+      competitor: competitorId,
+      participationData: {
+        round: roundId,
+      }
+    },
+    include: {
+      participationData: true,
+    }
+  });
+  return !!existingParticipation;
+}

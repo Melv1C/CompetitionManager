@@ -4,7 +4,6 @@ export const getNextSeqno = async <
   modelDelegate: T,
   where: Record<string, unknown> = {},
 ): Promise<number> => {
-  console.log('start get next seqno');
   const result = await modelDelegate.findMany({
     where,
     orderBy: {

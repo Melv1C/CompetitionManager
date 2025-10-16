@@ -379,44 +379,46 @@ model macfinishlog {
 }
 
 model participants {
-  id                      Int       @id @default(autoincrement())
-  since                   DateTime? @default(now()) @db.Timetz(6)
+  id                      Int             @id @default(autoincrement())
+  since                   DateTime?       @default(now()) @db.Timetz(6)
   competitor              Int?
   participation           Int?
-  seqno                   Int?      @db.SmallInt
-  participation_confirmed Int?      @default(0) @db.SmallInt
+  participationData       participations? @relation(fields: [participation], references: [id])
+  seqno                   Int?            @db.SmallInt
+  participation_confirmed Int?            @default(0) @db.SmallInt
 }
 
 model participations {
-  id                        Int      @id @default(autoincrement())
-  since                     DateTime @default(now()) @db.Timestamptz(6)
-  teamname                  String?  @db.VarChar(128)
+  id                        Int            @id @default(autoincrement())
+  since                     DateTime       @default(now()) @db.Timestamptz(6)
+  teamname                  String?        @db.VarChar(128)
   round                     Int?
   heat                      Int?
-  initialorder              Int?     @db.SmallInt
-  currentorder              Int?     @db.SmallInt
-  laneorder                 Int?     @db.SmallInt
-  transponder               String?  @db.VarChar(128)
+  initialorder              Int?           @db.SmallInt
+  currentorder              Int?           @db.SmallInt
+  laneorder                 Int?           @db.SmallInt
+  transponder               String?        @db.VarChar(128)
   bestresult                Int?
   validresult               Int?
-  status                    String   @default("0") @db.VarChar(2)
-  rank                      Int?     @db.SmallInt
-  startheight               Decimal? @db.Decimal(5, 3)
-  distance                  Decimal? @db.Decimal(5, 3)
-  abandoned                 Int?     @db.SmallInt
-  outofcompetition          Int?     @db.SmallInt
-  qualified                 String?  @db.Char(1)
-  info                      String?  @db.VarChar(64)
+  status                    String         @default("0") @db.VarChar(2)
+  rank                      Int?           @db.SmallInt
+  startheight               Decimal?       @db.Decimal(5, 3)
+  distance                  Decimal?       @db.Decimal(5, 3)
+  abandoned                 Int?           @db.SmallInt
+  outofcompetition          Int?           @db.SmallInt
+  qualified                 String?        @db.Char(1)
+  info                      String?        @db.VarChar(64)
   category                  BigInt
-  points                    Int?     @default(0)
-  teampoints                Decimal? @default(0) @db.Decimal(14, 6)
-  currentorder_round        Int?     @default(0) @db.SmallInt
-  currentorder_manual       Int?     @default(0)
-  currentorder_round_manual Int?     @default(0)
-  points_manual             Int?     @default(0)
-  teampoints_manual         Decimal? @default(0) @db.Decimal(14, 6)
-  currentorder_combined     Int?     @default(0) @db.SmallInt
-  teampoints_medals         String?  @db.Char(1)
+  points                    Int?           @default(0)
+  teampoints                Decimal?       @default(0) @db.Decimal(14, 6)
+  currentorder_round        Int?           @default(0) @db.SmallInt
+  currentorder_manual       Int?           @default(0)
+  currentorder_round_manual Int?           @default(0)
+  points_manual             Int?           @default(0)
+  teampoints_manual         Decimal?       @default(0) @db.Decimal(14, 6)
+  currentorder_combined     Int?           @default(0) @db.SmallInt
+  teampoints_medals         String?        @db.Char(1)
+  participants              participants[]
 
   @@index([bestresult], map: "bestResult")
   @@index([heat], map: "section")
