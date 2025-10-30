@@ -121,7 +121,7 @@ organizationResultsRoutes.put(
 
     logger.info('Updated result', { resultId: updatedResult.id, userId: session.userId });
     c.get('io')
-      .to(getRoomName.competition(competition))
+      .to(getRoomName.competition(competitionEid))
       .emit('upsertResult', Result$.parse(updatedResult));
 
     return c.json({ message: 'Result updated successfully', result: updatedResult });
@@ -165,7 +165,7 @@ organizationResultsRoutes.delete(
     });
 
     logger.info('Deleted result', { resultId: result.id, userId: session.userId });
-    c.get('io').to(getRoomName.competition(competition)).emit('resultDeleted', result.id);
+    c.get('io').to(getRoomName.competition(competitionEid)).emit('resultDeleted', result.id);
 
     return c.json({ message: 'Result deleted successfully' });
   },
