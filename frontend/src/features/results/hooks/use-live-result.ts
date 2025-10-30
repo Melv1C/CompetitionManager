@@ -24,12 +24,12 @@ export const useLiveResult = (competitionEid: Cuid) => {
       });
     };
 
-    const handleResultDeleted = (data: Result) => {
-      console.log('Received resultDeleted event:', data);
+    const handleResultDeleted = (id: Result['id']) => {
+      console.log('Received resultDeleted event:', id);
       // Remove the result from cache
       queryClient.setQueryData<Result[]>([RESULTS_QUERY_KEY, competitionEid], oldData => {
         if (!oldData) return;
-        return oldData.filter(result => result.id !== data.id);
+        return oldData.filter(result => result.id !== id);
       });
     };
 
