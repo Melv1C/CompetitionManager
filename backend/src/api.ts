@@ -5,6 +5,20 @@ import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { languageDetector } from 'hono/language';
 import { i18nMiddleware } from './middleware/i18n-middleware';
+import { Server } from 'socket.io';
+import type {
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData,
+} from '@repo/core/types';
+import { ioMiddleware } from './lib/socket';
+
+declare module 'hono' {
+  interface ContextVariableMap {
+    io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+  }
+}
 
 export function getAPI() {
   const app = new Hono();
@@ -32,6 +46,8 @@ export function getAPI() {
   );
 
   app.use(i18nMiddleware);
+  // Make Socket.IO instance available in Hono context
+  app.use(ioMiddleware);
 
   // Mount all API routes under /api prefix
   const apiRoutes = createApiRoutes();

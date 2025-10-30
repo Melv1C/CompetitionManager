@@ -1,11 +1,5 @@
 import { socketService, type SocketState } from '@/lib/socket';
-import type {
-  ClientToServerEvents,
-  ErrorData,
-  JoinCompetitionData,
-  LeaveCompetitionData,
-  NotificationData,
-} from '@repo/core/types';
+import type { ClientToServerEvents } from '@repo/core/types';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -17,14 +11,6 @@ interface SocketStore extends SocketState {
     event: K,
     ...args: Parameters<ClientToServerEvents[K]>
   ): void;
-
-  // Competition specific actions
-  joinCompetition: (data: JoinCompetitionData) => void;
-  leaveCompetition: (data: LeaveCompetitionData) => void;
-
-  // Event handlers (can be overridden by components)
-  onError: (handler: (data: ErrorData) => void) => () => void;
-  onNotification: (handler: (data: NotificationData) => void) => () => void;
 }
 
 export const useSocketStore = create<SocketStore>()(
@@ -45,30 +31,6 @@ export const useSocketStore = create<SocketStore>()(
         socketService.disconnect();
         set({ socket: null, status: 'disconnected', reconnectAttempts: 0 });
       },
-
-      emit: (event, ...args) => {
-        socketService.emit(event, ...args);
-      },
-
-      // Competition specific actions
-      joinCompetition: (data: JoinCompetitionData) => {
-        socketService.emit('joinCompetition', data);
-      },
-
-      leaveCompetition: (data: LeaveCompetitionData) => {
-        socketService.emit('leaveCompetition', data);
-      },
-
-      // Event handler registration
-      onError: (handler: (data: ErrorData) => void) => {
-        socketService.on('error', handler);
-        return () => socketService.off('error', handler);
-      },
-
-      onNotification: (handler: (data: NotificationData) => void) => {
-        socketService.on('notification', handler);
-        return () => socketService.off('notification', handler);
-      },
     }),
     {
       name: 'socket-store',
@@ -84,25 +46,20 @@ socketService.onStateChange(socketState => {
 
 // Helper hooks for specific use cases
 export const useSocket = () => {
-  const store = useSocketStore();
-  return {
-    socket: store.socket,
-    status: store.status,
-    isConnected: store.status === 'connected',
-    isDisconnected: store.status === 'disconnected',
-    reconnectAttempts: store.reconnectAttempts,
-    connect: store.connect,
-    disconnect: store.disconnect,
-    emit: store.emit,
-  };
+  const socket = useSocketStore(state => state.socket);
+  if (!socket) {
+    throw new Error('Socket is not connected');
+  }
+  return { socket };
 };
 
-export const useSocketEvents = () => {
-  const store = useSocketStore();
+export const useSocketStatus = () => {
+  const status = useSocketStore(state => state.status);
+  const reconnectAttempts = useSocketStore(state => state.reconnectAttempts);
   return {
-    joinCompetition: store.joinCompetition,
-    leaveCompetition: store.leaveCompetition,
-    onError: store.onError,
-    onNotification: store.onNotification,
+    status,
+    isConnected: status === 'connected',
+    isDisconnected: status === 'disconnected',
+    reconnectAttempts,
   };
 };
