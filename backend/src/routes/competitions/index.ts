@@ -6,11 +6,13 @@ import { Competition$, competitionInclude, CompetitionQuery$, Cuid$ } from '@rep
 import { z } from 'zod';
 import { Hono } from 'hono';
 import { competitionInscriptionsRoutes } from './inscriptions';
+import { competitionResultsRoutes } from './results';
 
 const competitionsRoutes = new Hono();
 
 // Mount inscription routes
 competitionsRoutes.route('/', competitionInscriptionsRoutes);
+competitionsRoutes.route('/', competitionResultsRoutes);
 
 // GET /competitions - Get competitions with optional filters (public)
 competitionsRoutes.get('/', zValidator('query', CompetitionQuery$), async c => {
