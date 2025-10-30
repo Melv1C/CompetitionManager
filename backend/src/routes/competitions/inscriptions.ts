@@ -14,6 +14,7 @@ import {
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
+  Athlete$,
   Competition$,
   CompetitionEvent,
   Cuid$,
@@ -139,7 +140,7 @@ competitionInscriptionsRoutes.post(
           where: { id: athleteId },
           include: athleteInclude,
         });
-        return athlete;
+        return Athlete$.parse(athlete);
       };
 
       const athletesMap = await Promise.all(
@@ -157,6 +158,7 @@ competitionInscriptionsRoutes.post(
         alreadyPaidMap: Record<number, number>,
       ) => {
         const athlete = athletesMap.find(a => a.athleteId === athleteId)?.athlete;
+        if (!athlete) throw new Error('Athlete not found');
         const isFree = competition.freeClubs
           .map(c => c.id)
           .includes(getSeasonClub(athlete)?.id || -1);
