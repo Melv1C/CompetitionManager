@@ -41,5 +41,5 @@ export const useLiveResult = (competitionEid: Cuid) => {
       socket.off('upsertResult', handleResultUpsert);
       socket.off('resultDeleted', handleResultDeleted);
     };
-  }, [competitionEid, queryClient]);
+  }, [competitionEid, queryClient, socket]);
 };
