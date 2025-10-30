@@ -11,6 +11,7 @@ export * from './inscription';
 export * from './language';
 export * from './log';
 export * from './organization';
+export * from './result';
 export * from './transaction';
 
 export type * from './athlete';
@@ -26,4 +27,5 @@ export type * from './inscription';
 export type * from './language';
 export type * from './log';
 export type * from './organization';
+export type * from './result';
 export type * from './transaction';
