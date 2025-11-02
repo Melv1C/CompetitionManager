@@ -12,9 +12,16 @@ type CreateInscriptionsResponse =
     };
 
 export class InscriptionsService {
-  static async getCompetitionInscriptions(competitionEid: string) {
+  static async getInscriptions(competitionEid: string) {
     const response = await apiClient.get(`/api/competitions/${competitionEid}/inscriptions`);
     return InscriptionPublic$.array().parse(response.data);
+  }
+
+  static async getOrganizationInscriptions(competitionEid: Cuid) {
+    const response = await apiClient.get(
+      `/api/organization/competitions/${competitionEid}/inscriptions`,
+    );
+    return Inscription$.array().parse(response.data);
   }
 
   static async createInscriptions(
