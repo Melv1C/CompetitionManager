@@ -17,6 +17,40 @@ import z from 'zod';
 
 export const organizationResultsRoutes = new Hono();
 
+// GET /organization/competitions/:competitionEid/results - Get all results
+organizationResultsRoutes.get(
+  '/:competitionEid/results',
+  requirePermissions({
+    results: ['read'],
+  }),
+  zValidator('param', z.object({ competitionEid: Cuid$ })),
+  async c => {
+    const { competitionEid } = c.req.valid('param');
+    const session = await getRequiredSession(c);
+
+    if (!session.activeOrganizationId) {
+      logger.error('No active organization found for user', { session });
+      return c.json({ error: 'No active organization found' }, 400);
+    }
+
+    const competition = await prisma.competition.findFirst({
+      where: { eid: competitionEid, organizationId: session.activeOrganizationId },
+    });
+
+    if (!competition) {
+      return c.json({ error: 'Competition not found' }, 404);
+    }
+
+    const results = await prisma.result.findMany({
+      where: { competitionId: competition.id },
+      include: resultInclude,
+      orderBy: { currentOrder: 'asc' },
+    });
+
+    return c.json({ results: Result$.array().parse(results) });
+  },
+);
+
 // POST /organization/competitions/:competitionEid/results - Create results
 organizationResultsRoutes.post(
   '/:competitionEid/results',
