@@ -1,13 +1,4 @@
-// Socket event validation schemas (using the same pattern as other schemas)
-export interface JoinCompetitionData {
-  competitionId: string;
-  userId: string;
-}
-
-export interface LeaveCompetitionData {
-  competitionId: string;
-  userId: string;
-}
+import type { Cuid, Id, Result } from '@/schemas';
 
 export interface ErrorData {
   message: string;
@@ -23,12 +14,16 @@ export interface ServerToClientEvents {
   // System events
   error: (data: ErrorData) => void;
   notification: (data: NotificationData) => void;
+
+  // Result events
+  upsertResult: (data: Result) => void;
+  resultDeleted: (id: Id) => void;
 }
 
 export interface ClientToServerEvents {
   // Competition events
-  joinCompetition: (data: JoinCompetitionData) => void;
-  leaveCompetition: (data: LeaveCompetitionData) => void;
+  joinCompetition: (competitionEid: Cuid) => void;
+  leaveCompetition: (competitionEid: Cuid) => void;
 
   // Heartbeat
   ping: () => void;
@@ -45,5 +40,5 @@ export const ROOM_PREFIXES = {
 
 // Helper functions for room names
 export const getRoomName = {
-  competition: (competitionId: string) => `${ROOM_PREFIXES.COMPETITION}${competitionId}`,
+  competition: (competitionEid: Cuid) => `${ROOM_PREFIXES.COMPETITION}${competitionEid}`,
 } as const;

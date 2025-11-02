@@ -3,13 +3,19 @@ import {
   getRoomName,
   type ClientToServerEvents,
   type InterServerEvents,
-  type JoinCompetitionData,
-  type LeaveCompetitionData,
   type ServerToClientEvents,
   type SocketData,
 } from '@repo/core/types';
 import { Server } from 'socket.io';
 import { env } from './env';
+import { createMiddleware } from 'hono/factory';
+
+let globalIoInstance: Server<
+  ClientToServerEvents,
+  ServerToClientEvents,
+  InterServerEvents,
+  SocketData
+> | null = null;
 
 // Create and configure Socket.IO server
 export function createSocketServer(httpServer: ServerType) {
@@ -28,12 +34,10 @@ export function createSocketServer(httpServer: ServerType) {
   // Connection handler
   io.on('connection', socket => {
     // Handle joining competition
-    socket.on('joinCompetition', async (data: JoinCompetitionData) => {
+    socket.on('joinCompetition', async competitionEid => {
       try {
-        const { competitionId } = data;
-
         // Join competition room
-        const competitionRoom = getRoomName.competition(competitionId);
+        const competitionRoom = getRoomName.competition(competitionEid);
         await socket.join(competitionRoom);
 
         // Notify the user that they successfully joined
@@ -51,12 +55,10 @@ export function createSocketServer(httpServer: ServerType) {
     });
 
     // Handle leaving competition
-    socket.on('leaveCompetition', async (data: LeaveCompetitionData) => {
+    socket.on('leaveCompetition', async competitionEid => {
       try {
-        const { competitionId } = data;
-
         // Leave competition room
-        const competitionRoom = getRoomName.competition(competitionId);
+        const competitionRoom = getRoomName.competition(competitionEid);
         await socket.leave(competitionRoom);
       } catch (error) {
         console.error('Error leaving competition:', error);
@@ -76,5 +78,14 @@ export function createSocketServer(httpServer: ServerType) {
     });
   });
 
+  globalIoInstance = io;
+
   return io;
 }
+
+export const ioMiddleware = createMiddleware(async (c, next) => {
+  if (!c.var.io && globalIoInstance) {
+    c.set('io', globalIoInstance);
+  }
+  return next();
+});

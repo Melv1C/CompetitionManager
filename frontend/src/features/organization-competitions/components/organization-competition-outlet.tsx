@@ -1,5 +1,7 @@
 import { useOrganizationCompetition } from '@/features/competitions';
+import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
+import { useCompetitionResults, useLiveResult } from '@/features/results';
 import { useCompetitionEid } from '@/hooks';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -9,10 +11,18 @@ export function OrganizationCompetitionOutlet() {
   const { currentCompetition, setCompetition } = useOrganizationCompetitionStore();
 
   const organizationCompetition = useOrganizationCompetition(competitionEid);
+  const inscription = useCompetitionInscriptions(competitionEid); // TODO: use an organization-specific hook
+  const results = useCompetitionResults(competitionEid);
 
-  if (organizationCompetition.isError) {
-    throw new Error('Failed to load organization competition');
+  const isPending = organizationCompetition.isPending || inscription.isPending || results.isPending;
+  const isError = organizationCompetition.isError || inscription.isError || results.isError;
+  const error = organizationCompetition.error || inscription.error || results.error;
+
+  if (isError) {
+    throw new Error('Failed to load organization competition' + (error ? ': ' + error : ''));
   }
+
+  useLiveResult(competitionEid);
 
   useEffect(() => {
     if (
@@ -25,7 +35,7 @@ export function OrganizationCompetitionOutlet() {
     }
   }, [organizationCompetition, currentCompetition, setCompetition]);
 
-  if (organizationCompetition.isPending) {
+  if (isPending) {
     return <div>Loading...</div>;
   }
 

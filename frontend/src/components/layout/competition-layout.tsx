@@ -8,6 +8,8 @@ import { CalendarIcon, UsersIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Skeleton } from '../ui/skeleton';
+import { useCompetitionResults } from '@/features/results';
+import { useLiveResult } from '@/features/results/hooks/use-live-result';
 
 export function CompetitionLayout() {
   const eid = useCompetitionEid();
@@ -17,10 +19,11 @@ export function CompetitionLayout() {
 
   const competition = useCompetition(eid);
   const inscription = useCompetitionInscriptions(eid);
+  const results = useCompetitionResults(eid);
 
-  const isPending = competition.isPending || inscription.isPending;
-  const isError = competition.isError || inscription.isError;
-  const error = competition.error || inscription.error;
+  const isPending = competition.isPending || inscription.isPending || results.isPending;
+  const isError = competition.isError || inscription.isError || results.isError;
+  const error = competition.error || inscription.error || results.error;
 
   const isRegistrationVisible = () => {
     if (competition.isPending || competition.isError) return false;
@@ -46,6 +49,8 @@ export function CompetitionLayout() {
       navigate(`/competitions/${eid}/${value}`);
     }
   };
+
+  useLiveResult(eid);
 
   if (isError) throw new Error(error?.message || 'Error loading competition data');
 

@@ -6,3 +6,4 @@ export { CompetitionsService } from './competitions-service';
 export { EventsService } from './events-service';
 export { InscriptionsService } from './inscriptions-service';
 export { LogService } from './log-service';
+export { ResultsService } from './results-service';

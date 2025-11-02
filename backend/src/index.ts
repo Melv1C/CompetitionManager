@@ -30,8 +30,6 @@ const httpServer = serve(
 // Initialize Socket.IO server
 createSocketServer(httpServer);
 
-console.log('Socket.IO server initialized');
-
 // Graceful shutdown handling
 const gracefulShutdown = async (signal: string) => {
   logger.info(`Received ${signal}, starting graceful shutdown...`);

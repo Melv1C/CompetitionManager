@@ -14,15 +14,18 @@ import {
   XCircle,
 } from 'lucide-react';
 import { useEffect, useState } from 'react';
-import { useSocket, useSocketEvents } from '../store/socket-store';
+import { useSocketStatus, useSocketStore } from '../store/socket-store';
 
 interface SocketStatusViewerProps {
   className?: string;
 }
 
 export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
-  const { status, isConnected, reconnectAttempts, connect, disconnect, socket } = useSocket();
-  const { onError, onNotification } = useSocketEvents();
+  const { socket } = useSocketStore();
+  const { status, isConnected, reconnectAttempts } = useSocketStatus();
+  const connect = useSocketStore(state => state.connect);
+  const disconnect = useSocketStore(state => state.disconnect);
+
   const [logs, setLogs] = useState<
     Array<{
       timestamp: Date;
@@ -32,37 +35,61 @@ export function SocketStatusViewer({ className }: SocketStatusViewerProps) {
   >([]);
   const [isExpanded, setIsExpanded] = useState(false);
 
+  const onError = (data: { message: string; code?: string }) => {
+    setLogs(prev => [
+      ...prev.slice(-9), // Keep only last 10 logs
+      {
+        timestamp: new Date(),
+        message: `Error: ${data.message}`,
+        type: 'error',
+      },
+    ]);
+  };
+
+  const onNotification = (data: {
+    message: string;
+    type: 'info' | 'warning' | 'error' | 'success';
+  }) => {
+    setLogs(prev => [
+      ...prev.slice(-9), // Keep only last 10 logs
+      {
+        timestamp: new Date(),
+        message: `${data.type}: ${data.message}`,
+        type: 'info',
+      },
+    ]);
+  };
+
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const onAny = (event: string, ...args: any[]) => {
+    if (event === 'notification' || event === 'error') return; // Already handled
+    console.log('Socket event:', event, args);
+    const argsStr = JSON.stringify(args);
+    const preview = argsStr.length > 50 ? argsStr.slice(0, 50) + '...' : argsStr;
+    setLogs(prev => [
+      ...prev.slice(-9), // Keep only last 10 logs
+      {
+        timestamp: new Date(),
+        message: `Event: ${event} - ${preview}`,
+        type: 'info',
+      },
+    ]);
+  };
+
   // Listen to socket events for logging
   useEffect(() => {
     if (!isConnected) return;
 
-    const unsubscribeError = onError(data => {
-      setLogs(prev => [
-        ...prev.slice(-9), // Keep only last 10 logs
-        {
-          timestamp: new Date(),
-          message: `Error: ${data.message}`,
-          type: 'error',
-        },
-      ]);
-    });
-
-    const unsubscribeNotification = onNotification(data => {
-      setLogs(prev => [
-        ...prev.slice(-9), // Keep only last 10 logs
-        {
-          timestamp: new Date(),
-          message: `${data.type}: ${data.message}`,
-          type: 'info',
-        },
-      ]);
-    });
+    socket?.on('error', onError);
+    socket?.on('notification', onNotification);
+    socket?.onAny(onAny);
 
     return () => {
-      unsubscribeError();
-      unsubscribeNotification();
+      socket?.off('error', onError);
+      socket?.off('notification', onNotification);
+      socket?.offAny(onAny);
     };
-  }, [onError, onNotification, isConnected]);
+  }, [socket, isConnected]);
 
   // Add connection status changes to logs
   useEffect(() => {
