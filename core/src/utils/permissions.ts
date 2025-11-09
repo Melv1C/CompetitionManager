@@ -13,6 +13,7 @@ export const statement = {
   ...defaultStatements,
   competitions: ['read', 'create', 'update', 'delete'],
   inscriptions: ['read', 'manage'],
+  confirmations: ['read', 'manage'],
   results: ['read', 'manage'],
   events: ['read', 'manage'],
 } as const;
@@ -42,6 +43,7 @@ export const owner = ac.newRole({
   ...adminAc.statements,
   competitions: ['read', 'create', 'update', 'delete'],
   inscriptions: ['read', 'manage'],
+  confirmations: ['read', 'manage'],
   results: ['read', 'manage'],
   events: ['manage'],
 });
@@ -50,6 +52,7 @@ export const admin = ac.newRole({
   ...adminAc.statements,
   competitions: ['read', 'update'],
   inscriptions: ['read', 'manage'],
+  confirmations: ['read', 'manage'],
   results: ['read', 'manage'],
   events: ['read', 'manage'],
 });
@@ -57,6 +60,7 @@ export const admin = ac.newRole({
 export const resultManager = ac.newRole({
   competitions: ['read'],
   inscriptions: ['read'],
+  confirmations: ['read', 'manage'],
   results: ['read', 'manage'],
   events: ['read'],
 });
