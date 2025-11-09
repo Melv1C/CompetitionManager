@@ -1,7 +1,7 @@
 import { useOrganizationCompetition } from '@/features/competitions';
-import { useCompetitionInscriptions } from '@/features/inscriptions';
+import { useOrganizationInscriptions } from '@/features/inscriptions';
 import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
-import { useCompetitionResults, useLiveResult } from '@/features/results';
+import { useLiveResult, useOrganizationResults } from '@/features/results';
 import { useCompetitionEid } from '@/hooks';
 import { useEffect } from 'react';
 import { Outlet } from 'react-router-dom';
@@ -11,8 +11,8 @@ export function OrganizationCompetitionOutlet() {
   const { currentCompetition, setCompetition } = useOrganizationCompetitionStore();
 
   const organizationCompetition = useOrganizationCompetition(competitionEid);
-  const inscription = useCompetitionInscriptions(competitionEid); // TODO: use an organization-specific hook
-  const results = useCompetitionResults(competitionEid);
+  const inscription = useOrganizationInscriptions(competitionEid);
+  const results = useOrganizationResults(competitionEid);
 
   const isPending = organizationCompetition.isPending || inscription.isPending || results.isPending;
   const isError = organizationCompetition.isError || inscription.isError || results.isError;

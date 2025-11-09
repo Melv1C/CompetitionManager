@@ -12,7 +12,7 @@ import { toast } from 'sonner';
 export function useCompetitionInscriptions(competitionEid: Cuid) {
   return useQuery({
     queryKey: [INSCRIPTIONS_QUERY_KEY, competitionEid],
-    queryFn: () => InscriptionsService.getCompetitionInscriptions(competitionEid),
+    queryFn: () => InscriptionsService.getInscriptions(competitionEid),
   });
 }
 

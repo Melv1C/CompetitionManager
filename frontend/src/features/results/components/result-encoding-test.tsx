@@ -9,14 +9,14 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
-import { useCompetitionInscriptions } from '@/features/inscriptions';
-import type { CreateResult, Result } from '@repo/core/schemas';
-import { useState } from 'react';
-import { useCreateResult, useCompetitionResults } from '../hooks/use-results';
-import { Loader2 } from 'lucide-react';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useRequiredOrganizationCompetition } from '@/features/competitions';
+import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useCompetitionEid } from '@/hooks';
+import type { CreateResult, Result } from '@repo/core/schemas';
+import { Loader2 } from 'lucide-react';
+import { useState } from 'react';
+import { useCreateResult, useOrganizationResults } from '../hooks';
 
 export function ResultEncodingTest() {
   const competitionEid = useCompetitionEid();
@@ -31,7 +31,7 @@ export function ResultEncodingTest() {
   const { data: inscriptions, isPending: inscriptionsLoading } =
     useCompetitionInscriptions(competitionEid);
 
-  const { data: results, isPending: resultsLoading } = useCompetitionResults(competitionEid);
+  const { data: results, isPending: resultsLoading } = useOrganizationResults(competitionEid);
 
   const createResultMutation = useCreateResult(competitionEid);
 

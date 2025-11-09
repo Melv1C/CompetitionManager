@@ -2,14 +2,14 @@ import { Button } from '@/components/ui/button';
 import { Tabs, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useCompetition } from '@/features/competitions';
 import { useCompetitionInscriptions } from '@/features/inscriptions';
+import { useLiveResult } from '@/features/results/hooks/use-live-result';
 import { useCompetitionEid } from '@/hooks';
 import { formatDate } from '@/lib/formatters';
 import { CalendarIcon, UsersIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { Skeleton } from '../ui/skeleton';
-import { useCompetitionResults } from '@/features/results';
-import { useLiveResult } from '@/features/results/hooks/use-live-result';
+import { useResults } from '@/features/results';
 
 export function CompetitionLayout() {
   const eid = useCompetitionEid();
@@ -19,7 +19,7 @@ export function CompetitionLayout() {
 
   const competition = useCompetition(eid);
   const inscription = useCompetitionInscriptions(eid);
-  const results = useCompetitionResults(eid);
+  const results = useResults(eid);
 
   const isPending = competition.isPending || inscription.isPending || results.isPending;
   const isError = competition.isError || inscription.isError || results.isError;
