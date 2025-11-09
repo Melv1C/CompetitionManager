@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { Athlete$, athleteInclude } from './athlete';
+import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { CompetitionEvent$, competitionEventInclude } from './competition-event';
 
 // Record schema for personal records
@@ -48,7 +48,6 @@ export const Inscription$ = z.object({
   competitionId: Id$,
   competitionEventId: Id$,
   competitionEvent: CompetitionEvent$,
-
   paymentSessionId: Id$.nullish(),
 
   record: Record$.nullish(),
@@ -89,3 +88,10 @@ export const InscriptionPublic$ = Inscription$.pick({
   presenceStatus: true,
 });
 export type InscriptionPublic = z.infer<typeof InscriptionPublic$>;
+
+// Schema for updating presence status
+export const UpdatePresenceStatus$ = z.object({
+  inscriptionIds: z.array(Id$).min(1),
+  presenceStatus: PresenceStatus$,
+});
+export type UpdatePresenceStatus = z.infer<typeof UpdatePresenceStatus$>;
