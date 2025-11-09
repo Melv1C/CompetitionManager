@@ -1,0 +1,13 @@
+{
+  "confirmationNotEnabled": "Confirmation is not enabled for this competition. Enable it in the competition settings to use this feature.",
+  "description": "Review and confirm the presence of registered athletes at the competition.",
+  "errorUpdate": "Failed to update presence status",
+  "noInscriptions": "No inscriptions found for this competition.",
+  "noMatchingAthletes": "No athletes found matching your search.",
+  "searchPlaceholder": "Search by name, bib number, or license...",
+  "statusAbsent": "Absent",
+  "statusPresent": "Present",
+  "statusUnknown": "Unknown",
+  "successUpdate": "Presence status updated successfully",
+  "title": "Confirmations"
+}

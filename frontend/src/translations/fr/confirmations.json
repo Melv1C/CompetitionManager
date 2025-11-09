@@ -1,0 +1,13 @@
+{
+  "confirmationNotEnabled": "La confirmation n'est pas activée pour cette compétition. Activez-la dans les paramètres de la compétition pour utiliser cette fonctionnalité.",
+  "description": "Vérifiez et confirmez la présence des athlètes inscrits à la compétition.",
+  "errorUpdate": "Échec de la mise à jour du statut de présence",
+  "noInscriptions": "Aucune inscription trouvée pour cette compétition.",
+  "noMatchingAthletes": "Aucun athlète trouvé correspondant à votre recherche.",
+  "searchPlaceholder": "Rechercher par nom, dossard ou licence...",
+  "statusAbsent": "Absent",
+  "statusPresent": "Présent",
+  "statusUnknown": "Inconnu",
+  "successUpdate": "Statut de présence mis à jour avec succès",
+  "title": "Confirmations"
+}

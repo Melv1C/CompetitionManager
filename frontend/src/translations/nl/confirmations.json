@@ -1,0 +1,13 @@
+{
+  "confirmationNotEnabled": "Bevestiging is niet ingeschakeld voor deze wedstrijd. Schakel het in de wedstrijdinstellingen in om deze functie te gebruiken.",
+  "description": "Controleer en bevestig de aanwezigheid van geregistreerde atleten bij de wedstrijd.",
+  "errorUpdate": "Aanwezigheidsstatus bijwerken mislukt",
+  "noInscriptions": "Geen inschrijvingen gevonden voor deze wedstrijd.",
+  "noMatchingAthletes": "Geen atleten gevonden die overeenkomen met uw zoekopdracht.",
+  "searchPlaceholder": "Zoeken op naam, startnummer of licentie...",
+  "statusAbsent": "Afwezig",
+  "statusPresent": "Aanwezig",
+  "statusUnknown": "Onbekend",
+  "successUpdate": "Aanwezigheidsstatus succesvol bijgewerkt",
+  "title": "Bevestigingen"
+}
