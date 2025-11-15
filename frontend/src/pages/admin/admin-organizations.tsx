@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
 import {
   CreateOrganizationDialog,
   OrganizationsTable,
   useOrganizations,
 } from '@/features/organization';
+import { Button } from '@repo/ui';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

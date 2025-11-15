@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { CreateCompetitionDialog } from '@/features/competitions/components/create-competition-dialog';
 import { useOrganizationCompetitions } from '@/features/competitions/hooks/use-organization-competitions';
 import { formatDate } from '@repo/core/utils';
+import { Button } from '@repo/ui';
 import { Calendar, ChevronRight, Plus, TrendingUp, Users } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';

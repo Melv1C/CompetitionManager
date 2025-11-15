@@ -1,25 +1,23 @@
-import { GoogleIcon } from '@/components/icons/google-icon';
-import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth-client';
+import { env } from '@/lib/env';
+import { zodResolver } from '@hookform/resolvers/zod';
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { authClient } from '@/lib/auth-client';
-import { env } from '@/lib/env';
-import { zodResolver } from '@hookform/resolvers/zod';
+  GoogleIcon,
+  Input,
+} from '@repo/ui';
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { useTranslation } from 'react-i18next';

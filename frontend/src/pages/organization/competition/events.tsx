@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { CompetitionEventFormDialog, CompetitionEventsTable } from '@/features/competition-events';
 import { useRequiredOrganizationCompetition } from '@/features/competitions';
+import { Button } from '@repo/ui';
 import { Plus } from 'lucide-react';
 import { useState } from 'react';
 import { useParams } from 'react-router-dom';

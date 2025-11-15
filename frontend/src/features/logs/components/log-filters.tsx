@@ -1,10 +1,5 @@
-import { DateTimePicker } from '@/components/date-time-picker';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { LogLevel$, type LogLevel, type LogQuery } from '@repo/core/schemas';
+import { Button, Card, CardContent, Checkbox, DateTimePicker, Input, Label } from '@repo/ui';
 import { FilterIcon, SearchIcon, XIcon } from 'lucide-react';
 import { useState } from 'react';
 import { LogLevelBadge } from './log-level-badge';

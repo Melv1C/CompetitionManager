@@ -21,7 +21,7 @@ export default defineConfig(({ mode }) => {
         output: {
           manualChunks: {
             react: ['react', 'react-dom'],
-            vendor: ['@tanstack/react-query', '@radix-ui/react-slot'],
+            vendor: ['@tanstack/react-query'],
           },
         },
       },

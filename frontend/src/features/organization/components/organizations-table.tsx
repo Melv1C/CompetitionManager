@@ -1,3 +1,5 @@
+import { authClient } from '@/lib/auth-client';
+import { formatDate } from '@repo/core/utils';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -8,19 +10,17 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
   AlertDialogTrigger,
-} from '@/components/ui/alert-dialog';
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
-import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { authClient } from '@/lib/auth-client';
-import { formatDate } from '@repo/core/utils';
+} from '@repo/ui';
 import { Building2, ExternalLink, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';

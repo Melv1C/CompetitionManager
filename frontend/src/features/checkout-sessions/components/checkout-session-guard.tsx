@@ -1,6 +1,6 @@
-import { Button } from '@/components/ui/button';
 import { formatDateTime } from '@/lib/formatters';
 import type { CheckoutSession } from '@repo/core/schemas';
+import { Button } from '@repo/ui';
 import type { PropsWithChildren } from 'react';
 import { useCheckoutSessions, useExpireCheckoutSession } from '../hooks/use-checkout-sessions';
 

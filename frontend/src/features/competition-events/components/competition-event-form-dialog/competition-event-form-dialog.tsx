@@ -1,21 +1,3 @@
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-} from '@/components/ui/dialog';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
 import { CategorySelector } from '@/features/categories';
 import { EventSelector, useEvents } from '@/features/events';
 import { zodResolver } from '@hookform/resolvers/zod';
@@ -30,9 +12,25 @@ import {
   type Event,
 } from '@repo/core/schemas';
 import { getCombinedEventSubEventsCount } from '@repo/core/utils';
+import {
+  Button,
+  DateTimePicker,
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+  Input,
+  ScrollArea,
+} from '@repo/ui';
 import { useFieldArray, useForm } from 'react-hook-form';
 
-import { DateTimePicker } from '@/components/date-time-picker';
 import { useRequiredOrganizationCompetition } from '@/features/competitions';
 import { useEffect, useState } from 'react';
 import z from 'zod';

@@ -1,9 +1,7 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
 import { formatTime } from '@/lib/formatters';
 import type { Competition, Id } from '@repo/core/schemas';
 import { formatPerformance, getSeasonClub } from '@repo/core/utils';
+import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from '@repo/ui';
 import { Edit, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { AthleteRegistration } from '../../store/inscription-form-store';

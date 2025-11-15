@@ -1,9 +1,7 @@
-import { Input } from '@/components/ui/input';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Skeleton } from '@/components/ui/skeleton';
 import { cn } from '@/lib/utils';
 import { AthleteKey$, type Athlete } from '@repo/core/schemas';
 import { getSeasonBib } from '@repo/core/utils';
+import { Input, ScrollArea, Skeleton } from '@repo/ui';
 import { debounce } from 'lodash';
 import { Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';

@@ -1,7 +1,3 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
 import { CategorySelector } from '@/features/categories';
 import { useRequiredCompetition } from '@/features/competitions';
 import { EventSelector } from '@/features/events';
@@ -9,6 +5,7 @@ import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useCompetitionEid } from '@/hooks';
 import { formatDateFull, formatTime } from '@/lib/formatters';
 import type { CompetitionEvent } from '@repo/core/schemas';
+import { Badge, Button, Card, CardContent, CardHeader, CardTitle, Input } from '@repo/ui';
 import { CalendarIcon, ClockIcon, SearchIcon, UsersIcon, XIcon } from 'lucide-react';
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';

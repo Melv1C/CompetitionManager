@@ -1,15 +1,23 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
-import { Sheet, SheetContent, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Check, ChevronDown } from 'lucide-react';
-import { useState } from 'react';
-import { useCategories } from '../hooks/use-categories';
 import { useIsMobile } from '@/hooks/use-mobile';
 import { cn } from '@/lib/utils';
 import type { FullCategory } from '@repo/core/schemas';
+import {
+  Badge,
+  Button,
+  Checkbox,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+  ScrollArea,
+  Sheet,
+  SheetContent,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from '@repo/ui';
+import { Check, ChevronDown } from 'lucide-react';
+import { useState } from 'react';
+import { useCategories } from '../hooks/use-categories';
 
 interface CategorySelectorProps {
   selectedIds: number[];

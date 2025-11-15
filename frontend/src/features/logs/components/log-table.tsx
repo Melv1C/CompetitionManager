@@ -1,23 +1,16 @@
-import { Badge } from '@/components/ui/badge';
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { type Log } from '@repo/core/schemas';
 import {
-  Dialog,
+  Badge, Button, Card, CardContent, CardHeader, CardTitle, Dialog,
   DialogContent,
   DialogHeader,
   DialogTitle,
-  DialogTrigger,
-} from '@/components/ui/dialog';
-import { Skeleton } from '@/components/ui/skeleton';
-import {
-  Table,
+  DialogTrigger, Skeleton, Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
-  TableRow,
-} from '@/components/ui/table';
-import { type Log } from '@repo/core/schemas';
+  TableRow
+} from '@repo/ui';
 import {
   AlertTriangle,
   ChevronLeft,

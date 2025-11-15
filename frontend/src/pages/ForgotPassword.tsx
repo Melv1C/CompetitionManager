@@ -1,15 +1,15 @@
-import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth-client';
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { authClient } from '@/lib/auth-client';
+  Input,
+  Label,
+} from '@repo/ui';
 import { CheckCircle2, Mail } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

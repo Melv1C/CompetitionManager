@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { RequireAuth, useAuth } from '@/features/auth';
 import { CheckoutSessionGuard } from '@/features/checkout-sessions';
 import { InscriptionWizard } from '@/features/inscriptions';
+import { Button } from '@repo/ui';
 import { Mail } from 'lucide-react';
 import type { PropsWithChildren } from 'react';
 import { useTranslation } from 'react-i18next';

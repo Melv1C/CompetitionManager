@@ -1,7 +1,5 @@
-import { Button } from '@/components/ui/button';
-import { Switch } from '@/components/ui/switch';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import type { Competition } from '@repo/core/schemas';
+import { Button, Switch, Tooltip, TooltipContent, TooltipTrigger } from '@repo/ui';
 import { AlertCircle, Save } from 'lucide-react';
 import { getFieldEditability } from '../../utils/field-editability';
 

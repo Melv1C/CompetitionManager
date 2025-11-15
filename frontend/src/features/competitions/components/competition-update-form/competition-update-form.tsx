@@ -1,8 +1,7 @@
-import { Form } from '@/components/ui/form';
-import { UnsavedChangesDialog } from '@/components/unsaved-changes-dialog';
 import { useClubs } from '@/features/clubs';
 import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
 import { useUnsavedChanges } from '@/hooks/use-unsaved-changes';
+import { Form, UnsavedChangesDialog } from '@repo/ui';
 import { useEffect } from 'react';
 import { FieldRulesLegend } from './field-rules-legend';
 import { FormHeader } from './form-header';

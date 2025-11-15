@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@repo/ui';
 import { Clock, Info } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function RecordsEntryStep() {
   const { t } = useTranslation();

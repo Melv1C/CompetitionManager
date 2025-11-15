@@ -1,13 +1,13 @@
-import { Button } from '@/components/ui/button';
+import { useAuth } from '@/features/auth';
+import { authClient } from '@/lib/auth-client';
 import {
+  Button,
   Card,
   CardContent,
   CardDescription,
   CardFooter,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import {
   Dialog,
   DialogContent,
   DialogDescription,
@@ -15,12 +15,10 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import { useAuth } from '@/features/auth';
-import { authClient } from '@/lib/auth-client';
+  Input,
+  Label,
+  Separator,
+} from '@repo/ui';
 import { CheckCircle2, Mail, ShieldCheck, User } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';

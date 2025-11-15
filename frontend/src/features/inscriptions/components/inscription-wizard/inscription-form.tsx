@@ -1,12 +1,14 @@
-import { Button } from '@/components/ui/button';
-import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import {
+  Button,
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
   Stepper,
   StepperIndicator,
   StepperItem,
   StepperSeparator,
   StepperTrigger,
-} from '@/components/ui/stepper';
+} from '@repo/ui';
 import { ChevronLeft, ChevronRight, Eye, ShoppingCart } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAthleteBlockStatus } from '../../hooks/use-athlete-registration-status';

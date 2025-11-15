@@ -22,6 +22,7 @@ jobs:
           cache-dependency-path: |
             package-lock.json
             core/package-lock.json
+            ui/package-lock.json
             backend/package-lock.json
             frontend/package-lock.json
             desktop/package-lock.json
@@ -33,6 +34,7 @@ jobs:
           path: |
             node_modules
             core/node_modules
+            ui/node_modules
             backend/node_modules
             frontend/node_modules
             desktop/node_modules
@@ -45,6 +47,9 @@ jobs:
 
       - name: Install dependencies (core)
         run: npm run install:core
+
+      - name: Install dependencies (ui)
+        run: npm run install:ui
 
       - name: Install dependencies (backend)
         run: npm run install:backend
@@ -81,6 +86,7 @@ jobs:
           path: |
             node_modules
             core/node_modules
+            ui/node_modules
             backend/node_modules
             frontend/node_modules
             desktop/node_modules
@@ -94,7 +100,7 @@ jobs:
     needs: setup
     strategy:
       matrix:
-        package: [core, backend, frontend, desktop]
+        package: [core, ui, backend, frontend, desktop]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -111,6 +117,7 @@ jobs:
           path: |
             node_modules
             core/node_modules
+            ui/node_modules
             backend/node_modules
             frontend/node_modules
             desktop/node_modules
@@ -138,6 +145,7 @@ jobs:
           path: |
             node_modules
             core/node_modules
+            ui/node_modules
             backend/node_modules
             frontend/node_modules
             desktop/node_modules
@@ -165,6 +173,7 @@ jobs:
           path: |
             node_modules
             core/node_modules
+            ui/node_modules
             backend/node_modules
             frontend/node_modules
             desktop/node_modules
@@ -182,7 +191,7 @@ jobs:
     needs: [setup, lint, format-check]
     strategy:
       matrix:
-        package: [core, backend, frontend, desktop]
+        package: [core, ui, backend, frontend, desktop]
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
@@ -199,6 +208,7 @@ jobs:
           path: |
             node_modules
             core/node_modules
+            ui/node_modules
             backend/node_modules
             frontend/node_modules
             desktop/node_modules
