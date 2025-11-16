@@ -1,17 +1,20 @@
-import { DateTimePicker } from '@/components/date-time-picker';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { CompetitionCreate$, type CompetitionCreate } from '@repo/core/schemas';
 import {
+  Button,
+  DateTimePicker,
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
   Form,
   FormControl,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { CompetitionCreate$, type CompetitionCreate } from '@repo/core/schemas';
+  Input,
+} from '@repo/ui';
 import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import z from 'zod';

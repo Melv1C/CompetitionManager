@@ -1,16 +1,15 @@
-import { Button } from '@/components/ui/button';
 import { AuthButton } from '@/features/auth';
 import { getThemeValue, ThemeToggle, useTheme } from '@/features/theme';
+import { Button, LanguageSelector } from '@repo/ui';
 import { Menu, X } from 'lucide-react';
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { LanguageSelector } from '../language-selector';
 import { MobileMenu } from './mobile-menu';
 import { Navigation } from './navigation';
 
 export function Header() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { theme } = useTheme();
   const [isOpen, setIsOpen] = useState(false);
 
@@ -38,7 +37,7 @@ export function Header() {
           {/* Desktop Navigation */}
           <Navigation navItems={navItems} /> {/* Desktop Actions */}
           <div className="hidden md:flex items-center space-x-3">
-            <LanguageSelector />
+            <LanguageSelector value={i18n.language} onValueChange={i18n.changeLanguage} />
             <ThemeToggle />
             <AuthButton />
           </div>

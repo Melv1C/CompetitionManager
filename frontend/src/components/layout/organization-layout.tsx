@@ -1,13 +1,18 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { useAuth } from '@/features/auth';
+import { OrganizationSelector, useOrganizations } from '@/features/organization';
+import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
+import { authClient } from '@/lib/auth-client';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import {
+  ScrollArea,
   Sidebar,
   SidebarContent,
   SidebarFooter,
@@ -22,11 +27,7 @@ import {
   SidebarProvider,
   SidebarRail,
   SidebarTrigger,
-} from '@/components/ui/sidebar';
-import { useAuth } from '@/features/auth';
-import { OrganizationSelector, useOrganizations } from '@/features/organization';
-import { useOrganizationCompetitionStore } from '@/features/organization-competitions/store/organization-competition';
-import { authClient } from '@/lib/auth-client';
+} from '@repo/ui';
 import {
   ArrowLeft,
   CalendarClock,
@@ -44,7 +45,6 @@ import { useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, Outlet, useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'sonner';
-import { ScrollArea } from '../ui/scroll-area';
 
 export function OrganizationLayout() {
   const { user } = useAuth();

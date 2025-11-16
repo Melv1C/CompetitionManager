@@ -1,8 +1,8 @@
-import { Button } from '@/components/ui/button';
-import { CheckCircle, Calendar, Users, Plus } from 'lucide-react';
+import { useCompetitionEid } from '@/hooks/use-competition-eid';
+import { Button } from '@repo/ui';
+import { Calendar, CheckCircle, Plus, Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useCompetitionEid } from '@/hooks/use-competition-eid';
 
 export function InscriptionSuccess() {
   const { t } = useTranslation();

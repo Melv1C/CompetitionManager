@@ -4,10 +4,10 @@ import {
   MainLayout,
   OrganizationLayout,
 } from '@/components/layout';
-import { Toaster } from '@/components/ui/sonner';
 import { SocketStatusViewer } from '@/features/socket';
 import { ThemeProvider } from '@/features/theme';
 import { env } from '@/lib/env';
+import { Toaster } from '@repo/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';

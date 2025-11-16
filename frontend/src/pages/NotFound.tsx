@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@repo/ui';
 import { Link } from 'react-router-dom';
 
 export default function NotFound() {

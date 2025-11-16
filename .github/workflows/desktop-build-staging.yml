@@ -32,11 +32,17 @@ jobs:
       - name: Install dependencies (core)
         run: npm run install:core
 
+      - name: Install dependencies (ui)
+        run: npm run install:ui
+
       - name: Install dependencies (desktop)
         run: npm run install:desktop
 
       - name: Build core package
         run: cd core && npm run build
+
+      - name: Build UI package
+        run: cd ui && npm run build
 
       - name: Update version for staging
         run: |

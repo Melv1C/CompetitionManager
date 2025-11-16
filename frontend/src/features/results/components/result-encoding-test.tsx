@@ -1,19 +1,23 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
+import { useRequiredOrganizationCompetition } from '@/features/competitions';
+import { useCompetitionInscriptions } from '@/features/inscriptions';
+import { useCompetitionEid } from '@/hooks';
+import type { CreateResult, Result } from '@repo/core/schemas';
 import {
+  Button,
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+  Input,
+  Label,
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Skeleton } from '@/components/ui/skeleton';
-import { useRequiredOrganizationCompetition } from '@/features/competitions';
-import { useCompetitionInscriptions } from '@/features/inscriptions';
-import { useCompetitionEid } from '@/hooks';
-import type { CreateResult, Result } from '@repo/core/schemas';
+  Skeleton,
+} from '@repo/ui';
 import { Loader2 } from 'lucide-react';
 import { useState } from 'react';
 import { useCreateResult, useOrganizationResults } from '../hooks';

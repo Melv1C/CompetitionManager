@@ -1,12 +1,10 @@
-import { Badge } from '@/components/ui/badge';
-import { Checkbox } from '@/components/ui/checkbox';
-import { Label } from '@/components/ui/label';
 import { useRequiredCompetition } from '@/features/competitions/hooks/use-competitions';
 import { useRequiredCompetitionInscriptions } from '@/features/inscriptions/hooks/use-inscriptions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import { formatTime } from '@/lib/formatters';
 import type { CompetitionEvent, Id } from '@repo/core/schemas';
 import { getAthleteCategory, getSeasonClub } from '@repo/core/utils';
+import { Badge, Checkbox, Label } from '@repo/ui';
 import { Users } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useInscriptionFormStore } from '../../../store/inscription-form-store';

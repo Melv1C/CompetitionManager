@@ -1,5 +1,4 @@
-import { FormControl, FormItem, FormLabel } from '@/components/ui/form';
-import { Switch } from '@/components/ui/switch';
+import { FormControl, FormItem, FormLabel, Switch } from '@repo/ui';
 
 interface SwitchFieldProps {
   label: string;

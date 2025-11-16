@@ -1,25 +1,23 @@
-import { Button } from '@/components/ui/button';
+import { formatCurrency, formatDateFull, formatTime } from '@/lib/formatters';
+import type { CompetitionEvent, Cuid } from '@repo/core/schemas';
 import {
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { Switch } from '@/components/ui/switch';
-import {
+  Switch,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import type { CompetitionEvent, Cuid } from '@repo/core/schemas';
+} from '@repo/ui';
 import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
 import { useState } from 'react';
 import { useDeleteCompetitionEvent } from '../hooks/use-competition-events';
 import { CompetitionEventFormDialog } from './competition-event-form-dialog';
-import { formatTime, formatDateFull, formatCurrency } from '@/lib/formatters';
 
 interface CompetitionEventsTableProps {
   competitionEid: Cuid;

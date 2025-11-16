@@ -1,11 +1,19 @@
-import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
-import { Button } from '@/components/ui/button';
-import { Card, CardAction, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { AthleteCard, AthleteSearch } from '@/features/athletes';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useUserInscriptions } from '@/features/inscriptions/hooks/use-inscriptions';
 import { useCompetitionEid } from '@/hooks';
 import { InscriptionStatus$, type Athlete } from '@repo/core/schemas';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+  Button,
+  Card,
+  CardAction,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@repo/ui';
 import { AlertTriangle, Edit2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useAthleteBlockStatus } from '../../../hooks/use-athlete-registration-status';

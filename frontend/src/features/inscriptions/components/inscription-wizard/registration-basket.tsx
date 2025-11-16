@@ -1,18 +1,25 @@
-import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Separator } from '@/components/ui/separator';
-import { Skeleton } from '@/components/ui/skeleton';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@/components/ui/tooltip';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import type { Id } from '@repo/core/schemas';
+import { BASE_FEE, VARIABLE_FEE_RATE, getFees, getSeasonClub } from '@repo/core/utils';
+import {
+  Button,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Separator,
+  Skeleton,
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@repo/ui';
 import { CreditCard, HelpCircle, Plus, ShoppingCart, UserPlus } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useAlreadyPaidAmounts, useCreateInscriptions } from '../../hooks/use-inscriptions';
 import { useInscriptionFormStore } from '../../store/inscription-form-store';
 import { AthleteTicket } from './athlete-ticket';
-import { getFees, BASE_FEE, VARIABLE_FEE_RATE, getSeasonClub } from '@repo/core/utils';
 
 function RegistrationBasketSkeleton() {
   const { t } = useTranslation();

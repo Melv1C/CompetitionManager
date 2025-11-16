@@ -1,9 +1,7 @@
-import { BasicRichTextViewer } from '@/components/rich-text';
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks';
 import { formatDate, formatDateTime } from '@/lib/formatters';
+import { Badge, BasicRichTextViewer, Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import {
   AlertCircleIcon,
   CalendarIcon,

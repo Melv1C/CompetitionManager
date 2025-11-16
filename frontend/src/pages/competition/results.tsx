@@ -1,6 +1,6 @@
-import { useTranslation } from 'react-i18next';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@repo/ui';
 import { TrophyIcon } from 'lucide-react';
+import { useTranslation } from 'react-i18next';
 
 export function CompetitionResultsPage() {
   const { t } = useTranslation();

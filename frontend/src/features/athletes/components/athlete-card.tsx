@@ -1,8 +1,7 @@
-import { Card, CardContent } from '@/components/ui/card';
-import { RacingBib } from '@/components/racing-bib';
 import { cn } from '@/lib/utils';
 import type { Athlete } from '@repo/core/schemas';
 import { getAthleteCategory, getSeasonBib, getSeasonClub } from '@repo/core/utils';
+import { Card, CardContent, RacingBib } from '@repo/ui';
 
 interface AthleteCardProps {
   athlete: Athlete;

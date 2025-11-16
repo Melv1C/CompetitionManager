@@ -1,16 +1,18 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { useOrganizations } from '@/features/organization';
+import { authClient } from '@/lib/auth-client';
+import type { User as UserType } from '@repo/core/schemas';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { useOrganizations } from '@/features/organization';
-import { authClient } from '@/lib/auth-client';
-import type { User as UserType } from '@repo/core/schemas';
+} from '@repo/ui';
 import { Building2, LogOut, Settings, Shield, User } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';

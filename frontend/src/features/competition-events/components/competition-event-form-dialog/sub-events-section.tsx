@@ -1,9 +1,14 @@
-import { DateTimePicker } from '@/components/date-time-picker';
-import { FormControl, FormField, FormItem, FormMessage } from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Separator } from '@/components/ui/separator';
 import { EventSelector, useEvents } from '@/features/events';
 import type { CompetitionEventCreate, CompetitionEventUpdate, Event } from '@repo/core/schemas';
+import {
+  DateTimePicker,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+  Input,
+  Separator,
+} from '@repo/ui';
 import type { Control, FieldArrayWithId } from 'react-hook-form';
 
 interface SubEventsSectionProps {

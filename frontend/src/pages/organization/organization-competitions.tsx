@@ -1,9 +1,9 @@
-import { Button } from '@/components/ui/button';
 import {
   CompetitionsTable,
   CreateCompetitionDialog,
   useOrganizationCompetitions,
 } from '@/features/competitions';
+import { Button } from '@repo/ui';
 import { useState } from 'react';
 
 export function OrganizationCompetitions() {

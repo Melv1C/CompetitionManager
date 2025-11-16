@@ -1,18 +1,21 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Skeleton } from '@/components/ui/skeleton';
+import { useRequiredCompetition } from '@/features/competitions';
+import { useCompetitionEid } from '@/hooks';
+import type { InscriptionPublic } from '@repo/core/schemas';
+import { formatPerformance, getSeasonBib } from '@repo/core/utils';
 import {
+  Badge,
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  Skeleton,
   Table,
   TableBody,
   TableCell,
   TableHead,
   TableHeader,
   TableRow,
-} from '@/components/ui/table';
-import { useRequiredCompetition } from '@/features/competitions';
-import { useCompetitionEid } from '@/hooks';
-import type { InscriptionPublic } from '@repo/core/schemas';
-import { formatPerformance, getSeasonBib } from '@repo/core/utils';
+} from '@repo/ui';
 import { UsersIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { useCompetitionInscriptions } from '../hooks/use-inscriptions';

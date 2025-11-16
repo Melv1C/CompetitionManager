@@ -1,5 +1,4 @@
-import { Badge } from '@/components/ui/badge';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { Badge, Card, CardContent, CardDescription, CardHeader, CardTitle } from '@repo/ui';
 import { BarChart3, TrendingUp, Trophy, Users } from 'lucide-react';
 
 export function AdminDashboard() {

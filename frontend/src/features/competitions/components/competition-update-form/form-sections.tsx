@@ -1,17 +1,18 @@
-import { DateTimePicker } from '@/components/date-time-picker';
-import { RichTextEditor, RichTextViewer } from '@/components/rich-text';
+import { ClubSelector } from '@/features/clubs';
+import type { Club, Competition, CompetitionUpdate } from '@repo/core/schemas';
 import {
+  DateTimePicker,
   FormControl,
   FormDescription,
   FormField,
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
-import { ClubSelector } from '@/features/clubs';
-import type { Club, Competition, CompetitionUpdate } from '@repo/core/schemas';
+  Input,
+  RichTextEditor,
+  RichTextViewer,
+  Textarea,
+} from '@repo/ui';
 import type { UseFormReturn } from 'react-hook-form';
 import { SwitchField } from '../switch-field';
 import { FieldWrapper } from './field-wrapper';
