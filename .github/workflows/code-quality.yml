@@ -220,6 +220,12 @@ jobs:
           cd core
           npm run build
 
+      - name: Build UI (prerequisite)
+        if: matrix.package == 'frontend' || matrix.package == 'desktop'
+        run: |
+          cd ui
+          npm run build
+
       - name: Generate Prisma client (prerequisite for backend)
         if: matrix.package == 'backend'
         run: |
