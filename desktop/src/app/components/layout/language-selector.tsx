@@ -1,10 +1,4 @@
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@repo/ui';
+import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@repo/ui';
 import { useTranslation } from 'react-i18next';
 
 interface Language {

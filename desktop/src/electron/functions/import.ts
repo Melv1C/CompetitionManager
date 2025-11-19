@@ -23,19 +23,27 @@ const importEvents = async (competition: Competition, recreate: boolean = false)
   for (const event of competition.events) {
     if (await eventExists(event.name, competition.id)) {
       if (!recreate) {
-        console.log(`Event ${event.name} already exists in competition ID ${competition.id}. Skipping import.`);
+        console.log(
+          `Event ${event.name} already exists in competition ID ${competition.id}. Skipping import.`,
+        );
         continue;
       }
       await deleteEvent(event.name, competition.id);
     }
     await createEvent(event, competition.id);
   }
-}
+};
 
-export const importAthletes = async (inscriptions: Inscription[], competitionId: number, competitionStartDate: Date) => {
+export const importAthletes = async (
+  inscriptions: Inscription[],
+  competitionId: number,
+  competitionStartDate: Date,
+) => {
   console.log(`Importing ${inscriptions.length} athletes for competition ID ${competitionId}`);
   for (const inscription of inscriptions) {
-    console.log(`Importing athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName}`);
-    await createAthlete(inscription, competitionId, competitionStartDate)
+    console.log(
+      `Importing athlete ${inscription.athlete.firstName} ${inscription.athlete.lastName}`,
+    );
+    await createAthlete(inscription, competitionId, competitionStartDate);
   }
-}
+};

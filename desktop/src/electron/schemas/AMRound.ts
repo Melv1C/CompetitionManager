@@ -26,7 +26,7 @@ export const AMRoundSchema = z.object({
   pointcalculationalgorithm: z.number().int().default(1),
   attempts: z.number().int().default(0),
   startheight: z.number().default(0.8),
-  intervalheight: z.number().int().default(5) ,
+  intervalheight: z.number().int().default(5),
   status: z.number().int().default(0),
   lanes_array: z.string().max(892).default('1;2;3;4;5;6;7;8'),
   datescheduled: z.coerce.date().default(new Date()),

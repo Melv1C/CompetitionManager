@@ -8,5 +8,5 @@ export const getExistingEventsNames = async (competitionId: number): Promise<str
     },
     select: { name: true },
   });
-  return existingEvents.map(event => event.name!);  // Non-null assertion because of the 'not: null' filter
+  return existingEvents.map(event => event.name!); // Non-null assertion because of the 'not: null' filter
 };

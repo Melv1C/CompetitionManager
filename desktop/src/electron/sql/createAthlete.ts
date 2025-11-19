@@ -26,7 +26,7 @@ export const createAthlete = async (
     competitorId = await createCompetitor(inscription.athlete, licenseId, athleteId, competitionId);
   }
   const roundId = await getAMRoundId(inscription.competitionEvent, competitionId);
-  if (!await participantExists(competitorId, roundId)) {
+  if (!(await participantExists(competitorId, roundId))) {
     // The getAthleteCategory create the categorie on itself based on agec so we need to find the amId with the coategories of the event
     const possibleCategories = inscription.competitionEvent.categories;
     const calculatedCat = getAthleteCategory(inscription.athlete, competitionStartDate);
