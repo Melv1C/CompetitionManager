@@ -208,7 +208,7 @@ model Category {
   gender            String
   masterAgeGroup    Int?
   order             Int
-  amId              Int                @unique
+  amId              Int?               @unique
   competitionEvents CompetitionEvent[]
 
   @@map("categories")
