@@ -65,14 +65,14 @@ jobs:
           cd backend
           npx prisma generate
         env:
-          PRISMA_DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
       - name: Generate Prisma client (desktop)
         run: |
           cd desktop
           npx prisma generate
         env:
-          PRISMA_DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+          DB_LOCAL_URL: postgresql://user:password@localhost:5432/mydb
 
   format-check:
     runs-on: ubuntu-latest
