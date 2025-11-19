@@ -43,22 +43,22 @@ jobs:
             ${{ runner.os }}-node-
 
       - name: Install root dependencies
-        run: npm install
+        run: npm ci
 
       - name: Install dependencies (core)
-        run: npm run install:core
+        run: cd core && npm ci
 
       - name: Install dependencies (ui)
-        run: npm run install:ui -- --include=optional
+        run: cd ui && npm ci
 
       - name: Install dependencies (backend)
-        run: npm run install:backend
+        run: cd backend && npm ci
 
       - name: Install dependencies (frontend)
-        run: npm run install:frontend
+        run: cd frontend && npm ci
 
       - name: Install dependencies (desktop)
-        run: npm run install:desktop
+        run: cd desktop && npm ci
 
       - name: Generate Prisma client (backend)
         run: |
