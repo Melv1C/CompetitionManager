@@ -41,6 +41,7 @@ export const FullCategory$ = z.object({
   gender: Gender$,
   masterAgeGroup: z.number().nullish(),
   order: z.number().positive(),
+  amId: z.number().int().nullish(),
 });
 export type FullCategory = z.infer<typeof FullCategory$>;
 

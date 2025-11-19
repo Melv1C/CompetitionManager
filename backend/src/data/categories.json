@@ -5,6 +5,7 @@
     "baseCategory": "Kangourou",
     "abbrBaseCategory": "KAN",
     "gender": "M",
+    "amId": 1,
     "order": 1
   },
   {
@@ -13,6 +14,7 @@
     "baseCategory": "Kangourou",
     "abbrBaseCategory": "KAN",
     "gender": "F",
+    "amId": 51,
     "order": 2
   },
   {
@@ -21,6 +23,7 @@
     "baseCategory": "Benjamin",
     "abbrBaseCategory": "BEN",
     "gender": "M",
+    "amId": 2,
     "order": 3
   },
   {
@@ -29,6 +32,7 @@
     "baseCategory": "Benjamin",
     "abbrBaseCategory": "BEN",
     "gender": "F",
+    "amId": 52,
     "order": 4
   },
   {
@@ -37,6 +41,7 @@
     "baseCategory": "Pupille",
     "abbrBaseCategory": "PUP",
     "gender": "M",
+    "amId": 3,
     "order": 5
   },
   {
@@ -45,6 +50,7 @@
     "baseCategory": "Pupille",
     "abbrBaseCategory": "PUP",
     "gender": "F",
+    "amId": 53,
     "order": 6
   },
   {
@@ -53,6 +59,7 @@
     "baseCategory": "Minime",
     "abbrBaseCategory": "MIN",
     "gender": "M",
+    "amId": 4,
     "order": 7
   },
   {
@@ -61,6 +68,7 @@
     "baseCategory": "Minime",
     "abbrBaseCategory": "MIN",
     "gender": "F",
+    "amId": 54,
     "order": 8
   },
   {
@@ -69,6 +77,7 @@
     "baseCategory": "Cadet",
     "abbrBaseCategory": "CAD",
     "gender": "M",
+    "amId": 5,
     "order": 9
   },
   {
@@ -77,6 +86,7 @@
     "baseCategory": "Cadet",
     "abbrBaseCategory": "CAD",
     "gender": "F",
+    "amId": 55,
     "order": 10
   },
   {
@@ -85,6 +95,7 @@
     "baseCategory": "Scolaire",
     "abbrBaseCategory": "SCO",
     "gender": "M",
+    "amId": 6,
     "order": 11
   },
   {
@@ -93,6 +104,7 @@
     "baseCategory": "Scolaire",
     "abbrBaseCategory": "SCO",
     "gender": "F",
+    "amId": 56,
     "order": 12
   },
   {
@@ -101,6 +113,7 @@
     "baseCategory": "Junior",
     "abbrBaseCategory": "JUN",
     "gender": "M",
+    "amId": 7,
     "order": 13
   },
   {
@@ -109,6 +122,7 @@
     "baseCategory": "Junior",
     "abbrBaseCategory": "JUN",
     "gender": "F",
+    "amId": 57,
     "order": 14
   },
   {
@@ -117,6 +131,7 @@
     "baseCategory": "Espoir",
     "abbrBaseCategory": "ESP",
     "gender": "M",
+    "amId": 9,
     "order": 15
   },
   {
@@ -125,6 +140,7 @@
     "baseCategory": "Espoir",
     "abbrBaseCategory": "ESP",
     "gender": "F",
+    "amId": 59,
     "order": 16
   },
   {
@@ -133,6 +149,7 @@
     "baseCategory": "Senior",
     "abbrBaseCategory": "SEN",
     "gender": "M",
+    "amId": 8,
     "order": 17
   },
   {
@@ -141,6 +158,7 @@
     "baseCategory": "Senior",
     "abbrBaseCategory": "SEN",
     "gender": "F",
+    "amId": 58,
     "order": 18
   },
   {
@@ -150,6 +168,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 35,
+    "amId": 11,
     "order": 19
   },
   {
@@ -159,6 +178,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 35,
+    "amId": 61,
     "order": 20
   },
   {
@@ -168,6 +188,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 40,
+    "amId": 12,
     "order": 21
   },
   {
@@ -177,6 +198,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 40,
+    "amId": 62,
     "order": 22
   },
   {
@@ -186,6 +208,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 45,
+    "amId": 13,
     "order": 23
   },
   {
@@ -195,6 +218,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 45,
+    "amId": 63,
     "order": 24
   },
   {
@@ -204,6 +228,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 50,
+    "amId": 14,
     "order": 25
   },
   {
@@ -213,6 +238,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 50,
+    "amId": 64,
     "order": 26
   },
   {
@@ -222,6 +248,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 55,
+    "amId": 15,
     "order": 27
   },
   {
@@ -231,6 +258,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 55,
+    "amId": 65,
     "order": 28
   },
   {
@@ -240,6 +268,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 60,
+    "amId": 16,
     "order": 29
   },
   {
@@ -249,6 +278,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 60,
+    "amId": 66,
     "order": 30
   },
   {
@@ -258,6 +288,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 65,
+    "amId": 17,
     "order": 31
   },
   {
@@ -267,6 +298,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 65,
+    "amId": 67,
     "order": 32
   },
   {
@@ -276,6 +308,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 70,
+    "amId": 18,
     "order": 33
   },
   {
@@ -285,6 +318,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 70,
+    "amId": 68,
     "order": 34
   },
   {
@@ -294,6 +328,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 75,
+    "amId": 19,
     "order": 35
   },
   {
@@ -303,6 +338,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 75,
+    "amId": 69,
     "order": 36
   },
   {
@@ -312,6 +348,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 80,
+    "amId": 20,
     "order": 37
   },
   {
@@ -321,6 +358,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 80,
+    "amId": 70,
     "order": 38
   },
   {
@@ -330,6 +368,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 85,
+    "amId": 21,
     "order": 39
   },
   {
@@ -339,6 +378,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 85,
+    "amId": 71,
     "order": 40
   },
   {
@@ -348,6 +388,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 90,
+    "amId": 22,
     "order": 41
   },
   {
@@ -357,6 +398,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 90,
+    "amId": 72,
     "order": 42
   },
   {
@@ -366,6 +408,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 95,
+    "amId": 23,
     "order": 43
   },
   {
@@ -375,6 +418,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 95,
+    "amId": 73,
     "order": 44
   },
   {
@@ -384,6 +428,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "M",
     "masterAgeGroup": 100,
+    "amId": 24,
     "order": 45
   },
   {
@@ -393,6 +438,7 @@
     "abbrBaseCategory": "MAS",
     "gender": "F",
     "masterAgeGroup": 100,
+    "amId": 74,
     "order": 46
   }
 ]

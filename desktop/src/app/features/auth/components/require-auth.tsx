@@ -1,4 +1,4 @@
-﻿import { Skeleton } from '@/components/ui/skeleton';
+﻿import { Skeleton } from '@repo/ui';
 import { type PropsWithChildren } from 'react';
 import { useAuth } from '../hooks/use-auth';
 import { SignInForm } from './sign-in-form';

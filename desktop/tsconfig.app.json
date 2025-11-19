@@ -22,7 +22,7 @@
     "erasableSyntaxOnly": true,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-
+    "types": ["./types"],
     "baseUrl": ".",
     "paths": {
       "@/*": ["./src/app/*"]

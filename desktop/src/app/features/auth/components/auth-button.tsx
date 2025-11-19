@@ -1,4 +1,4 @@
-import { Skeleton } from '@/components/ui/skeleton';
+import { Skeleton } from '@repo/ui';
 import { useAuth } from '@/features/auth';
 import { UserButton } from './user-button';
 

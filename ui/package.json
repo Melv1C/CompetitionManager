@@ -23,7 +23,7 @@
   ],
   "scripts": {
     "dev": "vite build --watch",
-    "build": "tsc && vite build && cp src/styles.d.ts dist/styles.d.ts",
+    "build": "tsc && vite build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "storybook": "storybook dev -p 6006",

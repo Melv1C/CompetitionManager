@@ -1,4 +1,4 @@
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader } from '@repo/ui';
 
 export function CompetitionCardSkeleton() {
   return (

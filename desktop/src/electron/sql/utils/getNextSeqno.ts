@@ -1,0 +1,22 @@
+export const getNextSeqno = async <
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  T extends { findMany: (args: any) => Promise<Array<{ seqno: number | null }>> },
+>(
+  modelDelegate: T,
+  where: Record<string, unknown> = {},
+): Promise<number> => {
+  const result = await modelDelegate.findMany({
+    where,
+    orderBy: {
+      seqno: 'desc',
+    },
+    take: 1,
+    select: {
+      seqno: true,
+    },
+  });
+  if (result.length === 0) {
+    return 1;
+  }
+  return result[0].seqno ? result[0].seqno + 1 : 1;
+};

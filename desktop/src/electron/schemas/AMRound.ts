@@ -1,0 +1,35 @@
+import z from 'zod';
+
+export const AMRoundSchema = z.object({
+  since: z.coerce.date().default(new Date()),
+  event: z.number().int(),
+  combinedeventtype: z.number().int().default(0),
+  seqno: z.number().int().default(1),
+  session: z.number().int().default(0),
+  name: z.string().max(256).default('*'),
+  abbreviation: z.string().max(30).default(''),
+  info: z.string().max(256).default(''),
+  timescheduled: z.coerce.date().default(new Date()),
+  heatduration: z.number().int().default(3),
+  timeofficial: z.coerce.date().nullable().default(null),
+  nextround: z.number().int().nullable().default(null),
+  lanesavailable: z.number().int().default(8),
+  customdistance: z.number().nullable().default(null),
+  jumpoffpossible: z.number().int().default(0),
+  seedingmethod: z.number().int().default(90),
+  qualifyingmethod: z.number().int().default(0),
+  qualificationparameters: z.string().max(256).default(''),
+  participantsperteam: z.number().int().default(0),
+  participantsforteampoints: z.number().int().default(2),
+  teampointsalgorithm: z.number().int().default(60),
+  seedingparameters: z.string().max(256).default(''),
+  pointcalculationalgorithm: z.number().int().default(1),
+  attempts: z.number().int().default(0),
+  startheight: z.number().default(0.8),
+  intervalheight: z.number().int().default(5),
+  status: z.number().int().default(0),
+  lanes_array: z.string().max(892).default('1;2;3;4;5;6;7;8'),
+  datescheduled: z.coerce.date().default(new Date()),
+});
+
+export type Round = z.infer<typeof AMRoundSchema>;

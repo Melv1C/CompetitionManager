@@ -1,15 +1,17 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
-import { Button } from '@/components/ui/button';
+import { authClient } from '@/lib/auth-client';
+import type { User as UserType } from '@repo/core/schemas';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
+  Button,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { authClient } from '@/lib/auth-client';
-import type { User as UserType } from '@repo/core/schemas';
+} from '@repo/ui';
 import { LogOut } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';

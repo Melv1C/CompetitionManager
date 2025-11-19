@@ -193,6 +193,7 @@ export class SeedService {
           gender: categoryData.gender,
           masterAgeGroup: categoryData.masterAgeGroup || null,
           order: categoryData.order,
+          amId: categoryData.amId,
         };
 
         if (existingCategory && this.config.forceReseed) {
