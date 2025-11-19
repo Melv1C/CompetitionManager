@@ -1,12 +1,14 @@
-import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { ORGANIZATION_COMPETITIONS_QUERY_KEY } from '@/features/competitions';
 import {
+  Avatar,
+  AvatarFallback,
+  AvatarImage,
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuLabel,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
-import { ORGANIZATION_COMPETITIONS_QUERY_KEY } from '@/features/competitions';
+} from '@repo/ui';
 import { useQueryClient } from '@tanstack/react-query';
 import { Building2, ChevronDown } from 'lucide-react';
 import { useTranslation } from 'react-i18next';

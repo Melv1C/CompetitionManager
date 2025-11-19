@@ -1,4 +1,4 @@
-import { Switch } from '@/components/ui/switch';
+import { Switch } from '@repo/ui';
 import { useOrganizations } from '@/features/organization';
 import type { Competition } from '@repo/core/schemas';
 import { TrophyIcon } from 'lucide-react';

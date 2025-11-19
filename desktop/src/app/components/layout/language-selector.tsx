@@ -4,7 +4,7 @@ import {
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@repo/ui';
 import { useTranslation } from 'react-i18next';
 
 interface Language {

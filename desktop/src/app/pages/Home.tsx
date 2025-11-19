@@ -1,7 +1,7 @@
-import { Button } from '@/components/ui/button';
 import { useOrganizationCompetition } from '@/features/competitions';
 import { useCompetitionInscriptions } from '@/features/inscriptions/hooks/use-inscriptions';
 import { useCompetitionStore } from '@/store/competition';
+import { Button } from '@repo/ui';
 import { useEffect, useState } from 'react';
 
 export default function Home() {
@@ -54,7 +54,9 @@ export default function Home() {
     <>
       <div>Competition: {competitionQuery.data?.name}</div>
       <div>Existing AM Events:</div>
-      {existingAMEvents.map(event => (<div key={event}>{event}</div>))}
+      {existingAMEvents.map(event => (
+        <div key={event}>{event}</div>
+      ))}
 
       {competitionExist === null ? (
         <div>Checking competition status...</div>
