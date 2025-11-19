@@ -92,6 +92,7 @@
     "@chromatic-com/storybook": "^4.1.2",
     "@eslint/js": "^9.39.1",
     "@hookform/resolvers": "^5.2.2",
+    "@repo/core": "file:../core",
     "@storybook/addon-docs": "^10.0.6",
     "@storybook/addon-onboarding": "^10.0.6",
     "@storybook/react-vite": "^10.0.6",
