@@ -120,6 +120,7 @@
     "vite-plugin-dts": "^4.5.4"
   },
   "optionalDependencies": {
-    "@rollup/rollup-linux-x64-gnu": "^4.53.3"
+    "@rollup/rollup-linux-x64-gnu": "^4.53.3",
+    "@esbuild/linux-x64": "0.25.12"
   }
 }
