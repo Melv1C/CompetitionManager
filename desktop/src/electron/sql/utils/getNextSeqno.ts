@@ -1,4 +1,5 @@
 export const getNextSeqno = async <
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   T extends { findMany: (args: any) => Promise<Array<{ seqno: number | null }>> },
 >(
   modelDelegate: T,

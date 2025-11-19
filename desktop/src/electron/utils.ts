@@ -2,6 +2,7 @@ import { ipcMain } from 'electron';
 
 export function ipcHandler<Key extends keyof EventPayloadMapping>(
   key: Key,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   handler: (...args: any[]) => EventPayloadMapping[Key],
 ) {
   ipcMain.handle(key, (_event, ...arg) => handler(...arg));
