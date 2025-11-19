@@ -13,6 +13,7 @@ import {
   inscriptionInclude,
   InscriptionStatus$,
   ParameterId$,
+  UpdatePresenceStatus$,
   UpsertInscriptions,
   UpsertInscriptions$,
 } from '@repo/core/schemas';
@@ -149,6 +150,67 @@ organizationInscriptionsRoutes.post(
         },
         400,
       );
+    }
+  },
+);
+
+// PUT /organization/competitions/:eid/inscriptions/presence - Update presence status for inscriptions
+organizationInscriptionsRoutes.put(
+  '/:eid/inscriptions/presence',
+  requirePermissions({
+    confirmations: ['manage'],
+  }),
+  zValidator('param', z.object({ eid: Cuid$ })),
+  zValidator('json', UpdatePresenceStatus$),
+  async c => {
+    try {
+      const { eid } = c.req.valid('param');
+      const { inscriptionIds, presenceStatus } = c.req.valid('json');
+      const session = await getRequiredSession(c);
+
+      if (!session.activeOrganizationId) {
+        logger.error('No active organization found for user', { session });
+        return c.json({ error: 'No active organization found' }, 400);
+      }
+
+      // Check if competition belongs to the organization and has confirmation enabled
+      const competition = await prisma.competition.findFirst({
+        where: {
+          eid,
+          organizationId: session.activeOrganizationId,
+        },
+        select: { id: true, hasConfirmation: true },
+      });
+
+      if (!competition) {
+        return c.json({ error: 'Competition not found' }, 404);
+      }
+
+      if (!competition.hasConfirmation) {
+        return c.json({ error: 'Confirmation is not enabled for this competition' }, 400);
+      }
+
+      // Update presence status for the given inscriptions
+      const updatedInscriptions = await prisma.inscription.updateMany({
+        where: {
+          id: { in: inscriptionIds },
+          competitionId: competition.id,
+        },
+        data: {
+          presenceStatus,
+          updatedBy: session.userId,
+          updatedAt: new Date(),
+        },
+      });
+
+      if (updatedInscriptions.count === 0) {
+        return c.json({ error: 'No inscriptions found to update' }, 404);
+      }
+
+      return c.json({ success: true, updated: updatedInscriptions.count }, 200);
+    } catch (error) {
+      logError('Failed to update presence status', error, c);
+      return c.json({ error: 'Failed to update presence status' }, 500);
     }
   },
 );
