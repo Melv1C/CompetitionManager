@@ -123,6 +123,18 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-node-${{ hashFiles('**/package-lock.json') }}
 
+      - name: Build core (prerequisite)
+        if: matrix.package != 'core'
+        run: |
+          cd core
+          npm run build
+
+      - name: Build UI (prerequisite)
+        if: matrix.package == 'frontend' || matrix.package == 'desktop'
+        run: |
+          cd ui
+          npm run build
+
       - name: Lint ${{ matrix.package }}
         run: npm run lint:${{ matrix.package }}
 
