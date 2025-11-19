@@ -35,6 +35,7 @@ nvm use
 
    # Install all package dependencies
    npm run install:core
+   npm run install:ui
    npm run install:backend
    npm run install:frontend
    npm run install:desktop
@@ -65,6 +66,7 @@ nvm use
    # Or start individually:
    npm run docker:db
    npm run dev:core      # Core package watch mode
+   npm run dev:ui        # UI package watch mode
    npm run dev:backend   # Backend API (Port 3000)
    npm run dev:frontend  # Frontend App (Port 5173)
    ```
@@ -79,16 +81,18 @@ All commands can be run from the project root:
 
 ### Development
 
-- `npm run dev` - Start all development servers (core, backend, frontend)
+- `npm run dev` - Start all development servers (core, backend, frontend, ui)
 - `npm run dev:core` - Start core package in watch mode
 - `npm run dev:backend` - Start backend API server
 - `npm run dev:frontend` - Start frontend development server
+- `npm run dev:ui` - Start UI package in watch mode
 
 ### Dependencies
 
 - `npm run install:core` - Install core package dependencies
 - `npm run install:backend` - Install backend dependencies
 - `npm run install:frontend` - Install frontend dependencies
+- `npm run install:ui` - Install UI package dependencies
 - `npm run install:desktop` - Install desktop app dependencies
 
 ### Database
