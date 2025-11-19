@@ -4,7 +4,7 @@ import path from 'path';
 import { exportCompetition } from './functions/export.js';
 import { getStatus } from './functions/getStatus.js';
 import { importAthletes, importCompetition } from './functions/import.js';
-import { getPrealoadPath } from './pathResolver.js';
+import { getPreloadPath } from './pathResolver.js';
 import { ipcHandler } from './utils.js';
 dotenv.config();
 
@@ -13,7 +13,7 @@ app.on('ready', () => {
     width: 800,
     height: 600,
     webPreferences: {
-      preload: getPrealoadPath(),
+      preload: getPreloadPath(),
     },
   });
 

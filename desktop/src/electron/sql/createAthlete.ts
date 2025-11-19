@@ -36,7 +36,7 @@ export const createAthlete = async (
         break;
       }
     }
-    const participationId = await createParticipation(roundId, calculatedCat.amId);
+    const participationId = await createParticipation(roundId, calculatedCat.amId || 0);
     await createParticipant(competitorId, participationId);
   }
 };

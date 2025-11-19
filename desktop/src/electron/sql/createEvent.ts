@@ -39,7 +39,7 @@ export const createEvent = async (event: CompetitionEvent, competitionId: number
   //need to also create the round
   const amRound = AMRoundSchema.parse({
     event: createdEvent.id,
-    timesheduled: event.eventStartTime,
+    timescheduled: event.eventStartTime,
     seqno: await getNextSeqno(prisma.rounds, { event: createdEvent.id }),
   });
   await prisma.rounds.create({
