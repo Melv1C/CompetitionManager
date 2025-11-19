@@ -10,6 +10,7 @@ import {
   Separator,
 } from '@repo/ui';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { ConfirmationStatusSelector } from './confirmation-status-selector';
 
 interface ConfirmationDialogProps {
@@ -29,6 +30,7 @@ export const ConfirmationDialog = ({
   onSave,
   isSaving,
 }: ConfirmationDialogProps) => {
+  const { t } = useTranslation();
   const [statusMap, setStatusMap] = useState<Record<number, PresenceStatus>>({});
 
   // Detect platform for keyboard shortcuts
@@ -140,11 +142,12 @@ export const ConfirmationDialog = ({
       <DialogContent className="max-w-2xl">
         <DialogHeader>
           <DialogTitle>
-            Confirm Presence - {athlete.firstName} {athlete.lastName}
+            {t('confirmations:dialogTitle', {
+              firstName: athlete.firstName,
+              lastName: athlete.lastName,
+            })}
           </DialogTitle>
-          <DialogDescription>
-            Update the presence status for each event registration
-          </DialogDescription>
+          <DialogDescription>{t('confirmations:dialogDescription')}</DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
@@ -155,7 +158,7 @@ export const ConfirmationDialog = ({
               onClick={() => handleMarkAll('PRESENT')}
               type="button"
             >
-              Mark All Present <kbd className="ml-2 text-xs">{modifierKey}P</kbd>
+              {t('confirmations:markAllPresent')} <kbd className="ml-2 text-xs">{modifierKey}P</kbd>
             </Button>
             <Button
               variant="outline"
@@ -163,7 +166,7 @@ export const ConfirmationDialog = ({
               onClick={() => handleMarkAll('ABSENT')}
               type="button"
             >
-              Mark All Absent <kbd className="ml-2 text-xs">{modifierKey}A</kbd>
+              {t('confirmations:markAllAbsent')} <kbd className="ml-2 text-xs">{modifierKey}A</kbd>
             </Button>
             <Button
               variant="outline"
@@ -171,7 +174,7 @@ export const ConfirmationDialog = ({
               onClick={() => handleMarkAll('UNKNOWN')}
               type="button"
             >
-              Reset All <kbd className="ml-2 text-xs">{modifierKey}R</kbd>
+              {t('confirmations:resetAll')} <kbd className="ml-2 text-xs">{modifierKey}R</kbd>
             </Button>
           </div>
 
@@ -200,10 +203,10 @@ export const ConfirmationDialog = ({
 
         <DialogFooter>
           <Button variant="outline" onClick={handleClose} disabled={isSaving}>
-            Cancel
+            {t('confirmations:cancel')}
           </Button>
           <Button onClick={handleSave} disabled={isSaving}>
-            {isSaving ? 'Saving...' : 'Save Changes'}{' '}
+            {isSaving ? t('confirmations:saving') : t('confirmations:saveChanges')}{' '}
             {!isSaving && <kbd className="ml-2 text-xs">Enter</kbd>}
           </Button>
         </DialogFooter>
