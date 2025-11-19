@@ -1,6 +1,6 @@
 import { z } from 'zod';
-import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { Athlete$, athleteInclude } from './athlete';
+import { BetterAuthId$, Cuid$, Date$, Id$ } from './base';
 import { CompetitionEvent$, competitionEventInclude } from './competition-event';
 
 export const Attempt$ = z.enum(['X', 'O', '-', 'r']);
@@ -77,3 +77,16 @@ export const UpdateResult$ = Result$.pick({
   details: true,
 });
 export type UpdateResult = z.infer<typeof UpdateResult$>;
+
+export enum ResultCode {
+  DNF = -1,
+  DQ = -2,
+  DNS = -3,
+  NM = -4,
+}
+
+export enum ResultDetailCode {
+  X = -1,
+  PASS = -2,
+  R = -3,
+}
