@@ -49,7 +49,7 @@ jobs:
         run: npm run install:core
 
       - name: Install dependencies (ui)
-        run: npm run install:ui
+        run: npm run install:ui -- --include=optional
 
       - name: Install dependencies (backend)
         run: npm run install:backend
