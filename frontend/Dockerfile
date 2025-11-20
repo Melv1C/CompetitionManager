@@ -6,6 +6,7 @@ WORKDIR /app
 
 # Copy package files first for better caching
 COPY core/package*.json ./core/
+COPY ui/package*.json ./ui/
 COPY frontend/package*.json ./frontend/
 
 # Copy core package source (needed for @repo/core dependency)
@@ -13,6 +14,13 @@ COPY core/ /app/core/
 
 # Install dependencies and build core package
 WORKDIR /app/core
+RUN npm i && npm run build
+
+# Copy ui package source (needed for @repo/ui dependency)
+COPY ui/ /app/ui/
+
+# Install dependencies and build ui package
+WORKDIR /app/ui
 RUN npm i && npm run build
 
 # Copy frontend source
