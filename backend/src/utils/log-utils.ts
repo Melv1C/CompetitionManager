@@ -1,9 +1,8 @@
 import { logger } from '@/lib/logger';
-import { prisma } from '@/lib/prisma';
+import { prisma, type Prisma } from '@/lib/prisma';
 import { Log$, type LogQuery } from '@repo/core/schemas';
 import type { Context } from 'hono';
 import { getUser } from './auth-utils';
-import { Prisma } from '@generated/prisma';
 
 /**
  * Query logs from database with filtering and validation
