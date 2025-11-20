@@ -1,4 +1,4 @@
-import { PrismaClient } from '@generated/prisma';
+import { PrismaClient } from '@generated/prisma/client';
 import { PrismaPg } from '@prisma/adapter-pg';
 import { env } from './env';
 
@@ -17,4 +17,4 @@ export const prisma =
 
 if (env.NODE_ENV !== 'development') globalForPrisma.prisma = prisma;
 
-export type { Prisma } from '@generated/prisma';
+export type { Prisma } from '@generated/prisma/client';
