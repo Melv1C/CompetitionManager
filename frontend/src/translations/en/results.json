@@ -11,11 +11,9 @@
   "noEventsAvailable": "All events are already open",
   "noInscriptionsForEvent": "No athletes registered for this event",
   "noOpenSheets": "No result sheets open. Add an event to start encoding.",
-  "points": "Points",
   "searchAthlete": "Search by name or license...",
   "selectAthleteToAdd": "Select an athlete to add to the results",
   "selectEventToEncode": "Select an event to open a result encoding sheet",
   "time": "Time",
-  "title": "Results",
   "wind": "Wind"
 }
