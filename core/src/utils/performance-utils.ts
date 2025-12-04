@@ -1,6 +1,36 @@
 import type { EventType } from '@/schemas';
 
 /**
+ * Compare two performance values based on event type
+ * For time: lower is better (returns negative if a is better)
+ * For distance/height/points: higher is better (returns negative if a is better)
+ * @param a - First performance value
+ * @param b - Second performance value
+ * @param type - The event type
+ * @returns Negative if a is better, positive if b is better, 0 if equal
+ */
+export function sortPerf(a: number, b: number, type: EventType): number {
+  // Handle special codes (negative values indicate special states)
+  const aIsSpecial = a < 0;
+  const bIsSpecial = b < 0;
+
+  // Both are special codes - maintain order
+  if (aIsSpecial && bIsSpecial) return 0;
+  // Only a is special - b is better
+  if (aIsSpecial) return 1;
+  // Only b is special - a is better
+  if (bIsSpecial) return -1;
+
+  // For time events, lower is better
+  if (type === 'time') {
+    return a - b;
+  }
+
+  // For distance, height, points - higher is better
+  return b - a;
+}
+
+/**
  * Format a performance value based on the event type
  * @param value - The performance value to format
  * @param type - The type of performance ('time', 'distance', 'height', 'points')

@@ -51,3 +51,10 @@ export * from './language-selector';
 export * from './racing-bib';
 export * from './rich-text';
 export * from './unsaved-changes-dialog';
+
+export * from './keyboards/fake-input';
+export * from './keyboards/time-keyboard';
+
+// export * from './legacy/distance-keyboard';
+// export * from './legacy/height-keyboard';
+// export { TimeKeyboard as LegacyTimeKeyboard } from './legacy/time-keyboard';

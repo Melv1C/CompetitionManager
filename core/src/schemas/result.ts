@@ -70,11 +70,18 @@ export const CreateResult$ = Result$.pick({
 });
 export type CreateResult = z.infer<typeof CreateResult$>;
 
+export const UpdateResultDetail$ = ResultDetail$.omit({
+  isBest: true,
+  isOfficialRecord: true,
+});
+export type UpdateResultDetail = z.infer<typeof UpdateResultDetail$>;
+
 export const UpdateResult$ = Result$.pick({
   heatNumber: true,
   startingOrder: true,
   currentOrder: true,
-  details: true,
+}).extend({
+  details: z.array(UpdateResultDetail$).default([]),
 });
 export type UpdateResult = z.infer<typeof UpdateResult$>;
 

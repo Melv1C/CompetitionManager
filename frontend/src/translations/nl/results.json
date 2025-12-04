@@ -1,0 +1,21 @@
+{
+  "addAthlete": "Atleet toevoegen",
+  "addEvent": "Evenement toevoegen",
+  "addEventSheet": "Evenement blad toevoegen",
+  "allAthletesAdded": "Alle ingeschreven atleten zijn toegevoegd",
+  "athlete": "Atleet",
+  "bib": "Nr",
+  "category": "Cat",
+  "club": "Club",
+  "noAthletes": "Geen atleten ingeschreven voor dit evenement",
+  "noEventsAvailable": "Alle evenementen zijn al geopend",
+  "noInscriptionsForEvent": "Geen atleten ingeschreven voor dit evenement",
+  "noOpenSheets": "Geen resultatenbladen open. Voeg een evenement toe om te beginnen met coderen.",
+  "points": "Punten",
+  "searchAthlete": "Zoeken op naam of licentie...",
+  "selectAthleteToAdd": "Selecteer een atleet om toe te voegen aan de resultaten",
+  "selectEventToEncode": "Selecteer een evenement om een resultatenblad te openen",
+  "time": "Tijd",
+  "title": "Resultaten",
+  "wind": "Wind"
+}

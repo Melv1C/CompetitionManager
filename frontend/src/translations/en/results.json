@@ -1,0 +1,21 @@
+{
+  "addAthlete": "Add Athlete",
+  "addEvent": "Add Event",
+  "addEventSheet": "Add Event Sheet",
+  "allAthletesAdded": "All registered athletes have been added",
+  "athlete": "Athlete",
+  "bib": "Bib",
+  "category": "Cat",
+  "club": "Club",
+  "noAthletes": "No athletes registered for this event",
+  "noEventsAvailable": "All events are already open",
+  "noInscriptionsForEvent": "No athletes registered for this event",
+  "noOpenSheets": "No result sheets open. Add an event to start encoding.",
+  "points": "Points",
+  "searchAthlete": "Search by name or license...",
+  "selectAthleteToAdd": "Select an athlete to add to the results",
+  "selectEventToEncode": "Select an event to open a result encoding sheet",
+  "time": "Time",
+  "title": "Results",
+  "wind": "Wind"
+}
