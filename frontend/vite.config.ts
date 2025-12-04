@@ -11,7 +11,7 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react(), tailwindcss()],
     resolve: {
-      dedupe: ['react', 'react-dom', 'react-hook-form'],
+      dedupe: ['react', 'react-dom', 'react-hook-form', 'react-i18next', 'i18next'],
       alias: {
         '@': path.resolve(__dirname, './src'),
         react: path.resolve(__dirname, './node_modules/react'),
@@ -20,51 +20,49 @@ export default defineConfig(({ mode }) => {
       },
     },
     build: {
-      chunkSizeWarningLimit: 1000,
+      chunkSizeWarningLimit: 500,
       rollupOptions: {
         output: {
           manualChunks(id) {
-            if (id.includes('node_modules')) {
-              if (id.includes('react-dom')) {
-                return 'react-dom';
-              }
-              if (id.includes('/react/')) {
-                return 'react';
-              }
-              if (id.includes('@tanstack/react-query')) {
-                return 'tanstack-query';
-              }
-              if (id.includes('react-router')) {
-                return 'react-router';
-              }
-              if (id.includes('react-hook-form') || id.includes('@hookform')) {
-                return 'react-hook-form';
-              }
-              if (id.includes('zod')) {
-                return 'zod';
-              }
-              if (id.includes('i18next')) {
-                return 'i18next';
-              }
-              if (id.includes('lucide-react')) {
-                return 'lucide';
-              }
-              if (id.includes('date-fns')) {
-                return 'date-fns';
-              }
-              if (id.includes('@radix-ui')) {
-                return 'radix-ui';
-              }
-              if (id.includes('socket.io')) {
-                return 'socket-io';
-              }
-              if (id.includes('@prisma/studio')) {
-                return 'prisma-studio';
-              }
-              if (id.includes('better-auth')) {
-                return 'better-auth';
-              }
+            // Core React - must load first
+            if (id.includes('node_modules/react-dom') || id.includes('node_modules/react/')) {
+              return 'react';
             }
+            if (id.includes('node_modules/react-router')) {
+              return 'router';
+            }
+            // Data fetching & state management
+            if (
+              id.includes('node_modules/@tanstack/react-query') ||
+              id.includes('node_modules/zustand') ||
+              id.includes('node_modules/axios')
+            ) {
+              return 'data-layer';
+            }
+            // UI framework - Radix primitives
+            if (id.includes('node_modules/@radix-ui')) {
+              return 'ui-radix';
+            }
+            // Form handling
+            if (
+              id.includes('node_modules/react-hook-form') ||
+              id.includes('node_modules/@hookform') ||
+              id.includes('node_modules/zod')
+            ) {
+              return 'forms';
+            }
+            // Date utilities
+            if (
+              id.includes('node_modules/date-fns') ||
+              id.includes('node_modules/react-day-picker')
+            ) {
+              return 'date-utils';
+            }
+            // Auth
+            if (id.includes('node_modules/better-auth')) {
+              return 'auth';
+            }
+            // Note: i18next/react-i18next NOT separated - they depend on React context
           },
         },
       },

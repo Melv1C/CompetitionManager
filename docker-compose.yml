@@ -27,7 +27,7 @@ services:
       DATABASE_URL: postgres://postgres:postgres@db:5432/postgres?schema=public
       BACKEND_URL: http://localhost:8080
       FRONTEND_URL: http://localhost:8080
-      BETTER_AUTH_SECRET: change-me
+      BETTER_AUTH_SECRET: some-very-long-secret-key-as-it-should-be-at-least-32-characters
       DB_SEED_USERS_ENABLED: 'true'
       ATHLETE_SYNC_USE_MOCK: 'true'
       STRIPE_SECRET_KEY: sk_test_xxx

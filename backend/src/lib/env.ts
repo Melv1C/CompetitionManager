@@ -11,7 +11,7 @@ const envSchema = z.object({
   FRONTEND_URL: z.url().default('http://localhost:5173'),
   DESKTOP_URL: z.url().default('http://localhost:5000'),
 
-  BETTER_AUTH_SECRET: z.string().min(1),
+  BETTER_AUTH_SECRET: z.string().min(32),
 
   // Log cleanup configuration
   LOG_CLEANUP_ENABLED: z.stringbool().default(true),
