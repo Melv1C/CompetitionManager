@@ -25,7 +25,8 @@
 
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./src/*"],
+      "react-hook-form": ["./node_modules/react-hook-form"]
     }
   },
   "include": ["src"]

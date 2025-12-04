@@ -20,6 +20,7 @@ export default defineConfig({
       '@': path.resolve(__dirname, './src/app'),
       react: path.resolve(__dirname, './node_modules/react'),
       'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
+      'react-hook-form': path.resolve(__dirname, './node_modules/react-hook-form'),
     },
   },
 });

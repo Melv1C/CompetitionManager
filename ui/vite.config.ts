@@ -1,53 +1,80 @@
 import tailwindcss from '@tailwindcss/vite';
 import react from '@vitejs/plugin-react';
-import { resolve } from 'path';
+import { copyFileSync } from 'node:fs';
+import path from 'node:path';
 import { defineConfig } from 'vite';
 import dts from 'vite-plugin-dts';
+
+// Plugin to copy theme.css file to dist folder
+const copyThemeCss = () => ({
+  name: 'copy-theme-css',
+  closeBundle() {
+    const srcPath = path.resolve(__dirname, 'src/theme.css');
+    const destPath = path.resolve(__dirname, 'dist/theme.css');
+    copyFileSync(srcPath, destPath);
+  },
+});
 
 export default defineConfig({
   plugins: [
     react(),
-    tailwindcss({}),
+    tailwindcss(),
     dts({
-      tsconfigPath: './tsconfig.build.json',
-      outDir: 'dist',
+      insertTypesEntry: true,
+      include: ['src/**/*'],
+      exclude: ['src/**/*.stories.*', 'src/**/*.test.*'],
+      tsconfigPath: './tsconfig.app.json',
+      copyDtsFiles: false,
+      bundledPackages: [],
     }),
+    copyThemeCss(),
   ],
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
+    },
+  },
   build: {
     lib: {
-      entry: resolve(__dirname, 'src/index.ts'),
-      name: 'RepoUI',
+      entry: path.resolve(__dirname, 'src/index.ts'),
+      name: '@repo/ui',
       formats: ['es'],
-      fileName: () => 'index.js',
+      fileName: () => 'index.mjs',
     },
     rollupOptions: {
       external: [
-        '@hookform/resolvers',
         'react',
         'react-dom',
         'react/jsx-runtime',
-        'react-hook-form',
+        /^@radix-ui\//,
+        /^@hookform\//,
+        /^@tiptap\//,
+        /^prosemirror/,
+        'class-variance-authority',
+        'clsx',
+        'tailwind-merge',
+        'cmdk',
+        'date-fns',
+        'embla-carousel-react',
+        'input-otp',
+        'lucide-react',
+        'next-themes',
+        'react-day-picker',
+        /^react-hook-form/,
+        'react-resizable-panels',
+        'recharts',
+        'sanitize-html',
+        'sonner',
+        'vaul',
+        'zod',
+        '@emotion/react',
+        '@emotion/styled',
+        '@mui/material',
       ],
       output: {
-        globals: {
-          react: 'React',
-          'react-dom': 'ReactDOM',
-          'react/jsx-runtime': 'react/jsx-runtime',
-        },
-        assetFileNames: assetInfo => {
-          const names = assetInfo.names;
-          if (names[0] === 'ui.css' || names[0] === 'style.css') {
-            return 'styles.css';
-          }
-          return names[0];
-        },
+        assetFileNames: 'index.css',
       },
     },
     cssCodeSplit: false,
-  },
-  resolve: {
-    alias: {
-      '@': resolve(__dirname, './src'),
-    },
   },
 });

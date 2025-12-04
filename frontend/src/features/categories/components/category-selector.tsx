@@ -1,10 +1,10 @@
 import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
 import type { FullCategory } from '@repo/core/schemas';
 import {
   Badge,
   Button,
   Checkbox,
+  cn,
   Popover,
   PopoverContent,
   PopoverTrigger,

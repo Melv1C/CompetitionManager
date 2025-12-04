@@ -11,20 +11,60 @@ export default defineConfig(({ mode }) => {
     },
     plugins: [react(), tailwindcss()],
     resolve: {
-      dedupe: ['react', 'react-dom'],
+      dedupe: ['react', 'react-dom', 'react-hook-form'],
       alias: {
         '@': path.resolve(__dirname, './src'),
         react: path.resolve(__dirname, './node_modules/react'),
         'react-dom': path.resolve(__dirname, './node_modules/react-dom'),
+        'react-hook-form': path.resolve(__dirname, './node_modules/react-hook-form'),
       },
     },
     build: {
       chunkSizeWarningLimit: 1000,
       rollupOptions: {
         output: {
-          manualChunks: {
-            react: ['react', 'react-dom'],
-            vendor: ['@tanstack/react-query'],
+          manualChunks(id) {
+            if (id.includes('node_modules')) {
+              if (id.includes('react-dom')) {
+                return 'react-dom';
+              }
+              if (id.includes('/react/')) {
+                return 'react';
+              }
+              if (id.includes('@tanstack/react-query')) {
+                return 'tanstack-query';
+              }
+              if (id.includes('react-router')) {
+                return 'react-router';
+              }
+              if (id.includes('react-hook-form') || id.includes('@hookform')) {
+                return 'react-hook-form';
+              }
+              if (id.includes('zod')) {
+                return 'zod';
+              }
+              if (id.includes('i18next')) {
+                return 'i18next';
+              }
+              if (id.includes('lucide-react')) {
+                return 'lucide';
+              }
+              if (id.includes('date-fns')) {
+                return 'date-fns';
+              }
+              if (id.includes('@radix-ui')) {
+                return 'radix-ui';
+              }
+              if (id.includes('socket.io')) {
+                return 'socket-io';
+              }
+              if (id.includes('@prisma/studio')) {
+                return 'prisma-studio';
+              }
+              if (id.includes('better-auth')) {
+                return 'better-auth';
+              }
+            }
           },
         },
       },

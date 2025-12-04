@@ -1,12 +1,12 @@
 import { ThemeProvider } from '@/features/theme';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { lazy } from 'react';
-import { Toaster } from 'sonner';
 import { MainLayout } from './components/layout';
 import { RequireAuth } from './features/auth/components/require-auth';
 import { RequireCompetition } from './features/competitions/components/require-competition';
 import { SocketStatusViewer } from './features/socket';
 import { env } from './lib/env';
+import { Toaster } from '@repo/ui';
 
 // Static import mapping for Vite's build-time analysis
 const pageImports = {

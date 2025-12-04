@@ -1,0 +1,6 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@source '../../node_modules/@repo/ui';
+
+@import '@repo/ui/theme.css';

@@ -1,8 +1,8 @@
 import { useIsMobile } from '@/hooks/use-mobile';
-import { cn } from '@/lib/utils';
 import type { Event, EventGroup } from '@repo/core/schemas';
 import {
   Button,
+  cn,
   Popover,
   PopoverContent,
   PopoverTrigger,

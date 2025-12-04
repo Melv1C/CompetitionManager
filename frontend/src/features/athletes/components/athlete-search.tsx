@@ -1,7 +1,6 @@
-import { cn } from '@/lib/utils';
 import { AthleteKey$, type Athlete } from '@repo/core/schemas';
 import { getSeasonBib } from '@repo/core/utils';
-import { Input, ScrollArea, Skeleton } from '@repo/ui';
+import { cn, Input, ScrollArea, Skeleton } from '@repo/ui';
 import { debounce } from 'lodash';
 import { Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';

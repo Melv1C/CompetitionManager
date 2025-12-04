@@ -1,4 +1,4 @@
-import { cn } from '@/lib/utils';
+import { cn } from '@repo/ui';
 import { Flag, Globe, Info, UserCheck } from 'lucide-react';
 import { getFieldRuleStyle, type FieldEditabilityRule } from '../../utils/field-editability';
 

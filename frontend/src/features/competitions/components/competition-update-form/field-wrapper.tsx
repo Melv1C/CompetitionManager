@@ -1,6 +1,5 @@
-import { cn } from '@/lib/utils';
 import type { Competition } from '@repo/core/schemas';
-import { Tooltip, TooltipContent, TooltipTrigger } from '@repo/ui';
+import { cn, Tooltip, TooltipContent, TooltipTrigger } from '@repo/ui';
 import { Flag, Globe, UserCheck } from 'lucide-react';
 import { getFieldEditability, getFieldRuleStyle } from '../../utils/field-editability';
 
