@@ -16,14 +16,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
-          cache-dependency-path: |
-            package-lock.json
-            core/package-lock.json
-            ui/package-lock.json
-            backend/package-lock.json
-            frontend/package-lock.json
-            desktop/package-lock.json
 
       - name: Install root dependencies
         run: npm ci
@@ -80,7 +72,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Restore dependencies
         uses: actions/cache/restore@v4
@@ -93,6 +84,7 @@ jobs:
             frontend/node_modules
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
 
       - name: Check code formatting
         run: npm run format:check
@@ -111,7 +103,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Restore dependencies
         uses: actions/cache/restore@v4
@@ -124,6 +115,7 @@ jobs:
             frontend/node_modules
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
 
       - name: Build core (prerequisite)
         if: matrix.package != 'core'
@@ -151,7 +143,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Restore dependencies
         uses: actions/cache/restore@v4
@@ -164,6 +155,7 @@ jobs:
             frontend/node_modules
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
 
       - name: Validate i18n translations
         run: npm run i18n:ci
@@ -179,7 +171,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Restore dependencies
         uses: actions/cache/restore@v4
@@ -192,6 +183,7 @@ jobs:
             frontend/node_modules
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
 
       - name: Check Prisma schema
         run: |
@@ -214,7 +206,6 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: '22'
-          cache: 'npm'
 
       - name: Restore dependencies
         uses: actions/cache/restore@v4
@@ -227,6 +218,7 @@ jobs:
             frontend/node_modules
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
 
       - name: Build core (prerequisite)
         if: matrix.package != 'core'
