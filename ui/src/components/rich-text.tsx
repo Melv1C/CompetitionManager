@@ -1,8 +1,5 @@
 /* eslint-disable @typescript-eslint/no-unsafe-assignment */
- 
- 
 /* eslint-disable @typescript-eslint/no-unsafe-argument */
- 
 import { cn } from '@/lib/utils';
 import Link from '@tiptap/extension-link';
 import { EditorContent, useEditor, useEditorState } from '@tiptap/react';
