@@ -17,23 +17,40 @@ jobs:
         with:
           node-version: '22'
 
-      - name: Install root dependencies
-        run: npm ci
+      - name: Clean install root dependencies
+        run: |
+          rm -rf node_modules
+          npm install
 
-      - name: Install dependencies (core)
-        run: cd core && npm ci
+      - name: Clean install dependencies (core)
+        run: |
+          cd core
+          rm -rf node_modules
+          npm install
 
-      - name: Install dependencies (ui)
-        run: cd ui && npm ci
+      - name: Clean install dependencies (ui)
+        run: |
+          cd ui
+          rm -rf node_modules
+          npm install
 
-      - name: Install dependencies (backend)
-        run: cd backend && npm ci
+      - name: Clean install dependencies (backend)
+        run: |
+          cd backend
+          rm -rf node_modules
+          npm install
 
-      - name: Install dependencies (frontend)
-        run: cd frontend && npm ci
+      - name: Clean install dependencies (frontend)
+        run: |
+          cd frontend
+          rm -rf node_modules
+          npm install
 
-      - name: Install dependencies (desktop)
-        run: cd desktop && npm ci
+      - name: Clean install dependencies (desktop)
+        run: |
+          cd desktop
+          rm -rf node_modules
+          npm install
 
       - name: Generate Prisma client (backend)
         run: |
