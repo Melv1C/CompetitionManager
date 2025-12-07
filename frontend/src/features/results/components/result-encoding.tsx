@@ -7,6 +7,8 @@ import { useCallback, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { AddEventButton } from './add-event-dialog';
+import { DistanceResultSheet } from './distance-result-sheet';
+import { HeightResultSheet } from './height-result-sheet';
 import { TimeResultSheet } from './time-result-sheet';
 
 const EVENTS_PARAM = 'events';
@@ -17,9 +19,11 @@ function getResultSheetComponent(eventType: EventType, event: CompetitionEvent) 
     case 'time':
       return <TimeResultSheet event={event} />;
     case 'distance':
+      return <DistanceResultSheet event={event} />;
     case 'height':
+      return <HeightResultSheet event={event} />;
     case 'points':
-      // TODO: Implement other result sheet types
+      // TODO: Implement points result sheet type
       return (
         <div className="flex h-64 items-center justify-center text-muted-foreground">
           Result sheet for {eventType} events coming soon...
