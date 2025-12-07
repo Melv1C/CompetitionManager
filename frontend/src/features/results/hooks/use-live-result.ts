@@ -1,5 +1,5 @@
 import { useSocket } from '@/features/socket';
-import { RESULTS_QUERY_KEY } from '@/lib/query-keys';
+import { ACTIVE_ORGANIZATION_QUERY_KEY, RESULTS_QUERY_KEY } from '@/lib/query-keys';
 import type { Cuid, Result } from '@repo/core/schemas';
 import { useQueryClient } from '@tanstack/react-query';
 import { useEffect } from 'react';
@@ -10,6 +10,7 @@ export const useLiveResult = (competitionEid: Cuid) => {
 
   // Listen to socket events for real-time updates
   useEffect(() => {
+    console.log('Setting up socket listeners for competitionEid:', competitionEid);
     socket.emit('joinCompetition', competitionEid);
 
     const handleResultUpsert = (data: Result) => {
@@ -22,6 +23,16 @@ export const useLiveResult = (competitionEid: Cuid) => {
         }
         return oldData.map(result => (result.id === data.id ? data : result));
       });
+      queryClient.setQueryData<Result[]>(
+        [RESULTS_QUERY_KEY, ACTIVE_ORGANIZATION_QUERY_KEY, competitionEid],
+        oldData => {
+          if (!oldData) return;
+          if (!oldData.find(r => r.id === data.id)) {
+            return [...oldData, data];
+          }
+          return oldData.map(result => (result.id === data.id ? data : result));
+        },
+      );
     };
 
     const handleResultDeleted = (id: Result['id']) => {
@@ -31,6 +42,13 @@ export const useLiveResult = (competitionEid: Cuid) => {
         if (!oldData) return;
         return oldData.filter(result => result.id !== id);
       });
+      queryClient.setQueryData<Result[]>(
+        [RESULTS_QUERY_KEY, ACTIVE_ORGANIZATION_QUERY_KEY, competitionEid],
+        oldData => {
+          if (!oldData) return;
+          return oldData.filter(result => result.id !== id);
+        },
+      );
     };
 
     socket.on('upsertResult', handleResultUpsert);

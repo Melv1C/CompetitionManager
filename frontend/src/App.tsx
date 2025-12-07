@@ -9,6 +9,7 @@ import { ThemeProvider } from '@/features/theme';
 import { env } from '@/lib/env';
 import { Toaster } from '@repo/ui';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 import { lazy } from 'react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
 import { OrganizationCompetitionOutlet } from './features/organization-competitions';
@@ -366,6 +367,7 @@ function App() {
         <RouterProvider router={router} />
         <Toaster />
         {env.VITE_SHOW_SOCKET_STATUS && <SocketStatusViewer />}
+        <ReactQueryDevtools initialIsOpen={false} buttonPosition="bottom-left" />
       </ThemeProvider>
     </QueryClientProvider>
   );

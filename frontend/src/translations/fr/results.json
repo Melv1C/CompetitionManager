@@ -1,0 +1,19 @@
+{
+  "addAthlete": "Ajouter un athlète",
+  "addEvent": "Ajouter un événement",
+  "addEventSheet": "Ajouter une feuille d'événement",
+  "allAthletesAdded": "Tous les athlètes inscrits ont été ajoutés",
+  "athlete": "Athlète",
+  "bib": "Doss",
+  "category": "Cat",
+  "club": "Club",
+  "noAthletes": "Aucun athlète inscrit pour cet événement",
+  "noEventsAvailable": "Tous les événements sont déjà ouverts",
+  "noInscriptionsForEvent": "Aucun athlète inscrit pour cet événement",
+  "noOpenSheets": "Aucune feuille de résultats ouverte. Ajoutez un événement pour commencer l'encodage.",
+  "searchAthlete": "Rechercher par nom ou licence...",
+  "selectAthleteToAdd": "Sélectionnez un athlète à ajouter aux résultats",
+  "selectEventToEncode": "Sélectionnez un événement pour ouvrir une feuille d'encodage des résultats",
+  "time": "Temps",
+  "wind": "Vent"
+}

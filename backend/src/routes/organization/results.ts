@@ -1,10 +1,12 @@
 import { prisma } from '@/lib/prisma';
 import { requirePermissions } from '@/middleware/access-control';
 import { getRequiredSession } from '@/utils/auth-utils';
+import { getResultValueFromDetail, processResultDetails } from '@/utils/result-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
   CreateResult$,
   Cuid$,
+  EventType,
   PrismaResult,
   Result$,
   resultInclude,
@@ -134,20 +136,29 @@ organizationResultsRoutes.put(
 
     const result = await prisma.result.findFirst({
       where: { eid: resultEid, competitionId: competition.id },
+      include: { competitionEvent: { include: { event: true } } },
     });
 
     if (!result) {
       return c.json({ error: 'Result not found' }, 404);
     }
 
+    // Process the details to compute isBest and get the best value
+    const eventType = result.competitionEvent.event.type as EventType;
+    const processedDetails = processResultDetails(resultData.details, eventType);
+    const bestDetail = processedDetails.find(d => d.isBest);
+    const { value, wind } = getResultValueFromDetail(bestDetail);
+
     const updatedResult = await prisma.result.update({
       where: { id: result.id },
       data: {
         ...resultData,
+        performanceValue: value,
+        windSpeed: wind,
         updatedBy: session.userId,
         details: {
           deleteMany: {}, // Remove existing details
-          create: resultData.details,
+          create: processedDetails,
         },
       },
       include: resultInclude,
