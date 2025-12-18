@@ -6,63 +6,142 @@ on:
   workflow_call:
 
 jobs:
-  setup:
+  # ============================================
+  # 1. Fail-fast checks (parallel, minimal deps)
+  # ============================================
+  database-check:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
+          cache: 'npm'
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+        working-directory: backend
+      - name: Validate Prisma schema
+        run: npx prisma validate
+        working-directory: backend
+        env:
+          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
-      - name: Clean install root dependencies
-        run: |
-          rm -rf node_modules
-          npm install
+  i18n-validation:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Validate i18n translations
+        run: npm run i18n:ci
 
-      - name: Clean install dependencies (core)
-        run: |
-          cd core
-          rm -rf node_modules
-          npm install
+  format-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+      - run: npm ci
+      - name: Check code formatting
+        run: npm run format:check
 
-      - name: Clean install dependencies (ui)
-        run: |
-          cd ui
-          rm -rf node_modules
-          npm install
+  # ============================================
+  # 2. Detect changes
+  # ============================================
+  changes:
+    runs-on: ubuntu-latest
+    outputs:
+      core: ${{ steps.filter.outputs.core }}
+      ui: ${{ steps.filter.outputs.ui }}
+      backend: ${{ steps.filter.outputs.backend }}
+      frontend: ${{ steps.filter.outputs.frontend }}
+      desktop: ${{ steps.filter.outputs.desktop }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: dorny/paths-filter@v3
+        id: filter
+        with:
+          filters: |
+            core:
+              - 'core/**'
+            ui:
+              - 'core/**'
+              - 'ui/**'
+            backend:
+              - 'core/**'
+              - 'backend/**'
+            frontend:
+              - 'core/**'
+              - 'ui/**'
+              - 'frontend/**'
+            desktop:
+              - 'core/**'
+              - 'ui/**'
+              - 'desktop/**'
 
-      - name: Clean install dependencies (backend)
-        run: |
-          cd backend
-          rm -rf node_modules
-          npm install
+  # ============================================
+  # 3. Setup (only if changes detected)
+  # ============================================
+  setup:
+    runs-on: ubuntu-latest
+    needs: [database-check, i18n-validation, format-check, changes]
+    if: |
+      needs.changes.outputs.core == 'true' ||
+      needs.changes.outputs.ui == 'true' ||
+      needs.changes.outputs.backend == 'true' ||
+      needs.changes.outputs.frontend == 'true' ||
+      needs.changes.outputs.desktop == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
 
-      - name: Clean install dependencies (frontend)
-        run: |
-          cd frontend
-          rm -rf node_modules
-          npm install
+      - name: Install root dependencies
+        run: npm ci
 
-      - name: Clean install dependencies (desktop)
-        run: |
-          cd desktop
-          rm -rf node_modules
-          npm install
+      - name: Install core
+        if: needs.changes.outputs.core == 'true' || needs.changes.outputs.ui == 'true' || needs.changes.outputs.backend == 'true' || needs.changes.outputs.frontend == 'true' || needs.changes.outputs.desktop == 'true'
+        run: npm ci
+        working-directory: core
+
+      - name: Install ui
+        if: needs.changes.outputs.ui == 'true' || needs.changes.outputs.frontend == 'true' || needs.changes.outputs.desktop == 'true'
+        run: npm ci
+        working-directory: ui
+
+      - name: Install backend
+        if: needs.changes.outputs.backend == 'true'
+        run: npm ci
+        working-directory: backend
+
+      - name: Install frontend
+        if: needs.changes.outputs.frontend == 'true'
+        run: npm ci
+        working-directory: frontend
+
+      - name: Install desktop
+        if: needs.changes.outputs.desktop == 'true'
+        run: npm ci
+        working-directory: desktop
 
       - name: Generate Prisma client (backend)
-        run: |
-          cd backend
-          npx prisma generate
+        if: needs.changes.outputs.backend == 'true'
+        run: npx prisma generate
+        working-directory: backend
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
 
       - name: Generate Prisma client (desktop)
-        run: |
-          cd desktop
-          npx prisma generate
+        if: needs.changes.outputs.desktop == 'true'
+        run: npx prisma generate
+        working-directory: desktop
         env:
           DB_LOCAL_URL: postgresql://user:password@localhost:5432/mydb
 
@@ -78,20 +157,19 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
 
-  format-check:
+  # ============================================
+  # 4. Lint (only changed packages)
+  # ============================================
+  lint-core:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [changes, setup]
+    if: needs.changes.outputs.core == 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Restore dependencies
-        uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
@@ -102,27 +180,18 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
           fail-on-cache-miss: true
+      - run: npm run lint:core
 
-      - name: Check code formatting
-        run: npm run format:check
-
-  lint:
+  lint-ui:
     runs-on: ubuntu-latest
-    needs: setup
-    strategy:
-      matrix:
-        package: [core, ui, backend, frontend, desktop]
+    needs: [changes, setup]
+    if: needs.changes.outputs.ui == 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Restore dependencies
-        uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
@@ -133,36 +202,20 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
           fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run lint:ui
 
-      - name: Build core (prerequisite)
-        if: matrix.package != 'core'
-        run: |
-          cd core
-          npm run build
-
-      - name: Build UI (prerequisite)
-        if: matrix.package == 'frontend' || matrix.package == 'desktop'
-        run: |
-          cd ui
-          npm run build
-
-      - name: Lint ${{ matrix.package }}
-        run: npm run lint:${{ matrix.package }}
-
-  i18n-validation:
+  lint-backend:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [changes, setup]
+    if: needs.changes.outputs.backend == 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Restore dependencies
-        uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
@@ -173,24 +226,20 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
           fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run lint:backend
 
-      - name: Validate i18n translations
-        run: npm run i18n:ci
-
-  database-check:
+  lint-frontend:
     runs-on: ubuntu-latest
-    needs: setup
+    needs: [changes, setup]
+    if: needs.changes.outputs.frontend == 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Restore dependencies
-        uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
@@ -201,31 +250,128 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
           fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run build
+        working-directory: ui
+      - run: npm run lint:frontend
 
-      - name: Check Prisma schema
-        run: |
-          cd backend
-          npx prisma validate
+  lint-desktop:
+    runs-on: ubuntu-latest
+    needs: [changes, setup]
+    if: needs.changes.outputs.desktop == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            core/node_modules
+            ui/node_modules
+            backend/node_modules
+            frontend/node_modules
+            desktop/node_modules
+          key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run build
+        working-directory: ui
+      - run: npm run lint:desktop
+
+  # ============================================
+  # 5. Build (only changed packages)
+  # ============================================
+  build-core:
+    runs-on: ubuntu-latest
+    needs: [changes, setup, lint-core]
+    if: needs.changes.outputs.core == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            core/node_modules
+            ui/node_modules
+            backend/node_modules
+            frontend/node_modules
+            desktop/node_modules
+          key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+
+  build-ui:
+    runs-on: ubuntu-latest
+    needs: [changes, setup, lint-ui]
+    if: needs.changes.outputs.ui == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            core/node_modules
+            ui/node_modules
+            backend/node_modules
+            frontend/node_modules
+            desktop/node_modules
+          key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run build
+        working-directory: ui
+
+  build-backend:
+    runs-on: ubuntu-latest
+    needs: [changes, setup, lint-backend]
+    if: needs.changes.outputs.backend == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            core/node_modules
+            ui/node_modules
+            backend/node_modules
+            frontend/node_modules
+            desktop/node_modules
+          key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npx prisma generate
+        working-directory: backend
         env:
           DATABASE_URL: postgresql://user:password@localhost:5432/mydb
+      - run: npm run build
+        working-directory: backend
 
-  build:
+  build-frontend:
     runs-on: ubuntu-latest
-    needs: [setup, lint, format-check]
-    strategy:
-      matrix:
-        package: [core, ui, backend, frontend, desktop]
+    needs: [changes, setup, lint-frontend]
+    if: needs.changes.outputs.frontend == 'true'
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-
-      - name: Setup Node.js
-        uses: actions/setup-node@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
           node-version: '22'
-
-      - name: Restore dependencies
-        uses: actions/cache/restore@v4
+      - uses: actions/cache/restore@v4
         with:
           path: |
             node_modules
@@ -236,28 +382,36 @@ jobs:
             desktop/node_modules
           key: ${{ runner.os }}-modules-${{ github.run_id }}
           fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run build
+        working-directory: ui
+      - run: npm run build
+        working-directory: frontend
 
-      - name: Build core (prerequisite)
-        if: matrix.package != 'core'
-        run: |
-          cd core
-          npm run build
-
-      - name: Build UI (prerequisite)
-        if: matrix.package == 'frontend' || matrix.package == 'desktop'
-        run: |
-          cd ui
-          npm run build
-
-      - name: Generate Prisma client (prerequisite for backend)
-        if: matrix.package == 'backend'
-        run: |
-          cd backend
-          npx prisma generate
-        env:
-          DATABASE_URL: postgresql://user:password@localhost:5432/mydb
-
-      - name: Build ${{ matrix.package }}
-        run: |
-          cd ${{ matrix.package }}
-          npm run build
+  build-desktop:
+    runs-on: ubuntu-latest
+    needs: [changes, setup, lint-desktop]
+    if: needs.changes.outputs.desktop == 'true'
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/cache/restore@v4
+        with:
+          path: |
+            node_modules
+            core/node_modules
+            ui/node_modules
+            backend/node_modules
+            frontend/node_modules
+            desktop/node_modules
+          key: ${{ runner.os }}-modules-${{ github.run_id }}
+          fail-on-cache-miss: true
+      - run: npm run build
+        working-directory: core
+      - run: npm run build
+        working-directory: ui
+      - run: npm run build
+        working-directory: desktop

@@ -1,7 +1,8 @@
-# Development/Runtime build for React/Vite frontend
-FROM node:22-alpine
+# =============================================================================
+# Stage 1: Build the application
+# =============================================================================
+FROM node:22-alpine AS build
 
-# Set working directory
 WORKDIR /app
 
 # Copy package files first for better caching
@@ -9,26 +10,35 @@ COPY core/package*.json ./core/
 COPY ui/package*.json ./ui/
 COPY frontend/package*.json ./frontend/
 
-# Copy core package source (needed for @repo/core dependency)
+# Copy and build core package (needed for @repo/core dependency)
 COPY core/ /app/core/
-
-# Install dependencies and build core package
 WORKDIR /app/core
-RUN npm i && npm run build
+RUN npm ci && npm run build
 
-# Copy ui package source (needed for @repo/ui dependency)
+# Copy and build ui package (needed for @repo/ui dependency)
 COPY ui/ /app/ui/
-
-# Install dependencies and build ui package
 WORKDIR /app/ui
-RUN npm i && npm run build
+RUN npm ci && npm run build
 
-# Copy frontend source
+# Copy frontend source and build
 COPY frontend/ /app/frontend/
-
-# Install frontend dependencies
 WORKDIR /app/frontend
-RUN npm i
+RUN npm ci && npm run build
 
-# Build the frontend application
-CMD [ "npm", "run", "build" ]
+# =============================================================================
+# Stage 2: Production image with Nginx
+# =============================================================================
+FROM nginx:alpine
+
+# Copy built assets from build stage
+COPY --from=build /app/frontend/dist /usr/share/nginx/html
+
+# Copy nginx configuration
+COPY frontend/nginx.conf /etc/nginx/conf.d/default.conf
+
+# Copy runtime env script and make it executable
+# This script runs on container startup to replace MY_APP_* placeholders
+COPY frontend/env.sh /docker-entrypoint.d/env.sh
+RUN chmod +x /docker-entrypoint.d/env.sh
+
+EXPOSE 80
