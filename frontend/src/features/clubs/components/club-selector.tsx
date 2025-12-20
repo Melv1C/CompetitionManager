@@ -35,6 +35,10 @@ interface ClubSelectorProps {
   clubs?: Club[];
 }
 
+// Constants for badge display limits
+const MAX_MOBILE_BADGES = 3;
+const MAX_DESKTOP_BADGES = 5;
+
 export function ClubSelector({
   selectedIds,
   onSelectionChange,
@@ -140,14 +144,19 @@ export function ClubSelector({
         {selectedClubsList.length > 0 ? (
           mode === 'multiple' ? (
             <div className="flex flex-wrap gap-1 flex-1 overflow-hidden">
-              {selectedClubsList.slice(0, isMobile ? 3 : 5).map(club => (
-                <Badge key={club.id} variant="secondary" className="gap-1 text-xs">
-                  {club.abbr}
-                </Badge>
-              ))}
-              {selectedClubsList.length > (isMobile ? 3 : 5) && (
+              {selectedClubsList
+                .slice(0, isMobile ? MAX_MOBILE_BADGES : MAX_DESKTOP_BADGES)
+                .map(club => (
+                  <Badge key={club.id} variant="secondary" className="gap-1 text-xs">
+                    {club.abbr}
+                  </Badge>
+                ))}
+              {selectedClubsList.length > (isMobile ? MAX_MOBILE_BADGES : MAX_DESKTOP_BADGES) && (
                 <Badge variant="secondary" className="text-xs">
-                  +{selectedClubsList.length - (isMobile ? 3 : 5)} more
+                  +
+                  {selectedClubsList.length -
+                    (isMobile ? MAX_MOBILE_BADGES : MAX_DESKTOP_BADGES)}{' '}
+                  more
                 </Badge>
               )}
             </div>
@@ -230,11 +239,7 @@ export function ClubSelector({
                             onClick={() => handleToggleClub(club.id)}
                           >
                             {mode === 'multiple' && (
-                              <Checkbox
-                                checked={isSelected}
-                                onCheckedChange={() => handleToggleClub(club.id)}
-                                className={isMobile ? 'h-5 w-5' : ''}
-                              />
+                              <Checkbox checked={isSelected} className={isMobile ? 'h-5 w-5' : ''} />
                             )}
                             <div className="flex-1 min-w-0">
                               <div
