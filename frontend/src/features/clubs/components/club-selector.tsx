@@ -230,7 +230,11 @@ export function ClubSelector({
                             onClick={() => handleToggleClub(club.id)}
                           >
                             {mode === 'multiple' && (
-                              <Checkbox checked={isSelected} className={isMobile ? 'h-5 w-5' : ''} />
+                              <Checkbox
+                                checked={isSelected}
+                                onCheckedChange={() => handleToggleClub(club.id)}
+                                className={isMobile ? 'h-5 w-5' : ''}
+                              />
                             )}
                             <div className="flex-1 min-w-0">
                               <div
@@ -268,7 +272,7 @@ export function ClubSelector({
   if (isMobile) {
     return (
       <div>
-        <Sheet open={open} onOpenChange={setOpen} modal={true}>
+        <Sheet open={open} onOpenChange={setOpen}>
           <SheetTrigger asChild>{TriggerButton}</SheetTrigger>
           <SheetContent side="bottom" className="h-[85vh] max-h-[700px] p-0">
             <SheetHeader className="px-4 py-3 border-b">
@@ -285,7 +289,7 @@ export function ClubSelector({
 
   return (
     <div>
-      <Popover open={open} onOpenChange={setOpen} modal={true}>
+      <Popover open={open} onOpenChange={setOpen}>
         <PopoverTrigger asChild>{TriggerButton}</PopoverTrigger>
         <PopoverContent className="w-[500px] h-[450px] p-0" align="start">
           {ContentComponent}
