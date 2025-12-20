@@ -43,6 +43,7 @@ const FIELD_RULES: Record<string, FieldEditabilityRule> = {
   bibPermissions: 'locked-after-inscription-start',
   isPaidOnline: 'locked-after-inscription-start',
   isSelection: 'locked-after-inscription-start',
+  recordsFromDate: 'locked-after-inscription-start',
 
   // Locked after competition start - These fields can be changed until the competition begins
   inscriptionEndDate: 'locked-after-competition-start',

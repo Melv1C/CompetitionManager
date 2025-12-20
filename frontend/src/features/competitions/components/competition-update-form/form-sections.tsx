@@ -288,6 +288,32 @@ export function FormSections({
             />
           </FieldWrapper>
 
+          <FieldWrapper fieldName="recordsFromDate" competition={competition}>
+            <FormField
+              control={form.control}
+              name="recordsFromDate"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Records From Date</FormLabel>
+                  <FormControl>
+                    <DateTimePicker
+                      value={field.value ?? undefined}
+                      onChange={date => field.onChange(date ?? null)}
+                      placeholder="All-time best"
+                      allowClear
+                      disabled={!isFieldEditable('recordsFromDate')}
+                    />
+                  </FormControl>
+                  <FormDescription>
+                    Only consider personal records on or after this date. Leave empty to use
+                    all-time best.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </FieldWrapper>
+
           <FieldWrapper fieldName="isInscriptionVisible" competition={competition}>
             <FormField
               control={form.control}

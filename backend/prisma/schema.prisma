@@ -315,6 +315,7 @@ model Competition {
   maxEventPerAthlete         Int?
   hasConfirmation            Boolean  @default(false)
   confirmationDeadlineMinutes Int?
+  recordsFromDate            DateTime?
 
   createdAt DateTime @default(now())
   createdBy String
