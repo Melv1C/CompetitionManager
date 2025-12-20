@@ -71,8 +71,7 @@ export function ClubSelector({
     if (!searchQuery.trim()) return clubs;
     const query = searchQuery.toLowerCase();
     return clubs.filter(
-      club =>
-        club.name.toLowerCase().includes(query) || club.abbr.toLowerCase().includes(query),
+      club => club.name.toLowerCase().includes(query) || club.abbr.toLowerCase().includes(query),
     );
   }, [clubs, searchQuery]);
 
@@ -153,9 +152,7 @@ export function ClubSelector({
                 ))}
               {selectedClubsList.length > (isMobile ? MAX_MOBILE_BADGES : MAX_DESKTOP_BADGES) && (
                 <Badge variant="secondary" className="text-xs">
-                  +
-                  {selectedClubsList.length -
-                    (isMobile ? MAX_MOBILE_BADGES : MAX_DESKTOP_BADGES)}{' '}
+                  +{selectedClubsList.length - (isMobile ? MAX_MOBILE_BADGES : MAX_DESKTOP_BADGES)}{' '}
                   more
                 </Badge>
               )}
@@ -226,9 +223,7 @@ export function ClubSelector({
                     <div className="space-y-1">
                       {groupedClubs[letter].map(club => {
                         const isSelected =
-                          mode === 'single'
-                            ? value === club.id
-                            : selectedIds?.includes(club.id);
+                          mode === 'single' ? value === club.id : selectedIds?.includes(club.id);
                         return (
                           <div
                             key={club.id}
@@ -285,9 +280,7 @@ export function ClubSelector({
           <SheetTrigger asChild>{TriggerButton}</SheetTrigger>
           <SheetContent side="bottom" className="h-[85vh] max-h-[700px] p-0">
             <SheetHeader className="px-4 py-3 border-b">
-              <SheetTitle>
-                {mode === 'single' ? 'Select a Club' : 'Select Clubs'}
-              </SheetTitle>
+              <SheetTitle>{mode === 'single' ? 'Select a Club' : 'Select Clubs'}</SheetTitle>
             </SheetHeader>
             <div className="flex-1 overflow-hidden">{ContentComponent}</div>
           </SheetContent>
