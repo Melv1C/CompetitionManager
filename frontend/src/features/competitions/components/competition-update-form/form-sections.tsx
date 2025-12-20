@@ -302,6 +302,7 @@ export function FormSections({
                       placeholder="All-time best"
                       allowClear
                       disabled={!isFieldEditable('recordsFromDate')}
+                      maxDate={new Date()}
                     />
                   </FormControl>
                   <FormDescription>
