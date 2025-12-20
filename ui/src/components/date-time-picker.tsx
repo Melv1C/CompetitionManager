@@ -1,9 +1,11 @@
-import { format } from 'date-fns';
+import { cn } from '@/lib/utils';
+import { format, isSameDay } from 'date-fns';
 import { CalendarIcon, Check, Clock, X } from 'lucide-react';
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useId, useMemo, useState } from 'react';
 import { Button } from './shadcn/button';
 import { Calendar } from './shadcn/calendar';
 import { Input } from './shadcn/input';
+import { Label } from './shadcn/label';
 import { Popover, PopoverContent, PopoverTrigger } from './shadcn/popover';
 
 interface DateTimePickerProps {
@@ -19,26 +21,26 @@ interface DateTimePickerProps {
 export function DateTimePicker({
   value,
   onChange,
-  placeholder,
+  placeholder = 'Pick a date',
   disabled,
   allowClear = true,
   minDate,
   maxDate,
 }: DateTimePickerProps) {
+  const id = useId();
   const [isOpen, setIsOpen] = useState(false);
-  const timeInputRef = useRef<HTMLInputElement>(null);
-  const timeValue = useMemo(() => {
-    return value ? value.toLocaleString('fr-FR', { hour: '2-digit', minute: '2-digit' }) : '00:00';
-  }, [value]);
+  const [timeError, setTimeError] = useState<string | null>(null);
 
-  const [error, setError] = useState<string | null>(null);
+  const timeValue = useMemo(() => {
+    if (!value) return '00:00';
+    const hours = value.getHours().toString().padStart(2, '0');
+    const minutes = value.getMinutes().toString().padStart(2, '0');
+    return `${hours}:${minutes}`;
+  }, [value]);
 
   // Calculate the default month to display when the calendar opens
   const defaultMonth = useMemo(() => {
-    // Priority 1: If there's a value, use that month
-    if (value) {
-      return value;
-    }
+    if (value) return value;
 
     const today = new Date();
     const startOfToday = new Date(today);
@@ -46,22 +48,38 @@ export function DateTimePicker({
     const endOfToday = new Date(today);
     endOfToday.setHours(23, 59, 59, 999);
 
-    // Priority 2: If current date is available (within bounds), use current month
     const isTodayAvailable =
       (!minDate || endOfToday >= minDate) && (!maxDate || startOfToday <= maxDate);
 
-    if (isTodayAvailable) {
-      return today;
-    }
-
-    // Priority 3: Use the first available day
-    if (minDate) {
-      return minDate;
-    }
-
-    // Fallback to today if no constraints
+    if (isTodayAvailable) return today;
+    if (minDate) return minDate;
     return today;
   }, [value, minDate, maxDate]);
+
+  // Auto-prefill when only one day is possible
+  useEffect(() => {
+    if (!value && minDate && maxDate && isSameDay(minDate, maxDate)) {
+      // Use minDate's time as the starting point (it's guaranteed to be valid)
+      const newDate = new Date(minDate);
+      onChange(newDate);
+    }
+  }, [minDate, maxDate, value, onChange]);
+
+  // Validate time against min/max constraints
+  const validateTime = useCallback(
+    (date: Date, h: number, m: number): string | null => {
+      const testDate = new Date(date);
+      testDate.setHours(h, m, 0, 0);
+      if (minDate && testDate < minDate) {
+        return `Time cannot be before ${format(minDate, 'HH:mm')}`;
+      }
+      if (maxDate && testDate > maxDate) {
+        return `Time cannot be after ${format(maxDate, 'HH:mm')}`;
+      }
+      return null;
+    },
+    [minDate, maxDate],
+  );
 
   const handleDateSelect = (selectedDate: Date | undefined) => {
     if (!selectedDate) {
@@ -72,40 +90,30 @@ export function DateTimePicker({
     const [hours, minutes] = timeValue.split(':').map(Number);
     const newDate = new Date(selectedDate);
     newDate.setHours(hours, minutes, 0, 0);
-    setError(null); // Clear error when selecting a new date
+
+    const error = validateTime(newDate, hours, minutes);
+    setTimeError(error);
     onChange(newDate);
-
-    // Focus the time input after a short delay to ensure the component has updated
-    setTimeout(() => {
-      timeInputRef.current?.focus();
-    }, 50);
   };
 
-  const handleTimeChange = (time: string | undefined) => {
-    if (value) {
-      const [hours, minutes] = time ? time.split(':').map(Number) : [0, 0];
-      const newDate = new Date(value);
-      newDate.setHours(hours, minutes, 0, 0);
-      onChange(newDate);
+  const handleTimeChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const time = e.target.value;
+    if (!value || !time) return;
 
-      // Check if the new datetime is within min/max bounds
-      if (minDate && newDate < minDate) {
-        setError(`Time cannot be before ${format(minDate, 'HH:mm')}`);
-        return;
-      }
-      if (maxDate && newDate > maxDate) {
-        setError(`Time cannot be after ${format(maxDate, 'HH:mm')}`);
-        return;
-      }
+    const [hours, minutes] = time.split(':').map(Number);
+    const newDate = new Date(value);
+    newDate.setHours(hours, minutes, 0, 0);
 
-      setError(null);
-    } else {
-      setError('Please select a date first');
-    }
+    const error = validateTime(newDate, hours, minutes);
+    setTimeError(error);
+    // Always update the value, validation error will prevent confirming
+    onChange(newDate);
   };
 
-  const handleClear = () => {
+  const handleClear = (e: React.MouseEvent) => {
+    e.stopPropagation();
     onChange(undefined);
+    setTimeError(null);
     setIsOpen(false);
   };
 
@@ -116,9 +124,13 @@ export function DateTimePicker({
   // Handle keyboard events
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      if (isOpen && event.key === 'Enter' && !error) {
+      if (isOpen && event.key === 'Enter' && !timeError) {
         event.preventDefault();
         handleConfirm();
+      }
+      if (isOpen && event.key === 'Escape') {
+        event.preventDefault();
+        setIsOpen(false);
       }
     };
 
@@ -126,100 +138,94 @@ export function DateTimePicker({
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [isOpen, error]);
+  }, [isOpen, timeError]);
 
   return (
-    <div className="relative">
-      <Popover open={isOpen} onOpenChange={setIsOpen}>
-        <PopoverTrigger asChild>
-          <Button
-            variant="outline"
-            className={`w-full justify-start text-left font-normal pr-12${
-              !value ? ' text-muted-foreground' : ''
-            }`}
-            disabled={disabled}
-          >
-            <CalendarIcon className="mr-2 h-4 w-4" />
-            {value ? format(value, 'dd MMM yyyy, HH:mm') : placeholder || 'Pick a date'}
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent
-          className="w-auto p-0"
-          align="center"
-          sideOffset={4}
-          onInteractOutside={e => {
-            // Prevent closing when clicking inside the calendar or time input
-            e.preventDefault();
-          }}
+    <Popover open={isOpen} onOpenChange={setIsOpen}>
+      <PopoverTrigger asChild>
+        <Button
+          variant="outline"
+          className={cn(
+            'w-full justify-start text-left font-normal',
+            !value && 'text-muted-foreground',
+          )}
+          disabled={disabled}
         >
-          <div className="p-3">
-            <Calendar
-              mode="single"
-              selected={value}
-              onSelect={handleDateSelect}
-              captionLayout="dropdown"
-              className="w-auto max-w-xs"
-              defaultMonth={defaultMonth}
-              disabled={date => {
-                // Create start and end of day for comparison
-                const startOfDay = new Date(date);
-                startOfDay.setHours(0, 0, 0, 0);
-                const endOfDay = new Date(date);
-                endOfDay.setHours(23, 59, 59, 999);
-
-                // Disable if entire day is before minDate or after maxDate
-                if (minDate && endOfDay < minDate) return true;
-                if (maxDate && startOfDay > maxDate) return true;
-                return false;
-              }}
+          <CalendarIcon className="mr-2 h-4 w-4" />
+          <span className="flex-1 truncate">
+            {value ? format(value, 'dd MMM yyyy, HH:mm') : placeholder}
+          </span>
+          {allowClear && value && !disabled && (
+            <X
+              className="ml-2 h-4 w-4 shrink-0 opacity-50 hover:opacity-100"
+              onClick={handleClear}
             />
-            <div className="mt-2 relative">
-              <Clock className="absolute left-3 top-1/2 transform -translate-y-1/2 h-4 w-4 text-muted-foreground" />
-              {/* <Input
-                type="time"
-                value={timeValue}
-                onChange={(e) => handleTimeChange(e.target.value)}
-                disabled={disabled}
-                className="no-native-time-indicator pl-10"
-              /> */}
+          )}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent className="w-auto p-0" align="start" sideOffset={4}>
+        <Calendar
+          mode="single"
+          selected={value}
+          onSelect={handleDateSelect}
+          captionLayout="dropdown"
+          className="p-2"
+          defaultMonth={defaultMonth}
+          startMonth={minDate ?? new Date(new Date().getFullYear() - 5, 0)}
+          endMonth={maxDate ?? new Date(new Date().getFullYear() + 10, 11)}
+          disabled={date => {
+            const startOfDay = new Date(date);
+            startOfDay.setHours(0, 0, 0, 0);
+            const endOfDay = new Date(date);
+            endOfDay.setHours(23, 59, 59, 999);
+
+            if (minDate && endOfDay < minDate) return true;
+            if (maxDate && startOfDay > maxDate) return true;
+            return false;
+          }}
+        />
+        <div className="border-t p-3">
+          <div className="flex items-center gap-3">
+            <Label htmlFor={id} className="text-xs">
+              Time
+            </Label>
+            <div className="relative grow">
               <Input
-                ref={timeInputRef}
+                id={id}
                 type="time"
                 value={timeValue}
-                onChange={e => {
-                  handleTimeChange(e.target.value);
-                }}
-                disabled={value ? false : true}
+                onChange={handleTimeChange}
+                disabled={!value}
                 className="peer ps-9 [&::-webkit-calendar-picker-indicator]:hidden"
               />
-            </div>
-            {error && <div className="mt-2 text-sm text-destructive">{error}</div>}
-            <div className="mt-3 pt-3 border-t flex gap-2">
-              {allowClear && value && (
-                <Button
-                  variant="outline"
-                  size="sm"
-                  className="flex-1 justify-center"
-                  onClick={handleClear}
-                  disabled={disabled}
-                >
-                  <X className="h-4 w-4 mr-2" />
-                  Clear
-                </Button>
-              )}
-              <Button
-                size="sm"
-                className="flex-1 justify-center"
-                onClick={handleConfirm}
-                disabled={!!error}
-              >
-                <Check className="h-4 w-4 mr-2" />
-                Confirm
-              </Button>
+              <div className="pointer-events-none absolute inset-y-0 start-0 flex items-center justify-center ps-3 text-muted-foreground/80 peer-disabled:opacity-50">
+                <Clock size={16} strokeWidth={2} aria-hidden="true" />
+              </div>
             </div>
           </div>
-        </PopoverContent>
-      </Popover>
-    </div>
+          {timeError && <div className="mt-2 text-sm text-destructive">{timeError}</div>}
+        </div>
+
+        {/* Actions */}
+        <div className="border-t p-3 flex gap-2">
+          {allowClear && value && (
+            <Button
+              variant="outline"
+              size="sm"
+              className="flex-1"
+              onClick={handleClear}
+              disabled={disabled}
+            >
+              <X className="h-4 w-4 mr-1" />
+              Clear
+            </Button>
+          )}
+          <Button size="sm" className="flex-1" onClick={handleConfirm} disabled={!!timeError}>
+            <Check className="h-4 w-4 mr-1" />
+            Confirm
+          </Button>
+        </div>
+      </PopoverContent>
+    </Popover>
   );
 }
