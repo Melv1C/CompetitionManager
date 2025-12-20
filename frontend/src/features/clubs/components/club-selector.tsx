@@ -239,7 +239,11 @@ export function ClubSelector({
                             onClick={() => handleToggleClub(club.id)}
                           >
                             {mode === 'multiple' && (
-                              <Checkbox checked={isSelected} className={isMobile ? 'h-5 w-5' : ''} />
+                              <Checkbox
+                                checked={isSelected}
+                                className={isMobile ? 'h-5 w-5' : ''}
+                                aria-hidden="true"
+                              />
                             )}
                             <div className="flex-1 min-w-0">
                               <div
