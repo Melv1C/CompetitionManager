@@ -31,6 +31,7 @@ export const Competition$ = z.object({
   maxEventPerAthlete: z.number().int().positive().nullish(),
   hasConfirmation: Boolean$,
   confirmationDeadlineMinutes: z.number().int().positive().nullish(),
+  recordsFromDate: Date$.nullish(),
 
   createdAt: Date$,
   createdBy: BetterAuthId$,

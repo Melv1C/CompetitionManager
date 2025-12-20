@@ -126,6 +126,7 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
         bibPermissions: z.array(z.string()),
         freeClubIds: z.array(z.number()),
         allowedClubIds: z.array(z.number()),
+        recordsFromDate: z.date().nullish(),
       }),
     ),
   });
