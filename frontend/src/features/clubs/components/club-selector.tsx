@@ -91,13 +91,16 @@ export function ClubSelector({
 
   const sortedLetters = Object.keys(groupedClubs).sort();
 
-  // Get selected clubs for display
-  const selectedClubsList =
-    mode === 'multiple'
-      ? clubs.filter(club => selectedIds?.includes(club.id))
-      : value
-        ? clubs.filter(club => club.id === value)
-        : [];
+  // Get selected clubs for display (memoized and sorted)
+  const selectedClubsList = useMemo(() => {
+    const selected =
+      mode === 'multiple'
+        ? clubs.filter(club => selectedIds?.includes(club.id))
+        : value
+          ? clubs.filter(club => club.id === value)
+          : [];
+    return selected.sort((a, b) => a.name.localeCompare(b.name));
+  }, [mode, clubs, selectedIds, value]);
 
   const handleToggleClub = (clubId: number) => {
     if (mode === 'single') {
@@ -137,14 +140,11 @@ export function ClubSelector({
         {selectedClubsList.length > 0 ? (
           mode === 'multiple' ? (
             <div className="flex flex-wrap gap-1 flex-1 overflow-hidden">
-              {selectedClubsList
-                .sort((a, b) => a.name.localeCompare(b.name))
-                .slice(0, isMobile ? 3 : 5)
-                .map(club => (
-                  <Badge key={club.id} variant="secondary" className="gap-1 text-xs">
-                    {club.abbr}
-                  </Badge>
-                ))}
+              {selectedClubsList.slice(0, isMobile ? 3 : 5).map(club => (
+                <Badge key={club.id} variant="secondary" className="gap-1 text-xs">
+                  {club.abbr}
+                </Badge>
+              ))}
               {selectedClubsList.length > (isMobile ? 3 : 5) && (
                 <Badge variant="secondary" className="text-xs">
                   +{selectedClubsList.length - (isMobile ? 3 : 5)} more
