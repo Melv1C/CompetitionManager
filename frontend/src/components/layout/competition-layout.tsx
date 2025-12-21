@@ -98,11 +98,19 @@ export function CompetitionLayout() {
 
       {/* Navigation Tabs */}
       <Tabs value={getCurrentTab()} onValueChange={handleTabChange}>
-        <TabsList className="grid w-full grid-cols-4">
-          <TabsTrigger value="home">{t('navigation:home')}</TabsTrigger>
-          <TabsTrigger value="schedule">{t('schedule.title')}</TabsTrigger>
-          <TabsTrigger value="participants">{t('participants.title')}</TabsTrigger>
-          <TabsTrigger value="results">{t('results.title')}</TabsTrigger>
+        <TabsList className="flex h-auto w-full flex-wrap justify-start gap-1 sm:grid sm:grid-cols-4 sm:gap-0">
+          <TabsTrigger value="home" className="flex-1 sm:flex-none">
+            {t('navigation:home')}
+          </TabsTrigger>
+          <TabsTrigger value="schedule" className="flex-1 sm:flex-none">
+            {t('schedule.title')}
+          </TabsTrigger>
+          <TabsTrigger value="participants" className="flex-1 sm:flex-none">
+            {t('participants.title')}
+          </TabsTrigger>
+          <TabsTrigger value="results" className="flex-1 sm:flex-none">
+            {t('results.title')}
+          </TabsTrigger>
         </TabsList>
       </Tabs>
 
