@@ -52,7 +52,9 @@ export * from './racing-bib';
 export * from './rich-text';
 export * from './unsaved-changes-dialog';
 
+export * from './keyboards/distance-keyboard';
 export * from './keyboards/fake-input';
+export * from './keyboards/height-keyboard';
 export * from './keyboards/time-keyboard';
 
 // export * from './legacy/distance-keyboard';

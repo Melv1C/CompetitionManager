@@ -1,10 +1,9 @@
 import { cn } from '@/lib/utils';
-import { Popover, PopoverContent, PopoverTrigger } from '@radix-ui/react-popover';
-import { ArrowRight, Delete, TriangleAlert } from 'lucide-react';
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ArrowRight, Delete, Flag, Minus, X } from 'lucide-react';
+import { useCallback, useEffect, useRef } from 'react';
 import { Button } from '../shadcn/button';
 
-interface TimeKeyboardProps {
+interface DistanceKeyboardProps {
   open: boolean;
   inputValue: string;
   onKeyboardInput: (value: string) => void;
@@ -12,63 +11,62 @@ interface TimeKeyboardProps {
   onClose: () => void;
 }
 
-type SpecialCode = 'DNS' | 'DNF' | 'DQ';
+type SpecialCode = 'X' | '-' | 'r';
 
-export function TimeKeyboard({
+export function DistanceKeyboard({
   open,
   inputValue,
   onKeyboardInput,
   onEnterPressed,
   onClose,
-}: TimeKeyboardProps) {
+}: DistanceKeyboardProps) {
   const keyboardContainerRef = useRef<HTMLDivElement>(null);
-  const [isSpecialCodeOpenInternal, setIsSpecialCodeOpenInternal] = useState(false);
-
-  // Derive popover state: close when keyboard is not open
-  const isSpecialCodeOpen = useMemo(
-    () => open && isSpecialCodeOpenInternal,
-    [open, isSpecialCodeOpenInternal],
-  );
-
-  const handleSpecialCodeOpenChange = useCallback((newOpen: boolean) => {
-    setIsSpecialCodeOpenInternal(newOpen);
-  }, []);
 
   const handleKeyPress = useCallback(
     (value: string) => {
       if (value === 'ENTER') {
         onEnterPressed();
       } else if (value === 'BKSP') {
-        if (!isNaN(parseFloat(inputValue))) {
-          onKeyboardInput(inputValue.slice(0, -1));
-          return;
-        } else {
+        // For special codes (X, -, r), clear entirely
+        if (inputValue === 'X' || inputValue === '-' || inputValue === 'r') {
           onKeyboardInput('');
           return;
         }
-      } else if (value === 'DNS' || value === 'DNF' || value === 'DQ') {
+        onKeyboardInput(inputValue.slice(0, -1));
+      } else if (value === 'X' || value === '-' || value === 'r') {
+        // Special characters replace the entire input
         onKeyboardInput(value);
-        setIsSpecialCodeOpenInternal(false);
       } else {
-        const newValue = (isNaN(parseFloat(inputValue)) ? '' : inputValue) + value;
-        onKeyboardInput(newValue);
+        // Regular key press - append the character
+        const currentValue = ['X', '-', 'r'].includes(inputValue) ? '' : inputValue;
+        onKeyboardInput(currentValue + value);
       }
     },
     [inputValue, onKeyboardInput, onEnterPressed],
   );
 
-  const handleSpecialCodeSelect = useCallback(
+  const handleSpecialCode = useCallback(
     (code: SpecialCode) => {
       handleKeyPress(code);
     },
     [handleKeyPress],
   );
 
+  // Capture physical keyboard events when the virtual keyboard is open
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
       if (!open) return;
 
-      if (e.key === 'Enter' || e.key === 'Backspace' || e.key.match(/^[0-9.:]$/)) {
+      if (
+        e.key === 'Enter' ||
+        e.key === 'Backspace' ||
+        e.key.match(/^[0-9.]$/) ||
+        e.key === 'x' ||
+        e.key === 'X' ||
+        e.key === '-' ||
+        e.key === 'r' ||
+        e.key === 'R'
+      ) {
         e.preventDefault();
       }
 
@@ -79,12 +77,20 @@ export function TimeKeyboard({
         case 'Backspace':
           handleKeyPress('BKSP');
           break;
+        case 'x':
+        case 'X':
+          handleKeyPress('X');
+          break;
+        case '-':
+          handleKeyPress('-');
+          break;
+        case 'r':
+        case 'R':
+          handleKeyPress('r');
+          break;
         case '.':
         case ',': // Allow comma as decimal separator
           handleKeyPress('.');
-          break;
-        case ':':
-          handleKeyPress(':');
           break;
         case 'Escape':
           onClose();
@@ -106,6 +112,7 @@ export function TimeKeyboard({
     };
   }, [open, handleKeyPress, onClose]);
 
+  // Prevent losing focus when clicking on the keyboard
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
       if (keyboardContainerRef.current?.contains(e.target as Node)) {
@@ -120,6 +127,7 @@ export function TimeKeyboard({
     };
   }, []);
 
+  // Close keyboard when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -221,49 +229,15 @@ export function TimeKeyboard({
         >
           6
         </Button>
-        <Popover open={isSpecialCodeOpen} onOpenChange={handleSpecialCodeOpenChange}>
-          <PopoverTrigger asChild>
-            <Button variant="secondary" className={cn(buttonClass, 'text-sm font-bold')}>
-              <TriangleAlert className="h-5 w-5" />
-            </Button>
-          </PopoverTrigger>
-          <PopoverContent
-            className="w-auto rounded-md border bg-popover p-1 text-popover-foreground shadow-md"
-            side="top"
-            align="end"
-            onMouseDown={handlePreventDefault}
-          >
-            <div className="flex flex-col gap-1">
-              <Button
-                variant="ghost"
-                className="h-10 font-bold"
-                onClick={() => {
-                  handleSpecialCodeSelect('DNF');
-                }}
-              >
-                DNF
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-10 font-bold"
-                onClick={() => {
-                  handleSpecialCodeSelect('DNS');
-                }}
-              >
-                DNS
-              </Button>
-              <Button
-                variant="ghost"
-                className="h-10 font-bold"
-                onClick={() => {
-                  handleSpecialCodeSelect('DQ');
-                }}
-              >
-                DQ
-              </Button>
-            </div>
-          </PopoverContent>
-        </Popover>
+        <Button
+          variant="secondary"
+          className={cn(buttonClass, 'text-destructive')}
+          onClick={() => {
+            handleSpecialCode('X');
+          }}
+        >
+          <X className="h-5 w-5" />
+        </Button>
 
         {/* Row 3 */}
         <Button
@@ -294,13 +268,13 @@ export function TimeKeyboard({
           3
         </Button>
         <Button
-          variant="default"
-          className={cn(buttonClass, 'row-span-2 h-full bg-green-600 hover:bg-green-700')}
+          variant="secondary"
+          className={buttonClass}
           onClick={() => {
-            handleKeyPress('ENTER');
+            handleSpecialCode('-');
           }}
         >
-          <ArrowRight className="h-5 w-5" />
+          <Minus className="h-5 w-5" />
         </Button>
 
         {/* Row 4 */}
@@ -323,13 +297,22 @@ export function TimeKeyboard({
           .
         </Button>
         <Button
-          variant="default"
-          className={buttonClass}
+          variant="secondary"
+          className={cn(buttonClass, 'text-amber-600')}
           onClick={() => {
-            handleKeyPress(':');
+            handleSpecialCode('r');
           }}
         >
-          :
+          <Flag className="h-5 w-5" />
+        </Button>
+        <Button
+          variant="default"
+          className={cn(buttonClass, 'bg-green-600 hover:bg-green-700')}
+          onClick={() => {
+            handleKeyPress('ENTER');
+          }}
+        >
+          <ArrowRight className="h-5 w-5" />
         </Button>
       </div>
     </div>
