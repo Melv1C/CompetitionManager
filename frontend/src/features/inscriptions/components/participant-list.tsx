@@ -18,6 +18,7 @@ import {
 } from '@repo/ui';
 import { UsersIcon } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
+import { Link } from 'react-router-dom';
 import { useCompetitionInscriptions } from '../hooks/use-inscriptions';
 
 function getStatusBadgeVariant(status: InscriptionPublic['status']) {
@@ -120,7 +121,7 @@ export function ParticipantList() {
         <CardHeader>
           <CardTitle className="flex items-center gap-2">
             <UsersIcon className="h-5 w-5" />
-            {t('inscriptions:participants')}
+            {t('participants.title')}
           </CardTitle>
         </CardHeader>
         <CardContent>
@@ -143,7 +144,7 @@ export function ParticipantList() {
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <UsersIcon className="h-5 w-5" />
-          {t('inscriptions:participants')} ({inscriptions.data.length})
+          {t('participants.title')}
         </CardTitle>
       </CardHeader>
       <CardContent>
@@ -168,7 +169,14 @@ export function ParticipantList() {
                       {inscription.athlete.firstName} {inscription.athlete.lastName}
                     </div>
                   </TableCell>
-                  <TableCell>{inscription.competitionEvent.event.name}</TableCell>
+                  <TableCell>
+                    <Link
+                      to={`/competitions/${eid}/events/${inscription.competitionEvent.eid}`}
+                      className="text-primary hover:underline"
+                    >
+                      {inscription.competitionEvent.name}
+                    </Link>
+                  </TableCell>
                   <TableCell>
                     {formatPerformance(
                       inscription.record?.performanceValue,

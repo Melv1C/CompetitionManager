@@ -1,10 +1,10 @@
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useCompetitionEid } from '@/hooks';
-import { formatTime } from '@/lib/formatters';
 import type { CompetitionEvent, InscriptionPublic } from '@repo/core/schemas';
 import {
   formatPerformance,
+  formatTime,
   getAthleteCategory,
   getSeasonBib,
   getSeasonClub,
@@ -66,8 +66,7 @@ export function CompetitionEventDetailPage() {
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{competitionEvent.name}</h1>
             <p className="text-muted-foreground">
-              {participantCount}{' '}
-              {participantCount === 1 ? t('participants.title') : t('participants.title.plural')}
+              {participantCount} {t('participants.title', { count: participantCount })}
             </p>
           </div>
         </div>
@@ -126,7 +125,7 @@ function ParticipantsTable({
               <TableHead>{t('athlete.title')}</TableHead>
               <TableHead>{t('category.title')}</TableHead>
               <TableHead>{t('club.title')}</TableHead>
-              <TableHead>{t('personalBest.title')}</TableHead>
+              <TableHead>{t('record.title')}</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
