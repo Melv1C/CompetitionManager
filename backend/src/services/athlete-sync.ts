@@ -1,4 +1,4 @@
-import mockAthletesData from '@/data/mock-athletes.json';
+import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
@@ -21,7 +21,6 @@ export interface AthleteSyncConfig {
   lbfaUrl?: string;
   lbfaUsername?: string;
   lbfaPassword?: string;
-  useMock: boolean;
 }
 
 export interface AthleteSyncResult {
@@ -55,11 +54,15 @@ export class AthleteSyncService {
       return null;
     }
 
+    if (env.NODE_ENV === 'development') {
+      this.prodLogger?.info(
+        'No athlete sync in development mode. Use mock data with npm run seed.',
+      );
+      return null;
+    }
+
     // Validate configuration
-    if (
-      !this.config.useMock &&
-      (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword)
-    ) {
+    if (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword) {
       logger.error(
         'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.',
       );
@@ -126,7 +129,7 @@ export class AthleteSyncService {
     updated: number;
     skipped: number;
   }> {
-    let athletes: Array<{
+    const athletes: Array<{
       license: string;
       bib: number;
       firstName: string;
@@ -136,47 +139,40 @@ export class AthleteSyncService {
       clubAbbr: string;
     }> = [];
 
-    if (this.config.useMock) {
-      athletes = mockAthletesData.map(a => ({
-        ...a,
-        birthdate: new Date(a.birthdate),
-      }));
-    } else {
-      if (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword) {
-        throw new Error(
-          'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.',
-        );
-      }
-      const { data } = await axios.get(this.config.lbfaUrl, {
-        headers: {
-          'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
-          Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-          'Accept-Language': 'en-US,en;q=0.9',
-          Referer: 'http://www.google.com/',
-          Connection: 'keep-alive',
-        },
-        auth: {
-          username: this.config.lbfaUsername,
-          password: this.config.lbfaPassword,
-        },
-      });
+    if (!this.config.lbfaUrl || !this.config.lbfaUsername || !this.config.lbfaPassword) {
+      throw new Error(
+        'LBFA API configuration is incomplete. Please provide lbfaUrl, lbfaUsername, and lbfaPassword.',
+      );
+    }
+    const { data } = await axios.get(this.config.lbfaUrl, {
+      headers: {
+        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36',
+        Accept: 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+        'Accept-Language': 'en-US,en;q=0.9',
+        Referer: 'http://www.google.com/',
+        Connection: 'keep-alive',
+      },
+      auth: {
+        username: this.config.lbfaUsername,
+        password: this.config.lbfaPassword,
+      },
+    });
 
-      const lines = data.split('\n');
-      for (let i = 1; i < lines.length; i++) {
-        const line = lines[i].split('\t');
-        if (parseInt(line[0]) <= 10000) {
-          continue;
-        }
-        athletes.push({
-          license: line[0],
-          bib: parseInt(line[1]),
-          firstName: line[3],
-          lastName: line[4],
-          gender: line[5],
-          birthdate: new Date(line[6]),
-          clubAbbr: line[9],
-        });
+    const lines = data.split('\n');
+    for (let i = 1; i < lines.length; i++) {
+      const line = lines[i].split('\t');
+      if (parseInt(line[0]) <= 10000) {
+        continue;
       }
+      athletes.push({
+        license: line[0],
+        bib: parseInt(line[1]),
+        firstName: line[3],
+        lastName: line[4],
+        gender: line[5],
+        birthdate: new Date(line[6]),
+        clubAbbr: line[9],
+      });
     }
 
     const currentSeason = new Date().getFullYear();

@@ -4,11 +4,9 @@ import type { Logger } from 'winston';
 import { AthleteSyncService } from './athlete-sync';
 import { LogCleanupService } from './log-cleanup';
 import { scheduler } from './scheduler';
-import { SeedService } from './seed';
 
 export class ServiceManager {
   private logCleanupService: LogCleanupService;
-  private seedService: SeedService;
   private athleteSyncService: AthleteSyncService;
   private isInitialized = false;
   private prodLogger: Logger | null = null;
@@ -20,11 +18,6 @@ export class ServiceManager {
       cronExpression: env.LOG_CLEANUP_SCHEDULE,
       maxLogsPerCleanup: env.LOG_CLEANUP_MAX_PER_RUN,
     });
-    this.seedService = new SeedService({
-      enabled: env.DB_SEED_ENABLED,
-      forceReseed: env.DB_SEED_FORCE_RESEED,
-      usersEnabled: env.DB_SEED_USERS_ENABLED,
-    });
 
     this.athleteSyncService = new AthleteSyncService({
       enabled: env.ATHLETE_SYNC_ENABLED,
@@ -32,7 +25,6 @@ export class ServiceManager {
       lbfaUrl: env.LBFA_URL,
       lbfaUsername: env.LBFA_USERNAME,
       lbfaPassword: env.LBFA_PASSWORD,
-      useMock: env.ATHLETE_SYNC_USE_MOCK,
     });
 
     if (env.NODE_ENV === 'production') {
@@ -52,8 +44,7 @@ export class ServiceManager {
       this.prodLogger?.info('Initializing services...');
 
       // Initialize log cleanup service
-      this.logCleanupService.initialize(); // Initialize database seeding
-      await this.seedService.initialize();
+      this.logCleanupService.initialize();
 
       // Initialize athlete sync service
       await this.athleteSyncService.initialize();
@@ -97,12 +88,6 @@ export class ServiceManager {
   }
 
   /**
-   * Get seed service instance for manual operations
-   */
-  getSeedService(): SeedService {
-    return this.seedService;
-  }
-  /**
    * Get athlete sync service instance for manual operations
    */
   getAthleteSyncService(): AthleteSyncService {
@@ -118,7 +103,6 @@ export class ServiceManager {
       services: {
         scheduler: this.isInitialized,
         logCleanup: this.logCleanupService.getConfig().enabled,
-        seeding: this.seedService.getConfig().enabled,
         athleteSync: this.athleteSyncService.getConfig().enabled,
       },
     };
