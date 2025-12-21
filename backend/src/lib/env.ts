@@ -29,6 +29,14 @@ const envSchema = z.object({
   STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
 
+  // Redis configuration
+  REDIS_URL: z.url().optional(),
+
+  // Performance service configuration
+  BEATHLETICS_URL: z.url().default('https://www.beathletics.be/api/athlete/new'),
+  PERFORMANCE_SERVICE_TIMEOUT: z.coerce.number().default(5000),
+  PERFORMANCE_CACHE_TTL: z.coerce.number().default(86400),
+
   GOOGLE_CLIENT_ID: z.string().optional(),
   GOOGLE_CLIENT_SECRET: z.string().min(1).optional(),
 

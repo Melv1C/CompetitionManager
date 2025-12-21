@@ -1,5 +1,10 @@
 import { prisma } from '@/lib/prisma';
 import { logError } from '@/utils/log-utils';
+import {
+  fetchAthleteBestPerformances,
+  invalidatePerformanceCache,
+  prefetchAthletePerformances,
+} from '@/utils/performance-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
   Athlete,
@@ -99,6 +104,88 @@ athletesRoutes.get(
     } catch (error) {
       logError('Failed to search athletes', error, c);
       return c.json({ error: 'Failed to search athletes' }, 500);
+    }
+  },
+);
+
+// GET /athletes/:license/best-performances - Get best performances per event from Beathletics
+athletesRoutes.get(
+  '/:license/best-performances',
+  zValidator(
+    'param',
+    z.object({
+      license: Athlete$.shape.license,
+    }),
+  ),
+  zValidator(
+    'query',
+    z.object({
+      fromDate: Date$.optional(),
+      forceRefresh: z.stringbool().optional().default(false),
+    }),
+  ),
+  async c => {
+    try {
+      const { license } = c.req.valid('param');
+      const { fromDate, forceRefresh } = c.req.valid('query');
+
+      const result = await fetchAthleteBestPerformances(license, {
+        fromDate: fromDate ? new Date(fromDate) : undefined,
+        forceRefresh,
+      });
+
+      return c.json(result);
+    } catch (error) {
+      logError('Failed to fetch athlete best performances', error, c);
+      return c.json({ error: 'Failed to fetch athlete best performances' }, 500);
+    }
+  },
+);
+
+// DELETE /athletes/:license/performances/cache - Invalidate performance cache
+athletesRoutes.delete(
+  '/:license/performances/cache',
+  zValidator(
+    'param',
+    z.object({
+      license: Athlete$.shape.license,
+    }),
+  ),
+  async c => {
+    try {
+      const { license } = c.req.valid('param');
+      const success = await invalidatePerformanceCache(license);
+
+      if (success) {
+        return c.json({ message: 'Cache invalidated successfully' });
+      }
+      return c.json({ message: 'Cache not available or already empty' });
+    } catch (error) {
+      logError('Failed to invalidate performance cache', error, c);
+      return c.json({ error: 'Failed to invalidate performance cache' }, 500);
+    }
+  },
+);
+
+// POST /athletes/:license/performances/prefetch - Prefetch performances for an athlete
+athletesRoutes.post(
+  '/:license/performances/prefetch',
+  zValidator(
+    'param',
+    z.object({
+      license: Athlete$.shape.license,
+    }),
+  ),
+  async c => {
+    try {
+      const { license } = c.req.valid('param');
+
+      await prefetchAthletePerformances(license);
+
+      return c.json({ message: 'Performances prefetched successfully', license });
+    } catch (error) {
+      logError('Failed to prefetch athlete performances', error, c);
+      return c.json({ error: 'Failed to prefetch athlete performances' }, 500);
     }
   },
 );
