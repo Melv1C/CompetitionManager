@@ -1,4 +1,3 @@
-import { Password$, User$ } from '@repo/core/schemas';
 import 'dotenv/config';
 import { z } from 'zod';
 
@@ -19,23 +18,9 @@ const envSchema = z.object({
   LOG_CLEANUP_SCHEDULE: z.enum(['@daily', '@hourly', '@weekly']).default('@daily'),
   LOG_CLEANUP_MAX_PER_RUN: z.coerce.number().optional(),
 
-  // Database seeding configuration
-  DB_SEED_ENABLED: z.stringbool().default(true),
-  DB_SEED_FORCE_RESEED: z.stringbool().default(false),
-
-  // User seeding configuration
-  DB_SEED_USERS_ENABLED: z.stringbool().default(false),
-  DB_SEED_ADMIN_EMAIL: User$.shape.email.default('admin@example.com'),
-  DB_SEED_ADMIN_PASSWORD: Password$.default('admin-password'),
-  DB_SEED_ADMIN_NAME: User$.shape.name.default('Admin'),
-  DB_SEED_USER_EMAIL: User$.shape.email.default('user@example.com'),
-  DB_SEED_USER_PASSWORD: Password$.default('user-password'),
-  DB_SEED_USER_NAME: User$.shape.name.default('User'),
-
   // Athlete sync configuration
   ATHLETE_SYNC_ENABLED: z.stringbool().default(true),
   ATHLETE_SYNC_SCHEDULE: z.enum(['@daily', '@hourly', '@weekly']).default('@daily'),
-  ATHLETE_SYNC_USE_MOCK: z.stringbool().default(false),
 
   LBFA_URL: z.url().optional(),
   LBFA_USERNAME: z.string().optional(),
