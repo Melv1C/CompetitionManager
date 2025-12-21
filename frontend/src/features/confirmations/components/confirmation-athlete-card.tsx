@@ -24,7 +24,7 @@ export const ConfirmationAthleteCard = ({
 
   return (
     <Card className="cursor-pointer transition-colors hover:bg-accent" onClick={onClick}>
-      <CardContent className="flex items-center justify-between p-4">
+      <CardContent className="flex items-center justify-between py-0 px-4">
         <div className="flex flex-col">
           <div className="font-medium">
             {bib} - {athlete.firstName} {athlete.lastName}{' '}
