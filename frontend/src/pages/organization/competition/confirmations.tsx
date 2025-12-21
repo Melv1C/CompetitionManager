@@ -23,6 +23,8 @@ export const CompetitionConfirmations = () => {
   const [searchKey, setSearchKey] = useState('');
   const [selectedAthlete, setSelectedAthlete] = useState<Athlete | null>(null);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [showAllUnknown, setShowAllUnknown] = useState(false);
+  const [showAllConfirmed, setShowAllConfirmed] = useState(false);
 
   const updatePresenceStatus = useUpdatePresenceStatus(competitionEid);
 
@@ -124,6 +126,29 @@ export const CompetitionConfirmations = () => {
       });
   }, [athleteInscriptionsMap, searchKey]);
 
+  // Separate athletes with unknown status from confirmed ones
+  const { unknownAthletes, confirmedAthletes } = useMemo(() => {
+    const unknown: typeof filteredAthletes = [];
+    const confirmed: typeof filteredAthletes = [];
+
+    filteredAthletes.forEach(({ athlete, inscriptions }) => {
+      const unknownCount = inscriptions.filter(i => i.presenceStatus === 'UNKNOWN').length;
+      if (unknownCount > 0) {
+        unknown.push({ athlete, inscriptions });
+      } else {
+        confirmed.push({ athlete, inscriptions });
+      }
+    });
+
+    return { unknownAthletes: unknown, confirmedAthletes: confirmed };
+  }, [filteredAthletes]);
+
+  const INITIAL_SHOW = 5;
+  const unknownToShow = showAllUnknown ? unknownAthletes : unknownAthletes.slice(0, INITIAL_SHOW);
+  const confirmedToShow = showAllConfirmed
+    ? confirmedAthletes
+    : confirmedAthletes.slice(0, INITIAL_SHOW);
+
   const handleAthleteClick = (athlete: Athlete) => {
     setSelectedAthlete(athlete);
     setIsDialogOpen(true);
@@ -169,7 +194,7 @@ export const CompetitionConfirmations = () => {
       <ConfirmationAthleteSearch value={searchKey} onChange={setSearchKey} />
 
       <div className="space-y-3">
-        {filteredAthletes.length === 0 && (
+        {unknownAthletes.length === 0 && confirmedAthletes.length === 0 && (
           <Alert>
             <AlertCircle className="size-4" />
             <AlertDescription>
@@ -180,22 +205,78 @@ export const CompetitionConfirmations = () => {
           </Alert>
         )}
 
-        {filteredAthletes.map(({ athlete, inscriptions }) => {
-          const presentCount = inscriptions.filter(i => i.presenceStatus === 'PRESENT').length;
-          const absentCount = inscriptions.filter(i => i.presenceStatus === 'ABSENT').length;
-          const unknownCount = inscriptions.filter(i => i.presenceStatus === 'UNKNOWN').length;
+        {/* Unknown Status Athletes */}
+        {unknownAthletes.length > 0 && (
+          <>
+            <div className="text-sm font-semibold text-amber-600 dark:text-amber-500">
+              {t('confirmations:pendingConfirmation')}
+            </div>
+            {unknownToShow.map(({ athlete, inscriptions }) => {
+              const presentCount = inscriptions.filter(i => i.presenceStatus === 'PRESENT').length;
+              const absentCount = inscriptions.filter(i => i.presenceStatus === 'ABSENT').length;
+              const unknownCount = inscriptions.filter(i => i.presenceStatus === 'UNKNOWN').length;
 
-          return (
-            <ConfirmationAthleteCard
-              key={athlete.id}
-              athlete={athlete}
-              presentCount={presentCount}
-              absentCount={absentCount}
-              unknownCount={unknownCount}
-              onClick={() => handleAthleteClick(athlete)}
-            />
-          );
-        })}
+              return (
+                <ConfirmationAthleteCard
+                  key={athlete.id}
+                  athlete={athlete}
+                  presentCount={presentCount}
+                  absentCount={absentCount}
+                  unknownCount={unknownCount}
+                  onClick={() => handleAthleteClick(athlete)}
+                />
+              );
+            })}
+            {!showAllUnknown && unknownAthletes.length > INITIAL_SHOW && (
+              <button
+                onClick={() => setShowAllUnknown(true)}
+                className="w-full rounded-lg border border-dashed border-gray-300 py-2 text-sm font-medium text-gray-600 hover:border-gray-400 hover:text-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-300"
+              >
+                {t('common:showAll')} ({unknownAthletes.length - INITIAL_SHOW}{' '}
+                {t('confirmations:more')})
+              </button>
+            )}
+          </>
+        )}
+
+        {/* Divider */}
+        {unknownAthletes.length > 0 && confirmedAthletes.length > 0 && (
+          <div className="border-t border-gray-200 dark:border-gray-800" />
+        )}
+
+        {/* Confirmed Athletes */}
+        {confirmedAthletes.length > 0 && (
+          <>
+            <div className="text-sm font-semibold text-green-600 dark:text-green-500">
+              {t('confirmations:confirmed')}
+            </div>
+            {confirmedToShow.map(({ athlete, inscriptions }) => {
+              const presentCount = inscriptions.filter(i => i.presenceStatus === 'PRESENT').length;
+              const absentCount = inscriptions.filter(i => i.presenceStatus === 'ABSENT').length;
+              const unknownCount = inscriptions.filter(i => i.presenceStatus === 'UNKNOWN').length;
+
+              return (
+                <ConfirmationAthleteCard
+                  key={athlete.id}
+                  athlete={athlete}
+                  presentCount={presentCount}
+                  absentCount={absentCount}
+                  unknownCount={unknownCount}
+                  onClick={() => handleAthleteClick(athlete)}
+                />
+              );
+            })}
+            {!showAllConfirmed && confirmedAthletes.length > INITIAL_SHOW && (
+              <button
+                onClick={() => setShowAllConfirmed(true)}
+                className="w-full rounded-lg border border-dashed border-gray-300 py-2 text-sm font-medium text-gray-600 hover:border-gray-400 hover:text-gray-700 dark:border-gray-600 dark:text-gray-400 dark:hover:border-gray-500 dark:hover:text-gray-300"
+              >
+                {t('common:showAll')} ({confirmedAthletes.length - INITIAL_SHOW}{' '}
+                {t('confirmations:more')})
+              </button>
+            )}
+          </>
+        )}
       </div>
 
       <ConfirmationDialog
