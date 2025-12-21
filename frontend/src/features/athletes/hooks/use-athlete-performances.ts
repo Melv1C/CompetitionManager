@@ -5,14 +5,10 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 const PERFORMANCES_KEY = 'performances';
 
-export function useAthleteBestPerformances(
-  license: string | undefined,
-  options?: { fromDate?: string; enabled?: boolean },
-) {
+export function useAthleteBestPerformances(license: string, options?: { fromDate?: string }) {
   return useQuery<AthleteBestPerformancesResponse>({
     queryKey: [ATHLETES_QUERY_KEY, PERFORMANCES_KEY, license, options?.fromDate],
-    queryFn: () => AthletesService.getBestPerformances(license!, { fromDate: options?.fromDate }),
-    enabled: (options?.enabled ?? true) && Boolean(license),
+    queryFn: () => AthletesService.getBestPerformances(license, { fromDate: options?.fromDate }),
     staleTime: 1000 * 60 * 30, // 30 minutes - performances don't change often
   });
 }

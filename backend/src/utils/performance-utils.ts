@@ -273,13 +273,6 @@ export async function fetchAthleteBestPerformances(
 }
 
 /**
- * Prefetches athlete performances and stores them in cache
- */
-export async function prefetchAthletePerformances(license: string): Promise<void> {
-  await fetchAthleteBestPerformances(license, { forceRefresh: false });
-}
-
-/**
  * Invalidates the cache for an athlete's performances
  */
 export async function invalidatePerformanceCache(license: string): Promise<boolean> {

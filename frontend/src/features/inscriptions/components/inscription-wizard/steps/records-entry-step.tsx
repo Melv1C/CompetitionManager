@@ -17,6 +17,10 @@ export function RecordsEntryStep() {
     useInscriptionFormStore();
   const hasInitializedRef = useRef(false);
 
+  if (!currentAthlete) {
+    throw new Error('No athlete selected in RecordsEntryStep');
+  }
+
   const recordsFromDate = competition.recordsFromDate
     ? new Date(competition.recordsFromDate).toISOString().split('T')[0]
     : undefined;

@@ -3,7 +3,6 @@ import { logError } from '@/utils/log-utils';
 import {
   fetchAthleteBestPerformances,
   invalidatePerformanceCache,
-  prefetchAthletePerformances,
 } from '@/utils/performance-utils';
 import { zValidator } from '@hono/zod-validator';
 import {
@@ -163,29 +162,6 @@ athletesRoutes.delete(
     } catch (error) {
       logError('Failed to invalidate performance cache', error, c);
       return c.json({ error: 'Failed to invalidate performance cache' }, 500);
-    }
-  },
-);
-
-// POST /athletes/:license/performances/prefetch - Prefetch performances for an athlete
-athletesRoutes.post(
-  '/:license/performances/prefetch',
-  zValidator(
-    'param',
-    z.object({
-      license: Athlete$.shape.license,
-    }),
-  ),
-  async c => {
-    try {
-      const { license } = c.req.valid('param');
-
-      await prefetchAthletePerformances(license);
-
-      return c.json({ message: 'Performances prefetched successfully', license });
-    } catch (error) {
-      logError('Failed to prefetch athlete performances', error, c);
-      return c.json({ error: 'Failed to prefetch athlete performances' }, 500);
     }
   },
 );
