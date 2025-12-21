@@ -6,6 +6,7 @@ const envSchema = z.object({
   PORT: z.coerce.number().default(3000),
 
   DATABASE_URL: z.url(),
+  REDIS_URL: z.url(),
   BACKEND_URL: z.url().default('http://localhost:3000'),
   FRONTEND_URL: z.url().default('http://localhost:5173'),
   DESKTOP_URL: z.url().default('http://localhost:5000'),
@@ -28,9 +29,6 @@ const envSchema = z.object({
 
   STRIPE_SECRET_KEY: z.string().startsWith('sk_'),
   STRIPE_WEBHOOK_SECRET: z.string().startsWith('whsec_'),
-
-  // Redis configuration
-  REDIS_URL: z.url().optional(),
 
   // Performance service configuration
   BEATHLETICS_URL: z.url().default('https://www.beathletics.be/api/athlete/new'),

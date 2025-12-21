@@ -56,10 +56,6 @@ export function RecordsEntryStep() {
     }
   }, [performancesData, selectedEvents, currentRecords, setCurrentRecord]);
 
-  if (!currentAthlete) {
-    return null;
-  }
-
   return (
     <div className="space-y-6">
       {/* Header */}
