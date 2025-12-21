@@ -1,21 +1,27 @@
 {
   "cancel": "Cancel",
   "confirmationNotEnabled": "Confirmation is not enabled for this competition. Enable it in the competition settings to use this feature.",
+  "confirmed": "Confirmed",
   "description": "Review and confirm the presence of registered athletes at the competition.",
   "dialogDescription": "Update the presence status for each event registration",
   "dialogTitle": "Confirm Presence - {{firstName}} {{lastName}}",
   "errorUpdate": "Failed to update presence status",
   "markAllAbsent": "Mark All Absent",
   "markAllPresent": "Mark All Present",
+  "more": "more",
   "noInscriptions": "No inscriptions found for this competition.",
   "noMatchingAthletes": "No athletes found matching your search.",
+  "pendingConfirmation": "Pending Confirmation",
   "resetAll": "Reset All",
   "saveChanges": "Save Changes",
   "saving": "Saving...",
   "searchPlaceholder": "Search by name, bib number, or license...",
+  "status": "Status",
   "statusAbsent": "Absent",
   "statusPresent": "Present",
   "statusUnknown": "Unknown",
   "successUpdate": "Presence status updated successfully",
-  "title": "Confirmations"
+  "title": "Confirmations",
+  "viewByAthletes": "By Athletes",
+  "viewByEvents": "By Events"
 }

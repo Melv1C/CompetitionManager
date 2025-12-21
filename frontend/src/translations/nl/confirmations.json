@@ -1,21 +1,27 @@
 {
   "cancel": "Annuleren",
   "confirmationNotEnabled": "Bevestiging is niet ingeschakeld voor deze wedstrijd. Schakel het in de wedstrijdinstellingen in om deze functie te gebruiken.",
+  "confirmed": "Bevestigd",
   "description": "Controleer en bevestig de aanwezigheid van geregistreerde atleten bij de wedstrijd.",
   "dialogDescription": "Werk de aanwezigheidsstatus voor elke evenementregistratie bij",
   "dialogTitle": "Aanwezigheid bevestigen - {{firstName}} {{lastName}}",
   "errorUpdate": "Aanwezigheidsstatus bijwerken mislukt",
   "markAllAbsent": "Alles markeren als afwezig",
   "markAllPresent": "Alles markeren als aanwezig",
+  "more": "meer",
   "noInscriptions": "Geen inschrijvingen gevonden voor deze wedstrijd.",
   "noMatchingAthletes": "Geen atleten gevonden die overeenkomen met uw zoekopdracht.",
+  "pendingConfirmation": "In afwachting van bevestiging",
   "resetAll": "Alles resetten",
   "saveChanges": "Wijzigingen opslaan",
   "saving": "Opslaan...",
   "searchPlaceholder": "Zoeken op naam, startnummer of licentie...",
+  "status": "Status",
   "statusAbsent": "Afwezig",
   "statusPresent": "Aanwezig",
   "statusUnknown": "Onbekend",
   "successUpdate": "Aanwezigheidsstatus succesvol bijgewerkt",
-  "title": "Bevestigingen"
+  "title": "Bevestigingen",
+  "viewByAthletes": "Per atleet",
+  "viewByEvents": "Per evenement"
 }

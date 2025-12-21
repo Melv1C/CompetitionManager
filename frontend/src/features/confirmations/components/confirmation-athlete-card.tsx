@@ -23,8 +23,8 @@ export const ConfirmationAthleteCard = ({
   const clubAbbr = currentSeasonInfo?.club?.abbr ?? '';
 
   return (
-    <Card className="cursor-pointer transition-colors hover:bg-accent" onClick={onClick}>
-      <CardContent className="flex items-center justify-between p-4">
+    <Card className="px-0 py-3 cursor-pointer transition-colors hover:bg-accent" onClick={onClick}>
+      <CardContent className="flex items-center justify-between">
         <div className="flex flex-col">
           <div className="font-medium">
             {bib} - {athlete.firstName} {athlete.lastName}{' '}

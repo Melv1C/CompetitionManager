@@ -16,7 +16,12 @@ export const ConfirmationStatusSelector = ({
   const { t } = useTranslation();
 
   return (
-    <RadioGroup value={value} onValueChange={onChange} disabled={disabled}>
+    <RadioGroup
+      value={value}
+      onValueChange={onChange}
+      disabled={disabled}
+      className="flex space-x-4"
+    >
       <div className="flex items-center space-x-2">
         <RadioGroupItem value="PRESENT" id="present" />
         <Label htmlFor="present" className="cursor-pointer">
