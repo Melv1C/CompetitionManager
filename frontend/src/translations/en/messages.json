@@ -1,6 +1,5 @@
 {
   "accountCreatedSuccess": "Account created successfully! Welcome!",
-  "comingSoon": "Coming Soon",
   "contactAdminIfNeeded": "Contact admin if needed",
   "error.competition": "Competition Error",
   "error.inscriptions": "Inscriptions Error",
@@ -17,6 +16,5 @@
   "success.result_created": "Result created successfully",
   "success.result_deleted": "Result deleted successfully",
   "success.result_updated": "Result updated successfully",
-  "thisFeatureWillBeImplemented": "This feature will be implemented",
   "unexpectedError": "An unexpected error occurred. Please try again."
 }

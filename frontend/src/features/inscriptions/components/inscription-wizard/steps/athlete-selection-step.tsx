@@ -1,4 +1,8 @@
-import { AthleteCard, AthleteSearch } from '@/features/athletes';
+import {
+  AthleteCard,
+  AthleteSearch,
+  usePrefetchAthleteBestPerformances,
+} from '@/features/athletes';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useUserInscriptions } from '@/features/inscriptions/hooks/use-inscriptions';
 import { useCompetitionEid } from '@/hooks';
@@ -25,9 +29,18 @@ export function AthleteSelectionStep() {
   const eid = useCompetitionEid();
   const competition = useRequiredCompetition(eid);
   const userInscriptions = useUserInscriptions();
+  const { prefetch } = usePrefetchAthleteBestPerformances();
 
   const handleAthleteChange = (athlete: Athlete | undefined) => {
     setCurrentAthlete(athlete);
+
+    // Prefetch athlete performances when an athlete is selected
+    if (athlete?.license) {
+      const recordsFromDate = competition.recordsFromDate
+        ? new Date(competition.recordsFromDate).toISOString().split('T')[0]
+        : undefined;
+      prefetch(athlete.license, recordsFromDate);
+    }
 
     const relatedInscriptions =
       userInscriptions.data?.filter(
