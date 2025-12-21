@@ -4,7 +4,8 @@
   "scripts": {
     "dev": "tsx watch src/index.ts",
     "build": "tsc",
-    "start": "tsx dist/src/index.js",
+    "start": "npx prisma migrate deploy && npm run seed && tsx dist/src/index.js",
+    "seed": "tsx src/scripts/seed.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,js,json}\"",

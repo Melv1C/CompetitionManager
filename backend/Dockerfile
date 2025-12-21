@@ -45,4 +45,4 @@ WORKDIR /app/backend
 EXPOSE 3000
 
 # Start the application with migrations
-CMD ["sh", "-c", "npx prisma migrate deploy && npm start"]
+CMD ["sh", "-c", "npm start"]
