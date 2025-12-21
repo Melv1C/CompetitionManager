@@ -1,6 +1,4 @@
-import { CategorySelector } from '@/features/categories';
 import { useRequiredCompetition } from '@/features/competitions';
-import { EventSelector } from '@/features/events';
 import { useCompetitionInscriptions } from '@/features/inscriptions';
 import { useCompetitionEid } from '@/hooks';
 import { formatDateFull, formatTime } from '@/lib/formatters';
@@ -22,17 +20,6 @@ export function CompetitionSchedulePage() {
   const [selectedCategoryIds, setSelectedCategoryIds] = useState<number[]>([]);
 
   const competition = useRequiredCompetition(eid);
-
-  // Get unique events from competition events for filtering
-  const competitionEvents = useMemo(() => {
-    const uniqueEvents = new Map();
-    competition.events.forEach(event => {
-      if (event.event) {
-        uniqueEvents.set(event.event.id, event.event);
-      }
-    });
-    return Array.from(uniqueEvents.values());
-  }, [competition.events]);
 
   // Filter events based on search and filter criteria
   const filteredEvents = useMemo(() => {
@@ -179,85 +166,7 @@ export function CompetitionSchedulePage() {
                 </Button>
               )}
             </div>
-
-            {/* Event Filter */}
-            <div className="min-w-[180px] max-w-[200px]">
-              <EventSelector
-                events={competitionEvents}
-                value={selectedEventId}
-                onValueChange={setSelectedEventId}
-                placeholder="Filter by event..."
-              />
-            </div>
-
-            {/* Categories Filter */}
-            <div className="min-w-[180px] max-w-[200px]">
-              <CategorySelector
-                selectedIds={selectedCategoryIds}
-                onSelectionChange={setSelectedCategoryIds}
-                placeholder="Filter by categories..."
-              />
-            </div>
-
-            {/* Clear Filters Button */}
-            {hasActiveFilters && (
-              <Button variant="ghost" size="sm" onClick={clearAllFilters}>
-                Clear All
-              </Button>
-            )}
           </div>
-
-          {/* Active Filters and Results Summary */}
-          {hasActiveFilters && (
-            <div className="flex flex-wrap items-center gap-2 justify-between">
-              <div className="flex flex-wrap gap-1">
-                {searchQuery && (
-                  <Badge variant="outline" className="gap-1">
-                    Search: "{searchQuery}"
-                    <button
-                      onClick={() => setSearchQuery('')}
-                      className="ml-1 hover:bg-muted rounded-full"
-                    >
-                      <XIcon className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-                {selectedEventId && (
-                  <Badge variant="outline" className="gap-1">
-                    Event: {competitionEvents.find(e => e.id === selectedEventId)?.name}
-                    <button
-                      onClick={() => setSelectedEventId(undefined)}
-                      className="ml-1 hover:bg-muted rounded-full"
-                    >
-                      <XIcon className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-                {selectedCategoryIds.length > 0 && (
-                  <Badge variant="outline" className="gap-1">
-                    {selectedCategoryIds.length}{' '}
-                    {selectedCategoryIds.length === 1 ? 'Category' : 'Categories'}
-                    <button
-                      onClick={() => setSelectedCategoryIds([])}
-                      className="ml-1 hover:bg-muted rounded-full"
-                    >
-                      <XIcon className="h-3 w-3" />
-                    </button>
-                  </Badge>
-                )}
-              </div>
-              <div className="text-sm text-muted-foreground whitespace-nowrap">
-                {filteredEvents.length} of {competition.events.length} events
-              </div>
-            </div>
-          )}
-
-          {/* Results Summary when no filters */}
-          {!hasActiveFilters && (
-            <div className="text-sm text-muted-foreground">
-              {competition.events.length} events total
-            </div>
-          )}
         </CardContent>
       </Card>
 
@@ -285,7 +194,7 @@ export function CompetitionSchedulePage() {
         <div className="space-y-6">
           {sortedGroups.map(group => (
             <Card key={group.date.toDateString()}>
-              <CardHeader className="pb-4">
+              <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-lg">
                   <CalendarIcon className="h-5 w-5 text-muted-foreground" />
                   {formatDateFull(group.date)}
