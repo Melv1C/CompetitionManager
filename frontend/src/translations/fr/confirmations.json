@@ -1,7 +1,7 @@
 {
   "cancel": "Annuler",
-  "confirmed": "Confirmé",
   "confirmationNotEnabled": "La confirmation n'est pas activée pour cette compétition. Activez-la dans les paramètres de la compétition pour utiliser cette fonctionnalité.",
+  "confirmed": "Confirmé",
   "description": "Vérifiez et confirmez la présence des athlètes inscrits à la compétition.",
   "dialogDescription": "Mettez à jour le statut de présence pour chaque inscription à l'événement",
   "dialogTitle": "Confirmer la présence - {{firstName}} {{lastName}}",
@@ -11,14 +11,17 @@
   "more": "plus",
   "noInscriptions": "Aucune inscription trouvée pour cette compétition.",
   "noMatchingAthletes": "Aucun athlète trouvé correspondant à votre recherche.",
+  "pendingConfirmation": "En attente de confirmation",
   "resetAll": "Tout réinitialiser",
   "saveChanges": "Enregistrer les modifications",
   "saving": "Enregistrement...",
   "searchPlaceholder": "Rechercher par nom, dossard ou licence...",
-  "pendingConfirmation": "En attente de confirmation",
+  "status": "Statut",
   "statusAbsent": "Absent",
   "statusPresent": "Présent",
   "statusUnknown": "Inconnu",
   "successUpdate": "Statut de présence mis à jour avec succès",
-  "title": "Confirmations"
+  "title": "Confirmations",
+  "viewByAthletes": "Par athlètes",
+  "viewByEvents": "Par épreuves"
 }
