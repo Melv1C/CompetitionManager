@@ -19,13 +19,13 @@ const isDevelopment = env.NODE_ENV === 'development';
 const MOCK_ADMIN = {
   name: 'Admin',
   email: 'admin@example.com',
-  password: 'Admin123!',
+  password: 'admin-password',
 };
 
 const MOCK_USER = {
   name: 'User',
   email: 'user@example.com',
-  password: 'User123!',
+  password: 'user-password',
 };
 
 // ---------------------------------------------------------------------------
