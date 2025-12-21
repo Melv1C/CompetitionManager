@@ -1,6 +1,5 @@
 {
   "accountCreatedSuccess": "Account succesvol aangemaakt! Welkom!",
-  "comingSoon": "Binnenkort beschikbaar",
   "contactAdminIfNeeded": "Neem contact op met admin indien nodig",
   "error.competition": "Fout bij wedstrijd",
   "error.inscriptions": "Fout bij inschrijvingen",
@@ -17,6 +16,5 @@
   "success.result_created": "Resultaat succesvol aangemaakt",
   "success.result_deleted": "Resultaat succesvol verwijderd",
   "success.result_updated": "Resultaat succesvol bijgewerkt",
-  "thisFeatureWillBeImplemented": "Deze functie wordt geïmplementeerd",
   "unexpectedError": "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
 }

@@ -1,6 +1,5 @@
 {
   "accountCreatedSuccess": "Compte créé avec succès ! Bienvenue !",
-  "comingSoon": "Bientôt disponible",
   "contactAdminIfNeeded": "Contacter l'admin si nécessaire",
   "error.competition": "Erreur de compétition",
   "error.inscriptions": "Erreur d'inscriptions",
@@ -17,6 +16,5 @@
   "success.result_created": "Résultat créé avec succès",
   "success.result_deleted": "Résultat supprimé avec succès",
   "success.result_updated": "Résultat mis à jour avec succès",
-  "thisFeatureWillBeImplemented": "Cette fonctionnalité sera implémentée",
   "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
 }
