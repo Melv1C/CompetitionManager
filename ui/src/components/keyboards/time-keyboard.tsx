@@ -104,7 +104,7 @@ export function TimeKeyboard({
     return () => {
       document.removeEventListener('keydown', handleKeyDown);
     };
-  }, [open, handleKeyPress]);
+  }, [open, handleKeyPress, onClose]);
 
   useEffect(() => {
     const handleMouseDown = (e: MouseEvent) => {
