@@ -1,9 +1,9 @@
-import { env } from '@/lib/env';
-import { logger } from '@/lib/logger';
-import { createSocketServer } from '@/lib/socket';
-import { serviceManager } from '@/services';
 import { serve } from '@hono/node-server';
 import { getAPI } from './api';
+import { env } from './lib/env';
+import { logger } from './lib/logger';
+import { createSocketServer, setIoInstance } from './lib/socket';
+import { serviceManager } from './services';
 
 const app = getAPI();
 
@@ -27,8 +27,9 @@ const httpServer = serve(
   },
 );
 
-// Initialize Socket.IO server
-createSocketServer(httpServer);
+// Initialize Socket.IO server and register the instance
+const io = createSocketServer(httpServer);
+setIoInstance(io);
 
 // Graceful shutdown handling
 const gracefulShutdown = async (signal: string) => {

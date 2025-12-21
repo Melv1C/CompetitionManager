@@ -6,16 +6,35 @@ import {
   type ServerToClientEvents,
   type SocketData,
 } from '@repo/core/types';
+import { createMiddleware } from 'hono/factory';
 import { Server } from 'socket.io';
 import { env } from './env';
-import { createMiddleware } from 'hono/factory';
+import { logger } from './logger';
 
-let globalIoInstance: Server<
+export type IoServer = Server<
   ClientToServerEvents,
   ServerToClientEvents,
   InterServerEvents,
   SocketData
-> | null = null;
+>;
+
+// Socket.IO instance holder
+let ioInstance: IoServer | null = null;
+
+// Setter to register the io instance (called from index.ts after creation)
+export function setIoInstance(io: IoServer) {
+  ioInstance = io;
+}
+
+// Middleware to inject Socket.IO into Hono context
+export const ioMiddleware = createMiddleware(async (c, next) => {
+  if (ioInstance) {
+    c.set('io', ioInstance);
+  } else {
+    logger.error('Unable to set io instance in context: ioInstance is null');
+  }
+  return next();
+});
 
 // Create and configure Socket.IO server
 export function createSocketServer(httpServer: ServerType) {
@@ -46,7 +65,7 @@ export function createSocketServer(httpServer: ServerType) {
           type: 'success',
         });
       } catch (error) {
-        console.error('Error joining competition:', error);
+        logger.warn('Error joining competition:', { error });
         socket.emit('error', {
           message: 'Failed to join competition',
           code: 'JOIN_ERROR',
@@ -61,7 +80,7 @@ export function createSocketServer(httpServer: ServerType) {
         const competitionRoom = getRoomName.competition(competitionEid);
         await socket.leave(competitionRoom);
       } catch (error) {
-        console.error('Error leaving competition:', error);
+        logger.warn('Error leaving competition:', { error });
         socket.emit('error', {
           message: 'Failed to leave competition',
           code: 'LEAVE_ERROR',
@@ -78,14 +97,5 @@ export function createSocketServer(httpServer: ServerType) {
     });
   });
 
-  globalIoInstance = io;
-
   return io;
 }
-
-export const ioMiddleware = createMiddleware(async (c, next) => {
-  if (!c.var.io && globalIoInstance) {
-    c.set('io', globalIoInstance);
-  }
-  return next();
-});

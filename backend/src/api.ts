@@ -1,18 +1,18 @@
-import { env } from '@/lib/env';
-import { createApiRoutes } from '@/routes';
-import { SupportedLanguages, FallBackLanguage } from '@repo/core/schemas';
+import { FallBackLanguage, SupportedLanguages } from '@repo/core/schemas';
+import type {
+  ClientToServerEvents,
+  InterServerEvents,
+  ServerToClientEvents,
+  SocketData,
+} from '@repo/core/types';
 import { Hono } from 'hono';
 import { cors } from 'hono/cors';
 import { languageDetector } from 'hono/language';
-import { i18nMiddleware } from './middleware/i18n-middleware';
 import { Server } from 'socket.io';
-import type {
-  ClientToServerEvents,
-  ServerToClientEvents,
-  InterServerEvents,
-  SocketData,
-} from '@repo/core/types';
+import { env } from './lib/env';
 import { ioMiddleware } from './lib/socket';
+import { i18nMiddleware } from './middleware/i18n-middleware';
+import { createApiRoutes } from './routes';
 
 declare module 'hono' {
   interface ContextVariableMap {
@@ -46,6 +46,7 @@ export function getAPI() {
   );
 
   app.use(i18nMiddleware);
+
   // Make Socket.IO instance available in Hono context
   app.use(ioMiddleware);
 
