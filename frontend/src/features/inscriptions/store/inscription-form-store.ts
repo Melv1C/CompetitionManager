@@ -140,7 +140,7 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
             currentAthlete: registration.athlete,
             currentEventIds: registration.inscriptions.map(ins => ins.competitionEventId),
             currentRecords: records,
-            currentStep: 1,
+            currentStep: 2, // Go to event selection step, not athlete selection
             isInBasketView: false,
             // Remove from registrations
             registrations: registrations.filter(reg => reg.athlete.id !== athleteId),
