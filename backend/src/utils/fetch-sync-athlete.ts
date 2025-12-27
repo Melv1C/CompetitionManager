@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import axios from 'axios';
-import { logger } from 'better-auth';
-import { env } from 'process';
+import { logger } from '@/lib/logger';
+import { env } from '@/lib/env';
 
 interface AthleteData {
   license: string;
