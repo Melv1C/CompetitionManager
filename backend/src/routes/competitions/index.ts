@@ -3,8 +3,8 @@ import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
 import { Competition$, competitionInclude, CompetitionQuery$, Cuid$ } from '@repo/core/schemas';
-import { z } from 'zod';
 import { Hono } from 'hono';
+import { z } from 'zod';
 import { competitionInscriptionsRoutes } from './inscriptions';
 import { competitionResultsRoutes } from './results';
 
@@ -24,8 +24,10 @@ competitionsRoutes.get('/', zValidator('query', CompetitionQuery$), async c => {
     const now = new Date();
 
     if (upcoming && !past) {
-      where.startDate = { gte: now };
+      // Upcoming: competition hasn't ended yet (endDate >= today)
+      where.endDate = { gte: now };
     } else if (past && !upcoming) {
+      // Past: competition has started in the past (startDate < today)
       where.startDate = { lt: now };
     }
 
