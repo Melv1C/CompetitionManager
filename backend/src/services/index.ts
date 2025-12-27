@@ -1,13 +1,11 @@
 import { env } from '@/lib/env';
 import { logger } from '@/lib/logger';
 import type { Logger } from 'winston';
-import { AthleteSyncService } from './athlete-sync';
 import { LogCleanupService } from './log-cleanup';
 import { scheduler } from './scheduler';
 
 export class ServiceManager {
   private logCleanupService: LogCleanupService;
-  private athleteSyncService: AthleteSyncService;
   private isInitialized = false;
   private prodLogger: Logger | null = null;
 
@@ -17,14 +15,6 @@ export class ServiceManager {
       daysToKeep: env.LOG_CLEANUP_DAYS_TO_KEEP,
       cronExpression: env.LOG_CLEANUP_SCHEDULE,
       maxLogsPerCleanup: env.LOG_CLEANUP_MAX_PER_RUN,
-    });
-
-    this.athleteSyncService = new AthleteSyncService({
-      enabled: env.ATHLETE_SYNC_ENABLED,
-      cronExpression: env.ATHLETE_SYNC_SCHEDULE,
-      lbfaUrl: env.LBFA_URL,
-      lbfaUsername: env.LBFA_USERNAME,
-      lbfaPassword: env.LBFA_PASSWORD,
     });
 
     if (env.NODE_ENV === 'production') {
@@ -45,9 +35,6 @@ export class ServiceManager {
 
       // Initialize log cleanup service
       this.logCleanupService.initialize();
-
-      // Initialize athlete sync service
-      await this.athleteSyncService.initialize();
 
       // Start the scheduler
       scheduler.start();
@@ -88,13 +75,6 @@ export class ServiceManager {
   }
 
   /**
-   * Get athlete sync service instance for manual operations
-   */
-  getAthleteSyncService(): AthleteSyncService {
-    return this.athleteSyncService;
-  }
-
-  /**
    * Health check for all services
    */
   getHealthStatus(): { healthy: boolean; services: Record<string, boolean> } {
@@ -103,7 +83,6 @@ export class ServiceManager {
       services: {
         scheduler: this.isInitialized,
         logCleanup: this.logCleanupService.getConfig().enabled,
-        athleteSync: this.athleteSyncService.getConfig().enabled,
       },
     };
   }
