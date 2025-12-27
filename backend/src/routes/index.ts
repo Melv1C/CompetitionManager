@@ -5,6 +5,7 @@ import { authRoutes } from './auth';
 import { categoriesRoutes } from './categories';
 import { clubsRoutes } from './clubs';
 import { competitionsRoutes } from './competitions';
+import { cronRoutes } from './cron';
 import { eventsRoutes } from './events';
 import { logsRoutes } from './logs';
 import { organizationRoutes } from './organization';
@@ -34,6 +35,7 @@ export function createApiRoutes() {
   api.route('/organization', organizationRoutes);
   api.route('/users', usersRoutes);
   api.route('/webhooks', webhooksRoutes);
+  api.route('/cron', cronRoutes);
 
   return api;
 }
