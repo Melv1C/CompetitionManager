@@ -1,6 +1,7 @@
 {
   "accountCreatedSuccess": "Compte créé avec succès ! Bienvenue !",
   "contactAdminIfNeeded": "Contacter l'admin si nécessaire",
+  "empty.competitions": "Aucune compétition trouvée",
   "error.competition": "Erreur de compétition",
   "error.inscriptions": "Erreur d'inscriptions",
   "error.result_create_failed": "Erreur lors de la création du résultat",

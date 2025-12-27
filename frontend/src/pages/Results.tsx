@@ -15,11 +15,7 @@ export function ResultsPage() {
   }
 
   return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Results</h1>
-        <p className="text-muted-foreground">Past competitions and results.</p>
-      </div>
+    <div className="space-y-6 mx-auto max-w-4xl">
       <CompetitionsList competitions={competitions.data} />
     </div>
   );

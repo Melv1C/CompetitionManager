@@ -1,6 +1,7 @@
 {
   "accountCreatedSuccess": "Account succesvol aangemaakt! Welkom!",
   "contactAdminIfNeeded": "Neem contact op met admin indien nodig",
+  "empty.competitions": "Geen wedstrijden gevonden",
   "error.competition": "Fout bij wedstrijd",
   "error.inscriptions": "Fout bij inschrijvingen",
   "error.result_create_failed": "Fout bij het aanmaken van het resultaat",
