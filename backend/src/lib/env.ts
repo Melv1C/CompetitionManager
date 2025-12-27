@@ -40,6 +40,8 @@ const envSchema = z.object({
 
   EMAIL_USER: z.email(),
   EMAIL_PASS: z.string().min(1),
+
+  CRON_SECRET: z.string().min(20),
 });
 
 export const env = envSchema.parse(process.env);
