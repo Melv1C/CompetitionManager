@@ -1,6 +1,7 @@
 {
   "accountCreatedSuccess": "Account created successfully! Welcome!",
   "contactAdminIfNeeded": "Contact admin if needed",
+  "empty.competitions": "No competitions found",
   "error.competition": "Competition Error",
   "error.inscriptions": "Inscriptions Error",
   "error.result_create_failed": "Failed to create result",
