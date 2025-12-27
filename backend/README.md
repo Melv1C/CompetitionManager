@@ -22,3 +22,4 @@ Copy `.env.example` to `.env`. Key variables:
 | `FRONTEND_URL`              | Frontend URL for CORS        |
 | `STRIPE_SECRET_KEY`         | Stripe API key               |
 | `EMAIL_USER` / `EMAIL_PASS` | SMTP credentials             |
+| `CRON_SECRET`               | Secret key for cron jobs     |
