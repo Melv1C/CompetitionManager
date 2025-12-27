@@ -3,6 +3,8 @@ name: Build & Deploy Staging
 on:
   push:
     branches: ['main']
+    paths-ignore:
+      - 'package.json'
 
 env:
   REGISTRY: docker.io
