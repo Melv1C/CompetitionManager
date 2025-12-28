@@ -1,4 +1,4 @@
-import { requireCronSecret } from '@/middleware/auth';
+import { requireCronSecret } from '@/middleware/cron';
 import { Hono } from 'hono';
 import { athleteSyncRoutes } from './athlete-sync';
 
