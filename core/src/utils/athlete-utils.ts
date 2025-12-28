@@ -1,4 +1,5 @@
-import type { Athlete, AbbrBaseCategory, BaseCategory, Category, Gender } from '@/schemas';
+import type { AbbrBaseCategory, Athlete, BaseCategory, Category, Gender } from '@/schemas';
+import { getSeason } from './get-season';
 
 /**
  * Get the bib number for an athlete for a specific season
@@ -7,7 +8,7 @@ import type { Athlete, AbbrBaseCategory, BaseCategory, Category, Gender } from '
  * @returns The bib number or null if not found
  */
 export function getSeasonBib(athlete: Athlete, referenceDate: Date = new Date()) {
-  const season = referenceDate.getFullYear();
+  const season = getSeason(referenceDate);
   const athleteInfo = athlete.athleteInfo.find(info => info.season === season);
 
   return athleteInfo?.bib ?? null;
@@ -64,10 +65,7 @@ export function getAthleteCategory(athlete: Athlete, referenceDate: Date = new D
   }
 
   // Calculate athletics season year (season changes in September)
-  const athleticsAge =
-    referenceDate.getFullYear() -
-    athlete.birthdate.getFullYear() +
-    (referenceDate.getMonth() >= 9 ? 1 : 0);
+  const athleticsAge = getSeason(referenceDate) - athlete.birthdate.getFullYear();
 
   const getCategoryInfo = (baseCategory: BaseCategory, abbrBaseCategory: AbbrBaseCategory) => {
     const genderSuffix = athlete.gender === 'M' ? 'M' : 'F';

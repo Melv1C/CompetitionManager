@@ -1,7 +1,8 @@
-import { prisma } from '@/lib/prisma';
-import axios from 'axios';
-import { logger } from '@/lib/logger';
 import { env } from '@/lib/env';
+import { logger } from '@/lib/logger';
+import { prisma } from '@/lib/prisma';
+import { getSeason } from '@repo/core/utils';
+import axios from 'axios';
 
 interface AthleteData {
   license: string;
@@ -119,7 +120,7 @@ export const fetchAndSyncAthlete = async (): Promise<{
     });
   }
 
-  const currentSeason = new Date().getFullYear();
+  const currentSeason = getSeason();
 
   let created = 0;
   let updated = 0;
