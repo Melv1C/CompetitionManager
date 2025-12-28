@@ -6,6 +6,7 @@
     "build": "tsc",
     "start": "npx prisma migrate deploy && npm run seed && tsx dist/src/index.js",
     "seed": "tsx src/scripts/seed.ts",
+    "cron": "tsx src/scripts/cron.ts",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier --write \"**/*.{ts,js,json}\"",
