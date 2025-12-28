@@ -2,12 +2,20 @@ import { useAthleteBestPerformances } from '@/features/athletes';
 import { useRequiredCompetition } from '@/features/competitions';
 import { useCompetitionEid } from '@/hooks';
 import { formatDate } from '@/lib/formatters';
+import type { CompetitionEvent, Id } from '@repo/core/schemas';
 import { Alert, AlertDescription, Badge, Skeleton } from '@repo/ui';
 import { AlertTriangle, Clock, ExternalLink } from 'lucide-react';
 import { useEffect, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useInscriptionFormStore } from '../../../store/inscription-form-store';
 import { EventRecordCard, findMatchingPerformance } from './records';
+
+/** Get sub-events for a given parent event */
+function getSubEvents(events: CompetitionEvent[], parentId: Id): CompetitionEvent[] {
+  return events
+    .filter(e => e.parentId === parentId)
+    .sort((a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime());
+}
 
 export function RecordsEntryStep() {
   const { t } = useTranslation();
@@ -31,8 +39,16 @@ export function RecordsEntryStep() {
     isError,
   } = useAthleteBestPerformances(currentAthlete?.license, { fromDate: recordsFromDate });
 
-  // Get selected competition events
+  // Get selected competition events (parent events only)
   const selectedEvents = competition.events.filter(event => currentEventIds.includes(event.id));
+
+  // Build a list of events to auto-populate records for:
+  // - For regular events: the event itself
+  // - For multi-events (with sub-events): parent + all sub-events
+  const eventsForRecords = selectedEvents.flatMap(event => {
+    const subEvents = getSubEvents(competition.events, event.id);
+    return subEvents.length > 0 ? [event, ...subEvents] : [event];
+  });
 
   // Auto-populate records from Beathletics when data is loaded (only once)
   useEffect(() => {
@@ -40,7 +56,7 @@ export function RecordsEntryStep() {
       hasInitializedRef.current = true;
       const performances = performancesData.bestPerformances;
 
-      for (const event of selectedEvents) {
+      for (const event of eventsForRecords) {
         // Only set if no record exists yet for this event
         if (!currentRecords[event.id]) {
           const matchingPerf = findMatchingPerformance(event, performances);
@@ -54,7 +70,7 @@ export function RecordsEntryStep() {
         }
       }
     }
-  }, [performancesData, selectedEvents, currentRecords, setCurrentRecord]);
+  }, [performancesData, eventsForRecords, currentRecords, setCurrentRecord]);
 
   return (
     <div className="space-y-6">
@@ -95,7 +111,7 @@ export function RecordsEntryStep() {
       {/* Loading state */}
       {isLoading && (
         <div className="max-w-md mx-auto space-y-3">
-          {selectedEvents.map(event => (
+          {eventsForRecords.map(event => (
             <Skeleton key={event.id} className="h-32 w-full" />
           ))}
         </div>
@@ -112,15 +128,51 @@ export function RecordsEntryStep() {
       {/* Performance entry cards */}
       {!isLoading && (
         <div className="max-w-md mx-auto space-y-4">
-          {selectedEvents.map(event => (
-            <EventRecordCard
-              key={event.id}
-              event={event}
-              performances={performancesData?.bestPerformances ?? []}
-              record={currentRecords[event.id]}
-              onRecordChange={record => setCurrentRecord(event.id, record)}
-            />
-          ))}
+          {selectedEvents.map(parentEvent => {
+            const subEvents = getSubEvents(competition.events, parentEvent.id);
+            const hasSubEvents = subEvents.length > 0;
+
+            if (hasSubEvents) {
+              // Multi-event: show parent record card first, then sub-event record cards
+              return (
+                <div key={parentEvent.id} className="space-y-3">
+                  {/* Parent event record card */}
+                  <EventRecordCard
+                    event={parentEvent}
+                    performances={performancesData?.bestPerformances ?? []}
+                    record={currentRecords[parentEvent.id]}
+                    onRecordChange={record => setCurrentRecord(parentEvent.id, record)}
+                  />
+                  {/* Sub-events section */}
+                  <div className="pl-4 border-l-2 border-muted space-y-3">
+                    <div className="text-xs text-muted-foreground font-medium">
+                      {t('inscriptions:subEvents')}:
+                    </div>
+                    {subEvents.map(subEvent => (
+                      <EventRecordCard
+                        key={subEvent.id}
+                        event={subEvent}
+                        performances={performancesData?.bestPerformances ?? []}
+                        record={currentRecords[subEvent.id]}
+                        onRecordChange={record => setCurrentRecord(subEvent.id, record)}
+                      />
+                    ))}
+                  </div>
+                </div>
+              );
+            }
+
+            // Regular event: show single record card
+            return (
+              <EventRecordCard
+                key={parentEvent.id}
+                event={parentEvent}
+                performances={performancesData?.bestPerformances ?? []}
+                record={currentRecords[parentEvent.id]}
+                onRecordChange={record => setCurrentRecord(parentEvent.id, record)}
+              />
+            );
+          })}
         </div>
       )}
     </div>

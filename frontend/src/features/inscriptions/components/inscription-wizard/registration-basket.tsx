@@ -137,6 +137,11 @@ export function RegistrationBasket() {
     clearBasket,
   } = useInscriptionFormStore();
 
+  // Wrap modifyRegistration to pass competition events
+  const handleModifyRegistration = (athleteId: Id) => {
+    modifyRegistration(athleteId, competition.events);
+  };
+
   const alreadyPaidAmounts = useAlreadyPaidAmounts(
     competition.id,
     registrations.map(reg => reg.athlete.id),
@@ -242,7 +247,7 @@ export function RegistrationBasket() {
             registration={registration}
             competition={competition}
             onRemove={removeRegistration}
-            onModify={modifyRegistration}
+            onModify={handleModifyRegistration}
             getAlreadyPaid={getAthleteAlreadyPaid}
           />
         ))}

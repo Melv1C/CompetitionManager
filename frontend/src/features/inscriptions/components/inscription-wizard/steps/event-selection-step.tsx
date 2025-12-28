@@ -20,13 +20,38 @@ export function EventSelectionStep() {
     ? getAthleteCategory(currentAthlete, competition.startDate)
     : null;
 
-  const eligibleEvents = currentAthlete
-    ? competition.events
-        .filter(event =>
+  // Get eligible parent events (only parent events that match the category)
+  const eligibleParentEvents = currentAthlete
+    ? competition.events.filter(
+        event =>
+          !event.parentId &&
           event.categories.some(category => category.abbr === currentAthleteCategory?.abbr),
-        )
-        .sort((a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime())
+      )
     : [];
+
+  // Build sub-events map from ALL competition events (sub-events may not have categories)
+  const subEventsMap = new Map<Id, CompetitionEvent[]>();
+  for (const event of competition.events) {
+    if (event.parentId) {
+      const existing = subEventsMap.get(event.parentId) ?? [];
+      subEventsMap.set(event.parentId, [...existing, event]);
+    }
+  }
+
+  // Sort sub-events by start time
+  for (const [parentId, subEvents] of subEventsMap) {
+    subEventsMap.set(
+      parentId,
+      subEvents.sort(
+        (a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime(),
+      ),
+    );
+  }
+
+  // Sort parent events by start time
+  const sortedParentEvents = eligibleParentEvents.sort(
+    (a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime(),
+  );
 
   const handleEventToggle = (eventId: Id, checked: boolean) => {
     const updatedIds = checked
@@ -39,7 +64,7 @@ export function EventSelectionStep() {
     <div className="space-y-6">
       {/* Events List */}
       <div className="max-w-2xl mx-auto">
-        {eligibleEvents.length === 0 ? (
+        {sortedParentEvents.length === 0 ? (
           <div className="text-center py-8">
             <p className="text-muted-foreground">{t('inscriptions:noEventsAvailable')}</p>
           </div>
@@ -47,10 +72,11 @@ export function EventSelectionStep() {
           <div className="space-y-4">
             {/* Events */}
             <div className="grid gap-2">
-              {eligibleEvents.map(event => (
+              {sortedParentEvents.map(event => (
                 <EventCard
                   key={event.id}
                   event={event}
+                  subEvents={subEventsMap.get(event.id)}
                   checked={currentEventIds.includes(event.id)}
                   onToggle={handleEventToggle}
                 />
@@ -101,11 +127,13 @@ function useIsEventDisabled(event: CompetitionEvent, participantCount: number): 
 
 interface EventCardProps {
   event: CompetitionEvent;
+  subEvents?: CompetitionEvent[];
   checked: boolean;
   onToggle: (eventId: Id, checked: boolean) => void;
 }
 
-function EventCard({ event, checked, onToggle }: EventCardProps) {
+function EventCard({ event, subEvents, checked, onToggle }: EventCardProps) {
+  const { t } = useTranslation();
   const eid = useCompetitionEid();
   const competition = useRequiredCompetition(eid);
   const { currentAthlete } = useInscriptionFormStore();
@@ -119,35 +147,56 @@ function EventCard({ event, checked, onToggle }: EventCardProps) {
   const athleteClub = getSeasonClub(currentAthlete, competition.startDate);
   const isFree = competition.freeClubs.map(c => c.id).includes(athleteClub?.id || -1);
 
+  const hasSubEvents = subEvents && subEvents.length > 0;
+
   return (
-    <Label
-      key={event.id}
-      className={`cursor-pointer flex items-center space-x-3 p-3 border rounded-lg hover:bg-muted/50 transition-colors ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
-    >
-      <Checkbox
-        checked={checked}
-        onCheckedChange={checked => onToggle(event.id, checked as boolean)}
-        disabled={isDisabled}
-      />
-      <div className="flex-1 min-w-0">
-        <div className="flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <div className="text-xs font-mono text-muted-foreground">
-              {formatTime(event.eventStartTime)}
+    <div className="border rounded-lg hover:bg-muted/50 transition-colors">
+      <Label
+        className={`cursor-pointer flex items-center space-x-3 p-3 ${isDisabled ? 'opacity-50 cursor-not-allowed' : ''}`}
+      >
+        <Checkbox
+          checked={checked}
+          onCheckedChange={checked => onToggle(event.id, checked as boolean)}
+          disabled={isDisabled}
+        />
+        <div className="flex-1 min-w-0">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="text-xs font-mono text-muted-foreground">
+                {formatTime(event.eventStartTime)}
+              </div>
+              <p className="font-medium text-sm">{event.name}</p>
             </div>
-            <p className="font-medium text-sm">{event.name}</p>
-          </div>
-          <div className="flex items-center gap-2">
-            {!isFree && <Badge variant="outline">€{event.price.toFixed(2)}</Badge>}
-            <Badge variant="secondary" className="flex items-center gap-1">
-              <Users className="h-3 w-3" />
-              {event.maxParticipants
-                ? `${participantCount} / ${event.maxParticipants}`
-                : participantCount}
-            </Badge>
+            <div className="flex items-center gap-2">
+              {!isFree && <Badge variant="outline">€{event.price.toFixed(2)}</Badge>}
+              <Badge variant="secondary" className="flex items-center gap-1">
+                <Users className="h-3 w-3" />
+                {event.maxParticipants
+                  ? `${participantCount} / ${event.maxParticipants}`
+                  : participantCount}
+              </Badge>
+            </div>
           </div>
         </div>
-      </div>
-    </Label>
+      </Label>
+
+      {/* Sub-events list */}
+      {hasSubEvents && (
+        <div className="border-t bg-muted/30 px-3 py-2 space-y-1">
+          <div className="text-xs text-muted-foreground font-medium mb-1 pl-7">
+            {t('inscriptions:subEvents')}:
+          </div>
+          {subEvents.map(subEvent => (
+            <div
+              key={subEvent.id}
+              className="flex items-center gap-3 pl-7 text-sm text-muted-foreground"
+            >
+              <span className="text-xs font-mono">{formatTime(subEvent.eventStartTime)}</span>
+              <span>{subEvent.name}</span>
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }

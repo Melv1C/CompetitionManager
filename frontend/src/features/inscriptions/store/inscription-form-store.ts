@@ -1,4 +1,10 @@
-import type { Athlete, Id, UpsertInscription, UpsertRecord } from '@repo/core/schemas';
+import type {
+  Athlete,
+  CompetitionEvent,
+  Id,
+  UpsertInscription,
+  UpsertRecord,
+} from '@repo/core/schemas';
 import { create } from 'zustand';
 import { devtools } from 'zustand/middleware';
 
@@ -22,7 +28,7 @@ export interface InscriptionFormStore {
 
   // Actions for current form
   setStep: (step: number) => void;
-  nextStep: () => void;
+  nextStep: (competitionEvents?: CompetitionEvent[]) => void;
   previousStep: () => void;
 
   // Actions for current athlete
@@ -31,9 +37,9 @@ export interface InscriptionFormStore {
   setCurrentRecord: (eventId: Id, record: UpsertRecord | null) => void;
 
   // Actions for managing registrations/basket
-  addCurrentRegistration: () => void;
+  addCurrentRegistration: (competitionEvents?: CompetitionEvent[]) => void;
   removeRegistration: (athleteId: Id) => void;
-  modifyRegistration: (athleteId: Id) => void;
+  modifyRegistration: (athleteId: Id, competitionEvents?: CompetitionEvent[]) => void;
   clearBasket: () => void;
 
   // View navigation
@@ -58,13 +64,13 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
 
       // Step management (max 3 steps now)
       setStep: step => set({ currentStep: Math.min(Math.max(step, 1), 3) }),
-      nextStep: () => {
+      nextStep: (competitionEvents?: CompetitionEvent[]) => {
         const { currentStep } = get();
         if (currentStep < 3) {
           set({ currentStep: currentStep + 1 });
         } else if (currentStep === 3) {
           // After step 3, add to basket and go to basket view
-          get().addCurrentRegistration();
+          get().addCurrentRegistration(competitionEvents);
         }
       },
       previousStep: () => {
@@ -87,16 +93,34 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
         })),
 
       // Registration/basket management
-      addCurrentRegistration: () => {
+      addCurrentRegistration: (competitionEvents?: CompetitionEvent[]) => {
         const { currentAthlete, currentEventIds, currentRecords, registrations } = get();
 
         if (!currentAthlete || currentEventIds.length === 0) return;
 
-        const inscriptions: UpsertInscription[] = currentEventIds.map(eventId => ({
-          athleteId: currentAthlete.id,
-          competitionEventId: eventId,
-          record: currentRecords[eventId] || undefined,
-        }));
+        // Build inscriptions list including sub-events for multi-events
+        const inscriptions: UpsertInscription[] = [];
+
+        for (const eventId of currentEventIds) {
+          // Add inscription for the parent event
+          inscriptions.push({
+            athleteId: currentAthlete.id,
+            competitionEventId: eventId,
+            record: currentRecords[eventId] || undefined,
+          });
+
+          // If we have competition events, check for sub-events and add them too
+          if (competitionEvents) {
+            const subEvents = competitionEvents.filter(e => e.parentId === eventId);
+            for (const subEvent of subEvents) {
+              inscriptions.push({
+                athleteId: currentAthlete.id,
+                competitionEventId: subEvent.id,
+                record: currentRecords[subEvent.id] || undefined,
+              });
+            }
+          }
+        }
 
         const newRegistration: AthleteRegistration = {
           athlete: currentAthlete,
@@ -119,12 +143,12 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
           registrations: state.registrations.filter(reg => reg.athlete.id !== athleteId),
         })),
 
-      modifyRegistration: athleteId => {
+      modifyRegistration: (athleteId, competitionEvents?: CompetitionEvent[]) => {
         const { registrations } = get();
         const registration = registrations.find(reg => reg.athlete.id === athleteId);
 
         if (registration) {
-          // Extract records from inscriptions
+          // Extract records from inscriptions (including sub-events)
           const records = registration.inscriptions.reduce(
             (acc, inscription) => {
               if (inscription.record) {
@@ -135,10 +159,20 @@ export const useInscriptionFormStore = create<InscriptionFormStore>()(
             {} as Record<Id, UpsertRecord>,
           );
 
+          // Get only parent event IDs (events without parentId) for selection
+          // If competitionEvents is provided, filter out sub-events
+          let eventIds = registration.inscriptions.map(ins => ins.competitionEventId);
+          if (competitionEvents) {
+            const subEventIds = new Set(
+              competitionEvents.filter(e => e.parentId !== null).map(e => e.id),
+            );
+            eventIds = eventIds.filter(id => !subEventIds.has(id));
+          }
+
           set({
             // Populate form with registration data
             currentAthlete: registration.athlete,
-            currentEventIds: registration.inscriptions.map(ins => ins.competitionEventId),
+            currentEventIds: eventIds,
             currentRecords: records,
             currentStep: 2, // Go to event selection step, not athlete selection
             isInBasketView: false,

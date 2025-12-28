@@ -1,10 +1,17 @@
 import { formatTime } from '@/lib/formatters';
-import type { Competition, Id } from '@repo/core/schemas';
+import type { Competition, CompetitionEvent, Id } from '@repo/core/schemas';
 import { formatPerformance, getSeasonClub } from '@repo/core/utils';
 import { Button, Card, CardContent, CardHeader, CardTitle, Separator } from '@repo/ui';
 import { Edit, Trash2 } from 'lucide-react';
 import { useTranslation } from 'react-i18next';
 import type { AthleteRegistration } from '../../store/inscription-form-store';
+
+/** Get sub-events for a given parent event */
+function getSubEvents(events: CompetitionEvent[], parentId: Id): CompetitionEvent[] {
+  return events
+    .filter(e => e.parentId === parentId)
+    .sort((a, b) => new Date(a.eventStartTime).getTime() - new Date(b.eventStartTime).getTime());
+}
 
 interface AthleteTicketProps {
   registration: AthleteRegistration;
@@ -81,31 +88,77 @@ export function AthleteTicket({
       </CardHeader>
 
       <CardContent className="px-3 pb-3 pt-1">
-        {/* Events */}
+        {/* Events - only show parent events, with sub-events nested */}
         <div className="space-y-1">
-          {registration.inscriptions.map((inscription, idx) => {
-            const event = competition.events.find(e => e.id === inscription.competitionEventId);
-            return (
-              <div key={idx} className="py-1">
-                <div className="flex justify-between items-center">
-                  <div className="flex-1 flex items-center gap-2">
-                    <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded">
-                      {formatTime(event!.eventStartTime)}
-                    </span>
-                    <span className="font-medium text-sm">{event!.name}</span>
-                    {inscription.record?.performanceValue && (
-                      <span className="text-xs text-muted-foreground">
-                        {formatPerformance(inscription.record?.performanceValue, event!.event.type)}
+          {registration.inscriptions
+            .filter(inscription => {
+              // Only show parent events (events without parentId)
+              const event = competition.events.find(e => e.id === inscription.competitionEventId);
+              return event && !event.parentId;
+            })
+            .map((inscription, idx) => {
+              const event = competition.events.find(e => e.id === inscription.competitionEventId);
+              if (!event) return null;
+
+              const subEvents = getSubEvents(competition.events, event.id);
+              const hasSubEvents = subEvents.length > 0;
+
+              // Find records for sub-events from the registration's records
+              const subEventRecords = hasSubEvents
+                ? subEvents.map(subEvent => ({
+                    subEvent,
+                    record: registration.inscriptions.find(
+                      insc => insc.competitionEventId === subEvent.id,
+                    )?.record,
+                  }))
+                : [];
+
+              return (
+                <div key={idx} className="py-1">
+                  <div className="flex justify-between items-center">
+                    <div className="flex-1 flex items-center gap-2">
+                      <span className="text-xs font-mono bg-muted px-2 py-0.5 rounded">
+                        {formatTime(event.eventStartTime)}
                       </span>
+                      <span className="font-medium text-sm">{event.name}</span>
+                      {!hasSubEvents && inscription.record?.performanceValue && (
+                        <span className="text-xs text-muted-foreground">
+                          {formatPerformance(
+                            inscription.record?.performanceValue,
+                            event.event.type,
+                          )}
+                        </span>
+                      )}
+                    </div>
+                    {!isFree && (
+                      <div className="text-sm font-medium">{`€${event.price.toFixed(2)}`}</div>
                     )}
                   </div>
-                  {!isFree && (
-                    <div className="text-sm font-medium">{`€${event?.price.toFixed(2)}`}</div>
+
+                  {/* Sub-events for multi-events */}
+                  {hasSubEvents && (
+                    <div className="mt-2 ml-4 pl-3 border-l-2 border-muted space-y-1">
+                      {subEventRecords.map(({ subEvent, record }) => (
+                        <div
+                          key={subEvent.id}
+                          className="flex items-center gap-2 text-sm text-muted-foreground"
+                        >
+                          <span className="text-xs font-mono">
+                            {formatTime(subEvent.eventStartTime)}
+                          </span>
+                          <span>{subEvent.name}</span>
+                          {record?.performanceValue && (
+                            <span className="text-xs">
+                              {formatPerformance(record.performanceValue, subEvent.event.type)}
+                            </span>
+                          )}
+                        </div>
+                      ))}
+                    </div>
                   )}
                 </div>
-              </div>
-            );
-          })}
+              );
+            })}
         </div>
 
         {!isFree && (

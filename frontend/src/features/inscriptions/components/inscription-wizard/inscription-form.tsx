@@ -1,3 +1,5 @@
+import { useRequiredCompetition } from '@/features/competitions';
+import { useCompetitionEid } from '@/hooks/use-competition-eid';
 import {
   Button,
   Popover,
@@ -122,6 +124,8 @@ function InscriptionBasketHeader() {
 
 function InscriptionFormNavigation() {
   const { t } = useTranslation();
+  const eid = useCompetitionEid();
+  const competition = useRequiredCompetition(eid);
   const { currentStep, currentAthlete, nextStep, previousStep, canProceedToNextStep } =
     useInscriptionFormStore();
   const { isBlocked } = useAthleteBlockStatus(currentAthlete);
@@ -131,7 +135,8 @@ function InscriptionFormNavigation() {
 
   const handleNext = () => {
     if (canProceed) {
-      nextStep();
+      // Pass competition events so sub-event inscriptions can be created
+      nextStep(competition.events);
     }
   };
 
