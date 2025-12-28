@@ -3,7 +3,6 @@ import { getAPI } from './api';
 import { env } from './lib/env';
 import { logger } from './lib/logger';
 import { createSocketServer, setIoInstance } from './lib/socket';
-import { serviceManager } from './services';
 
 const app = getAPI();
 
@@ -14,16 +13,6 @@ const httpServer = serve(
   },
   async info => {
     console.log(`Server is running on http://localhost:${info.port}`);
-
-    // Initialize services after server is running
-    try {
-      await serviceManager.initialize();
-    } catch (error) {
-      logger.error('Failed to initialize services', {
-        error: error instanceof Error ? error.message : 'Unknown error',
-      });
-      process.exit(1);
-    }
   },
 );
 
@@ -36,7 +25,6 @@ const gracefulShutdown = async (signal: string) => {
   logger.info(`Received ${signal}, starting graceful shutdown...`);
 
   try {
-    await serviceManager.shutdown();
     httpServer.close(() => {
       logger.info('Server shut down successfully');
       process.exit(0);
