@@ -8,12 +8,11 @@ const logCleanupRoutes = new Hono();
 
 const logCleanupRequestSchema = z.object({
   daysToKeep: z.coerce.number().int().nonnegative().default(30),
-  maxLogsPerCleanup: z.coerce.number().int().positive().default(1000),
 });
 
 logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c => {
   try {
-    const { daysToKeep, maxLogsPerCleanup } = c.req.valid('json');
+    const { daysToKeep } = c.req.valid('json');
     const startTime = Date.now();
 
     logger.info('Starting log cleanup', {
@@ -27,7 +26,7 @@ logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c 
     logger.info('Log cleanup completed', {
       deletedCount,
       duration,
-      daysToKeep: daysToKeep,
+      daysToKeep,
     });
 
     // Alert if cleanup took too long or deleted too many logs
@@ -36,15 +35,11 @@ logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c 
       logger.warn('Log cleanup took longer than expected', { duration });
     }
 
-    if (maxLogsPerCleanup && deletedCount > maxLogsPerCleanup) {
-      logger.warn('Log cleanup deleted more logs than expected', {
-        deletedCount,
-        maxExpected: maxLogsPerCleanup,
-      });
-    }
-
     return c.json({
-      message: 'Log cleanup completed deleted ' + deletedCount + ' logs in ' + duration + 'ms',
+      message: `Log cleanup completed deleted ${deletedCount} logs in ${duration}ms`,
+      deletedCount,
+      duration,
+      daysToKeep,
     });
   } catch (error) {
     logError('Failed to cleanup logs', error, c);
