@@ -1,5 +1,6 @@
+import { useOrganizationInscriptions } from '@/features/inscriptions';
 import { formatCurrency, formatDateFull, formatTime } from '@/lib/formatters';
-import type { CompetitionEvent, Cuid } from '@repo/core/schemas';
+import type { CompetitionEvent, Cuid, Id } from '@repo/core/schemas';
 import {
   Button,
   DropdownMenu,
@@ -15,7 +16,7 @@ import {
   TableRow,
 } from '@repo/ui';
 import { Edit, MoreHorizontal, Trash2 } from 'lucide-react';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { useDeleteCompetitionEvent } from '../hooks/use-competition-events';
 import { CompetitionEventFormDialog } from './competition-event-form-dialog';
 
@@ -31,6 +32,16 @@ export function CompetitionEventsTable({
   const [editingEvent, setEditingEvent] = useState<CompetitionEvent | null>(null);
   const [showSubEvents, setShowSubEvents] = useState(false);
   const deleteMutation = useDeleteCompetitionEvent(competitionEid);
+  const { data: inscriptions = [] } = useOrganizationInscriptions(competitionEid);
+
+  // Count inscriptions per event
+  const participantCountByEventId = useMemo(() => {
+    return inscriptions.reduce<Record<Id, number>>((acc, inscription) => {
+      const eventId = inscription.competitionEventId;
+      acc[eventId] = (acc[eventId] ?? 0) + 1;
+      return acc;
+    }, {});
+  }, [inscriptions]);
 
   const handleDelete = async (eventEid: Cuid) => {
     if (confirm('Are you sure you want to delete this competition event?')) {
@@ -128,7 +139,7 @@ export function CompetitionEventsTable({
                       <TableCell>{formatTime(competitionEvent.eventStartTime)}</TableCell>
                       <TableCell className="font-medium">{competitionEvent.name}</TableCell>
                       <TableCell>
-                        0
+                        {participantCountByEventId[competitionEvent.id] ?? 0}
                         {competitionEvent.maxParticipants &&
                           ` / ${competitionEvent.maxParticipants}`}
                       </TableCell>
