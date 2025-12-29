@@ -17,7 +17,7 @@ logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c 
     const startTime = Date.now();
 
     logger.info('Starting log cleanup', {
-      daysToKeep: daysToKeep,
+      daysToKeep,
     });
 
     const deletedCount = await cleanOldLogs(daysToKeep);
