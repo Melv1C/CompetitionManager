@@ -160,21 +160,45 @@ function EventCard({ event, subEvents, checked, onToggle }: EventCardProps) {
           disabled={isDisabled}
         />
         <div className="flex-1 min-w-0">
-          <div className="flex items-center justify-between">
+          {/* Desktop Layout */}
+          <div className="hidden sm:flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="text-xs font-mono text-muted-foreground">
                 {formatTime(event.eventStartTime)}
               </div>
-              <p className="font-medium text-sm">{event.name}</p>
+              <p className="font-medium text-sm truncate">{event.name}</p>
             </div>
             <div className="flex items-center gap-2">
-              {!isFree && <Badge variant="outline">€{event.price.toFixed(2)}</Badge>}
+              {!isFree && event.price !== 0 && (
+                <Badge variant="outline">€{event.price.toFixed(2)}</Badge>
+              )}
               <Badge variant="secondary" className="flex items-center gap-1">
                 <Users className="h-3 w-3" />
                 {event.maxParticipants
                   ? `${participantCount} / ${event.maxParticipants}`
                   : participantCount}
               </Badge>
+            </div>
+          </div>
+
+          {/* Mobile Layout */}
+          <div className="sm:hidden space-y-1">
+            <div className="flex items-center justify-between">
+              <div className="text-xs font-mono text-muted-foreground">
+                {formatTime(event.eventStartTime)}
+              </div>
+              <Badge variant="secondary" className="flex items-center gap-1">
+                <Users className="h-3 w-3" />
+                {event.maxParticipants
+                  ? `${participantCount} / ${event.maxParticipants}`
+                  : participantCount}
+              </Badge>
+            </div>
+            <div className="flex items-center justify-between">
+              <p className="font-medium text-sm truncate">{event.name}</p>
+              {!isFree && event.price !== 0 && (
+                <Badge variant="outline">€{event.price.toFixed(2)}</Badge>
+              )}
             </div>
           </div>
         </div>
