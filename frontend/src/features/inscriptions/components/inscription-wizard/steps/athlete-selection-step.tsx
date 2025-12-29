@@ -51,7 +51,13 @@ export function AthleteSelectionStep() {
       ) || [];
 
     if (relatedInscriptions.length) {
-      setCurrentEventIds(relatedInscriptions.map(insc => insc.competitionEventId));
+      // Filter out sub-event inscriptions (only keep parent event IDs)
+      const parentEventIds = relatedInscriptions
+        .filter(insc => !insc.competitionEvent.parentId)
+        .map(insc => insc.competitionEventId);
+      setCurrentEventIds(parentEventIds);
+
+      // Set records for all inscriptions (both parent and sub-events)
       relatedInscriptions.forEach(insc => {
         setCurrentRecord(insc.competitionEventId, insc.record || null);
       });
