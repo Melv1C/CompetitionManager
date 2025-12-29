@@ -83,7 +83,7 @@ async function runCronJob(jobName: string, content: Record<string, string>) {
         Authorization: `Bearer ${cronSecret}`,
         'Content-Type': 'application/json',
       },
-      body:  JSON.stringify(content),
+      body: JSON.stringify(content),
     });
 
     const duration = Date.now() - startTime;
