@@ -29,12 +29,6 @@ logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c 
       daysToKeep,
     });
 
-    // Alert if cleanup took too long or deleted too many logs
-    if (duration > 30000) {
-      // 30 seconds
-      logger.warn('Log cleanup took longer than expected', { duration });
-    }
-
     return c.json({
       message: `Log cleanup completed deleted ${deletedCount} logs in ${duration}ms`,
       deletedCount,
