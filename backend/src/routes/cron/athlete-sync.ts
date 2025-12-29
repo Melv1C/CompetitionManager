@@ -4,7 +4,7 @@ import { Hono } from 'hono';
 
 const athleteSyncRoutes = new Hono();
 
-athleteSyncRoutes.get('/', async c => {
+athleteSyncRoutes.post('/', async c => {
   try {
     const { created, updated, skipped } = await fetchAndSyncAthlete();
     return c.json({ message: 'Athlete sync job executed', created, updated, skipped });

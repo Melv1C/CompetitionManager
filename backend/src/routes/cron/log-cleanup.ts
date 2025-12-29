@@ -7,8 +7,8 @@ import z from 'zod';
 const logCleanupRoutes = new Hono();
 
 const logCleanupRequestSchema = z.object({
-  daysToKeep: z.number().int().nonnegative(),
-  maxLogsPerCleanup: z.number().int().positive().optional(),
+  daysToKeep: z.coerce.number().int().nonnegative().default(30),
+  maxLogsPerCleanup: z.coerce.number().int().positive().default(1000),
 });
 
 logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c => {
@@ -44,7 +44,7 @@ logCleanupRoutes.post('/', zValidator('json', logCleanupRequestSchema), async c 
     }
 
     return c.json({
-      message: 'Log cleanup completed deleted '+ deletedCount + ' logs in ' + duration + 'ms'
+      message: 'Log cleanup completed deleted ' + deletedCount + ' logs in ' + duration + 'ms',
     });
   } catch (error) {
     logError('Failed to cleanup logs', error, c);

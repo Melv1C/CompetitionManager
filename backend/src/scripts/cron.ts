@@ -1,6 +1,6 @@
 import 'dotenv/config';
 
-const CRON_JOBS = ['athlete-sync'];
+const CRON_JOBS = ['athlete-sync', 'log-cleanup'];
 
 const COLORS = {
   reset: '\x1b[0m',
@@ -54,7 +54,7 @@ function printAvailableJobs() {
   console.log();
 }
 
-async function runCronJob(jobName: string) {
+async function runCronJob(jobName: string, content: Record<string, string>) {
   const cronSecret = process.env.CRON_SECRET;
   const port = process.env.PORT || 3000;
 
@@ -73,17 +73,17 @@ async function runCronJob(jobName: string) {
 
   const url = `http://localhost:${port}/api/cron/${jobName}`;
   logInfo(`Calling: ${url}`);
-  console.log();
 
   const startTime = Date.now();
 
   try {
     const response = await fetch(url, {
-      method: 'GET',
+      method: 'POST',
       headers: {
         Authorization: `Bearer ${cronSecret}`,
         'Content-Type': 'application/json',
       },
+      body:  JSON.stringify(content),
     });
 
     const duration = Date.now() - startTime;
@@ -136,4 +136,16 @@ if (!jobName) {
   process.exit(1);
 }
 
-runCronJob(jobName);
+const content: Record<string, string> = {};
+//every argument after the second is use for in the post content arg should be key=value
+for (let i = 3; i < process.argv.length; i++) {
+  const arg = process.argv[i];
+  const [key, value] = arg.split('=');
+  if (!key || !value) {
+    logError(`Invalid argument: ${arg}. Expected format key=value`);
+    process.exit(1);
+  }
+  content[key] = value;
+}
+
+runCronJob(jobName, content);
