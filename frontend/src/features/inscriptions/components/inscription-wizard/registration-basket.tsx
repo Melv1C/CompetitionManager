@@ -215,11 +215,11 @@ export function RegistrationBasket() {
           </div>
           <div>
             <h1 className="text-2xl font-bold mb-2">{t('inscriptions:registrationBasket')}</h1>
-            <p className="text-muted-foreground">{t('inscriptions:noRegistrationsInBasket')}</p>
+            <p className="text-muted-foreground">{t('inscriptions:emptyBasketDescription')}</p>
           </div>
           <Button onClick={goToForm} size="lg">
             <UserPlus className="w-4 h-4 mr-2" />
-            {t('inscriptions:registerFirstAthlete')}
+            {t('inscriptions:registerAthlete')}
           </Button>
         </div>
       </div>
