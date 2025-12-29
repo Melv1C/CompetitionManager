@@ -195,7 +195,7 @@ function EventCard({ event, subEvents, checked, onToggle }: EventCardProps) {
               </Badge>
             </div>
             <div className="flex items-center justify-between">
-              <p className="font-medium text-sm">{event.name}</p>
+              <p className="font-medium text-sm truncate">{event.name}</p>
               {!isFree && event.price !== 0 && (
                 <Badge variant="outline">€{event.price.toFixed(2)}</Badge>
               )}
