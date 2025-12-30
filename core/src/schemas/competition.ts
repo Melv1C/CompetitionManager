@@ -4,6 +4,10 @@ import { Club$ } from './club';
 import { CompetitionEvent$, competitionEventInclude } from './competition-event';
 import { Organization$ } from './organization';
 
+
+export const BibPermission$ = z.enum(['belgian-bpm', 'belgian-other', 'foreign']);
+export type BibPermission = z.infer<typeof BibPermission$>;
+
 // Competition base schema
 export const Competition$ = z.object({
   id: Id$,
@@ -18,7 +22,7 @@ export const Competition$ = z.object({
   contactPhone: z.string(),
   contactEmail: z.string(),
 
-  bibPermissions: z.array(z.string()),
+  bibPermissions: z.array(BibPermission$),
   bibStartNumber: z.number().int().positive().nullish(),
 
   isPaidOnline: Boolean$,
@@ -73,7 +77,7 @@ export const CompetitionPrisma$ = Competition$.omit({
     location: z.string().default(''),
     contactPhone: z.string().default(''),
     contactEmail: z.string().default(''),
-    bibPermissions: z.array(z.string()).default([]),
+    bibPermissions: z.array(BibPermission$).default([]),
     bibStartNumber: z.number().default(9000),
     isPaidOnline: Boolean$.default(true),
     isSelection: Boolean$.default(false),
