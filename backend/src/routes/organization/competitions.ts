@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { requirePermissions } from '@/middleware/access-control';
-import { getRequiredSession } from '@/utils/auth-utils';
+import { getRequiredSession, getRequiredUser } from '@/utils/auth-utils';
 import { getCompetitions } from '@/utils/competition-utils';
 import { logError } from '@/utils/log-utils';
 import { zValidator } from '@hono/zod-validator';
@@ -159,6 +159,10 @@ organizationCompetitionsRoutes.put(
         return c.json({ error: 'Competition not found' }, 404);
       }
 
+      // Check if user is admin to bypass field locking
+      const user = await getRequiredUser(c);
+      const isAdmin = user.role === 'admin';
+
       // Parse competition to match the expected type
       const parsedCompetition = Competition$.parse(competition);
 
@@ -172,12 +176,17 @@ organizationCompetitionsRoutes.put(
       }
 
       // Check if any of the fields being updated are locked
-      const { hasErrors, lockedFields } = checkLockedFields(updateFields, parsedCompetition);
+      const { hasErrors, lockedFields } = checkLockedFields(
+        updateFields,
+        parsedCompetition,
+        new Date(),
+        { isAdmin },
+      );
 
       if (hasErrors) {
         // Get detailed reasons for each locked field
         const fieldErrors = lockedFields.map(fieldName => {
-          const info = getFieldEditability(fieldName, parsedCompetition);
+          const info = getFieldEditability(fieldName, parsedCompetition, new Date(), { isAdmin });
           return {
             field: fieldName,
             reason: info.reason,

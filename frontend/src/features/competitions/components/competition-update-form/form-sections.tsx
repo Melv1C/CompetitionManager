@@ -24,6 +24,7 @@ interface FormSectionsProps {
   clubs: Club[];
   isFieldEditable: (fieldName: string) => boolean;
   canEdit: boolean;
+  isAdmin?: boolean;
 }
 
 export function FormSections({
@@ -32,6 +33,7 @@ export function FormSections({
   clubs,
   isFieldEditable,
   canEdit,
+  isAdmin,
 }: FormSectionsProps) {
   return (
     <>
@@ -42,7 +44,12 @@ export function FormSections({
         description="Core details about the competition"
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FieldWrapper fieldName="name" competition={competition} className="sm:col-span-2">
+          <FieldWrapper
+            fieldName="name"
+            competition={competition}
+            isAdmin={isAdmin}
+            className="sm:col-span-2"
+          >
             <FormField
               control={form.control}
               name="name"
@@ -62,7 +69,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="startDate" competition={competition}>
+          <FieldWrapper fieldName="startDate" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="startDate"
@@ -84,7 +91,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="endDate" competition={competition}>
+          <FieldWrapper fieldName="endDate" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="endDate"
@@ -107,7 +114,12 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="location" competition={competition} className="sm:col-span-2">
+          <FieldWrapper
+            fieldName="location"
+            competition={competition}
+            isAdmin={isAdmin}
+            className="sm:col-span-2"
+          >
             <FormField
               control={form.control}
               name="location"
@@ -127,7 +139,12 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="description" competition={competition} className="sm:col-span-2">
+          <FieldWrapper
+            fieldName="description"
+            competition={competition}
+            isAdmin={isAdmin}
+            className="sm:col-span-2"
+          >
             <FormField
               control={form.control}
               name="description"
@@ -160,7 +177,7 @@ export function FormSections({
         description="Contact details for participants"
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FieldWrapper fieldName="contactEmail" competition={competition}>
+          <FieldWrapper fieldName="contactEmail" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="contactEmail"
@@ -182,7 +199,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="contactPhone" competition={competition}>
+          <FieldWrapper fieldName="contactPhone" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="contactPhone"
@@ -214,7 +231,11 @@ export function FormSections({
         description="Configure registration dates and participant limits"
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FieldWrapper fieldName="inscriptionStartDate" competition={competition}>
+          <FieldWrapper
+            fieldName="inscriptionStartDate"
+            competition={competition}
+            isAdmin={isAdmin}
+          >
             <FormField
               control={form.control}
               name="inscriptionStartDate"
@@ -237,7 +258,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="inscriptionEndDate" competition={competition}>
+          <FieldWrapper fieldName="inscriptionEndDate" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="inscriptionEndDate"
@@ -261,7 +282,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="maxEventPerAthlete" competition={competition}>
+          <FieldWrapper fieldName="maxEventPerAthlete" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="maxEventPerAthlete"
@@ -288,7 +309,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="recordsFromDate" competition={competition}>
+          <FieldWrapper fieldName="recordsFromDate" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="recordsFromDate"
@@ -315,7 +336,11 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="isInscriptionVisible" competition={competition}>
+          <FieldWrapper
+            fieldName="isInscriptionVisible"
+            competition={competition}
+            isAdmin={isAdmin}
+          >
             <FormField
               control={form.control}
               name="isInscriptionVisible"
@@ -340,7 +365,7 @@ export function FormSections({
         description="Configure payment options and selection process"
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
-          <FieldWrapper fieldName="isPaidOnline" competition={competition}>
+          <FieldWrapper fieldName="isPaidOnline" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="isPaidOnline"
@@ -356,7 +381,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="isSelection" competition={competition}>
+          <FieldWrapper fieldName="isSelection" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="isSelection"
@@ -381,7 +406,7 @@ export function FormSections({
         description="Require athletes to confirm their participation"
       >
         <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-          <FieldWrapper fieldName="hasConfirmation" competition={competition}>
+          <FieldWrapper fieldName="hasConfirmation" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="hasConfirmation"
@@ -398,7 +423,11 @@ export function FormSections({
           </FieldWrapper>
 
           {form.watch('hasConfirmation') && (
-            <FieldWrapper fieldName="confirmationDeadlineMinutes" competition={competition}>
+            <FieldWrapper
+              fieldName="confirmationDeadlineMinutes"
+              competition={competition}
+              isAdmin={isAdmin}
+            >
               <FormField
                 control={form.control}
                 name="confirmationDeadlineMinutes"
@@ -440,6 +469,7 @@ export function FormSections({
           <FieldWrapper
             fieldName="bibPermissions"
             competition={competition}
+            isAdmin={isAdmin}
             className="sm:col-span-2"
           >
             <FormField
@@ -470,7 +500,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="bibStartNumber" competition={competition}>
+          <FieldWrapper fieldName="bibStartNumber" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="bibStartNumber"
@@ -506,7 +536,7 @@ export function FormSections({
         description="Manage free and allowed clubs for this competition"
       >
         <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          <FieldWrapper fieldName="freeClubIds" competition={competition}>
+          <FieldWrapper fieldName="freeClubIds" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="freeClubIds"
@@ -529,7 +559,7 @@ export function FormSections({
             />
           </FieldWrapper>
 
-          <FieldWrapper fieldName="allowedClubIds" competition={competition}>
+          <FieldWrapper fieldName="allowedClubIds" competition={competition} isAdmin={isAdmin}>
             <FormField
               control={form.control}
               name="allowedClubIds"

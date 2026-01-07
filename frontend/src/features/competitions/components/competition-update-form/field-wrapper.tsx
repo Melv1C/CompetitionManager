@@ -8,10 +8,17 @@ interface FieldWrapperProps {
   children: React.ReactNode;
   competition: Competition;
   className?: string;
+  isAdmin?: boolean;
 }
 
-export function FieldWrapper({ fieldName, children, competition, className }: FieldWrapperProps) {
-  const editability = getFieldEditability(fieldName, competition);
+export function FieldWrapper({
+  fieldName,
+  children,
+  competition,
+  className,
+  isAdmin,
+}: FieldWrapperProps) {
+  const editability = getFieldEditability(fieldName, competition, new Date(), { isAdmin });
   const style = getFieldRuleStyle(editability.rule);
 
   // Get the appropriate icon based on rule (not editability)

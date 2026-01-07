@@ -1,3 +1,4 @@
+import { useAuth } from '@/features/auth';
 import { authClient } from '@/lib/auth-client';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { CompetitionUpdate$, type Competition, type CompetitionUpdate } from '@repo/core/schemas';
@@ -82,10 +83,13 @@ function getChangedFields(
 
 export function useCompetitionForm(currentCompetition: Competition | null) {
   const updateMutation = useUpdateCompetition();
+  const { user } = useAuth();
   const [canEdit, setCanEdit] = useState(false);
   const [showPublishDialog, setShowPublishDialog] = useState(false);
   const [pendingPublishValue, setPendingPublishValue] = useState(false);
   const [originalData, setOriginalData] = useState<CompetitionUpdate | null>(null);
+
+  const isAdmin = user?.role === 'admin';
 
   // Check edit permissions
   useEffect(() => {
@@ -233,10 +237,12 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
   const isFieldEditable = useCallback(
     (fieldName: string) => {
       if (!currentCompetition) return false;
-      const editability = getFieldEditability(fieldName, currentCompetition);
+      const editability = getFieldEditability(fieldName, currentCompetition, new Date(), {
+        isAdmin,
+      });
       return editability.isEditable && canEdit;
     },
-    [currentCompetition, canEdit],
+    [currentCompetition, canEdit, isAdmin],
   );
 
   const { isDirty } = form.formState;
@@ -254,5 +260,6 @@ export function useCompetitionForm(currentCompetition: Competition | null) {
     handlePublishToggle,
     confirmPublish,
     isFieldEditable,
+    isAdmin,
   };
 }
