@@ -1,10 +1,13 @@
 {
+  "actions": "Actions",
   "athlete.title": "Athlète",
   "bib.title": "Dossard",
   "category.title": "Catégorie",
   "club.title": "Club",
   "competitions.title": "Compétitions",
   "confirmations.title": "Confirmations",
+  "delete": "Supprimer",
+  "edit": "Modifier",
   "event.text": "épreuve",
   "event.title": "Épreuve",
   "events.text": "épreuves",
@@ -33,5 +36,7 @@
   "step": "Étape",
   "total": "Total",
   "totalAmountToPay": "Total à payer",
+  "updatedAt": "Mise à jour le",
+  "userId": "ID utilisateur",
   "users": "Utilisateurs"
 }
