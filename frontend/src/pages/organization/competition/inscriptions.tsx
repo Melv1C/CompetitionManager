@@ -1,5 +1,8 @@
 import { useRequiredOrganizationCompetition } from '@/features/competitions';
-import { OrganizationInscriptionsTable, useOrganizationInscriptions } from '@/features/inscriptions';
+import {
+  OrganizationInscriptionsTable,
+  useOrganizationInscriptions,
+} from '@/features/inscriptions';
 import { Skeleton } from '@repo/ui';
 import { useParams } from 'react-router-dom';
 
