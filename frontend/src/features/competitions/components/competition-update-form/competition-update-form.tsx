@@ -25,6 +25,7 @@ export function CompetitionUpdateForm() {
     handlePublishToggle,
     confirmPublish,
     isFieldEditable,
+    isAdmin,
   } = useCompetitionForm(currentCompetition);
 
   const { blocker, proceedNavigation, resetNavigation } = useUnsavedChanges({
@@ -66,7 +67,6 @@ export function CompetitionUpdateForm() {
         onPublishToggle={handlePublishToggle}
         onSave={form.handleSubmit(onSubmit)}
       />
-
       <FieldRulesLegend />
 
       <Form {...form}>
@@ -77,6 +77,7 @@ export function CompetitionUpdateForm() {
             clubs={clubs}
             isFieldEditable={isFieldEditable}
             canEdit={canEdit}
+            isAdmin={isAdmin}
           />
         </form>
       </Form>

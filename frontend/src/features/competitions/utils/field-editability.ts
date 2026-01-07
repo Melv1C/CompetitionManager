@@ -8,6 +8,7 @@ export {
   getFieldsByRule,
   validateFieldsEditability,
   type FieldEditabilityInfo,
+  type FieldEditabilityOptions,
   type FieldEditabilityRule,
 } from '@repo/core/utils';
 

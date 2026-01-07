@@ -12,6 +12,11 @@ export interface FieldEditabilityInfo {
   reason?: string;
 }
 
+export interface FieldEditabilityOptions {
+  /** When true, bypasses all locking rules (for admin users) */
+  isAdmin?: boolean;
+}
+
 /**
  * Field editability rules based on competition state.
  * Defines when each field can be modified based on the competition lifecycle.
@@ -80,12 +85,18 @@ export function getFieldEditability(
   fieldName: string,
   competition: Competition | null | undefined,
   currentDate: Date = new Date(),
+  options: FieldEditabilityOptions = {},
 ): FieldEditabilityInfo {
   if (!competition) {
     return { isEditable: false, rule: 'always', reason: 'No competition selected' };
   }
 
   const rule = FIELD_RULES[fieldName] || 'always';
+
+  // Admin users can bypass all locking rules
+  if (options.isAdmin) {
+    return { isEditable: true, rule };
+  }
   const inscriptionStart = new Date(competition.inscriptionStartDate);
   const competitionStart = new Date(competition.startDate);
 
@@ -185,10 +196,11 @@ export function validateFieldsEditability(
   fieldNames: string[],
   competition: Competition | null | undefined,
   currentDate: Date = new Date(),
+  options: FieldEditabilityOptions = {},
 ): Record<string, FieldEditabilityInfo> {
   return fieldNames.reduce(
     (acc, fieldName) => {
-      acc[fieldName] = getFieldEditability(fieldName, competition, currentDate);
+      acc[fieldName] = getFieldEditability(fieldName, competition, currentDate, options);
       return acc;
     },
     {} as Record<string, FieldEditabilityInfo>,
@@ -216,9 +228,10 @@ export function checkLockedFields(
   fieldNames: string[],
   competition: Competition | null | undefined,
   currentDate: Date = new Date(),
+  options: FieldEditabilityOptions = {},
 ): { hasErrors: boolean; lockedFields: string[] } {
   const lockedFields = fieldNames.filter(
-    fieldName => !getFieldEditability(fieldName, competition, currentDate).isEditable,
+    fieldName => !getFieldEditability(fieldName, competition, currentDate, options).isEditable,
   );
 
   return {
