@@ -1,10 +1,13 @@
 {
+  "actions": "Acties",
   "athlete.title": "Atleet",
   "bib.title": "Startnummer",
   "category.title": "Categorie",
   "club.title": "Club",
   "competitions.title": "Wedstrijden",
   "confirmations.title": "Bevestigingen",
+  "delete": "Verwijderen",
+  "edit": "Bewerken",
   "event.text": "onderdeel",
   "event.title": "Onderdeel",
   "events.text": "onderdelen",
@@ -32,5 +35,7 @@
   "step": "Stap",
   "total": "Totaal",
   "totalAmountToPay": "Totaal te betalen",
+  "updatedAt": "Bijgewerkt op",
+  "userId": "Gebruikers-ID",
   "users": "Gebruikers"
 }

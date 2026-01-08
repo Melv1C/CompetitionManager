@@ -1,10 +1,13 @@
 {
+  "actions": "Actions",
   "athlete.title": "Athlete",
   "bib.title": "Bib",
   "category.title": "Category",
   "club.title": "Club",
   "competitions.title": "Competitions",
   "confirmations.title": "Confirmations",
+  "delete": "Delete",
+  "edit": "Edit",
   "event.text": "event",
   "event.title": "Event",
   "events.text": "events",
@@ -32,5 +35,7 @@
   "step": "Step",
   "total": "Total",
   "totalAmountToPay": "Total Amount to Pay",
+  "updatedAt": "Updated At",
+  "userId": "User ID",
   "users": "Users"
 }
