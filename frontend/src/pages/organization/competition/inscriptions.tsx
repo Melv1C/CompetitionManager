@@ -15,6 +15,10 @@ export function CompetitionInscriptions() {
   const competition = useRequiredOrganizationCompetition(competitionEid);
   const inscriptions = useOrganizationInscriptions(competitionEid);
 
+  if (inscriptions.isError) {
+    throw new Error('Failed to load inscriptions');
+  }
+
   return (
     <div className="space-y-6">
       <div>
@@ -28,8 +32,6 @@ export function CompetitionInscriptions() {
           <Skeleton className="h-10 w-full" />
           <Skeleton className="h-10 w-full" />
         </div>
-      ) : inscriptions.isError ? (
-        <div className="text-center py-8 text-destructive">Failed to load inscriptions</div>
       ) : (
         <OrganizationInscriptionsTable
           inscriptions={inscriptions.data}
