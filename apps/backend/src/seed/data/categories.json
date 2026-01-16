@@ -1,0 +1,17 @@
+[
+  {
+    "slug": "technology",
+    "name": "Technology",
+    "description": "Tech-related content"
+  },
+  {
+    "slug": "business",
+    "name": "Business",
+    "description": "Business and entrepreneurship"
+  },
+  {
+    "slug": "lifestyle",
+    "name": "Lifestyle",
+    "description": "Lifestyle and wellness"
+  }
+]

@@ -1,0 +1,21 @@
+{
+  "accountCreatedSuccess": "Compte créé avec succès ! Bienvenue !",
+  "contactAdminIfNeeded": "Contacter l'admin si nécessaire",
+  "empty.competitions": "Aucune compétition trouvée",
+  "error.competition": "Erreur de compétition",
+  "error.inscriptions": "Erreur d'inscriptions",
+  "error.result_create_failed": "Erreur lors de la création du résultat",
+  "error.result_delete_failed": "Erreur lors de la suppression du résultat",
+  "error.result_update_failed": "Erreur lors de la mise à jour du résultat",
+  "loading.competition": "Chargement de la compétition",
+  "loading.inscriptions": "Chargement des inscriptions",
+  "signInError": "Échec de la connexion. Veuillez réessayer.",
+  "signInSuccess": "Connexion réussie !",
+  "signOutError": "Échec de la déconnexion. Veuillez réessayer.",
+  "signOutSuccess": "Déconnexion réussie !",
+  "signUpError": "Échec de la création du compte. Veuillez réessayer.",
+  "success.result_created": "Résultat créé avec succès",
+  "success.result_deleted": "Résultat supprimé avec succès",
+  "success.result_updated": "Résultat mis à jour avec succès",
+  "unexpectedError": "Une erreur inattendue s'est produite. Veuillez réessayer."
+}

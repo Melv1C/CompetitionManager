@@ -1,0 +1,477 @@
+generator client {
+  provider = "prisma-client-js"
+  output = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Log {
+  id Int @id @default(autoincrement())
+
+  // Common fields
+  type     LogType
+  level    String
+  message  String
+  metadata Json?
+
+  // RequestLog-specific fields
+  userId     String?
+  method     String?
+  path       String?
+  statusCode Int?
+  durationMs Int?
+  steps      Json?
+
+  createdAt DateTime @default(now())
+
+  @@index([type])
+  @@index([level])
+  @@index([userId])
+  @@index([createdAt])
+  @@map("log")
+}
+
+enum LogType {
+  APP
+  REQUEST
+}
+
+model User {
+  id            String    @id
+  name          String
+  email         String
+  emailVerified Boolean
+  image         String?
+  createdAt     DateTime
+  updatedAt     DateTime
+  sessions      Session[]
+  accounts      Account[]
+
+  role       String?
+  banned     Boolean?
+  banReason  String?
+  banExpires DateTime?
+
+  stripeCustomerId String?
+
+  members        Member[]
+  invitations    Invitation[]
+  inscriptions   Inscription[]
+  transactions    Transaction[]
+
+  @@unique([email])
+  @@map("user")
+}
+
+model Session {
+  id        String   @id
+  expiresAt DateTime
+  token     String
+  createdAt DateTime
+  updatedAt DateTime
+  ipAddress String?
+  userAgent String?
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  impersonatedBy String?
+
+  activeOrganizationId String?
+
+  @@unique([token])
+  @@map("session")
+}
+
+model Account {
+  id                    String    @id
+  accountId             String
+  providerId            String
+  userId                String
+  user                  User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  accessToken           String?
+  refreshToken          String?
+  idToken               String?
+  accessTokenExpiresAt  DateTime?
+  refreshTokenExpiresAt DateTime?
+  scope                 String?
+  password              String?
+  createdAt             DateTime
+  updatedAt             DateTime
+
+  @@map("account")
+}
+
+model Verification {
+  id         String    @id
+  identifier String
+  value      String
+  expiresAt  DateTime
+  createdAt  DateTime?
+  updatedAt  DateTime?
+
+  @@map("verification")
+}
+
+model Organization {
+  id        String   @id
+  name      String
+  slug      String?
+  logo      String?
+  createdAt DateTime
+  metadata  String?
+
+  contactEmail String?
+  contactPhone String?
+  website      String?
+
+  members     Member[]
+  invitations Invitation[]
+
+  competitions Competition[]
+
+  @@unique([slug])
+  @@map("organization")
+}
+
+model Member {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role           String
+  createdAt      DateTime
+
+  @@map("member")
+}
+
+model Invitation {
+  id             String       @id
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           String?
+  status         String
+  expiresAt      DateTime
+  inviterId      String
+  user           User         @relation(fields: [inviterId], references: [id], onDelete: Cascade)
+
+  @@map("invitation")
+}
+
+////////////////////////////////////////////////////////////
+// Athlete model
+// This model is used to store athlete information.
+////////////////////////////////////////////////////////////
+model Athlete {
+  id        Int      @id @default(autoincrement())
+  license   String
+  firstName String
+  lastName  String
+  gender    String
+  birthdate DateTime
+  metadata  String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  athleteInfo AthleteInfo[]
+
+  competition   Competition? @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  competitionId Int?
+
+  inscriptions Inscription[]
+  results      Result[]
+  transactions Transaction[]
+
+  @@unique([license, competitionId])
+  @@map("athlete")
+}
+
+// //////////////////////////////////////////////////////////
+// Athlete Info depending on the season
+// This model is used to store athlete information depending on the season.
+////////////////////////////////////////////////////////////
+model AthleteInfo {
+  id        Int     @id @default(autoincrement())
+  athleteId Int
+  athlete   Athlete @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  season    Int
+  clubId    Int
+  club      Club    @relation(fields: [clubId], references: [id], onDelete: Cascade)
+  bib       Int
+
+  @@unique([athleteId, season])
+  @@map("athlete_info")
+}
+
+////////////////////////////////////////////////////////////
+// Club
+// This model is used to store club information.
+////////////////////////////////////////////////////////////
+model Club {
+  id        Int     @id @default(autoincrement())
+  name      String  @unique
+  abbr      String  @unique
+  address   String?
+  province  String?
+  country   String?
+  fedNumber Int?
+  fedAbbr   String?
+
+  athletesInfo        AthleteInfo[]
+  freeCompetitions    Competition[] @relation("FreeClubsToCompetitions")
+  allowedCompetitions Competition[] @relation("AllowedClubsToCompetitions")
+
+  @@map("clubs")
+}
+
+////////////////////////////////////////////////////////////
+// Event
+// This model is used to store event information.
+////////////////////////////////////////////////////////////
+model Event {
+  id                Int                @id @default(autoincrement())
+  name              String             @unique
+  abbr              String
+  group             String
+  type              String
+  competitionEvents CompetitionEvent[]
+
+  @@map("events")
+}
+
+////////////////////////////////////////////////////////////
+// Category
+// This model is used to store category information.
+////////////////////////////////////////////////////////////
+model Category {
+  id                Int                @id @default(autoincrement())
+  name              String             @unique
+  abbr              String             @unique
+  baseCategory      String
+  abbrBaseCategory  String
+  gender            String
+  masterAgeGroup    Int?
+  order             Int
+  amId              Int?               @unique
+  competitionEvents CompetitionEvent[]
+
+  @@map("categories")
+}
+
+////////////////////////////////////////////////////////////
+// Competition Event
+// This model is used to store the events of a competition.
+////////////////////////////////////////////////////////////
+model CompetitionEvent {
+  id              Int      @id @default(autoincrement())
+  eid             String   @unique @default(cuid())
+  name            String
+  eventStartTime  DateTime
+  maxParticipants Int?
+  price           Float
+
+  createdAt DateTime @default(now())
+  createdBy String
+  updatedAt DateTime @updatedAt
+  updatedBy String
+
+  competitionId Int
+  competition   Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  eventId       Int
+  event         Event       @relation(fields: [eventId], references: [id], onDelete: Cascade)
+
+  parentId    Int?
+  parent      CompetitionEvent?  @relation("ParentChildEvents", fields: [parentId], references: [id], onDelete: Cascade)
+  childEvents CompetitionEvent[] @relation("ParentChildEvents")
+
+  categories Category[]
+
+  inscriptions Inscription[]
+  results      Result[]
+  @@map("competition_events")
+}
+
+////////////////////////////////////////////////////////////
+// Competition
+// This model is used to store competition information.
+////////////////////////////////////////////////////////////
+
+model Competition {
+  id          Int       @id @default(autoincrement())
+  eid         String    @unique @default(cuid())
+  name        String
+  startDate   DateTime
+  endDate     DateTime
+  isPublished Boolean
+  description String    @db.Text
+  location    String
+
+  contactPhone String
+  contactEmail String
+
+  bibPermissions String[]
+  bibStartNumber Int?
+
+  isPaidOnline         Boolean
+  isSelection          Boolean
+  isInscriptionVisible Boolean
+
+  inscriptionStartDate DateTime
+  inscriptionEndDate   DateTime
+
+  maxEventPerAthlete         Int?
+  hasConfirmation            Boolean  @default(false)
+  confirmationDeadlineMinutes Int?
+  recordsFromDate            DateTime?
+
+  createdAt DateTime @default(now())
+  createdBy String
+  updatedAt DateTime @updatedAt
+  updatedBy String
+
+  freeClubs    Club[] @relation("FreeClubsToCompetitions")
+  allowedClubs Club[] @relation("AllowedClubsToCompetitions")
+
+  events   CompetitionEvent[]
+  athletes Athlete[]
+
+  organizationId String
+  organization   Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+
+  inscriptions    Inscription[]
+  results         Result[]
+  transactions    Transaction[]
+
+  @@map("competitions")
+}
+
+////////////////////////////////////////////////////////////
+// Inscription
+// This model is used to store athlete inscriptions to competition events.
+////////////////////////////////////////////////////////////
+model Inscription {
+  id                 Int              @id @default(autoincrement())
+  eid                String           @unique @default(cuid())
+  
+  userId             String           @map("user_id")
+  user               User             @relation(fields: [userId], references: [id], onDelete: Cascade)
+  athleteId          Int              @map("athlete_id")
+  athlete            Athlete          @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  competitionEventId Int              @map("competition_event_id")
+  competitionEvent   CompetitionEvent @relation(fields: [competitionEventId], references: [id], onDelete: Cascade)
+  competitionId      Int              @map("competition_id")
+  competition        Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+
+  record             Record?
+  status             String
+  stripeSessionId    String?          @map("stripe_session_id")
+  inscriptionDate    DateTime         @map("inscription_date")
+  presenceStatus     String           @map("presence_status")       
+  
+  createdAt          DateTime         @default(now()) @map("created_at")
+  createdBy          String           @map("created_by")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  updatedBy          String           @map("updated_by")
+  
+  results            Result[]
+
+  @@map("inscriptions")
+}
+
+
+////////////////////////////////////////////////////////////
+// Transaction
+// This model is used to store payment transaction information.
+////////////////////////////////////////////////////////////
+model Transaction {
+  id                Int      @id @default(autoincrement())
+  userId            String
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  athleteId         Int
+  athlete           Athlete  @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  competitionId     Int
+  competition       Competition @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  amountPaid        Float
+  paidAt            DateTime
+  stripeSessionId   String
+  createdAt         DateTime @default(now())
+
+  @@map("transactions")
+}
+
+
+////////////////////////////////////////////////////////////
+// Record
+// This model is used to store personal records of athletes.
+////////////////////////////////////////////////////////////
+model Record {
+  id                 Int         @id @default(autoincrement())
+  performanceValue   Float       @map("performance_value")
+  achievedDate       DateTime    @map("achieved_date")
+  location           String?
+  
+  inscriptionId      Int         @unique @map("inscription_id")
+  inscription        Inscription @relation(fields: [inscriptionId], references: [id], onDelete: Cascade)
+
+  @@map("records")
+}
+
+////////////////////////////////////////////////////////////
+// Result
+// This model is used to store competition results.
+////////////////////////////////////////////////////////////
+model Result {
+  id                 Int              @id @default(autoincrement())
+  eid                String           @unique @default(cuid())
+
+  competitionId      Int              @map("competition_id")
+  competition        Competition      @relation(fields: [competitionId], references: [id], onDelete: Cascade)
+  competitionEventId Int              @map("competition_event_id")
+  competitionEvent   CompetitionEvent @relation(fields: [competitionEventId], references: [id], onDelete: Cascade)
+  athleteId          Int              @map("athlete_id")
+  athlete            Athlete          @relation(fields: [athleteId], references: [id], onDelete: Cascade)
+  inscriptionId      Int?             @map("inscription_id")
+  inscription        Inscription?     @relation(fields: [inscriptionId], references: [id], onDelete: Cascade)
+  
+  heatNumber         Int              @map("heat_number")
+  startingOrder      Int              @map("starting_order")
+  currentOrder       Int              @map("current_order")
+  finalOrder         Int?             @map("final_order")
+  
+  performanceValue   Float?           @map("performance_value")
+  windSpeed          Float?           @map("wind_speed")
+  points             Int?
+  
+  createdAt          DateTime         @default(now()) @map("created_at")
+  createdBy          String           @map("created_by")
+  updatedAt          DateTime         @updatedAt @map("updated_at")
+  updatedBy          String           @map("updated_by")
+  
+  details            ResultDetail[]
+
+  @@unique([competitionEventId, athleteId])
+  @@map("results")
+}
+
+////////////////////////////////////////////////////////////
+// Result Detail
+// This model is used to store detailed attempt information for results.
+////////////////////////////////////////////////////////////
+model ResultDetail {
+  id                 Int      @id @default(autoincrement())
+  attemptNumber      Int      @map("attempt_number")
+  performanceValue   Float    @map("performance_value")
+  attempts           String[]
+  windSpeed          Float?   @map("wind_speed")
+  isBest             Boolean  @map("is_best")
+  isOfficialRecord   Boolean  @map("is_official_record")
+  
+  resultId           Int      @map("result_id")
+  result             Result   @relation(fields: [resultId], references: [id], onDelete: Cascade)
+
+  @@unique([resultId, attemptNumber])
+  @@map("result_details")
+}

@@ -1,0 +1,61 @@
+name: Pipeline (Quality & Staging)
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+    paths-ignore:
+      - 'package.json'
+      - 'package-lock.json'
+
+jobs:
+  ci-cd:
+    name: Build, Check & Deploy
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Linting
+        run: npm run lint
+
+      - name: Run Format check
+        run: npm run format:check
+
+      - name: Prisma Check
+        run: npm run validate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+
+      - name: Prisma Generate
+        run: npm run generate
+        env:
+          DATABASE_URL: postgresql://postgres:postgres@localhost:5432/postgres
+
+      - name: Run type checks
+        run: npm run check-types
+
+      - name: Build all packages
+        run: npm run build
+
+      - name: Deploy to Staging
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
+        run: echo "Deploying to Staging environment..."
+        # Add your staging deployment commands here
+        # Example:
+        # - name: Deploy backend
+        #   run: npm run deploy:backend -- --env staging
+        #
+        # - name: Deploy frontend
+        #   run: npm run deploy:frontend -- --env staging

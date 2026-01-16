@@ -1,0 +1,21 @@
+{
+  "accountCreatedSuccess": "Account succesvol aangemaakt! Welkom!",
+  "contactAdminIfNeeded": "Neem contact op met admin indien nodig",
+  "empty.competitions": "Geen wedstrijden gevonden",
+  "error.competition": "Fout bij wedstrijd",
+  "error.inscriptions": "Fout bij inschrijvingen",
+  "error.result_create_failed": "Fout bij het aanmaken van het resultaat",
+  "error.result_delete_failed": "Fout bij het verwijderen van het resultaat",
+  "error.result_update_failed": "Fout bij het bijwerken van het resultaat",
+  "loading.competition": "Wedstrijd laden",
+  "loading.inscriptions": "Inschrijvingen laden",
+  "signInError": "Inloggen mislukt. Probeer het opnieuw.",
+  "signInSuccess": "Succesvol ingelogd!",
+  "signOutError": "Uitloggen mislukt. Probeer het opnieuw.",
+  "signOutSuccess": "Succesvol uitgelogd!",
+  "signUpError": "Account aanmaken mislukt. Probeer het opnieuw.",
+  "success.result_created": "Resultaat succesvol aangemaakt",
+  "success.result_deleted": "Resultaat succesvol verwijderd",
+  "success.result_updated": "Resultaat succesvol bijgewerkt",
+  "unexpectedError": "Er is een onverwachte fout opgetreden. Probeer het opnieuw."
+}

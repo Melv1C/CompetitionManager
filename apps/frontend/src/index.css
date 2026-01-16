@@ -1,0 +1,8 @@
+@import 'tailwindcss';
+@import 'tw-animate-css';
+
+@source '../../../node_modules/@melv1c/ui-kit';
+@source '../../../packages/ui/src';
+
+@import '@melv1c/ui-kit/base.css';
+@import './theme.css';

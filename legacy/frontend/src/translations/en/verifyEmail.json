@@ -1,0 +1,11 @@
+{
+  "errorDescription": "Something went wrong while verifying your email. Please try again.",
+  "errorTitle": "Verification Failed",
+  "goHome": "Go to Home",
+  "goToProfile": "Go to Profile",
+  "invalidToken": "The verification link is invalid or has expired. Please request a new verification email from your profile.",
+  "pleaseWait": "Please wait while we verify your email...",
+  "successDescription": "Your email has been successfully verified. You now have full access to all features.",
+  "successTitle": "Email Verified!",
+  "verifying": "Verifying Email..."
+}
